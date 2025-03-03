@@ -89,22 +89,20 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
         :apply-hover-style="false"
         :tooltip="$t('caption.level')"
       >
-        <div class="language-selector-dropdown-override">
-          <Dropdown
-            v-if="hasLevels(merchantFilter.merchant)"
-            :disabled="!merchantFilter.enabled"
-            :model-value="merchantFilter.merchantLevel"
-            :options="getMerchantLevels(merchantFilter.merchant)"
-            :placeholder="$t('caption.level')"
-            @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
-          >
-            <template #value="slotProps">
-              <div class="merchant-filter-level-value">
-                {{ slotProps.value }}
-              </div>
-            </template>
-          </Dropdown>
-        </div>
+        <Dropdown
+          v-if="hasLevels(merchantFilter.merchant)"
+          :disabled="!merchantFilter.enabled"
+          :model-value="merchantFilter.merchantLevel"
+          :options="getMerchantLevels(merchantFilter.merchant)"
+          :placeholder="$t('caption.level')"
+          @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
+        >
+          <template #value="slotProps">
+            <div class="merchant-filter-level-value">
+              {{ slotProps.value }}
+            </div>
+          </template>
+        </Dropdown>
       </Tooltip>
     </div>
   </div>

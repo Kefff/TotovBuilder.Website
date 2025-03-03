@@ -25,6 +25,8 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
+  margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 .card-buttons > button {
@@ -46,17 +48,16 @@
 }
 
 .card-line3 {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .card-line4 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .card-lines {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 0.25rem;
   height: 100%;
 }

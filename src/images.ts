@@ -1,57 +1,33 @@
-import imageCaliber from '../assets/images/caliber.webp'
-import imageChop from '../assets/images/chop.webp'
-import imageFence from '../assets/images/fence.webp'
-import imageFirerate from '../assets/images/fire-rate.webp'
-import imageFleamarket from '../assets/images/flea-market.webp'
-import imageJaeger from '../assets/images/jaeger.webp'
-import imageLanguageEn from '../assets/images/language-en.webp'
-import imageLanguageFr from '../assets/images/language-fr.webp'
-import imageMechanic from '../assets/images/mechanic.webp'
-import imagePeacekeeper from '../assets/images/peacekeeper.webp'
-import imagePistol from '../assets/images/pistol.webp'
-import imagePraporAngry from '../assets/images/prapor-angry.webp'
-import imagePraporSmiling from '../assets/images/prapor-smiling.webp'
-import imagePrapor from '../assets/images/prapor.webp'
-import imageRagman from '../assets/images/ragman.webp'
-import imageRef from '../assets/images/ref.webp'
-import imageRicochet from '../assets/images/ricochet.webp'
-import imageRifle1 from '../assets/images/rifle1.webp'
-import imageRifle2 from '../assets/images/rifle2.webp'
-import imageSantaPraporSmiling from '../assets/images/santa-prapor-smiling.webp'
-import imageSkier from '../assets/images/skier.webp'
-import imageStab from '../assets/images/stab.webp'
-import imageTherapist from '../assets/images/therapist.webp'
-import imageUnknownItem from '../assets/images/unknown_item.webp'
-
 export interface IImages {
   [key: string]: string
 }
 
 const Images: IImages = {
-  caliber: imageCaliber,
-  chop: imageChop,
-  fence: imageFence,
-  fireRate: imageFirerate,
-  fleaMarket: imageFleamarket,
-  jaeger: imageJaeger,
-  languageEn: imageLanguageEn,
-  languageFr: imageLanguageFr,
-  mechanic: imageMechanic,
-  peacekeeper: imagePeacekeeper,
-  pistol: imagePistol,
-  praporAngry: imagePraporAngry,
-  praporSmiling: imagePraporSmiling,
-  prapor: imagePrapor,
-  ragman: imageRagman,
-  ref: imageRef,
-  ricochet: imageRicochet,
-  rifle1: imageRifle1,
-  rifle2: imageRifle2,
-  santaPraporSmiling: imageSantaPraporSmiling,
-  skier: imageSkier,
-  stab: imageStab,
-  therapist: imageTherapist,
-  unknownItem: imageUnknownItem
+  caliber: '/assets/images/caliber.webp',
+  chop: '/assets/images/chop.webp',
+  fence: '/assets/images/fence.webp',
+  fireRate: '/assets/images/fire-rate.webp',
+  fleaMarket: '/assets/images/flea-market.webp',
+  inventorySlotsSelection: '/assets/images/inventory-slots-selection.webp',
+  jaeger: '/assets/images/jaeger.webp',
+  languageEn: '/assets/images/language-en.webp',
+  languageFr: '/assets/images/language-fr.webp',
+  mechanic: '/assets/images/mechanic.webp',
+  peacekeeper: '/assets/images/peacekeeper.webp',
+  pistol: '/assets/images/pistol.webp',
+  prapor: '/assets/images/prapor.webp',
+  praporAngry: '/assets/images/prapor-angry.webp',
+  praporSmiling: '/assets/images/prapor-smiling.webp',
+  ragman: '/assets/images/ragman.webp',
+  ref: '/assets/images/ref.webp',
+  ricochet: '/assets/images/ricochet.webp',
+  rifle1: '/assets/images/rifle1.webp',
+  rifle2: '/assets/images/rifle2.webp',
+  santaPraporSmiling: '/assets/images/santa-prapor-smiling.webp',
+  skier: '/assets/images/skier.webp',
+  stab: '/assets/images/stab.webp',
+  therapist: '/assets/images/therapist.webp',
+  unknownItem: '/assets/images/unknown_item.webp'
 }
 
 export default Images

@@ -39,6 +39,13 @@ const property = computed({
     modelParameters.value = filterAndSortingData
   }
 })
+const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
+  'caption.switchSortOrder',
+  {
+    currentSortOrder: order.value === SortingOrder.asc
+      ? vueI18n.t('caption.ascendant').toLocaleLowerCase()
+      : vueI18n.t('caption.descendant').toLocaleLowerCase()
+  }))
 
 const filterInternal = ref(modelParameters.value.filter)
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
@@ -126,6 +133,7 @@ function reset(): void {
         />
         <Tooltip
           v-if="filter != null"
+          :disabled-on-mobile="true"
           :tooltip="$t('caption.clear')"
         >
           <Button
@@ -193,7 +201,10 @@ function reset(): void {
             <span>{{ getSortOrderCaption(slotProps.value) }}</span>
           </template>
         </Dropdown>
-        <Tooltip :tooltip="$t('caption.switchSortOrder')">
+        <Tooltip
+          :disabled-on-mobile="true"
+          :tooltip="switchSortOrderButtonTooltip"
+        >
           <Button
             class="p-button-sm"
             outlined

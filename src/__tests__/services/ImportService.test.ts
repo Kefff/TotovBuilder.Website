@@ -331,7 +331,7 @@ describe('ImportService', () => {
     })
   })
 
-  describe('importAsync()', () => {
+  describe('importAsync', () => {
     it('should import builds', async () => {
       // Arrange
       let imported = false

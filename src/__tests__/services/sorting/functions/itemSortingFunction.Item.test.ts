@@ -13,7 +13,7 @@ import Services from '../../../../services/repository/Services'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ItemSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
-describe('comparisonFunction()', () => {
+describe('comparisonFunction', () => {
   it.each([
     [
       { id: 'i1', name: 'a', categoryId: 'cat1' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,

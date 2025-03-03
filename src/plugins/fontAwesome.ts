@@ -1,8 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDiscord, faGithub, faRedditAlien } from '@fortawesome/free-brands-svg-icons'
 import {
-  faAngleDown,
-  faAngleRight,
   faArrowLeft,
   faArrowRight,
   faArrowsAlt,
@@ -18,6 +16,8 @@ import {
   faBug,
   faBullseye,
   faCheck,
+  faChevronLeft,
+  faChevronRight,
   faChevronUp,
   faClipboardList,
   faCog,
@@ -81,6 +81,7 @@ import {
   faSyncAlt,
   faTablets,
   faThLarge,
+  faThumbtack,
   faTimes,
   faTint,
   faTrash,
@@ -99,8 +100,6 @@ import { App } from 'vue'
 
 export function useFontAwesome(app: App<Element>): void {
   library.add(
-    faAngleDown,
-    faAngleRight,
     faArrowLeft,
     faArrowRight,
     faArrowsAlt,
@@ -116,6 +115,8 @@ export function useFontAwesome(app: App<Element>): void {
     faBug,
     faBullseye,
     faCheck,
+    faChevronLeft,
+    faChevronRight,
     faChevronUp,
     faClipboardList,
     faCog,
@@ -183,6 +184,7 @@ export function useFontAwesome(app: App<Element>): void {
     faSyncAlt,
     faTablets,
     faThLarge,
+    faThumbtack,
     faTimes,
     faTint,
     faTrash,

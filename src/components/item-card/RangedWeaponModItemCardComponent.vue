@@ -38,41 +38,44 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="hand-paper"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="rangedWeaponMod.recoilModifierPercentage !== 0"
       :tooltip="$t('caption.recoilModifierPercentage')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="arrows-alt"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(rangedWeaponMod.recoilModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, rangedWeaponMod.recoilModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="arrows-alt"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(rangedWeaponMod.recoilModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, rangedWeaponMod.recoilModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="rangedWeaponMod.accuracyModifierPercentage !== 0"
       :tooltip="$t('caption.accuracyModifierPercentage')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="bullseye"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(rangedWeaponMod.accuracyModifierPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, rangedWeaponMod.accuracyModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="bullseye"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(rangedWeaponMod.accuracyModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, rangedWeaponMod.accuracyModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
   </div>
 </template>

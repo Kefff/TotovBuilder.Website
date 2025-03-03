@@ -6,7 +6,7 @@ import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSort
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ContainerSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
-describe('comparisonFunction()', () => {
+describe('comparisonFunction', () => {
   it.each([['capacity']])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {

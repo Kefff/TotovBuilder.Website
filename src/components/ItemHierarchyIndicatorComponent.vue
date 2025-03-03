@@ -16,6 +16,7 @@ const isEditing = inject<Ref<boolean>>('isEditing')
 
 const bottomHeight = computed(() => `calc(100% - ${upperHeight.value} - ${_middleHeight} + ${_bottomTopOffset})`)
 const bottomTop = computed(() => `calc(${upperHeight.value} + ${_middleHeight} - ${_bottomTopOffset})`)
+const isCompactMode = computed(() => isSmartphonePortrait.value || isTabletPortrait.value)
 const displayBottomPart = computed(() => {
   const result = props.index !== lastHierarchyInventoryItemIndex.value
     || props.mode === 'baseItem'
@@ -55,7 +56,7 @@ const upperHeight = computed(() => {
   }
 })
 
-const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
+const { isSmartphonePortrait, isTabletPortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -99,8 +100,7 @@ const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
 }
 
 .item-hierarchy-indicator-bottom {
-  border-color: #143a58;
-  /* Same as --primary-color6 but without transparency to avoid color mixing where the different parts of the indicator overlap */
+  border-color: var(--surface-500);
   border-left-style: solid;
   border-width: 1px;
   height: v-bind(bottomHeight);
@@ -111,8 +111,7 @@ const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
 }
 
 .item-hierarchy-indicator-middle {
-  border-color: #143a58;
-  /* Same as --primary-color6 but without transparency to avoid color mixing where the different parts of the indicator overlap */
+  border-color: var(--surface-500);
   border-bottom-left-radius: 12px;
   border-bottom-style: solid;
   border-left-style: solid;
@@ -124,8 +123,7 @@ const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
 }
 
 .item-hierarchy-indicator-upper {
-  border-color: #143a58;
-  /* Same as --primary-color6 but without transparency to avoid color mixing where the different parts of the indicator overlap */
+  border-color: var(--surface-500);
   border-left-style: solid;
   border-width: 1px;
   flex-shrink: 0;

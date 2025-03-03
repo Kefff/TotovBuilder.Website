@@ -249,9 +249,9 @@ export class BuildService {
    * @param id - ID of the build to update.
    * @param build - Updated version of the build.
    */
-  public async updateAsync(build: IBuild): Promise<void> {
+  public async updateAsync(build: IBuild, version?: string): Promise<void> {
     build.lastUpdated = new Date()
-    build.lastWebsiteVersion = await Services.get(VersionService).getVersionAsync()
+    build.lastWebsiteVersion = version ?? await Services.get(VersionService).getVersionAsync()
 
     const storageKey = this.getKey(build.id)
 

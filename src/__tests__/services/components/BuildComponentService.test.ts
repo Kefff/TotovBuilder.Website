@@ -8,7 +8,7 @@ import { BuildComponentService } from '../../../services/components/BuildCompone
 import Services from '../../../services/repository/Services'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getBuild()', () => {
+describe('getBuild', () => {
   it('should get a build', () => {
     // Arrange
     const buildServiceMock = mock<BuildService>()
@@ -102,7 +102,7 @@ describe('getBuild()', () => {
   })
 })
 
-describe('saveBuildAsync()', () => {
+describe('saveBuildAsync', () => {
   it('should add a new build', async () => {
     // Arrange
     const buildServiceMock = mock<BuildService>()
@@ -163,7 +163,7 @@ describe('saveBuildAsync()', () => {
   })
 })
 
-describe('deleteBuild()', () => {
+describe('deleteBuild', () => {
   it('should delete a build', () => {
     // Arrange
     const buildServiceMock = mock<BuildService>()

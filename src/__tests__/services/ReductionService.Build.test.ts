@@ -9,7 +9,7 @@ import { build1, build2, reducedBuild1, reducedBuild2 } from '../__data__/buildM
 import { berkut, morphine, rpk16, rpk16Drum } from '../__data__/itemMocks'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('parseReducedBuild()', () => {
+describe('parseReducedBuild', () => {
   it.each([
     [
       reducedBuild1,
@@ -954,7 +954,7 @@ describe('parseReducedBuild()', () => {
   })
 })
 
-describe('reduceBuild()', () => {
+describe('reduceBuild', () => {
   it.each([
     [
       build1,

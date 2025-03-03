@@ -31,7 +31,7 @@ beforeEach(() => {
 })
 
 
-describe('addAsync()', () => {
+describe('addAsync', () => {
   it('should add a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -57,7 +57,7 @@ describe('addAsync()', () => {
   })
 })
 
-describe('create()', () => {
+describe('create', () => {
   it.each([
     [true],
     [false]
@@ -157,7 +157,7 @@ describe('create()', () => {
   })
 })
 
-describe('delete()', () => {
+describe('delete', () => {
   it('should delete a build', () => {
     // Arrange
     useItemServiceMock()
@@ -180,7 +180,7 @@ describe('delete()', () => {
   })
 })
 
-describe('fromSharableStringAsync()', () => {
+describe('fromSharableStringAsync', () => {
   it.each(
     [
       [
@@ -195,7 +195,7 @@ describe('fromSharableStringAsync()', () => {
         }
       ],
       [
-        'XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv',
+        'XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A',
         {
           ...build2,
           id: '',
@@ -309,7 +309,7 @@ describe('fromSharableStringAsync()', () => {
   })
 })
 
-describe('get()', () => {
+describe('get', () => {
   it('should get a build', () => {
     // Arrange
     useItemServiceMock()
@@ -364,7 +364,7 @@ describe('get()', () => {
   })
 })
 
-describe('getAll()', () => {
+describe('getAll', () => {
   it('should get all builds', () => {
     // Arrange
     useItemServiceMock()
@@ -380,7 +380,7 @@ describe('getAll()', () => {
   })
 })
 
-describe('toSharableUrlAsync()', () => {
+describe('toSharableUrlAsync', () => {
   it.each([
     [
       build1,
@@ -388,7 +388,7 @@ describe('toSharableUrlAsync()', () => {
     ],
     [
       build2,
-      'XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv'
+      'XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A'
     ]
   ])('should reduce a build and transform it into a URL', async (build: IBuild, expectedSharableString: string) => {
     // Arrange
@@ -435,7 +435,7 @@ describe('toSharableUrlAsync()', () => {
   })
 })
 
-describe('updateAsync()', () => {
+describe('updateAsync', () => {
   it('should update a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -453,6 +453,27 @@ describe('updateAsync()', () => {
     const updatedBuild = service.get(build1.id)
     expect(updatedBuild).not.toBeUndefined()
     expect(updatedBuild!.name).toBe('New name')
+    expect(updatedBuild!.lastWebsiteVersion).toBe('1.0.0')
+  })
+
+  it('should update a build to the specified version', async () => {
+    // Arrange
+    useItemServiceMock()
+    useVersionServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const service = new BuildService()
+
+    const build = service.get(build1.id)!
+    build.name = 'New name'
+
+    // Act / Assert
+    await service.updateAsync(build, '2.0.3')
+
+    const updatedBuild = service.get(build1.id)
+    expect(updatedBuild).not.toBeUndefined()
+    expect(updatedBuild!.name).toBe('New name')
+    expect(updatedBuild!.lastWebsiteVersion).toBe('2.0.3')
   })
 
   it('should create an new build if the build does not exist', async () => {

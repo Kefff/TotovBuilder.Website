@@ -12,7 +12,7 @@ import { IVest } from '../../models/item/IVest'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { rpk16 } from '../__data__/itemMocks'
 
-describe('canBeModded()', () => {
+describe('canBeModded', () => {
   it.each([
     [
       { id: '12345', categoryId: ItemCategoryId.armorMod, modSlots: [{ id: 'trigger' } as unknown as IModSlot] } as IModdable,
@@ -35,7 +35,7 @@ describe('canBeModded()', () => {
   )
 })
 
-describe('canContain()', () => {
+describe('canContain', () => {
   it.each([
     [{ id: '12345', categoryId: ItemCategoryId.backpack, capacity: 18 } as IBackpack, true],
     [{ id: '12345', categoryId: ItemCategoryId.container, capacity: 60 } as IContainer, true],
@@ -61,7 +61,7 @@ describe('canContain()', () => {
   )
 })
 
-describe('canHaveArmor()', () => {
+describe('canHaveArmor', () => {
   it.each([
     [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 6 } as IArmor, true],
     [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 0 } as IArmor, true],
@@ -104,7 +104,7 @@ describe('checkMatchesFilter', () => {
   })
 })
 
-describe('hasArmor()', () => {
+describe('hasArmor', () => {
   it.each([
     [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 6 } as IArmor, true],
     [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 0 } as IArmor, false],
@@ -130,7 +130,7 @@ describe('hasArmor()', () => {
   )
 })
 
-describe('isAmmunition()', () => {
+describe('isAmmunition', () => {
   it.each([
     [ItemCategoryId.ammunition, true],
     [ItemCategoryId.armband, false],
@@ -171,7 +171,7 @@ describe('isAmmunition()', () => {
   )
 })
 
-describe('isArmor()', () => {
+describe('isArmor', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -212,7 +212,7 @@ describe('isArmor()', () => {
   )
 })
 
-describe('isArmorMod()', () => {
+describe('isArmorMod', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -253,7 +253,7 @@ describe('isArmorMod()', () => {
   )
 })
 
-describe('isContainer()', () => {
+describe('isContainer', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -294,7 +294,7 @@ describe('isContainer()', () => {
   )
 })
 
-describe('isEyewear()', () => {
+describe('isEyewear', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -335,7 +335,7 @@ describe('isEyewear()', () => {
   )
 })
 
-describe('isGrenade()', () => {
+describe('isGrenade', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -376,7 +376,7 @@ describe('isGrenade()', () => {
   )
 })
 
-describe('isHeadwear()', () => {
+describe('isHeadwear', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -417,7 +417,7 @@ describe('isHeadwear()', () => {
   )
 })
 
-describe('isMagazine()', () => {
+describe('isMagazine', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -458,7 +458,7 @@ describe('isMagazine()', () => {
   )
 })
 
-describe('isMeleeWeapon()', () => {
+describe('isMeleeWeapon', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -499,7 +499,7 @@ describe('isMeleeWeapon()', () => {
   )
 })
 
-describe('isMod()', () => {
+describe('isMod', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -540,7 +540,7 @@ describe('isMod()', () => {
   )
 })
 
-describe('isModdable()', () => {
+describe('isModdable', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -581,7 +581,7 @@ describe('isModdable()', () => {
   )
 })
 
-describe('isRangedWeapon()', () => {
+describe('isRangedWeapon', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -622,7 +622,7 @@ describe('isRangedWeapon()', () => {
   )
 })
 
-describe('isRangedWeaponMod()', () => {
+describe('isRangedWeaponMod', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -663,7 +663,7 @@ describe('isRangedWeaponMod()', () => {
   )
 })
 
-describe('isVest()', () => {
+describe('isVest', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],
@@ -704,7 +704,7 @@ describe('isVest()', () => {
   )
 })
 
-describe('isWearable()', () => {
+describe('isWearable', () => {
   it.each([
     [ItemCategoryId.ammunition, false],
     [ItemCategoryId.armband, false],

@@ -1,4 +1,5 @@
 import { IBuild } from '../build/IBuild'
+import { InventorySlotTypeId } from '../build/InventorySlotTypes'
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
 import BuildFilterAndSortingData from './BuildFilterAndSortingData'
@@ -58,6 +59,7 @@ export type GlobalSidebarComponent =
   | 'BuildsListSidebar'
   | 'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
+  | 'InventorySlotSelectorSidebar'
   | 'ItemSelectionSidebar'
   | 'ItemsListSidebar'
   | 'MerchantItemsOptionsSidebar'
@@ -75,6 +77,7 @@ export type GlobalSidebarDisplayedComponentParameters =
   | BuildsListSidebarParameters
   | BuildsShareSideBarParameters
   | GeneralOptionsSidebarParameters
+  | InventorySlotSelectorSidebarParameters
   | ItemSelectionSidebarParameters
   | ItemsListSidebarParameters
   | ShoppingListSidebarParameters
@@ -103,6 +106,15 @@ export type BuildsShareSideBarParameters = {
    * Function for getting the builds the user can share from a selection screen.
    */
   getBuildsToShareFunction?: () => IBuild[]
+}
+
+/**
+ * Inventory slot selector sidebar parameters.
+ */
+export type InventorySlotSelectorSidebarParameters = {
+  currentInventorySlot: InventorySlotTypeId
+  inventorySlotsShoppingListItems: IShoppingListItem[],
+  isEditing: boolean
 }
 
 /**

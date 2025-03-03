@@ -8,11 +8,13 @@ const props = withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
     disabledOnMobile?: boolean,
+    fullSize?: boolean,
     tooltip?: string
   }>(),
   {
     applyHoverStyle: true,
     disabledOnMobile: false,
+    fullSize: false,
     tooltip: undefined
   })
 
@@ -23,7 +25,7 @@ const emits = defineEmits<{
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const trigger = computed(() =>
-  isTouchScreen.value
+  isTouchScreen.value && !props.disabledOnMobile
     ? 'click'
     : 'hover')
 
@@ -90,22 +92,34 @@ function onGlobalSidebarOpen(): void {
 
 
 <template>
-  <VTooltip
-    v-model:shown="shown"
-    :auto-hide="true"
-    :class="{ 'tooltip': applyHoverStyle }"
-    :triggers="[trigger]"
-    :delay="0"
-    @click="onClick"
+  <div
+    class="tooltip-container"
+    :class="{ 'tooltip-container-full-size': fullSize }"
   >
-    <slot />
+    <!-- Parent div is required otherwise the tooltip does sometimes not trigger on certain elements -->
+    <VTooltip
+      v-model:shown="shown"
+      :auto-hide="true"
+      :distance="10"
+      :class="{
+        'tooltip': applyHoverStyle,
+        'tooltip-full-size': fullSize
+      }"
+      :triggers="[trigger]"
+      :delay="0"
+      @click="onClick"
+    >
+      <div class="tooltip-content">
+        <slot />
+      </div>
 
-    <template #popper>
-      <span class="tooltip-popper">
-        {{ tooltip }}
-      </span>
-    </template>
-  </VTooltip>
+      <template #popper>
+        <span class="tooltip-popper">
+          {{ tooltip }}
+        </span>
+      </template>
+    </VTooltip>
+  </div>
 </template>
 
 
@@ -120,6 +134,27 @@ function onGlobalSidebarOpen(): void {
 <style scoped>
 .tooltip:hover {
   opacity: 50%;
+}
+
+.tooltip-container {
+  display: flex;
+}
+
+.tooltip-container-full-size {
+  height: 100%;
+  width: 100%;
+}
+
+.tooltip-full-size {
+  height: 100%;
+  width: 100%;
+}
+
+.tooltip-content {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
 
 .tooltip-popper {

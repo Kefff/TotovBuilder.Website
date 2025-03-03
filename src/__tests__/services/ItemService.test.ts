@@ -110,7 +110,7 @@ describe('ItemService', () => {
     })
   })
 
-  describe('getCurrency()', () => {
+  describe('getCurrency', () => {
     it.each([
       ['RUB'],
       ['USD'],
@@ -143,7 +143,7 @@ describe('ItemService', () => {
     })
   })
 
-  describe('getItemAsync()', () => {
+  describe('getItemAsync', () => {
     it('should get an item from the cache', async () => {
       // Arrange
       useGlobalFilterServiceMock()
@@ -212,7 +212,7 @@ describe('ItemService', () => {
     })
   })
 
-  describe('getItemsAsync()', () => {
+  describe('getItemsAsync', () => {
     it('should get items from the cache', async () => {
       // Arrange
       useGlobalFilterServiceMock()
@@ -340,7 +340,7 @@ describe('ItemService', () => {
     })
   })
 
-  describe('getItemsOfCategoriesAsync()', () => {
+  describe('getItemsOfCategoriesAsync', () => {
     it('should get the items belonging to the categories', async () => {
       // Arrange
       useGlobalFilterServiceMock()
@@ -441,7 +441,7 @@ describe('ItemService', () => {
     })
   })
 
-  describe('getMainCurrency()', () => {
+  describe('getMainCurrency', () => {
     it('should get the main currency', () => {
       // Arrange
       useGlobalFilterServiceMock()

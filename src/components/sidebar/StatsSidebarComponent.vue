@@ -4,6 +4,7 @@ import { ItemCategoryId } from '../../models/item/IItem'
 import { StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import AmmunitionStats from '../stats/AmmunitionStatsComponent.vue'
 import ArmorModStats from '../stats/ArmorModStatsComponent.vue'
 import ArmorStats from '../stats/ArmorStatsComponent.vue'
@@ -25,6 +26,13 @@ type SpecializedComponent = typeof AmmunitionStats | typeof ArmorModStats | type
 const props = defineProps<{ parameters: StatsSidebarParameters }>()
 
 const specializedComponent = computed(() => getSpecializedComponent(props.parameters.categoryId))
+
+/**
+ * Copies the name of the item to clipboard.
+ */
+function copyName(): void {
+  WebBrowserUtils.copyToClipboardAsync(props.parameters.name)
+}
 
 /**
  * Sets the type of specialized options header component to display.
@@ -99,12 +107,26 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
           :src="parameters.imageLink"
         >
       </div>
-      <div
-        v-if="specializedComponent != null"
-        class="stats-category"
-        style="font-size: 1.25rem;"
-      >
-        {{ parameters.name }}
+      <div class="stats-sidebar-name">
+        <div
+          v-if="specializedComponent != null"
+          style="font-size: 1.25rem;"
+        >
+          {{ parameters.name }}
+        </div>
+        <Tooltip
+          :apply-hover-style="false"
+          :disabled-on-mobile="true"
+          :tooltip="$t('caption.copyElement')"
+        >
+          <Button
+            class="p-button-sm"
+            outlined
+            @click="copyName()"
+          >
+            <font-awesome-icon icon="copy" />
+          </Button>
+        </Tooltip>
       </div>
       <!-- Specialized stats -->
       <component
@@ -143,5 +165,12 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
   margin-top: 0.25rem;
   max-width: 36rem;
   width: 100%;
+}
+
+.stats-sidebar-name {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 </style>

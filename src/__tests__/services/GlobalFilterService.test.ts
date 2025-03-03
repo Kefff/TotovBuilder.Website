@@ -71,7 +71,7 @@ describe('GlobalFilterService', () => {
       JSON.stringify(initialGlogalFilter))
   })
 
-  describe('get()', () => {
+  describe('get', () => {
     it('should get the merchant filters', () => {
       // Arrange
       useTarkovValuesServiceMock()
@@ -89,37 +89,12 @@ describe('GlobalFilterService', () => {
         merchantFilters: [
           {
             enabled: true,
-            merchant: 'flea-market',
-            merchantLevel: 0
-          },
-          {
-            enabled: false,
-            merchant: 'jaeger',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'mechanic',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'peacekeeper',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
             merchant: 'prapor',
             merchantLevel: 3
           },
           {
             enabled: true,
-            merchant: 'ragman',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'ref',
+            merchant: 'therapist',
             merchantLevel: 3
           },
           {
@@ -129,8 +104,33 @@ describe('GlobalFilterService', () => {
           },
           {
             enabled: true,
-            merchant: 'therapist',
+            merchant: 'peacekeeper',
             merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ragman',
+            merchantLevel: 3
+          },
+          {
+            enabled: false,
+            merchant: 'jaeger',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ref',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
           }
         ]
       } as IGlobalFilter)
@@ -154,37 +154,12 @@ describe('GlobalFilterService', () => {
         merchantFilters: [
           {
             enabled: true,
-            merchant: 'flea-market',
-            merchantLevel: 0
-          },
-          {
-            enabled: true,
-            merchant: 'jaeger',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
-            merchant: 'mechanic',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
-            merchant: 'peacekeeper',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
             merchant: 'prapor',
             merchantLevel: 4
           },
           {
             enabled: true,
-            merchant: 'ragman',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
-            merchant: 'ref',
+            merchant: 'therapist',
             merchantLevel: 4
           },
           {
@@ -194,15 +169,40 @@ describe('GlobalFilterService', () => {
           },
           {
             enabled: true,
-            merchant: 'therapist',
+            merchant: 'peacekeeper',
             merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'ragman',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'jaeger',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'ref',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
           }
         ]
       } as IGlobalFilter)
     })
   })
 
-  describe('getMatchingPrices()', () => {
+  describe('getMatchingPrices', () => {
     it.each([
       [
         [
@@ -329,7 +329,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('getMerchantLevels()', () => {
+  describe('getMerchantLevels', () => {
     it('should get the levels of a merchant', () => {
       // Arrange
       useTarkovValuesServiceMock()
@@ -349,7 +349,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('hasLevels()', () => {
+  describe('hasLevels', () => {
     it('should indicates whether a merchant has multiple levels or not', () => {
       // Arrange
       useTarkovValuesServiceMock()
@@ -369,7 +369,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('isMatchingFilter()', () => {
+  describe('isMatchingFilter', () => {
     it.each([
       [
         [
@@ -579,38 +579,13 @@ describe('GlobalFilterService', () => {
         excludePresetBaseItems: false,
         merchantFilters: [
           {
-            enabled: false,
-            merchant: 'flea-market',
-            merchantLevel: 0
-          },
-          {
-            enabled: false,
-            merchant: 'jaeger',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'mechanic',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'peacekeeper',
-            merchantLevel: 3
-          },
-          {
             enabled: true,
             merchant: 'prapor',
             merchantLevel: 1
           },
           {
             enabled: true,
-            merchant: 'ragman',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'ref',
+            merchant: 'therapist',
             merchantLevel: 3
           },
           {
@@ -620,8 +595,33 @@ describe('GlobalFilterService', () => {
           },
           {
             enabled: true,
-            merchant: 'therapist',
+            merchant: 'peacekeeper',
             merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ragman',
+            merchantLevel: 3
+          },
+          {
+            enabled: false,
+            merchant: 'jaeger',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ref',
+            merchantLevel: 3
+          },
+          {
+            enabled: false,
+            merchant: 'flea-market',
+            merchantLevel: 0
           }
         ]
       } as IGlobalFilter)

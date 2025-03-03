@@ -22,10 +22,7 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 
 <template>
   <div class="card-line card-line4">
-    <Tooltip
-      :tooltip="$t('caption.chopDamage')"
-      class="card-value"
-    >
+    <Tooltip :tooltip="$t('caption.chopDamage')">
       <CustomIcon
         :icon="Images.chop"
         position="before"
@@ -33,10 +30,7 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
         <span>{{ meleeWeapon.chopDamage }}</span>
       </CustomIcon>
     </Tooltip>
-    <Tooltip
-      :tooltip="$t('caption.stabDamage')"
-      class="card-value"
-    >
+    <Tooltip :tooltip="$t('caption.stabDamage')">
       <CustomIcon
         :icon="Images.stab"
         position="before"
@@ -44,15 +38,14 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
         <span>{{ meleeWeapon.stabDamage }}</span>
       </CustomIcon>
     </Tooltip>
-    <Tooltip
-      :tooltip="$t('caption.hitRadius')"
-      class="card-value"
-    >
-      <font-awesome-icon
-        icon="dot-circle"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
+    <Tooltip :tooltip="$t('caption.hitRadius')">
+      <div class="card-value">
+        <font-awesome-icon
+          icon="dot-circle"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
+      </div>
     </Tooltip>
   </div>
 </template>

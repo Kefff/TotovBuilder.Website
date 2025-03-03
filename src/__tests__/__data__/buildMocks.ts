@@ -460,6 +460,13 @@ export const build2: IBuild = {
               itemId: salewa.id,
               modSlots: [],
               quantity: 1
+            },
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo9mmGT.id,
+              modSlots: [],
+              quantity: 35
             }
           ],
           ignorePrice: false,
@@ -526,7 +533,15 @@ export const build2: IBuild = {
     {
       items: [
         {
-          content: [],
+          content: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo9mmGT.id,
+              modSlots: [],
+              quantity: 15
+            }
+          ],
           ignorePrice: false,
           itemId: alpha.id,
           modSlots: [],
@@ -830,6 +845,10 @@ export const reducedBuild2: Record<string, unknown> = {
           'c': [
             {
               'i': salewa.id
+            },
+            {
+              'i': ammo9mmGT.id,
+              'q': 35
             }
           ],
           'i': banshee.id,
@@ -862,6 +881,12 @@ export const reducedBuild2: Record<string, unknown> = {
     {
       'i': [
         {
+          'c': [
+            {
+              'i': ammo9mmGT.id,
+              'q': 15
+            }
+          ],
           'i': alpha.id
         }
       ],

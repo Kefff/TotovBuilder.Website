@@ -4,7 +4,7 @@ import { PriceUtils } from '../../utils/PriceUtils'
 import { eur, rgd5, rub, usd } from '../__data__/itemMocks'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 
-describe('sortByCurrency()', () => {
+describe('sortByCurrency', () => {
   it.each([
     [
       [

@@ -6,7 +6,7 @@ import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 
 /**
- * Represents a migration updates obsolete builds to use the default preset item instead of the base item for their armored items.
+ * Represents a migration that updates obsolete builds to use the default preset item instead of the base item for their armored items.
  */
 export class Migration171 implements IMigration {
   public migrateBuildPromise = this.executeBuildMigrationAsync

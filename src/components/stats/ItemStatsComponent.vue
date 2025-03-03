@@ -17,9 +17,7 @@ const weight = computed(() => props.item?.presetWeight ?? props.item.weight)
 
 const prices = ref<IPrice[]>([])
 
-onMounted(() => {
-  setPricesAsync()
-})
+onMounted(() => setPricesAsync())
 
 /**
  * Opens a new tab displaying the item in Tarkov.dev.

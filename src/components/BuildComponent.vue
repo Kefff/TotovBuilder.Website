@@ -3,9 +3,9 @@ import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
-import { IInventorySlot } from '../models/build/IInventorySlot'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { IGeneralOptionsGroup } from '../models/utils/IGeneralOptionsGroup'
+import { InventorySlotSelectorSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -24,7 +24,7 @@ import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildSummary from './BuildSummaryComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
-import InventorySlot from './InventorySlotComponent.vue'
+import InventorySlots from './InventorySlotsComponent.vue'
 import Loading from './LoadingComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Sticky from './StickyComponent.vue'
@@ -43,7 +43,6 @@ const _itemService = Services.get(ItemService)
 
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
-const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
 let _isCompactSummaryExpanding = false
 let _originalBuild: IBuild
 let _unregisterSaveBeforeLeaveNavigationGuardFunction: (() => void) | undefined = undefined
@@ -68,18 +67,29 @@ const _toolbarButtons: IToolbarButton[] = [
     isDisabled: () => isLoading.value,
     isVisible: () => !isEditing.value,
     name: 'edit',
-    showCaption: () => 'always'
+    showCaption: () => 'auto'
   },
   {
     action: saveAsync,
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.save'),
     icon: () => 'save',
-    isDisabled: () => invalid.value,
+    isDisabled: () => isInvalid.value,
     isVisible: () => isEditing.value,
     name: 'save',
     variant: () => 'success',
-    showCaption: () => 'always'
+    showCaption: () => 'auto'
+  },
+  {
+    action: displayInventorySlotSelector,
+    canBeMovedToSidebar: () => false,
+    caption: () => vueI18n.t('caption.gear'),
+    followedBySeparation: true,
+    icon: () => 'vest',
+    isVisible: () => isSmartphoneLandscapeOrSmaller.value,
+    name: 'inventorySlotSelector',
+    showCaption: () => 'never',
+    style: () => 'outlined'
   },
   {
     action: displayShoppingList,
@@ -162,8 +172,9 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const invalid = computed(() => build.value.name === '')
+const isBuildNameHiddenInSummary = computed(() => isSmartphoneLandscapeOrSmaller.value)
 const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
+const isInvalid = computed(() => build.value.name === '')
 const isNewBuild = computed(() => build.value.id === '')
 const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
 const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
@@ -178,7 +189,6 @@ const build = ref<IBuild>({
   name: ''
 })
 const buildToolbar = useTemplateRef('buildToolbar')
-const collapseStatuses = ref<boolean[]>([])
 const compactBuildSummary = useTemplateRef('compactBuildSummary')
 const compactBuildSummaryHeight = ref<string>()
 const confirmationDialogIsDisplayed = ref(false)
@@ -191,12 +201,14 @@ const confirmationDialogSecondaryButtonAction = ref<() => void | Promise<void>>(
 const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
-const generalOptionsSidebarVisible = ref(false)
+const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
+const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
 const isBuildSummaryStickied = ref(false)
-const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
-const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
+const isCompactBuildSummaryPinned = ref(false)
 const isEditing = ref(false)
 const isLoading = ref(true)
+const { isSmartphoneLandscapeOrSmaller, isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
 const summary = ref<IBuildSummary>({
   armorModifiers: {
     armorClass: 0,
@@ -229,6 +241,7 @@ const summary = ref<IBuildSummary>({
 useEventListener(document, 'keydown', onKeyDownAsync)
 
 provide('isEditing', isEditing)
+provide('isNewBuild', isNewBuild)
 
 onMounted(() => {
   _compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
@@ -314,19 +327,6 @@ function cancelEdit(): void {
 }
 
 /**
- * Collapses all the inventory slots.
- */
-function collapseAll(): void {
-  generalOptionsSidebarVisible.value = false
-
-  for (let i = 0; i < collapseStatuses.value.length; i++) {
-    collapseStatuses.value[i] = true
-  }
-
-  _globalSidebarService.close('GeneralOptionsSidebar')
-}
-
-/**
  * Creates a copy of the current build.
  */
 function copy(): void {
@@ -345,33 +345,7 @@ function copy(): void {
  * Displays the general options.
  */
 function displayGeneralOptions(): void {
-  _globalSidebarService.display({
-    displayedComponentType: 'GeneralOptionsSidebar',
-    displayedComponentParameters: [
-      {
-        caption: 'caption.displayOptions',
-        icon: '',
-        name: 'display-options',
-        options: [
-          {
-            caption: 'caption.collapseAll',
-            icon: 'minus-square',
-            onClick: collapseAll
-          },
-          {
-            caption: 'caption.expandWithItem',
-            icon: 'search-plus',
-            onClick: expandWithItem
-          },
-          {
-            caption: 'caption.expandAll',
-            icon: 'plus-square',
-            onClick: expandAll
-          }
-        ]
-      }
-    ] as IGeneralOptionsGroup[]
-  })
+  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
 }
 
 /**
@@ -430,6 +404,23 @@ function displayConfirmationDialog(options: {
 }
 
 /**
+ * Displays the inventory slot selector sidebar.
+ */
+function displayInventorySlotSelector(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'InventorySlotSelectorSidebar',
+    displayedComponentParameters: {
+      currentInventorySlot: currentInventorySlot.value,
+      inventorySlotsShoppingListItems: inventorySlotsShoppingListItems.value,
+      isEditing: isEditing.value
+    },
+    onCloseAction: (updatedParameters) => {
+      currentInventorySlot.value = (updatedParameters as InventorySlotSelectorSidebarParameters).currentInventorySlot
+    }
+  })
+}
+
+/**
  * Displays the merchant items options.
  */
 function displayMerchantItemsOptions(): void {
@@ -451,33 +442,6 @@ function displayShoppingList(): void {
   })
 }
 
-/**
- * Expands all the inventory slots.
- */
-function expandAll(): void {
-  generalOptionsSidebarVisible.value = false
-
-  for (let i = 0; i < collapseStatuses.value.length; i++) {
-    collapseStatuses.value[i] = false
-  }
-
-  _globalSidebarService.close('GeneralOptionsSidebar')
-}
-
-/**
- * Expands the inventory slots containing an item.
- */
-function expandWithItem(): void {
-  generalOptionsSidebarVisible.value = false
-
-  for (let i = 0; i < collapseStatuses.value.length; i++) {
-    if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
-      collapseStatuses.value[i] = false
-    }
-  }
-
-  _globalSidebarService.close('GeneralOptionsSidebar')
-}
 
 /**
  * Exports the build.
@@ -528,9 +492,7 @@ function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
  *
  * Signals to the build one of its inventory slots has changed.
  */
-function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot): void {
-  build.value.inventorySlots[index] = newInventorySlot
-
+function onInventorySlotChanged(): void {
   setSummaryAsync()
 }
 
@@ -549,9 +511,9 @@ async function onItemServiceInitializedAsync(): Promise<void> {
     const sharableString = route.params['sharedBuild'] as string
 
     await getSharedBuildAsync(sharableString)
-    expandAll()
   } else {
     build.value = _buildComponentService.getBuild(route.params['id'] as string)
+    isEditing.value = isNewBuild.value
   }
 
   setSummaryAsync()
@@ -567,8 +529,8 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
   if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser save action to be triggered
 
-    if (isEditing.value && !invalid.value) {
-      await saveAsync()
+    if (isEditing.value && !isInvalid.value) {
+      await saveAsync(false)
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
   }
@@ -603,8 +565,9 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
   }
 
   if (isCompactBuildSummaryExpanded.value
-    && isStickied) {
-    toggleCompactBuildSummaryAsync()
+    && isStickied
+    && !isCompactBuildSummaryPinned.value) {
+    toggleCompactBuildSummaryAsync(false)
   }
 }
 
@@ -654,15 +617,27 @@ function removeNavigationGuards(): void {
 
 /**
  * Saves the build.
+ * @param changeCurrentInventorySlotIfEmpty - Indicates whether the current inventory slot should
+ * be changed to the first that contains an item when the current inventory slot is emmpty after saving.
  */
-async function saveAsync(): Promise<void> {
+async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Promise<void> {
   isLoading.value = true
   await _buildComponentService.saveBuildAsync(router, build.value)
+
+  if (changeCurrentInventorySlotIfEmpty) {
+    let inventorySlot = build.value.inventorySlots.find(is => is.typeId === currentInventorySlot.value)
+
+    if (!inventorySlot?.items.some(i => i != undefined)) {
+      currentInventorySlot.value = build.value.inventorySlots.find(is => is.items.some(i => i != null))?.typeId ?? InventorySlotTypeId.onSling
+    }
+  }
 
   nextTick(() => {
     isLoading.value = false
     isEditing.value = false
   })
+
+
 }
 
 /**
@@ -708,10 +683,16 @@ function startEdit(): void {
 
 /**
  * Toggles the visibility of the compact build summary.
+ * @param unpin - Indicates whether the compact build summary must be unpinned if it is pinned.
+ * Used when the compact build summary is pinned and compact build summary is hidden by cliking on the button.
  */
-async function toggleCompactBuildSummaryAsync(): Promise<void> {
+async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
   if (_isCompactSummaryExpanding) {
     return
+  }
+
+  if (unpin) {
+    isCompactBuildSummaryPinned.value = false
   }
 
   _isCompactSummaryExpanding = true
@@ -747,7 +728,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
     >
       <template #center>
         <div
-          v-if="!isCompactMode"
+          v-if="!isBuildNameHiddenInSummary"
           class="build-title"
         >
           <div v-show="!isEditing">
@@ -755,12 +736,13 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
           </div>
           <InputTextField
             v-show="!isLoading && isEditing"
-            v-model:value="build.name"
             :caption="$t('caption.name')"
             :centered="true"
             :required="true"
+            :value="build.name"
             caption-mode="placeholder"
             class="build-name"
+            @update:value="$event => build.name = $event!"
           />
           <Tooltip
             v-if="!isLoading && !summary.exported && !isNewBuild"
@@ -779,24 +761,28 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <template #bottom>
         <Transition
           v-if="!isLoading && isCompactMode"
-          name="build-compact-summary-expand"
+          name="build-compact-summary-expand-transition"
         >
           <div
             v-show="isCompactBuildSummaryExpanded"
             ref="compactBuildSummary"
           >
-            <div class="build-title build-title-compact">
+            <div
+              v-if="isBuildNameHiddenInSummary"
+              class="build-title build-title-compact"
+            >
               <div v-show="!isEditing">
                 {{ build.name }}
               </div>
               <InputTextField
                 v-show="!isLoading && isEditing"
-                v-model:value="build.name"
                 :caption="$t('caption.name')"
                 :centered="true"
                 :required="true"
+                :value="build.name"
                 caption-mode="placeholder"
                 class="build-name"
+                @update:value="$event => build.name = $event!"
               />
               <Tooltip
                 v-if="!summary.exported && !isNewBuild"
@@ -819,10 +805,12 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <template #under>
         <div
           v-if="!isLoading && isCompactMode"
-          class="build-summary-popup-button-container"
-          @click="toggleCompactBuildSummaryAsync"
+          class="build-summary-popup-buttons-container"
         >
-          <div class="build-summary-popup-button">
+          <div
+            class="build-summary-popup-button build-summary-popup-toggle-button"
+            @click="() => toggleCompactBuildSummaryAsync(true)"
+          >
             <font-awesome-icon
               v-if="!isCompactBuildSummaryExpanded"
               icon="clipboard-list"
@@ -831,6 +819,14 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
               v-if="isCompactBuildSummaryExpanded"
               icon="chevron-up"
             />
+          </div>
+          <div
+            v-show="isCompactBuildSummaryExpanded"
+            class="build-summary-popup-button build-summary-popup-pin-button"
+            :class="{ 'build-summary-popup-unpin-button': isCompactBuildSummaryPinned }"
+            @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
+          >
+            <font-awesome-icon icon="thumbtack" />
           </div>
         </div>
       </template>
@@ -841,6 +837,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       :element-to-stick-to="toolbarContainer"
       align="center"
       class="build-summary-container"
+      width="fit"
     >
       <BuildSummary
         :is-compact-mode="false"
@@ -858,41 +855,43 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <Loading />
     </div>
     <div
-      v-if="!isLoading && !isEditing && isEmpty"
-      class="build-empty-message"
-    >
-      <div class="build-empty-message-text">
-        <p class="build-empty-message-line">
-          {{ $t('message.emptyBuild1') }}
-        </p>
-        <p class="build-empty-message-line">
-          {{ $t('message.emptyBuild2') }}
-          <Button
-            class="build-empty-message-button"
-            @click="startEdit()"
-          >
-            <font-awesome-icon
-              icon="edit"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.edit') }}</span>
-          </Button>
-          {{ $t('message.emptyBuild3') }}
-        </p>
-      </div>
-    </div>
-    <div
       v-show="!isLoading"
       class="build-inventory-slots"
     >
-      <InventorySlot
-        v-for="(inventorySlot, index) of build.inventorySlots"
-        :key="`${path}/${inventorySlot.typeId}`"
-        v-model:collapsed="collapseStatuses[index]"
-        :inventory-slot="build.inventorySlots[index]"
-        :path="`${path}/${_inventorySlotPathPrefix}${inventorySlot.typeId}`"
-        @update:inventory-slot="onInventorySlotChanged(index, $event)"
-      />
+      <InventorySlots
+        v-model:current-inventory-slot="currentInventorySlot"
+        v-model:inventory-slots="build.inventorySlots"
+        :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
+        :path="path"
+        @update:inventory-slots="onInventorySlotChanged"
+      >
+        <template
+          v-if="!isLoading && !isEditing && isEmpty"
+          #empty
+        >
+          <div class="build-empty-message">
+            <div class="build-empty-message-text">
+              <p class="build-empty-message-line">
+                {{ $t('message.emptyBuild1') }}
+              </p>
+              <p class="build-empty-message-line">
+                {{ $t('message.emptyBuild2') }}
+                <Button
+                  class="build-empty-message-button"
+                  @click="startEdit()"
+                >
+                  <font-awesome-icon
+                    icon="edit"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.edit') }}</span>
+                </Button>
+                {{ $t('message.emptyBuild3') }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </InventorySlots>
     </div>
   </div>
 
@@ -975,12 +974,11 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 }
 
 .build-empty-message {
+  align-items: center;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   font-size: 1.5rem;
-  margin-bottom: auto;
-  margin-top: auto;
-  padding-top: 3rem;
 }
 
 .build-empty-message-button {
@@ -991,7 +989,8 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 .build-empty-message-line {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .build-empty-message-text {
@@ -1023,42 +1022,57 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 
 .build-summary-container {
   display: flex;
-  justify-content: center;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
 }
 
 .build-summary-popup-button {
   align-items: center;
-  background-color: var(--primary-color);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   border-bottom-width: 1px;
   border-color: var(--primary-color3);
   border-left-width: 1px;
   border-right-width: 1px;
-  border-top-width: 0;
   border-style: solid;
+  border-top-width: 0;
   display: flex;
+  font-size: 0.875rem;
   height: 1.25rem;
   justify-content: center;
   position: absolute;
   top: -1px;
   /* To merge its border with the toolbar border */
-  width: 5rem;
 }
+
 
 .build-summary-popup-button:hover {
   background-color: var(--primary-color2);
   cursor: pointer;
 }
 
-.build-summary-popup-button-container {
+.build-summary-popup-buttons-container {
   display: flex;
-  justify-content: center;
   margin-bottom: 1rem;
   position: relative;
   width: 100%;
+}
+
+.build-summary-popup-pin-button {
+  background-color: var(--surface-50);
+  right: 1rem;
+  width: 3rem;
+}
+
+.build-summary-popup-toggle-button {
+  background-color: var(--primary-color);
+  left: calc(50% - 2.5rem);
+  /* 5rem long element being centered */
+  width: 5rem;
+}
+
+.build-summary-popup-unpin-button {
+  background-color: var(--primary-color);
 }
 
 .build-title {
@@ -1072,7 +1086,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 }
 
 .build-title-compact {
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-top: 0.5rem;
 }
 
@@ -1080,19 +1094,19 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   margin-bottom: 0.5rem;
 }
 
-.build-compact-summary-expand-enter-from,
-.build-compact-summary-expand-leave-to {
+.build-compact-summary-expand-transition-enter-from,
+.build-compact-summary-expand-transition-leave-to {
   height: 0;
 }
 
-.build-compact-summary-expand-enter-to,
-.build-compact-summary-expand-leave-from {
+.build-compact-summary-expand-transition-enter-to,
+.build-compact-summary-expand-transition-leave-from {
   height: v-bind(compactBuildSummaryHeight);
   /* https://stackoverflow.com/a/72698222 */
 }
 
-.build-compact-summary-expand-enter-active,
-.build-compact-summary-expand-leave-active {
+.build-compact-summary-expand-transition-enter-active,
+.build-compact-summary-expand-transition-leave-active {
   transition: all v-bind(_compactBuildSummaryExpansionAnimationLenghtCss) ease;
   overflow: hidden;
 }

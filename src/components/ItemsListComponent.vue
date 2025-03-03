@@ -65,7 +65,7 @@ const itemsPerLine = computed(() => {
   return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
 const linesPerPage = computed(() => {
-  let lines = 5
+  let lines = 4
 
   if (isTabletLandscapeOrSmaller.value) {
     lines = 10
@@ -133,7 +133,7 @@ async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<v
     filterAndSortingData.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
 
     if (filterAndSortingData.availableItemCategories.length === 1) {
-      filterAndSortingData.categoryId = modelFilterAndSortingData.value.availableItemCategories[0]
+      filterAndSortingData.categoryId = filterAndSortingData.availableItemCategories[0]
     }
 
     filteredAnSortedItems.value = itemsToFilterAndSort
@@ -272,7 +272,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     <InfiniteScroller
       v-if="filteredAnSortedItems.length > 0 && infiniteScrolling"
       :auto-scroll-to-first-element="autoScrollToFirstElement"
-      :element-height="selectionOptions.isEnabled ? 207 : 156"
+      :element-height="selectionOptions.isEnabled ? 211 : 162"
       :elements-per-line="itemsPerLine"
       :elements="filteredAnSortedItems"
       :get-key-function="i => (i as IItem).id"

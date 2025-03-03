@@ -3,7 +3,7 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IMigration } from '../../models/utils/IMigration'
 
 /**
- * Represents a migration updates obsolete builds that contain weapons with a chamber.
+ * Represents a migration that updates obsolete builds that contain weapons with a chamber.
  */
 export class Migration181 implements IMigration {
   public migrateBuildPromise = this.executeBuildMigration

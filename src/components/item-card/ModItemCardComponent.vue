@@ -36,15 +36,16 @@ const mod = computed(() => props.item as IMod)
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="hand-paper"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
+        </span>
+      </div>
     </Tooltip>
   </div>
 </template>

@@ -6,7 +6,7 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import Services from '../../services/repository/Services'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getAllowCookiesIndicator()', () => {
+describe('getAllowCookiesIndicator', () => {
   it.each([
     [true, false],
     [false, true]
@@ -46,7 +46,7 @@ describe('getAllowCookiesIndicator()', () => {
   })
 })
 
-describe('setAllowCookiesIndicator()', () => {
+describe('setAllowCookiesIndicator', () => {
   it.each([
     [true, 'true'],
     [false, 'false']

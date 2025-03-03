@@ -66,6 +66,7 @@ function onNotificationCountChanged(): void {
 <template>
   <Tooltip
     :apply-hover-style="false"
+    :disabled-on-mobile="true"
     :tooltip="$t('caption.notifications')"
   >
     <Button

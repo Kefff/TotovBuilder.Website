@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem } from '../../models/item/IItem'
+import { IModdable } from '../../models/item/IModdable'
 import { IPrice } from '../../models/item/IPrice'
 import { IListSelectionOptions } from '../../models/utils/IListSelectionOptions'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import ItemIcon from '../ItemIconComponent.vue'
@@ -20,11 +22,14 @@ const props = defineProps<{
   selectionOptions: IListSelectionOptions
 }>()
 
-const _inventoryItemService = Services.get(InventoryItemService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _inventoryItemService = Services.get(InventoryItemService)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
 
-const height = computed(() => `${props.selectionOptions.isEnabled ? 14.75 : 11.25}rem`)
+const height = computed(() => `${props.selectionOptions.isEnabled ? 15 : 11.5}rem`)
+const itemIsModdable = computed(() => _itemPropertiesService.isModdable(props.item))
+const modSlotsCount = computed(() => itemIsModdable.value ? (props.item as IModdable).modSlots.length : 0)
 const selectionButtonCaptionInternal = computed(() => {
   if (props.selectionOptions.selectionButtonCaption != null) {
     return props.selectionOptions.selectionButtonCaption
@@ -114,8 +119,20 @@ function showDetails(): void {
           <span>{{ item.name }}</span>
         </div>
         <Tooltip
-          :tooltip="$t('caption.showDetails')"
+          v-if="modSlotsCount > 0"
+          :tooltip="$t('caption.hasModSlots', { modSlotsCount })"
+        >
+          <div class="item-card-mods">
+            <font-awesome-icon icon="puzzle-piece" />
+            <div class="item-card-mods-count">
+              {{ modSlotsCount }}
+            </div>
+          </div>
+        </Tooltip>
+        <Tooltip
           :apply-hover-style="false"
+          :disabled-on-mobile="true"
+          :tooltip="$t('caption.showDetails')"
         >
           <Button
             class="p-button-sm"
@@ -134,15 +151,16 @@ function showDetails(): void {
           <Tooltip
             v-if="item.weight != 0"
             :tooltip="$t('caption.weight')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span>
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span>
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
+              </span>
+            </div>
           </Tooltip>
           <div
             v-if="(itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0) || itemUnitPrice?.currencyName === 'barter'"
@@ -200,6 +218,27 @@ function showDetails(): void {
   gap: 0.5rem;
   height: 3.75rem;
   white-space: preserve;
+}
+
+.item-card-mods {
+  align-items: center;
+  display: flex;
+  position: relative;
+  width: 1.25rem;
+}
+
+.item-card-mods-count {
+  align-items: center;
+  background-color: var(--primary-color);
+  border-radius: 9px;
+  color: var(--text-color);
+  display: flex;
+  font-size: 0.8rem;
+  height: 1rem;
+  justify-content: center;
+  position: absolute;
+  transform: translate(0.5rem, 0.5rem);
+  width: 1rem;
 }
 
 .item-card-title {

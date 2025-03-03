@@ -3,7 +3,7 @@ import { IBuildsToTextOptions } from '../../models/utils/IBuildsToTextOptions'
 import StringUtils from '../../utils/StringUtils'
 
 describe('StringUtils', () => {
-  describe('contains()', () => {
+  describe('contains', () => {
     it.each([
       ['ABC', 'BC', true],
       ['ABC', 'D', false],
@@ -17,7 +17,7 @@ describe('StringUtils', () => {
     })
   })
 
-  describe('containsAll()', () => {
+  describe('containsAll', () => {
     it.each([
       ['ABC', ['A', 'BC'], true],
       ['ABC', ['A', 'D'], false],
@@ -34,7 +34,7 @@ describe('StringUtils', () => {
     })
   })
 
-  describe('containsAny()', () => {
+  describe('containsAny', () => {
     it.each([
       ['ABC', ['A', 'BC'], true],
       ['ABC', ['A', 'D'], true],
@@ -65,14 +65,14 @@ describe('StringUtils', () => {
     })
   })
 
-  describe('toCamelCase()', () => {
+  describe('toCamelCase', () => {
     it('should transform a string to camel case', () => {
       // Assert
       expect(StringUtils.toCamelCase('ThisIs-a.camelCase_string')).toBe('thisIsACamelCaseString')
     })
   })
 
-  describe('toUpperFirst()', () => {
+  describe('toUpperFirst', () => {
     it('should set the first letter of a string to uppercase', () => {
       // Assert
       expect(StringUtils.toUpperFirst('test')).toBe('Test')
@@ -84,7 +84,7 @@ describe('StringUtils', () => {
     })
   })
 
-  describe('toLowerFirst()', () => {
+  describe('toLowerFirst', () => {
     it('should set the first letter of a string to lowercase', () => {
       // Assert
       expect(StringUtils.toLowerFirst('TEST')).toBe('tEST')
@@ -96,7 +96,7 @@ describe('StringUtils', () => {
     })
   })
 
-  describe('getTextStatEmoji()', () => {
+  describe('getTextStatEmoji', () => {
     it('should return a stats text with an emoji', () => {
       // Arrange
       const options = {

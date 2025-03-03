@@ -21,7 +21,7 @@ beforeEach(() => {
   fetchMock.resetMocks()
 })
 
-describe('getAsync()', () => {
+describe('getAsync', () => {
   it('should send a request and get a response', async () => {
     // Arrange
     const response = `[

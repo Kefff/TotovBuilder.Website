@@ -1,23 +1,70 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
 import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions, ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import Loading from '../LoadingComponent.vue'
 
-const BuildsExportSidebar = defineAsyncComponent(() => import('./BuildsExportSidebarComponent.vue'))
-const BuildSidebar = defineAsyncComponent(() => import('./BuildSidebarComponent.vue'))
-const BuildsImportSidebar = defineAsyncComponent(() => import('./BuildsImportSidebarComponent.vue'))
-const BuildsListSidebar = defineAsyncComponent(() => import('./BuildsListSidebarComponent.vue'))
-const BuildsShareSideBar = defineAsyncComponent(() => import('./BuildsShareSideBarComponent.vue'))
-const ChangelogSidebar = defineAsyncComponent(() => import('./ChangelogSidebarComponent.vue'))
-const GeneralOptionsSidebar = defineAsyncComponent(() => import('./GeneralOptionsSidebarComponent.vue'))
-const ItemSelectionSidebar = defineAsyncComponent(() => import('./ItemSelectionSidebarComponent.vue'))
-const ItemsListSidebar = defineAsyncComponent(() => import('./ItemsListSidebarComponent.vue'))
-const MerchantItemsOptionsSidebar = defineAsyncComponent(() => import('./MerchantItemsOptionsSidebarComponent.vue'))
-const NotificationsSidebar = defineAsyncComponent(() => import('./NotificationsSidebarComponent.vue'))
-const ShoppingListSidebar = defineAsyncComponent(() => import('./ShoppingListSidebarComponent.vue'))
-const StatsSidebar = defineAsyncComponent(() => import('./StatsSidebarComponent.vue'))
-const ToolbarSidebar = defineAsyncComponent(() => import('./ToolbarSidebarComponent.vue'))
+const BuildsExportSidebar = defineAsyncComponent({
+  loader: () => import('./BuildsExportSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const BuildSidebar = defineAsyncComponent({
+  loader: () => import('./BuildSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const BuildsImportSidebar = defineAsyncComponent({
+  loader: () => import('./BuildsImportSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const BuildsListSidebar = defineAsyncComponent({
+  loader: () => import('./BuildsListSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const BuildsShareSideBar = defineAsyncComponent({
+  loader: () => import('./BuildsShareSideBarComponent.vue'),
+  loadingComponent: Loading
+})
+const ChangelogSidebar = defineAsyncComponent({
+  loader: () => import('./ChangelogSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const GeneralOptionsSidebar = defineAsyncComponent({
+  loader: () => import('./GeneralOptionsSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const InventorySlotSelectorSidebar = defineAsyncComponent({
+  loader: () => import('./InventorySlotSelectorSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const ItemSelectionSidebar = defineAsyncComponent({
+  loader: () => import('./ItemSelectionSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const ItemsListSidebar = defineAsyncComponent({
+  loader: () => import('./ItemsListSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const MerchantItemsOptionsSidebar = defineAsyncComponent({
+  loader: () => import('./MerchantItemsOptionsSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const NotificationsSidebar = defineAsyncComponent({
+  loader: () => import('./NotificationsSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const ShoppingListSidebar = defineAsyncComponent({
+  loader: () => import('./ShoppingListSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const StatsSidebar = defineAsyncComponent({
+  loader: () => import('./StatsSidebarComponent.vue'),
+  loadingComponent: Loading
+})
+const ToolbarSidebar = defineAsyncComponent({
+  loader: () => import('./ToolbarSidebarComponent.vue'),
+  loadingComponent: Loading
+})
 
 type DisplayedComponent = typeof BuildsExportSidebar
   | typeof BuildsShareSideBar
@@ -26,6 +73,7 @@ type DisplayedComponent = typeof BuildsExportSidebar
   | typeof BuildsListSidebar
   | typeof ChangelogSidebar
   | typeof GeneralOptionsSidebar
+  | typeof InventorySlotSelectorSidebar
   | typeof ItemSelectionSidebar
   | typeof ItemsListSidebar
   | typeof MerchantItemsOptionsSidebar
@@ -59,6 +107,8 @@ const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
 const title = ref<string>()
 const subtitle = ref<string>()
 const visibleInternal = ref(false)
+
+provide('isInSidebar', true)
 
 onMounted(() => {
   _globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
@@ -153,6 +203,11 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       icon.value = 'tv'
       title.value = 'caption.displayOptions'
       _displayedComponent = GeneralOptionsSidebar
+      break
+    case 'InventorySlotSelectorSidebar':
+      icon.value = 'vest'
+      title.value = 'caption.gear'
+      _displayedComponent = InventorySlotSelectorSidebar
       break
     case 'ItemSelectionSidebar':
       icon.value = 'filter'

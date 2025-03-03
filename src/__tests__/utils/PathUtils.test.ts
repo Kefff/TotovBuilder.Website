@@ -4,7 +4,7 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 
 describe('PathUtils', () => {
-  describe('checkIsArmorInventorySlotPath()', () => {
+  describe('checkIsArmorInventorySlotPath', () => {
     it.each([
       ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1', true],
       ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633', false],
@@ -19,7 +19,7 @@ describe('PathUtils', () => {
     })
   })
 
-  describe('checkIsModSlotPath()', () => {
+  describe('checkIsModSlotPath', () => {
     it.each([
       ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569', true],
       ['build:12345/slot:backpack_0/content:0_1/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569', true],
@@ -35,7 +35,7 @@ describe('PathUtils', () => {
     })
   })
 
-  describe('checkIsVestInventorySlotPath()', () => {
+  describe('checkIsVestInventorySlotPath', () => {
     it.each([
       ['build:12345/slot:tacticalRig_0/item:639343fce101f4caa40a4ef3', true],
       ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633', false],
@@ -50,7 +50,7 @@ describe('PathUtils', () => {
     })
   })
 
-  describe('getInventoryItemFromPath()', () => {
+  describe('getInventoryItemFromPath', () => {
     it.each([
       [
         {
@@ -324,7 +324,7 @@ describe('PathUtils', () => {
     })
   })
 
-  describe('getPathModSlotNames()', () => {
+  describe('getPathModSlotNames', () => {
     it.each([
       [
         'build:12345/slot:onSling_0/item:57dc2fa62459775949412633',
@@ -351,7 +351,7 @@ describe('PathUtils', () => {
     })
   })
 
-  describe('getPathLevel()', () => {
+  describe('getPathLevel', () => {
     it.each([
       [
         'build:12345/slot:onSling_0/item:584147732459775a2b6d9f12/mod:mod_reciever/item:57dc334d245977597164366f/mod:mod_mount_000/item:57ffb0062459777a045af529/mod:mod_scope/item:584984812459776a704a82a6',

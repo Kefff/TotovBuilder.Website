@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener, watchDebounced } from '@vueuse/core'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { FilterAndSortingDataType } from '../models/utils/FilterAndSortingData'
 import { IGlobalFilter } from '../models/utils/IGlobalFilter'
@@ -161,7 +161,9 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
 
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
 const globalFilter = ref<IGlobalFilter>()
-const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
+const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 watch(
@@ -194,7 +196,7 @@ function applyQuickFilter(): void {
 }
 
 /**
- * Checks whether filter and sorting data are different from the current ones.
+ * Checks whether updated filter and sorting data are different from the current ones.
  * @param updatedFilterAndSortingData - Filter and sorting data to check.
  */
 function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalSidebarDisplayedComponentParameters | undefined): boolean {
@@ -303,8 +305,9 @@ function switchSortOrder(): void {
   >
     <div class="filter-chips">
       <!-- Sorting chip -->
-      <Chip class="filter-chip filter-chip-content">
+      <Chip class="filter-chip">
         <Tooltip
+          :full-size="true"
           :tooltip="switchSortOrderButtonTooltip"
           class="filter-chip-icon-button-left"
           @click="switchSortOrder"
@@ -314,7 +317,7 @@ function switchSortOrder(): void {
           </div>
         </Tooltip>
         <Tooltip
-          v-if="isCompactMode"
+          v-if="isCompactMode || isTouchScreen"
           :tooltip="sortButtonTooltip"
           class="filter-chip-text"
         >
@@ -339,68 +342,72 @@ function switchSortOrder(): void {
         </div>
       </Chip>
       <!-- Merchants chip -->
-      <Chip class="filter-chip filter-chip-content">
+      <Chip class="filter-chip">
         <Tooltip
+          :full-size="true"
           :tooltip="merchantsTooltip"
-          class="filter-chip-merchants"
+          style="height: 100%;"
           @click="showGlobalFilterSidebar"
         >
-          <div class="filter-chip-icon">
-            <font-awesome-icon icon="user-tag" />
-          </div>
-          <div
-            v-if="isCompactMode && enabledMerchants.length > 0"
-            class="filter-chip-merchants-count"
-          >
-            {{ enabledMerchants.length }}
-          </div>
-          <div
-            v-if="!isCompactMode"
-            class="filter-chip-merchants-list"
-          >
-            <MerchantIcon
-              v-for="merchant of enabledMerchants"
-              :key="merchant.merchant"
-              :merchant="merchant.merchant"
-              :merchant-level="merchant.merchantLevel"
-            />
+          <div class="filter-chip-merchants">
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="user-tag" />
+            </div>
+            <div
+              v-if="(isInSidebar || isCompactMode) && enabledMerchants.length > 0"
+              class="filter-chip-merchants-count"
+            >
+              {{ enabledMerchants.length }}
+            </div>
+            <div
+              v-if="!isInSidebar && !isCompactMode"
+              class="filter-chip-merchants-list"
+            >
+              <MerchantIcon
+                v-for="merchant of enabledMerchants"
+                :key="merchant.merchant"
+                :merchant="merchant.merchant"
+                :merchant-level="merchant.merchantLevel"
+              />
+            </div>
           </div>
         </Tooltip>
       </Chip>
       <!-- Add filter chip -->
       <Chip
-        v-if="isCompactMode && categoryFilterCaption == null && filterCaption == null"
+        v-if="(isCompactMode || isTouchScreen)
+          && categoryFilterCaption == null
+          && filterCaption == null"
         class="filter-chip"
         @click="showFilterAndSortSidebar"
       >
-        <Tooltip
-          :tooltip="$t('caption.addFilter')"
-          class="filter-chip-content"
-        >
-          <div
-            class="filter-chip-icon"
-            style="color: var(--success-color);"
-          >
-            <font-awesome-icon icon="plus" />
+        <Tooltip :tooltip="$t('caption.addFilter')">
+          <div class="filter-chip-content">
+            <div
+              class="filter-chip-icon"
+              style="color: var(--success-color);"
+            >
+              <font-awesome-icon icon="plus" />
+            </div>
+            <span
+              class="filter-chip-text"
+              style="padding-left: 0;"
+            >
+              {{ $t('caption.filter') }}
+            </span>
           </div>
-          <span
-            class="filter-chip-text"
-            style="padding-left: 0;"
-          >
-            {{ $t('caption.filter') }}
-          </span>
         </Tooltip>
       </Chip>
       <!-- Filter chip -->
       <Chip
         v-else
-        class="filter-chip filter-chip-content"
+        class="filter-chip"
       >
         <!-- Mobile -->
         <Tooltip
-          v-if="isCompactMode"
+          v-if="isCompactMode || isTouchScreen"
           :tooltip="filterTooltip"
-          class="filter-chip-content"
+          class="filter-chip-content filter-chip-text-mobile"
           @click="showFilterAndSortSidebar"
         >
           <div class="filter-chip-icon">
@@ -423,6 +430,7 @@ function switchSortOrder(): void {
           <Tooltip
             class="filter-chip-content filter-chip-icon-button-left"
             :tooltip="filterTooltip"
+            :full-size="true"
           >
             <div
               v-if="categoryFilterCaption == null && filterCaption == null"
@@ -444,9 +452,7 @@ function switchSortOrder(): void {
               class="filter-chip-text"
               :tooltip="filterTooltip"
             >
-              <div class="">
-                <span>{{ categoryFilterCaption }}</span>
-              </div>
+              <span>{{ categoryFilterCaption }}</span>
             </Tooltip>
             <div
               class="filter-chip-quick-filter-input"
@@ -458,7 +464,6 @@ function switchSortOrder(): void {
             >
               <InputTextField
                 v-model:value="filterInternal"
-                :autofocus="!isTouchScreen"
                 :caption="$t('caption.addFilter')"
                 caption-mode="placeholder"
               />
@@ -471,6 +476,7 @@ function switchSortOrder(): void {
           class="filter-chip-icon-button-right"
         >
           <Tooltip
+            :full-size="true"
             :tooltip="$t('caption.removeFilter')"
             style="color: var(--error-color);"
             class="filter-chip-icon"
@@ -499,8 +505,10 @@ function switchSortOrder(): void {
   border-color: var(--primary-color3);
   border-style: solid;
   border-width: 1px;
+  height: 100%;
   overflow: hidden;
   padding: 0rem;
+  width: 100%;
 }
 
 .filter-chip:hover {
@@ -519,10 +527,8 @@ function switchSortOrder(): void {
   align-items: center;
   display: flex;
   height: 100%;
-  padding-bottom: 0.25rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.25rem;
 }
 
 .filter-chip-icon-button-left {
@@ -533,6 +539,7 @@ function switchSortOrder(): void {
   display: flex;
   height: 100%;
   justify-content: center;
+  width: unset;
 }
 
 .filter-chip-icon-button-right {
@@ -654,5 +661,9 @@ function switchSortOrder(): void {
 
 .filter-chip-merchants-list > .merchant-icon > .merchant-icon-level {
   transform: translate(1.5rem, 0.5rem);
+}
+
+.filter-chip-text-mobile > div {
+  overflow: hidden;
 }
 </style>

@@ -41,46 +41,46 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
   <div class="card-line card-line4">
     <Tooltip
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
-      class="card-value"
       :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <font-awesome-icon
-        icon="arrows-alt-v"
-        class="icon-before-text"
-      />
-      <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, verticalRecoil) }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="arrows-alt-v"
+          class="icon-before-text"
+        />
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, verticalRecoil) }}</span>
+      </div>
     </Tooltip>
     <Tooltip
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
-      class="card-value"
       :tooltip="$t('caption.horizontalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <font-awesome-icon
-        icon="arrows-alt-h"
-        class="icon-before-text"
-      />
-      <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, horizontalRecoil) }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="arrows-alt-h"
+          class="icon-before-text"
+        />
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, horizontalRecoil) }}</span>
+      </div>
     </Tooltip>
     <Tooltip
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
-      class="card-value"
       :tooltip="$t('caption.ergonomics') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <font-awesome-icon
-        icon="hand-paper"
-        class="icon-before-text"
-      />
-      <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, ergonomics) }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, ergonomics) }}</span>
+      </div>
     </Tooltip>
   </div>
   <div
     v-if="!isBaseItem"
     class="card-line card-line4"
   >
-    <Tooltip
-      :tooltip="$t('caption.fireRate')"
-      class="card-value"
-    >
+    <Tooltip :tooltip="$t('caption.fireRate')">
       <CustomIcon
         :icon="Images.fireRate"
         position="before"
@@ -92,7 +92,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     </Tooltip>
     <Tooltip
       :tooltip="$t('caption.caliber')"
-      class="ranged-weapon-item-card-long card-value"
+      class="ranged-weapon-item-card-long"
     >
       <CustomIcon
         :icon="Images.caliber"

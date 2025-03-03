@@ -22,7 +22,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('InventoryItemService', () => {
-  describe('getArmorModifiersAsync()', () => {
+  describe('getArmorModifiersAsync', () => {
     it.each([
       [
         {
@@ -1177,7 +1177,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('getErgonomicsAsync()', () => {
+  describe('getErgonomicsAsync', () => {
     it.each([
       [
         {
@@ -1283,7 +1283,7 @@ describe('InventoryItemService', () => {
     )
   })
 
-  describe('getPriceAsync()', () => {
+  describe('getPriceAsync', () => {
     it.each([
       [
         inventoryItem,
@@ -3038,7 +3038,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('getRecoilAsync()', () => {
+  describe('getRecoilAsync', () => {
     it.each([
       [
         {
@@ -3395,7 +3395,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('getRecoilModifierPercentageAsync()', () => {
+  describe('getRecoilModifierPercentageAsync', () => {
     it.each([
       [
         {
@@ -3543,7 +3543,7 @@ describe('InventoryItemService', () => {
     )
   })
 
-  describe('getWearableModifiersAsync()', () => {
+  describe('getWearableModifiersAsync', () => {
     it.each([
       [
         {
@@ -3722,7 +3722,7 @@ describe('InventoryItemService', () => {
     )
   })
 
-  describe('getWeightAsync()', () => {
+  describe('getWeightAsync', () => {
     it.each([
       [
         inventoryItem,

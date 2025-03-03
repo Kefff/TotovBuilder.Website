@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import vueI18n from '../../plugins/vueI18n'
 import { LogService } from '../../services/LogService'
 
-describe('getMessage()', () => {
+describe('getMessage', () => {
   it('should get a message', () => {
     // Arrange
     const loggerService = new LogService()
@@ -59,7 +59,7 @@ describe('getMessage()', () => {
   })
 })
 
-describe('logError()', () => {
+describe('logError', () => {
   it('should log an error message', () => {
     // Arrange
     const loggerService = new LogService()
@@ -79,7 +79,7 @@ describe('logError()', () => {
   })
 })
 
-describe('logException()', () => {
+describe('logException', () => {
   it('should log an exception message', () => {
     // Arrange
     const loggerService = new LogService()
@@ -99,7 +99,7 @@ describe('logException()', () => {
   })
 })
 
-describe('logInformation()', () => {
+describe('logInformation', () => {
   it('should log an information message', () => {
     // Arrange
     const loggerService = new LogService()
@@ -119,7 +119,7 @@ describe('logInformation()', () => {
   })
 })
 
-describe('logWarning()', () => {
+describe('logWarning', () => {
   it('should log a warning message', () => {
     // Arrange
     const loggerService = new LogService()

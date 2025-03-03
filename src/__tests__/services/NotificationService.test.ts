@@ -5,7 +5,7 @@ import StringUtils from '../../utils/StringUtils'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('NotificationService', () => {
-  describe('clearNotification()', () => {
+  describe('clearNotification', () => {
     it('should clear a notification from the notifications collection', () => {
       // Arrange
       useWebsiteConfigurationServiceMock()
@@ -43,7 +43,7 @@ describe('NotificationService', () => {
     })
   })
 
-  describe('clearNotifications()', () => {
+  describe('clearNotifications', () => {
     it('should clear all notifications', () => {
       // Arrange
       useWebsiteConfigurationServiceMock()
@@ -64,7 +64,7 @@ describe('NotificationService', () => {
     })
   })
 
-  describe('notify()', () => {
+  describe('notify', () => {
     it('should add a notification', () => {
       // Arrange
       useWebsiteConfigurationServiceMock()
@@ -190,7 +190,7 @@ describe('NotificationService', () => {
     })
   })
 
-  describe('resetNewNotificationCount()', () => {
+  describe('resetNewNotificationCount', () => {
     it('should reset the new notification count', () => {
       // Arrange
       useWebsiteConfigurationServiceMock()

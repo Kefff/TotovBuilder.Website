@@ -21,7 +21,7 @@ beforeEach(() => {
   Migrations.splice(0)
 })
 
-describe('checkHasNewVersionAsync()', () => {
+describe('checkHasNewVersionAsync', () => {
   it.each([
     [false, false],
     [true, true]
@@ -46,7 +46,7 @@ describe('checkHasNewVersionAsync()', () => {
   })
 })
 
-describe('compareVersions()', () => {
+describe('compareVersions', () => {
   it.each([
     ['0.0.1', undefined, -1],
     ['0.1.0', undefined, -1],
@@ -95,7 +95,7 @@ describe('compareVersions()', () => {
   })
 })
 
-describe('executeBuildMigrationsAsync()', () => {
+describe('executeBuildMigrationsAsync', () => {
   it('should execute build migrations in the correct order', async () => {
     // Arrange
     useFetchServiceMock(ChangelogMock)
@@ -256,7 +256,7 @@ describe('executeBuildMigrationsAsync()', () => {
   })
 })
 
-describe('getChangelogAsync()', () => {
+describe('getChangelogAsync', () => {
   it.each([
     [
       '1.1.0',
@@ -541,7 +541,7 @@ describe('getChangelogAsync()', () => {
   })
 })
 
-describe('getVersionAsync()', () => {
+describe('getVersionAsync', () => {
   it('should wait for the initialization to end', async () => {
     // Arrange
     useFetchServiceMock(ChangelogMock)
@@ -558,7 +558,7 @@ describe('getVersionAsync()', () => {
   })
 })
 
-describe('initialize()', () => {
+describe('initialize', () => {
   it.each([
     [
       '1.1.0',

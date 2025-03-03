@@ -13,9 +13,10 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import StringUtils from '../utils/StringUtils'
 import Loading from './LoadingComponent.vue'
 
-const BuildsList = defineAsyncComponent(() =>
-  import('./BuildsListComponent.vue')
-)
+const BuildsList = defineAsyncComponent({
+  loader: () => import('./BuildsListComponent.vue'),
+  loadingComponent: Loading
+})
 
 const _buildService = Services.get(BuildService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -125,8 +126,8 @@ function goToBuilds(): void {
  * Opens a the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuild[]): void {
-  if (selectedBuilds.length > 0) {
+function onBuildSelected(selectedBuilds: IBuild[] | undefined): void {
+  if (selectedBuilds != undefined && selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
 }
@@ -462,6 +463,7 @@ function openNewBuild(): void {
 
 <style>
 .welcome-action .p-button-outlined {
+  background-color: var(--surface-transparent-0);
   border-width: 3px;
 }
 </style>

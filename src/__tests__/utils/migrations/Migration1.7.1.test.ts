@@ -6,7 +6,7 @@ import { armor6b13Fl, armor6b13FlDefault, banshee, bansheeDefault, berkut, lshZ2
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
+describe('migrateBuildUnrelatedData and migrateBuild', () => {
   it('should update obsolete builds to use the default preset item instead of the base item for their armored items', async () => {
     // Arrange
     useItemServiceMock()

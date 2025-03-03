@@ -3,7 +3,7 @@ import { CompatibilityRequest } from '../../../services/compatibility/Compatibil
 import { CompatibilityRequestType } from '../../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../../services/compatibility/CompatibilityService'
 
-describe('checkCompatibility()', () => {
+describe('checkCompatibility', () => {
   it.each([
     [true],
     [false]

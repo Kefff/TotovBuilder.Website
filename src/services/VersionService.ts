@@ -109,9 +109,14 @@ export class VersionService {
    */
   public async executeBuildMigrationsAsync(build: IBuild): Promise<boolean> {
     let success = true
+    const logService = Services.get(LogService)
     const migrationsToExecute = this.getMigrationsToExecute(build.lastWebsiteVersion)
 
     for (const migration of migrationsToExecute) {
+      if (this.isDebug) {
+        logService.logInformation(vueI18n.t('message.buildMigrationExecution', { id: build.id, version: migration.version }))
+      }
+
       const migrationSuccess = await migration.migrateBuildPromise(build)
 
       if (!migrationSuccess) {
@@ -189,11 +194,16 @@ export class VersionService {
    * @returns `true` when the migrations have successfully been executed; otherwise `false`.
    */
   private async executeBuildUnrelatedMigrationsAsync(): Promise<boolean> {
+    const logService = Services.get(LogService)
     const migrationsToExecute = this.getMigrationsToExecute(this.lastVisitVersion)
 
     let hasSucceeded = true
 
     for (const migration of migrationsToExecute) {
+      if (this.isDebug) {
+        logService.logInformation(vueI18n.t('message.buildUnrelatedMigrationExecution', { version: migration.version }))
+      }
+
       const migrationSuccess = await migration.migrateBuildUnrelatedDataPromise()
 
       if (!migrationSuccess) {
@@ -232,7 +242,7 @@ export class VersionService {
         continue
       }
 
-      await buidService.updateAsync(build)
+      await buidService.updateAsync(build, this.version)
     }
 
     if (buildUnrelatedMigrationsResult && buildsMigrationsResult) {
@@ -278,6 +288,13 @@ export class VersionService {
   }
 
   /**
+   * Indicates whether the application is in debug mode.
+   */
+  private get isDebug(): boolean {
+    return import.meta.env.VITE_DEBUG === 'true'
+  }
+
+  /**
    * Indicates whether a version is newer than the last visit version.
    * @param version - Version.
    * @returns `true` when the version is newer than the last visit version; otherwise `false`.
@@ -297,11 +314,10 @@ export class VersionService {
   private async startChangelogFetchingAsync(): Promise<IChangelogEntry[] | undefined> {
     this.isFetchingChangelogs = true
 
-    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointChangelog
 
-    if (isDebug) {
+    if (this.isDebug) {
       Services.get(LogService).logInformation('message.fetchingChangelog', { date: new Date().toISOString() })
     }
 
@@ -313,7 +329,7 @@ export class VersionService {
       return undefined
     }
 
-    if (isDebug) {
+    if (this.isDebug) {
       Services.get(LogService).logInformation('message.changelogFetched', { date: new Date().toISOString() })
     }
 

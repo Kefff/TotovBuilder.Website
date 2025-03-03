@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
@@ -105,6 +105,7 @@ const _toolbarButtons: IToolbarButton[] = [
 const toolbarContainer = computed(() => buildsToolbar.value?.container)
 
 const buildsToolbar = useTemplateRef('buildsToolbar')
+const currentPage = ref(0)
 const filterAndSortingData = ref(new BuildFilterAndSortingData())
 const isLoading = ref(true)
 const hasBuilds = ref(false)
@@ -114,7 +115,7 @@ onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
   _importService.emitter.on(ImportService.buildsImportedEvent, getBuilds)
 
-  getInitialFilterAndSortingData()
+  initialize()
 })
 
 onUnmounted(() => {
@@ -122,6 +123,12 @@ onUnmounted(() => {
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
   _importService.emitter.off(ImportService.buildsImportedEvent, getBuilds)
 })
+
+watch(
+  currentPage,
+  () => {
+    sessionStorage.setItem(_websiteConfigurationService.configuration.buildsPageStorageKey, currentPage.value.toString())
+  })
 
 /**
  * Checks whether builds have not been exported. Displays a warning if that is the case.
@@ -228,14 +235,18 @@ function getBuilds(): IBuild[] {
 }
 
 /**
- * Gets the initial filter and sorting data applied to builds.
+ * Initializes the component.
  */
-function getInitialFilterAndSortingData(): void {
+function initialize(): void {
+  const page = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsPageStorageKey)
+  currentPage.value = page != null
+    ? Number.parseInt(page)
+    : 0
   const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
-  _sortingService.setSortingProperty(filterAndSortingData.value as FilterAndSortingData<IBuildSummary>, property, order)
+  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value as FilterAndSortingData<IBuildSummary>, property, order)
 }
 
 /**
@@ -251,8 +262,8 @@ function goToHome(): void {
  * Opens the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuild[]): void {
-  if (selectedBuilds.length > 0) {
+function onBuildSelected(selectedBuilds: IBuild[] | undefined): void {
+  if (selectedBuilds != null && selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
 }
@@ -263,6 +274,8 @@ function onBuildSelected(selectedBuilds: IBuild[]): void {
  * Saves filter and sorting data.
  */
 function onFilterAndSortingDataChanged(): void {
+  currentPage.value = 0
+
   if (filterAndSortingData.value.filter == null) {
     sessionStorage.removeItem(_websiteConfigurationService.configuration.buildsFilterStorageKey)
   }
@@ -327,6 +340,7 @@ function openNewBuild(): void {
       </template>
     </Toolbar>
     <BuildsList
+      v-model:current-page="currentPage"
       v-model:filter-and-sorting-data="filterAndSortingData as BuildFilterAndSortingData"
       :element-to-stick-to="toolbarContainer"
       :get-builds-function="getBuilds"

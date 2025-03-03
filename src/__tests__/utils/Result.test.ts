@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import Result from '../../utils/Result'
 
-describe('get value()', () => {
+describe('get value', () => {
   it('should get the value', () => {
     // Arrange
     const result = Result.ok(10)
@@ -27,7 +27,7 @@ describe('get value()', () => {
   })
 })
 
-describe('fail()', () => {
+describe('fail', () => {
   it('should create a failure result', () => {
     // Act
     const result = Result.fail(failureMessage)
@@ -38,7 +38,7 @@ describe('fail()', () => {
   })
 })
 
-describe('ok()', () => {
+describe('ok', () => {
   it('should create a successful result', () => {
     // Act
     const result = Result.ok()

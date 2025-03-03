@@ -63,27 +63,29 @@ const tooltipSuffix = computed(() => {
   >
     <Tooltip
       v-if="!isBaseItem && durability > 0"
-      class="card-value"
       :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.durability') + tooltipSuffix"
     >
-      <font-awesome-icon
-        icon="heart"
-        class="icon-before-text armor-item-card-durability"
-      />
-      <span>{{ durability }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="heart"
+          class="icon-before-text armor-item-card-durability"
+        />
+        <span>{{ durability }}</span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="!isBaseItem && armorClass > 0"
-      class="card-value"
       :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.armorClass') + tooltipSuffix"
     >
-      <font-awesome-icon
-        icon="award"
-        class="icon-before-text"
-      />
-      <span>{{ armorClass }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="award"
+          class="icon-before-text"
+        />
+        <span>{{ armorClass }}</span>
+      </div>
     </Tooltip>
     <slot name="slot" />
   </div>

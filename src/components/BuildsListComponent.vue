@@ -19,8 +19,9 @@ import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Paginator from './PaginatorComponent.vue'
 
-const modelSelectedBuilds = defineModel<IBuild[]>('selectedBuilds', { required: false, default: [] })
+const modelCurrentPage = defineModel<number>('currentPage', { default: 0 })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
+const modelSelectedBuilds = defineModel<IBuild[]>('selectedBuilds', { required: false, default: [] })
 
 const props = withDefaults(
   defineProps<{
@@ -65,7 +66,7 @@ let _builds: IBuild[] = []
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4
 
-  if (isTabletPortraitOrSmaller.value) {
+  if (isSmartphoneLandscapeOrSmaller.value) {
     elementsPerLine = 1
   } else if (isTabletLandscapeOrSmaller.value) {
     elementsPerLine = 2
@@ -76,7 +77,7 @@ const buildsPerLine = computed(() => {
   return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
 })
 const {
-  isTabletPortraitOrSmaller,
+  isSmartphoneLandscapeOrSmaller,
   isTabletLandscapeOrSmaller,
   isPcOrSmaller
 } = WebBrowserUtils.getScreenSize()
@@ -281,7 +282,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     <InfiniteScroller
       v-if="filteredAndSortedBuildSummaries.length > 0 && infiniteScrolling"
       :auto-scroll-to-first-element="autoScrollToFirstElement"
-      :element-height="235"
+      :element-height="244"
       :elements-per-line="buildsPerLine"
       :elements="filteredAndSortedBuildSummaries"
       :get-key-function="i => (i as IBuildSummary).id"
@@ -300,6 +301,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     </InfiniteScroller>
     <Paginator
       v-else-if="filteredAndSortedBuildSummaries.length > 0 && !infiniteScrolling"
+      v-model:current-page="modelCurrentPage"
       :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
       :elements-per-line="buildsPerLine"
       :elements="filteredAndSortedBuildSummaries"

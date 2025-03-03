@@ -674,7 +674,8 @@ ${sharableUrlResult}`
           const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli =>
             sli.item.id === inventoryItemShoppingListItemToAdd.item.id
             && sli.ignorePrice === inventoryItemShoppingListItemToAdd.ignorePrice
-            && sli.missingPrice === inventoryItemShoppingListItemToAdd.missingPrice)
+            && sli.inventorySlotId == null // Regrouping only items that are not immediatly in an inventory slot
+            && inventoryItemShoppingListItemToAdd.inventorySlotId == null) // Regrouping only items that are not immediatly in an inventory slot
 
           if (inventoryItemShoppingListItemIndex < 0) {
             shoppingList.push(inventoryItemShoppingListItemToAdd)
@@ -685,11 +686,6 @@ ${sharableUrlResult}`
               && inventoryItemShoppingListItemToAdd.unitPrice != null) {
               shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
               shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
-            }
-
-            if (shoppingList[inventoryItemShoppingListItemIndex].inventorySlotId == undefined
-              && inventoryItemShoppingListItemToAdd.inventorySlotId != null) {
-              shoppingList[inventoryItemShoppingListItemIndex].inventorySlotId = inventoryItemShoppingListItemToAdd.inventorySlotId
             }
           }
         }

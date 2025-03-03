@@ -5,7 +5,7 @@ import { ammo545bp, ammo9mmGT, berkut, m9a3Magazine, ms2000, rgd5 } from '../../
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 
 describe('ItemContentComponentService', () => {
-  describe('getAcceptedItemsAsync()', () => {
+  describe('getAcceptedItemsAsync', () => {
     it.each([
       [
         berkut.id,
@@ -84,7 +84,7 @@ describe('ItemContentComponentService', () => {
     })
   })
 
-  describe('getAcceptedItemsCategoryId()', () => {
+  describe('getAcceptedItemsCategoryId', () => {
     it.each([
       [ItemCategoryId.backpack, undefined],
       [ItemCategoryId.magazine, ItemCategoryId.ammunition]

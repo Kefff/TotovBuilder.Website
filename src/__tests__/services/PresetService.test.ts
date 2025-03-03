@@ -26,7 +26,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('PresetService', () => {
-  describe('fetchPresetsAsync()', () => {
+  describe('fetchPresetsAsync', () => {
     it('should fetch presets', async () => {
       // Arrange
       useItemServiceMock()
@@ -67,7 +67,7 @@ describe('PresetService', () => {
     })
   })
 
-  describe('getPreset()', () => {
+  describe('getPreset', () => {
     it.each([
       [
         rpk16Default.id,
@@ -375,7 +375,7 @@ describe('PresetService', () => {
     })
   })
 
-  describe('isPreset()', () => {
+  describe('isPreset', () => {
     it.each([
       [rpk16Default.id, true],
       [ak12bt.id, false],

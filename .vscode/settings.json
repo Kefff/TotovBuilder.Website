@@ -20,6 +20,12 @@
   "json.format.enable": true,
   "json.schemaDownload.enable": true,
   "json.validate.enable": true,
+  "search.exclude": {
+    "coverage/**": true,
+    "dist/**": true,
+    "node_modules/**": true,
+    "public/data/**": true
+  },
   "typescript.format.enable": true,
   "typescript.format.semicolons": "remove",
   "typescript.preferences.quoteStyle": "single",
@@ -48,8 +54,5 @@
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar",
     "editor.tabSize": 2,
-  },
-  "search.exclude": {
-    "public/data/*": true
   }
 }

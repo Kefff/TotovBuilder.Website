@@ -1,5 +1,9 @@
 import { useBreakpoints, useMediaQuery } from '@vueuse/core'
 import { computed, ComputedRef, Ref } from 'vue'
+import vueI18n from '../plugins/vueI18n'
+import { LogService } from '../services/LogService'
+import { NotificationService, NotificationType } from '../services/NotificationService'
+import Services from '../services/repository/Services'
 
 /**
  * Represents an utility class for manipulating the web browser.
@@ -8,44 +12,38 @@ export default class WebBrowserUtils {
   /**
    * Gets the breakpoints used by CSS media queries.
    */
-  public static get breakpoints(): {
-    smartphonePortrait: number,
-    smartphoneLandscape: number,
-    tabletPortrait: number,
-    tabletLandscape: number,
-    pc: number,
-    pcLarge: number
-  } {
+  public static get breakpoints(): Breakpoints {
     return {
       smartphonePortrait: 0,
       smartphoneLandscape: 481,
       tabletPortrait: 768,
-      tabletLandscape: 992,
-      pc: 1300,
+      tabletLandscape: 1050,
+      pc: 1350,
       pcLarge: 1800
     }
   }
 
   /**
+   * Copies a text to clipboard.
+   * @param textToCopy - Text to copy.
+   */
+  public static async copyToClipboardAsync(textToCopy: string): Promise<void> {
+    await navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.copied'))
+      })
+      .catch(() => {
+        Services.get(LogService).logError('message.copyError')
+        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.copyError'))
+      })
+  }
+
+  /**
    * Gets reactive screen properties.
+   * @param customBreakpoints - Custom breakpoints used instead of standard ones.
    * @returns Reactive screen properties.
    */
-  public static getScreenSize(): {
-    isPc: ComputedRef<boolean>,
-    isPcLarge: ComputedRef<boolean>,
-    isPcOrLarger: ComputedRef<boolean>,
-    isPcOrSmaller: Ref<boolean>,
-    isSmartphoneLandscape: ComputedRef<boolean>,
-    isSmartphoneLandscapeOrLarger: ComputedRef<boolean>,
-    isSmartphoneLandscapeOrSmaller: Ref<boolean>,
-    isSmartphonePortrait: Ref<boolean>,
-    isTabletLandscapeOrLarger: ComputedRef<boolean>,
-    isTabletLandscape: ComputedRef<boolean>,
-    isTabletLandscapeOrSmaller: Ref<boolean>,
-    isTabletPortrait: ComputedRef<boolean>,
-    isTabletPortraitOrLarger: ComputedRef<boolean>,
-    isTabletPortraitOrSmaller: Ref<boolean>
-  } {
+  public static getScreenSize(): ScreenSizes {
     const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 
     const isPcOrSmaller = breakpoints.smaller('pcLarge')
@@ -88,16 +86,6 @@ export default class WebBrowserUtils {
   }
 
   /**
-   * Indicates whether the screen is a touch screen.
-   * @returns `true` when the screen is a touch screen; otherwise `false`.
-   */
-  public static isTouchScreen(): Ref<boolean> {
-    const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
-
-    return isTouchScreen
-  }
-
-  /**
  * Gets the parent element that can be scrolled.
  * It can either be the `p-sidebar-content` div of a global sidebar or the `app` div.
  * @param parentElement - Parent element.
@@ -123,4 +111,46 @@ export default class WebBrowserUtils {
 
     return result
   }
+
+  /**
+   * Indicates whether the screen is a touch screen.
+   * @returns `true` when the screen is a touch screen; otherwise `false`.
+   */
+  public static isTouchScreen(): Ref<boolean> {
+    const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
+
+    return isTouchScreen
+  }
+}
+
+/**
+ * Represents breakpoints for responsiveness.
+ */
+export type Breakpoints = {
+  smartphonePortrait: number,
+  smartphoneLandscape: number,
+  tabletPortrait: number,
+  tabletLandscape: number,
+  pc: number,
+  pcLarge: number
+}
+
+/**
+ * Represents screen sizes for responsiveness.
+ */
+type ScreenSizes = {
+  isPc: ComputedRef<boolean>,
+  isPcLarge: ComputedRef<boolean>,
+  isPcOrLarger: ComputedRef<boolean>,
+  isPcOrSmaller: Ref<boolean>,
+  isSmartphoneLandscape: ComputedRef<boolean>,
+  isSmartphoneLandscapeOrLarger: ComputedRef<boolean>,
+  isSmartphoneLandscapeOrSmaller: Ref<boolean>,
+  isSmartphonePortrait: Ref<boolean>,
+  isTabletLandscapeOrLarger: ComputedRef<boolean>,
+  isTabletLandscape: ComputedRef<boolean>,
+  isTabletLandscapeOrSmaller: Ref<boolean>,
+  isTabletPortrait: ComputedRef<boolean>,
+  isTabletPortraitOrLarger: ComputedRef<boolean>,
+  isTabletPortraitOrSmaller: Ref<boolean>
 }

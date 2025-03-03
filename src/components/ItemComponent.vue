@@ -66,34 +66,18 @@ const includeModsAndContentInSummary = computed(() =>
   || (itemIsContainer.value
     && props.isMainInventorySlotItem))
 const itemHeaderGridTemplateColumns = computed(() => {
-  if (isEditing?.value && props.isBaseItem) {
-    return 'auto 1fr auto auto'
-  } else if (isEditing?.value) {
+  if (isEditing?.value) {
     return '1fr auto auto'
   }
 
-  return 'auto 1fr auto'
-})
-const imbricationLevel = computed(() => PathUtils.getPathLevel(props.path))
-const itemHeaderWidth = computed(() => {
-  if (isCompactMode.value) {
-    return '100%'
-  } else {
-    let width = 30 - imbricationLevel.value * 1.75
-
-    if (props.isMainInventorySlotItem) {
-      width -= 0.5
-    }
-
-    return `${width}rem`
-  }
+  return '1fr auto'
 })
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
 
 const baseItem = ref<IInventoryItem | undefined>()
 const isEditing = inject<Ref<boolean>>('isEditing')
-const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const { isTabletLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const item = ref<IItem | undefined>()
 const itemChanging = ref(false)
 const itemIsContainer = ref(false)
@@ -111,7 +95,7 @@ watch(
   () => initializeItemAsync())
 watch(
   () => props.inventoryItem?.quantity,
-  () => quantity.value = props.inventoryItem?.quantity ?? 0)
+  () => quantity.value = props.inventoryItem?.quantity ?? 1)
 watch(
   () => item.value?.id,
   () => setSelectedTab())
@@ -243,17 +227,18 @@ function onModsChanged(newModsSlots: IInventoryModSlot[]): void {
  *
  * Updates the inventory item based on the quantity.
  */
-function onQuantityChanged(newQuantity: number): void {
+function onQuantityChanged(newQuantity: number | undefined): void {
   if (modelInventoryItem.value == null) {
     return
   }
 
+  quantity.value = newQuantity ?? 1
   modelInventoryItem.value = {
     content: modelInventoryItem.value.content,
     ignorePrice: modelInventoryItem.value.ignorePrice,
     itemId: modelInventoryItem.value.itemId,
     modSlots: modelInventoryItem.value.modSlots,
-    quantity: newQuantity
+    quantity: quantity.value
   }
 }
 
@@ -474,60 +459,83 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     >
       <div>
         <div class="item-header">
-          <ItemIcon
-            v-if="item != null && (!isEditing || isBaseItem)"
-            :item="item"
-            :quantity="quantity"
-          />
           <div
             v-if="item != null && (!isEditing || isBaseItem)"
-            class="item-header-title"
+            style="display: flex;"
           >
-            <span>{{ item.name }}</span>
-          </div>
-          <Dropdown
-            v-else-if="isEditing && !isBaseItem"
-            v-model="item"
-            class="item-header-dropdown"
-            @click="onSelectionInputClick"
-          >
-            <template #empty>
-              <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
-              <div />
-            </template>
-            <template #value>
-              <Tooltip
-                v-if="item != null"
-                :apply-hover-style="false"
-                :tooltip="item?.name"
-              >
-                <div class="item-header-dropdown-value">
-                  <ItemIcon
-                    :item="item"
-                    :quantity="quantity"
-                  />
-                  <div
-                    v-if="item != null"
-                    class="item-header-title"
-                  >
-                    {{ item?.name }}
-                  </div>
-                </div>
+            <ItemIcon
+              :item="item"
+              :quantity="quantity"
+            />
+            <div class="item-header-title">
+              <Tooltip :tooltip="item?.name">
+                <span>{{ item.name }}</span>
               </Tooltip>
-              <div
-                v-else
-                class="item-header-dropdown-value"
-              >
-                <font-awesome-icon
-                  icon="plus"
-                  class="item-header-dropdown-value-placeholder-icon"
-                />
-                <span class="item-header-dropdown-value-placeholder-text">
-                  {{ $t('caption.selectItem') }}
-                </span>
-              </div>
-            </template>
-          </Dropdown>
+            </div>
+          </div>
+          <div
+            v-else-if="isEditing"
+            class="item-header-dropdown-container"
+          >
+            <Dropdown
+              v-if="!isBaseItem"
+              v-model="item"
+              class="item-header-dropdown"
+              @click="onSelectionInputClick"
+            >
+              <template #empty>
+                <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
+                <div />
+              </template>
+              <template #value>
+                <Tooltip
+                  v-if="item != null"
+                  :apply-hover-style="false"
+                  :tooltip="item?.name"
+                >
+                  <div class="item-header-dropdown-value">
+                    <ItemIcon
+                      :item="item"
+                      :quantity="quantity"
+                    />
+                    <div
+                      v-if="item != null"
+                      class="item-header-title"
+                    >
+                      {{ item?.name }}
+                    </div>
+                  </div>
+                </Tooltip>
+                <div
+                  v-else
+                  class="item-header-dropdown-value"
+                >
+                  <font-awesome-icon
+                    icon="plus"
+                    class="item-header-dropdown-value-placeholder-icon"
+                  />
+                  <span class="item-header-dropdown-value-placeholder-text">
+                    {{ $t('caption.selectItem') }}
+                  </span>
+                </div>
+              </template>
+            </Dropdown>
+            <InputNumberField
+              v-if="item != null
+                && maxSelectableQuantity > 1
+                && !forceQuantityToMaxSelectableAmount"
+              v-show="isEditing"
+              :value="quantity"
+              :caption="$t('caption.quantity')"
+              :max="maxSelectableQuantity"
+              :min="1"
+              :required="true"
+              caption-mode="placeholder"
+              required-message-position="right"
+              class="item-header-quantity"
+              @update:value="onQuantityChanged($event!)"
+            />
+          </div>
           <div
             v-if="isEditing"
             class="item-header-button"
@@ -535,6 +543,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             <Tooltip
               v-if="isEditing && item != null && !isBaseItem"
               :apply-hover-style="false"
+              :disabled-on-mobile="true"
               :tooltip="$t('caption.clear')"
             >
               <Button
@@ -554,6 +563,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             <Tooltip
               v-if="item != null"
               :apply-hover-style="false"
+              :disabled-on-mobile="true"
               :tooltip="$t('caption.showDetails')"
             >
               <Button
@@ -578,32 +588,14 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :selected-item="item"
           :show-price="showPrice"
           :show-weight="showWeight"
-          @update:ignore-price="onIgnorePriceChanged($event)"
+          class="item-header-stats"
+          :class="{ 'item-header-stats-compact': isCompactMode }"
+          @update:ignore-price="onIgnorePriceChanged($event!)"
         />
-      </div>
-      <div
-        v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
-        class="item-quantity"
-      >
-        <InputNumberField
-          v-show="isEditing"
-          v-model:value="quantity"
-          :caption="$t('caption.quantity')"
-          :max="maxSelectableQuantity"
-          :min="1"
-          :required="true"
-          caption-mode="placeholder"
-          required-message-position="right"
-          @update:value="onQuantityChanged($event)"
-        />
-        <!-- Fake button divs to have the same alignment as the selection input -->
+        <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
         <div
-          v-if="isEditing"
-          class="item-header-button"
-        />
-        <div
-          v-if="item != null || isEditing"
-          class="item-header-button"
+          v-else-if="!isCompactMode"
+          class="item-header-selected-item-placeholder"
         />
       </div>
     </div>
@@ -707,19 +699,18 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header {
-  align-items: center;
   display: grid;
-  flex-shrink: 0;
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
-  height: 3.9rem;
-  width: v-bind(itemHeaderWidth);
+  min-width: 3.875rem;
+  width: 100%;
 }
 
 .item-header-button {
   display: flex;
   flex-shrink: 0;
   width: 1.75rem;
+  height: 3.875rem;
 }
 
 .item-header-container {
@@ -732,14 +723,17 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-header-container > div:first-child {
   align-items: center;
-  display: flex;
-  gap: 1rem
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem
 }
 
 .item-header-container.item-header-container-compact > div {
   align-items: flex-start;
+  display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  grid-template-columns: unset;
   justify-content: unset;
 }
 
@@ -749,8 +743,16 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-dropdown {
-  height: 100%;
-  width: 100%;
+  height: 3.875rem;
+  min-width: 10.375rem;
+  flex-grow: 1;
+}
+
+.item-header-dropdown-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .item-header-dropdown-name {
@@ -779,7 +781,30 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   word-break: break-word;
 }
 
+.item-header-quantity {
+  flex-shrink: 0;
+  width: 10rem;
+}
+
+.item-header-selected-item-placeholder {
+  /* Empty zone that matches the width of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected*/
+  width: 40.5rem;
+}
+
+.item-header-stats {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+  width: 100%;
+}
+
+.item-header-stats-compact {
+  justify-content: flex-end;
+}
+
 .item-header-title {
+  align-self: center;
+  display: flex;
   font-size: 1rem;
   font-weight: normal;
   max-height: 3.25rem;
@@ -792,7 +817,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-main {
   background-color: var(--primary-color8);
   border-radius: 6px;
-  padding: 0.5rem
+  padding: 0.5rem;
 }
 
 .item-padding {
@@ -800,13 +825,17 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-quantity {
-  display: flex;
-  gap: 0.25rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr auto;
   height: unset;
-  width: v-bind(itemHeaderWidth);
+  width: 100%;
 }
 
-.item-quantity > .input-number-field {
+.item-quantity-input-container {
+  display: grid;
+  gap: 0.25rem;
+  grid-template-columns: 1fr auto auto;
   width: 100%;
 }
 </style>
@@ -823,5 +852,25 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header > .item-header-dropdown.p-dropdown .p-dropdown-trigger {
   margin-right: 0.21rem;
   width: unset;
+}
+
+.item-header-stats.selected-item-item-card {
+  align-items: flex-start;
+}
+
+.item-header-stats.selected-item-item-card > .selected-item-item-card-prices-and-weight {
+  height: 3.875rem;
+}
+
+.item-header-stats.item-header-stats-compact.selected-item-item-card > .selected-item-item-card-prices-and-weight {
+  height: unset;
+}
+
+.item-header-stats.selected-item-item-card > .selected-item-item-card-specialized {
+  height: 3.875rem;
+}
+
+.item-header-stats.item-header-stats-compact.selected-item-item-card > .selected-item-item-card-specialized {
+  height: unset;
 }
 </style>

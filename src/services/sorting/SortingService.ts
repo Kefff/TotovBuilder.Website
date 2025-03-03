@@ -115,7 +115,7 @@ export class SortingService {
   }
 
   /**
-   * Sorts elements base on sorting data.
+   * Sorts elements based on sorting data.
    * @param elements - Elements to sort.
    * @param sortingData - Sorting data.
    * @returns Sorted elements.
