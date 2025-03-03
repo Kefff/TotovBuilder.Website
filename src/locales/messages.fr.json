@@ -124,6 +124,7 @@
     "gear": "Equipement",
     "generalOptions": "Options générales",
     "grenade": "Grenade",
+    "hasModSlots": "A {modSlotsCount} emplacement(s) de mod",
     "heavyBleeding": "Saignement important",
     "hideContent": "Masquer le contenu",
     "hideMods": "Masquer les mods",

@@ -95,7 +95,7 @@ watch(
   () => initializeItemAsync())
 watch(
   () => props.inventoryItem?.quantity,
-  () => quantity.value = props.inventoryItem?.quantity ?? 0)
+  () => quantity.value = props.inventoryItem?.quantity ?? 1)
 watch(
   () => item.value?.id,
   () => setSelectedTab())
@@ -227,17 +227,18 @@ function onModsChanged(newModsSlots: IInventoryModSlot[]): void {
  *
  * Updates the inventory item based on the quantity.
  */
-function onQuantityChanged(newQuantity: number): void {
+function onQuantityChanged(newQuantity: number | undefined): void {
   if (modelInventoryItem.value == null) {
     return
   }
 
+  quantity.value = newQuantity ?? 1
   modelInventoryItem.value = {
     content: modelInventoryItem.value.content,
     ignorePrice: modelInventoryItem.value.ignorePrice,
     itemId: modelInventoryItem.value.itemId,
     modSlots: modelInventoryItem.value.modSlots,
-    quantity: newQuantity
+    quantity: quantity.value
   }
 }
 
@@ -524,7 +525,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                 && maxSelectableQuantity > 1
                 && !forceQuantityToMaxSelectableAmount"
               v-show="isEditing"
-              v-model:value="quantity"
+              :value="quantity"
               :caption="$t('caption.quantity')"
               :max="maxSelectableQuantity"
               :min="1"

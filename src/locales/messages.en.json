@@ -157,6 +157,7 @@
     "generalOptions": "General options",
     "github": "GitHub",
     "grenade": "Grenade",
+    "hasModSlots": "Has {modSlotsCount} mod slot(s)",
     "heavyBleeding": "Heavy bleading",
     "hideContent": "Hide content",
     "hideMods": "Hide mods",

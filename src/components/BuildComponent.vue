@@ -736,12 +736,13 @@ async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
           </div>
           <InputTextField
             v-show="!isLoading && isEditing"
-            v-model:value="build.name"
             :caption="$t('caption.name')"
             :centered="true"
             :required="true"
+            :value="build.name"
             caption-mode="placeholder"
             class="build-name"
+            @update:value="$event => build.name = $event!"
           />
           <Tooltip
             v-if="!isLoading && !summary.exported && !isNewBuild"
@@ -775,12 +776,13 @@ async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
               </div>
               <InputTextField
                 v-show="!isLoading && isEditing"
-                v-model:value="build.name"
                 :caption="$t('caption.name')"
                 :centered="true"
                 :required="true"
+                :value="build.name"
                 caption-mode="placeholder"
                 class="build-name"
+                @update:value="$event => build.name = $event!"
               />
               <Tooltip
                 v-if="!summary.exported && !isNewBuild"
@@ -835,6 +837,7 @@ async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
       :element-to-stick-to="toolbarContainer"
       align="center"
       class="build-summary-container"
+      width="fit"
     >
       <BuildSummary
         :is-compact-mode="false"

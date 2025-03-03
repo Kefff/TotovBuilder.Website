@@ -5,7 +5,7 @@ import { SelectableTab } from '../models/utils/UI/SelectableTab'
 import vueI18n from '../plugins/vueI18n'
 import Tooltip from './TooltipComponent.vue'
 
-const modelSelectedTab = defineModel<SelectableTab>('selectedTab')
+const modelSelectedTab = defineModel<SelectableTab>('selectedTab', { required: true })
 
 const props = withDefaults(
   defineProps<{
