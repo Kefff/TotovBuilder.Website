@@ -21,8 +21,8 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
     if (filterAndSortingDataToCopy != null) {
       this.currentSortingFunction = filterAndSortingDataToCopy.currentSortingFunction
       this.filter = filterAndSortingDataToCopy.filter
-      this.order = filterAndSortingDataToCopy.order
-      this.property = filterAndSortingDataToCopy.property
+      this._order = filterAndSortingDataToCopy.order
+      this._property = filterAndSortingDataToCopy.property
     }
 
     this.currentSortingFunction = sortingFunctions.functions[this.property]
@@ -41,22 +41,29 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
   /**
    * Sorting order.
    */
-  public order = SortingOrder.asc
+  public get order(): SortingOrder {
+    return this._order
+  }
+  public set order(value: SortingOrder) {
+    this.setOrder(value)
+  }
+  private _order: SortingOrder = SortingOrder.asc
 
   /**
    * Property used to sort.
    */
-  public property = 'name'
+  public get property(): string {
+    return this._property
+  }
+  public set property(value: string) {
+    this.setProperty(value)
+  }
+  private _property: string = 'name'
 
   /**
    * Properties available for sorting.
    */
   public sortableProperties: { name: string, caption: string }[] = []
-
-  /**
-   * Type of filter and sorting data.
-   */
-  public abstract type: FilterAndSortingDataType
 
   /**
    * List of available sorting functions.
@@ -69,6 +76,31 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
     this.setSortableProperties(value)
   }
   private _sortingFunctions: ISortingFunctionList
+
+  /**
+   * Type of filter and sorting data.
+   */
+  public abstract type: FilterAndSortingDataType
+
+  /**
+   * Sets the sorting order.
+   * @param value - Sorting order.
+   */
+  protected setOrder(value: SortingOrder): void {
+    if (value !== this.order) {
+      this._order = value
+    }
+  }
+
+  /**
+   * Sets the sorting property.
+   * @param value - Sorting property.
+   */
+  protected setProperty(value: string): void {
+    if (value !== this.property) {
+      this._property = value
+    }
+  }
 
   /**
    * Sets the properties available for sorting based on the provided sorting functions.

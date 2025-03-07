@@ -101,12 +101,7 @@
     "tsdoc/syntax": "warn",
     "vue/attribute-hyphenation": [
       "error",
-      "always",
-      {
-        "ignore": [
-          "sortField"
-        ]
-      }
+      "always"
     ],
     "vue/html-indent": [
       "warn",

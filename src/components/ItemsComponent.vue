@@ -85,8 +85,8 @@ function displayMerchantItemsOptions(): void {
 function getInitialFilterAndSortingData(): void {
   const savedCategoryId = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey)
   const categoryId = savedCategoryId != null ? ItemCategoryId[savedCategoryId as keyof typeof ItemCategoryId] : undefined
-  const property = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey) ?? 'name'
-  const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
+  const property = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsSortPropertyStorageKey) ?? 'name'
+  const order = Number(sessionStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
 
   const fasd = _sortingService.setSortingProperty(filterAndSortingData.value as ItemFilterAndSortingData, property, order)
   fasd.categoryId = categoryId
@@ -132,7 +132,7 @@ function onFilterAndSortingDataChanged(): void {
     sessionStorage.setItem(_websiteConfigurationService.configuration.itemsFilterStorageKey, filterAndSortingData.value.filter)
   }
 
-  localStorage.setItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey, filterAndSortingData.value.property)
+  localStorage.setItem(_websiteConfigurationService.configuration.itemsSortPropertyStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }
 

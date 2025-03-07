@@ -15,6 +15,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  sessionStorage.clear() // Cleaning test that set values in the session storage mock
   localStorage.clear() // Cleaning test that set values in the local storage mock
   vi.useRealTimers() // Cleaning tests that use fake times
   vi.unstubAllGlobals() // Cleaning tests that change global variable values

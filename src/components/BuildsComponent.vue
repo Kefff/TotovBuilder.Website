@@ -242,7 +242,7 @@ function initialize(): void {
   currentPage.value = page != null
     ? Number.parseInt(page)
     : 0
-  const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
+  const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortPropertyStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
@@ -283,7 +283,7 @@ function onFilterAndSortingDataChanged(): void {
     sessionStorage.setItem(_websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
   }
 
-  localStorage.setItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
+  localStorage.setItem(_websiteConfigurationService.configuration.buildsSortPropertyStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }
 

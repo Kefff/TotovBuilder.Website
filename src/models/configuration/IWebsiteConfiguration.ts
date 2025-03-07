@@ -30,7 +30,7 @@ export interface IWebsiteConfiguration {
   /**
    * Storage key for the current build sorting colum.
    */
-  buildsSortFieldStorageKey: string
+  buildsSortPropertyStorageKey: string
 
   /**
    * Storage key for the current build sort order.
@@ -128,6 +128,16 @@ export interface IWebsiteConfiguration {
   globalFilterStorageKey: string
 
   /**
+   * Suffix of the storage key for the current sort field of each item category.
+   */
+  itemCategorySortPropertyStorageKeySuffix: string
+
+  /**
+   * Suffix of the storage key for the current sort order of each item category.
+   */
+  itemCategorySortOrderStorageKeySuffix: string
+
+  /**
    * Storage key for the current item filter.
    */
   itemsFilterStorageKey: string
@@ -140,7 +150,7 @@ export interface IWebsiteConfiguration {
   /**
    * Storage key for the current item sorting colum.
    */
-  itemsSortFieldStorageKey: string
+  itemsSortPropertyStorageKey: string
 
   /**
    * Storage key for the current item sort order.

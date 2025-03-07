@@ -220,7 +220,6 @@ describe('SortingService', () => {
   })
 })
 
-class FilterAndSortingDataImplementation extends FilterAndSortingData<IItem> {
+class FilterAndSortingDataImplementation extends ItemFilterAndSortingData {
   public type: FilterAndSortingDataType = FilterAndSortingDataType.item
-
 }
