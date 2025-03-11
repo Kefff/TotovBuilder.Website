@@ -7,7 +7,6 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import { SortingService } from '../../services/sorting/SortingService'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
@@ -15,7 +14,6 @@ import Tooltip from '../TooltipComponent.vue'
 const modelParameters = defineModel<BuildsListSidebarParameters>('parameters', { required: true })
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
-const _sortingService = Services.get(SortingService)
 
 const filter = computed({
   get: () => modelParameters.value.filter,
@@ -28,15 +26,18 @@ const filter = computed({
 const order = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    const filterAndSortingData = _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value)
-    modelParameters.value = filterAndSortingData
+    const fasd = new BuildFilterAndSortingData(modelParameters.value)
+    fasd.order = value
+    modelParameters.value = fasd
   }
 })
 const property = computed({
   get: () => modelParameters.value.property,
   set: (value: string) => {
-    const filterAndSortingData = _sortingService.setSortingProperty(modelParameters.value, value, order.value)
-    modelParameters.value = filterAndSortingData
+    const fasd = new BuildFilterAndSortingData(modelParameters.value)
+    fasd.property = value
+    fasd.order = modelParameters.value.order
+    modelParameters.value = fasd
   }
 })
 const switchSortOrderButtonTooltip = computed(() => vueI18n.t(

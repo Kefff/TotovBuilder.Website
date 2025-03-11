@@ -4,13 +4,11 @@ import { useRouter } from 'vue-router'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
-import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
-import { SortingService } from '../services/sorting/SortingService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import ItemsList from './ItemsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
@@ -18,7 +16,6 @@ import Toolbar from './ToolbarComponent.vue'
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
-const _sortingService = Services.get(SortingService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const _router = useRouter()
@@ -80,16 +77,14 @@ function displayMerchantItemsOptions(): void {
 }
 
 /**
- * Gets the initial filter and sorting data applied to builds.
+ * Gets the initial filter and sorting data applied to items.
  */
 function getInitialFilterAndSortingData(): void {
   const savedCategoryId = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey)
   const categoryId = savedCategoryId != null ? ItemCategoryId[savedCategoryId as keyof typeof ItemCategoryId] : undefined
-  const property = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsSortPropertyStorageKey) ?? 'name'
-  const order = Number(sessionStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
 
-  const fasd = _sortingService.setSortingProperty(filterAndSortingData.value as ItemFilterAndSortingData, property, order)
-  fasd.categoryId = categoryId
+  const fasd = new ItemFilterAndSortingData(ItemSortingFunctions)
+  fasd.categoryId = categoryId // This automatically sets the last used sorting property and order
   fasd.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? undefined
   filterAndSortingData.value = fasd
 }

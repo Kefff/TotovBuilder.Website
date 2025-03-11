@@ -3,8 +3,6 @@ import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch 
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
-import FilterAndSortingData from '../models/utils/FilterAndSortingData'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
@@ -19,7 +17,6 @@ import {
 } from '../services/NotificationService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
-import { SortingService } from '../services/sorting/SortingService'
 import BuildsList from './BuildsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
@@ -30,7 +27,6 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _notificationService = Services.get(NotificationService)
-const _sortingService = Services.get(SortingService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const _router = useRouter()
@@ -245,8 +241,12 @@ function initialize(): void {
   const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortPropertyStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
-  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
-  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value as FilterAndSortingData<IBuildSummary>, property, order)
+  const fasd = new BuildFilterAndSortingData()
+  fasd.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
+  fasd.property = property
+  fasd.order = order
+
+  filterAndSortingData.value = fasd
 }
 
 /**

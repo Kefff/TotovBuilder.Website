@@ -11,24 +11,35 @@ import { SortingOrder } from './SortingOrder'
  */
 export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem> {
   /**
-   * Initializes a new instance of the SortingData class.
-   * @param itemFilterAndSortingDataToCopy - Item filter and sorting data to copy.
+   * Initializes a new instance of the ItemFilterAndSortingData class.
+   * @param sortingFunctions - Available sorting functions.
+   * @param filterAndSortingDataToCopy - Sorting data to copy.
    */
   public constructor(sortingFunctions: ISortingFunctionList, itemFilterAndSortingDataToCopy?: ItemFilterAndSortingData) {
     super(sortingFunctions, itemFilterAndSortingDataToCopy)
 
     if (itemFilterAndSortingDataToCopy != null) {
-      this.availableItemCategories = itemFilterAndSortingDataToCopy.availableItemCategories
-      this.categoryId = itemFilterAndSortingDataToCopy.categoryId
+      this._availableItemCategories = itemFilterAndSortingDataToCopy.availableItemCategories
+      this._categoryId = itemFilterAndSortingDataToCopy.categoryId
+    } else {
+      this.setPropertiesFromLastSort()
     }
-
-    this.setPropertiesFromLastSort()
   }
 
   /**
    * List of category IDs that can be selected for filtering.
    */
-  public availableItemCategories: ItemCategoryId[] = []
+  public get availableItemCategories(): ItemCategoryId[] {
+    return this._availableItemCategories
+  }
+  public set availableItemCategories(value: ItemCategoryId[]) {
+    this._availableItemCategories = value
+
+    if (value.length === 1) {
+      this.categoryId = value[0]
+    }
+  }
+  private _availableItemCategories: ItemCategoryId[] = []
 
   /**
    * Category for filtering items.
@@ -37,14 +48,15 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
     return this._categoryId
   }
   public set categoryId(value: ItemCategoryId | undefined) {
-    this._categoryId = value
-    this.setSortingFunctions()
-    this.setPropertiesFromLastSort()
+    if (value !== this._categoryId) {
+      this._categoryId = value
+      this.setSortingFunctions()
+    }
   }
   private _categoryId: ItemCategoryId | undefined = undefined
 
   /**
-   * Indicates whether the filter category fied is read only.
+   * Indicates whether the filter category field is read only.
    * This is the case when only one category is available for selection.
    */
   public get isCategoryIdReadOnly(): boolean {
@@ -60,7 +72,7 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
 
     const configurationService = Services.get(WebsiteConfigurationService)
 
-    if (this.isCategoryIdReadOnly && this.categoryId != null) {
+    if (this.categoryId != null) {
       sessionStorage.setItem(`${this.categoryId}${configurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, this.order.toString())
     } else {
       sessionStorage.setItem(configurationService.configuration.itemsSortOrderStorageKey, this.order.toString())
@@ -73,7 +85,7 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
 
     const configurationService = Services.get(WebsiteConfigurationService)
 
-    if (this.isCategoryIdReadOnly && this.categoryId != null) {
+    if (this.categoryId != null) {
       sessionStorage.setItem(`${this.categoryId}${configurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, this.property)
     } else {
       sessionStorage.setItem(configurationService.configuration.itemsSortPropertyStorageKey, this.property)
@@ -88,7 +100,7 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
     let orderStorageKey: string
     let propertyStorageKey: string
 
-    if (this.categoryId != null && this.isCategoryIdReadOnly) {
+    if (this.categoryId != null) {
       orderStorageKey = `${this.categoryId}${configurationService.configuration.itemCategorySortOrderStorageKeySuffix}`
       propertyStorageKey = `${this.categoryId}${configurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`
     } else {
@@ -99,16 +111,12 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
     const order = sessionStorage.getItem(orderStorageKey)
     const property = sessionStorage.getItem(propertyStorageKey)
 
-    if (order != null) {
-      this.order = Number(order)
-    } else {
-      this.order = SortingOrder.asc
-    }
-
     if (property != null) {
       this.property = property
-    } else {
-      this.property = 'name'
+    }
+
+    if (order != null) {
+      this.order = Number(order)
     }
   }
 
@@ -117,6 +125,7 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
    */
   private setSortingFunctions(): void {
     this.sortingFunctions = Services.get(SortingService).getSortingFunctionsFromItemCategory(this.categoryId)
+    this.setPropertiesFromLastSort()
 
     if (this.sortingFunctions.functions[this.property] == null) {
       this.property = 'name'

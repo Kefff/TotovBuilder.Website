@@ -75,7 +75,17 @@ const previousPageIndex = ref(-1)
 
 watch(() => props.elements, () => scrollToElement(props.scrollToIndex))
 
-onMounted(() => scrollToElement(props.scrollToIndex))
+onMounted(() => {
+  if (modelCurrentPage.value > lastPageIndex.value) {
+    // Can happend when deleting the last build from the last page.
+    // Returning immediatly because the page will change and already trigger a scroll to top
+    modelCurrentPage.value = lastPageIndex.value
+
+    return
+  }
+
+  scrollToElement(props.scrollToIndex)
+})
 
 /**
  * Reacts to the paginator current page being changed.

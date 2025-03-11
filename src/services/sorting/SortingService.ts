@@ -1,12 +1,7 @@
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
-import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
-import FilterAndSortingData, { FilterAndSortingDataType } from '../../models/utils/FilterAndSortingData'
+import FilterAndSortingData from '../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
-import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
-import { LogService } from '../LogService'
-import Services from '../repository/Services'
 import { IItemSortingFunctionList } from './functions/ISortingFunctionList'
 import {
   AmmunitionSortingFunctions,
@@ -31,20 +26,6 @@ import {
  * Represents a service responsible for sorting elements.
  */
 export class SortingService {
-  /**
-   * Creates a copy of filter and sorting data.
-   * @param filterAndSortingDataToCopy - Filter and sorting data to copy.
-   */
-  public copyFilterAndSortingData<T extends BuildFilterAndSortingData>(filterAndSortingDataToCopy: T): T
-  public copyFilterAndSortingData<T extends ItemFilterAndSortingData>(filterAndSortingDataToCopy: T): T
-  public copyFilterAndSortingData(filterAndSortingDataToCopy: BuildFilterAndSortingData | ItemFilterAndSortingData): BuildFilterAndSortingData | ItemFilterAndSortingData {
-    if (filterAndSortingDataToCopy.type === FilterAndSortingDataType.build) {
-      return new BuildFilterAndSortingData(filterAndSortingDataToCopy)
-    } else {
-      return new ItemFilterAndSortingData(filterAndSortingDataToCopy.sortingFunctions, filterAndSortingDataToCopy as ItemFilterAndSortingData)
-    }
-  }
-
   /**
    * Gets the sorting functions for sorting the specified category of item.
    * @param itemCategoryId - Item category. When not set, basic item sorting functions are returned.
@@ -80,38 +61,6 @@ export class SortingService {
     }
 
     return sortingFunctionsForCategory as IItemSortingFunctionList
-  }
-
-  /**
-   * Updates sorting data by setting the sorting property, the new sorting order and the associated comparison function.
-   * @param sortingData - Sorting data to update.
-   * @param property - Property.
-   * @param order - Order.
-   */
-  public setSortingProperty<T extends FilterAndSortingData<IBuildSummary>>(sortingData: T, property: string, order?: SortingOrder): T
-  public setSortingProperty<T extends FilterAndSortingData<IItem>>(sortingData: T, property: string, order?: SortingOrder): T
-  public setSortingProperty(filterAndSortingData: FilterAndSortingData<IBuildSummary | IItem>, property: string, order?: SortingOrder): FilterAndSortingData<IBuildSummary | IItem> {
-    const sortingFunction = filterAndSortingData.sortingFunctions.functions[property]
-
-    if (sortingFunction == null) {
-      Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
-
-      return filterAndSortingData
-    }
-
-    const updatedSortingData = this.copyFilterAndSortingData(filterAndSortingData)
-    updatedSortingData.currentSortingFunction = sortingFunction
-
-    if (order != null) {
-      updatedSortingData.order = order
-    } else {
-      updatedSortingData.order = updatedSortingData.property === property ? -updatedSortingData.order : SortingOrder.asc
-    }
-
-    updatedSortingData.property = property
-    updatedSortingData.currentSortingFunction.comparisonValueObtentionPromise = sortingFunction.comparisonValueObtentionPromise
-
-    return updatedSortingData
   }
 
   /**

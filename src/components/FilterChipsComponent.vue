@@ -11,7 +11,6 @@ import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
-import { SortingService } from '../services/sorting/SortingService'
 import StringUtils from '../utils/StringUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InputTextField from './InputTextFieldComponent.vue'
@@ -32,7 +31,6 @@ const props = withDefaults(
 
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
-const _sortingService = Services.get(SortingService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
@@ -128,18 +126,10 @@ const merchantsTooltip = computed(() => {
 const property = computed({
   get: () => modelFilterAndSortingData.value.property,
   set: (value: string) => {
-    if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
-      modelFilterAndSortingData.value =
-        _sortingService.setSortingProperty(
-          modelFilterAndSortingData.value as ItemFilterAndSortingData,
-          value,
-          modelFilterAndSortingData.value.order)
-    } else {
-      modelFilterAndSortingData.value = _sortingService.setSortingProperty(
-        modelFilterAndSortingData.value as BuildFilterAndSortingData,
-        value,
-        modelFilterAndSortingData.value.order)
-    }
+    const fasd = copyFilterAndSortingData()
+    fasd.property = value
+    fasd.order = modelFilterAndSortingData.value.order
+    modelFilterAndSortingData.value = fasd
   }
 })
 const sortButtonTooltip = computed(() => vueI18n.t(
@@ -190,9 +180,9 @@ onUnmounted(() => {
  * Applies the quick filter.
  */
 function applyQuickFilter(): void {
-  const filterAndSortingData = _sortingService.copyFilterAndSortingData(modelFilterAndSortingData.value)
-  filterAndSortingData.filter = filterInternal.value
-  modelFilterAndSortingData.value = filterAndSortingData
+  const fasd = copyFilterAndSortingData()
+  fasd.filter = filterInternal.value
+  modelFilterAndSortingData.value = fasd
 }
 
 /**
@@ -214,6 +204,17 @@ function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalS
   }
 
   return false
+}
+
+/**
+ * Copies the current filer and sorting data.
+ */
+function copyFilterAndSortingData(): BuildFilterAndSortingData | ItemFilterAndSortingData {
+  const fasd = modelFilterAndSortingData.value.type === FilterAndSortingDataType.build
+    ? new BuildFilterAndSortingData(modelFilterAndSortingData.value)
+    : new ItemFilterAndSortingData(modelFilterAndSortingData.value.sortingFunctions, modelFilterAndSortingData.value as ItemFilterAndSortingData)
+
+  return fasd
 }
 
 /**
@@ -242,14 +243,14 @@ function onKeyDown(event: KeyboardEvent): void {
  * Removes the current filter.
  */
 function removeFilter(): void {
-  const filterAndSortingData = _sortingService.copyFilterAndSortingData(modelFilterAndSortingData.value)
-  filterAndSortingData.filter = undefined
+  const fasd = copyFilterAndSortingData()
+  fasd.filter = undefined
 
   if (canRemoveCategoryIdFilter.value) {
-    (filterAndSortingData as ItemFilterAndSortingData).categoryId = undefined
+    (fasd as ItemFilterAndSortingData).categoryId = undefined
   }
 
-  modelFilterAndSortingData.value = filterAndSortingData
+  modelFilterAndSortingData.value = fasd
 }
 
 /**
@@ -282,10 +283,9 @@ function showGlobalFilterSidebar(): void {
  * Switches the sort order.
  */
 function switchSortOrder(): void {
-  modelFilterAndSortingData.value = _sortingService.setSortingProperty(
-    modelFilterAndSortingData.value,
-    modelFilterAndSortingData.value.property,
-    -modelFilterAndSortingData.value.order)
+  const fasd = copyFilterAndSortingData()
+  fasd.order = -fasd.order
+  modelFilterAndSortingData.value = fasd
 }
 </script>
 
@@ -479,10 +479,11 @@ function switchSortOrder(): void {
             :full-size="true"
             :tooltip="$t('caption.removeFilter')"
             style="color: var(--error-color);"
-            class="filter-chip-icon"
             @click="removeFilter"
           >
-            <font-awesome-icon icon="times" />
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="times" />
+            </div>
           </Tooltip>
         </div>
       </Chip>

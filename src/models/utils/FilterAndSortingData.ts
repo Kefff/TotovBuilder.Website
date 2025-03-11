@@ -1,5 +1,6 @@
 import { ISortingFunction } from '../../services/sorting/functions/ISortingFunction'
 import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
+import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import StringUtils from '../../utils/StringUtils'
 import { IItem } from '../item/IItem'
 import { IBuildSummary } from './IBuildSummary'
@@ -10,22 +11,22 @@ import { SortingOrder } from './SortingOrder'
  */
 export default abstract class FilterAndSortingData<T extends IBuildSummary | IItem> {
   /**
-   * Initializes a new instance of the SortingData class.
+   * Initializes a new instance of the FilterAndSortingData class.
    * @param sortingFunctions - Available sorting functions.
    * @param filterAndSortingDataToCopy - Sorting data to copy.
    */
   public constructor(sortingFunctions: ISortingFunctionList, filterAndSortingDataToCopy?: FilterAndSortingData<T>) {
-    this._sortingFunctions = sortingFunctions
-    this.setSortableProperties(sortingFunctions)
-
-    if (filterAndSortingDataToCopy != null) {
+    if (filterAndSortingDataToCopy == null) {
+      this.sortingFunctions = sortingFunctions
+      this.currentSortingFunction = this._sortingFunctions.functions[this.property]
+    } else {
       this.currentSortingFunction = filterAndSortingDataToCopy.currentSortingFunction
       this.filter = filterAndSortingDataToCopy.filter
       this._order = filterAndSortingDataToCopy.order
       this._property = filterAndSortingDataToCopy.property
+      this.sortableProperties = filterAndSortingDataToCopy.sortableProperties
+      this._sortingFunctions = filterAndSortingDataToCopy.sortingFunctions
     }
-
-    this.currentSortingFunction = sortingFunctions.functions[this.property]
   }
 
   /**
@@ -75,7 +76,7 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
     this._sortingFunctions = value
     this.setSortableProperties(value)
   }
-  private _sortingFunctions: ISortingFunctionList
+  private _sortingFunctions: ISortingFunctionList = ItemSortingFunctions
 
   /**
    * Type of filter and sorting data.
@@ -87,7 +88,7 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
    * @param value - Sorting order.
    */
   protected setOrder(value: SortingOrder): void {
-    if (value !== this.order) {
+    if (value !== this._order) {
       this._order = value
     }
   }
@@ -97,9 +98,9 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
    * @param value - Sorting property.
    */
   protected setProperty(value: string): void {
-    if (value !== this.property) {
-      this._property = value
-    }
+    this.order = value === this._property ? -this.order : SortingOrder.asc
+    this._property = value
+    this.currentSortingFunction = this.sortingFunctions.functions[this.property]
   }
 
   /**

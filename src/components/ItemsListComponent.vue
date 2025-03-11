@@ -129,28 +129,23 @@ async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<v
   if (itemsListNeedsUpdate) {
     itemsToFilterAndSort = await props.getItemsFunction()
 
-    const filterAndSortingData = _sortingService.copyFilterAndSortingData(modelFilterAndSortingData.value)
-    filterAndSortingData.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
-
-    if (filterAndSortingData.availableItemCategories.length === 1) {
-      filterAndSortingData.categoryId = filterAndSortingData.availableItemCategories[0]
-    }
+    const fasd = new ItemFilterAndSortingData(modelFilterAndSortingData.value.sortingFunctions, modelFilterAndSortingData.value)
+    fasd.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
 
     filteredAnSortedItems.value = itemsToFilterAndSort
-    modelFilterAndSortingData.value = filterAndSortingData
+    modelFilterAndSortingData.value = fasd
 
-    // We return here because we update filter and sorting data, which will call again filterAndSortItemsAsync.
+    // Updating the filter and sorting data will call again filterAndSortItemsAsync.
     // The second time it is called, itemsListNeedsUpdate will be false and items will only be filtered and sorted
-    return
   } else {
     itemsToFilterAndSort = filteredAnSortedItems.value
+
+    itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
+    itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
+    filteredAnSortedItems.value = itemsToFilterAndSort
+
+    nextTick(() => isLoading.value = false)
   }
-
-  itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
-  itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
-  filteredAnSortedItems.value = itemsToFilterAndSort
-
-  nextTick(() => isLoading.value = false)
 }
 
 /**
