@@ -151,7 +151,7 @@ function reset(): void {
           :filter-fields="['caption']"
           :option-label="o => $t(`caption.category${StringUtils.toUpperFirst(o.categoryId)}`)"
           :options="availableCategories"
-          class="items-list-sidebar-value items-list-sidebar-category-dropdown"
+          class="items-list-sidebar-value"
           option-value="categoryId"
         />
         <Tooltip

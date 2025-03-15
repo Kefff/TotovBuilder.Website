@@ -50,7 +50,13 @@ export default defineConfig({
         'src/services/FileService.ts', // Requires access to the file system
         'src/servicesConfiguration.ts',
         'vite.config.ts'
-      ]
+      ],
+      thresholds: {
+        branches: 100,
+        functions: 100,
+        lines: 100,
+        statements: 100
+      }
     },
     environment: 'happy-dom', // Required for browser components like "document" to be accessible during tests
     globals: true,

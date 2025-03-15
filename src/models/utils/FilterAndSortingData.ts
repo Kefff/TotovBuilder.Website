@@ -1,3 +1,4 @@
+import vueI18n from '../../plugins/vueI18n'
 import { ISortingFunction } from '../../services/sorting/functions/ISortingFunction'
 import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
@@ -119,7 +120,7 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
     for (const propertyName of Object.keys(sortingFunctions.functions)) {
       properties.push({
         name: propertyName,
-        caption: `caption.${propertyName}`
+        caption: vueI18n.t(`caption.${propertyName}`)
       })
     }
 
