@@ -98,8 +98,15 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
    * @param value - Sorting property.
    */
   protected setProperty(value: string): void {
-    this.order = value === this._property ? -this.order : SortingOrder.asc
-    this._property = value
+    const hasSortingFunction = this.sortingFunctions.functions[value] != null
+
+    if (hasSortingFunction) {
+      this.order = value === this._property ? -this.order : SortingOrder.asc
+      this._property = value
+    } else {
+      this._property = 'name'
+    }
+
     this.currentSortingFunction = this.sortingFunctions.functions[this.property]
   }
 

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMod } from '../../../../models/item/IMod'
-import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
@@ -24,9 +23,10 @@ describe('comparisonFunction', () => {
       presetErgonomicsModifier: isPreset ? 1 : undefined
     } as IMod
 
+    const sortingData = new ItemFilterAndSortingData(ModSortingFunctions)
+    sortingData.property = property
+
     const sortingService = new SortingService()
-    let sortingData: FilterAndSortingData<IMod> | undefined = new ItemFilterAndSortingData(ModSortingFunctions)
-    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

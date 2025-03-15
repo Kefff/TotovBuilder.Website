@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IGrenade } from '../../../../models/item/IGrenade'
 import { ItemCategoryId } from '../../../../models/item/IItem'
-import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { GrenadeSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
@@ -27,9 +26,10 @@ describe('comparisonFunction', () => {
       fragmentsAmount: 1
     } as IGrenade
 
+    const sortingData = new ItemFilterAndSortingData(GrenadeSortingFunctions)
+    sortingData.property = property
+
     const sortingService = new SortingService()
-    let sortingData: FilterAndSortingData<IGrenade> | undefined = new ItemFilterAndSortingData(GrenadeSortingFunctions)
-    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

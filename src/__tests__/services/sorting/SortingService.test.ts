@@ -1,8 +1,7 @@
-import { anything, instance, mock, verify } from 'ts-mockito'
+import { instance, mock } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IItem, ItemCategoryId } from '../../../models/item/IItem'
-import BuildFilterAndSortingData from '../../../models/utils/BuildFilterAndSortingData'
-import FilterAndSortingData, { FilterAndSortingDataType } from '../../../models/utils/FilterAndSortingData'
+import { FilterAndSortingDataType } from '../../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../../models/utils/IBuildSummary'
 import ItemFilterAndSortingData from '../../../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../../../models/utils/SortingOrder'
@@ -13,26 +12,6 @@ import { IBuildSortingFunctionList, IItemSortingFunctionList } from '../../../se
 import { AmmunitionSortingFunctions, ArmorModSortingFunctions, ArmorSortingFunctions, BackpackSortingFunctions, ContainerSortingFunctions, EyewearSortingFunctions, GrenadeSortingFunctions, HeadwearSortingFunctions, ItemSortingFunctions, MagazineSortingFunctions, MeleeWeaponSortingFunctions, ModSortingFunctions, RangedWeaponModSortingFunctions, RangedWeaponSortingFunctions, VestSortingFunctions } from '../../../services/sorting/functions/itemSortingFunctions'
 
 describe('SortingService', () => {
-  describe('copyFilterAndSortingData', () => {
-    it('should create a copy of filter and sorting data', () => {
-      // Arrange
-      const filterAndSortingData1 = new BuildFilterAndSortingData()
-      const filterAndSortingData2 = new ItemFilterAndSortingData(ItemSortingFunctions)
-
-      const service = new SortingService()
-
-      // Act
-      const copy1 = service.copyFilterAndSortingData(filterAndSortingData1)
-      const copy2 = service.copyFilterAndSortingData(filterAndSortingData2)
-
-      // Assert
-      expect(copy1).not.toBe(filterAndSortingData1)
-      expect(copy1).toStrictEqual(filterAndSortingData1)
-      expect(copy2).not.toBe(filterAndSortingData2)
-      expect(copy2).toStrictEqual(filterAndSortingData2)
-    })
-  })
-
   describe('compareByElementName', () => {
     it.each([
       [{ name: 'a', categoryId: 'cat1' }, { name: 'a', categoryId: 'cat2' }, 0],
@@ -110,11 +89,15 @@ describe('SortingService', () => {
         },
         itemCategoryIds: [ItemCategoryId.other]
       }
-      let sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
-      const sortService = new SortingService()
+      const sortingData = new FilterAndSortingDataImplementation(sortingFunctions)
 
       // Act
-      sortingData = sortService.setSortingProperty(sortingData, property, sortingOrder)
+      sortingData.property = property
+
+      if (sortingOrder != null) {
+        sortingData.order = sortingOrder
+      }
+
       const comparison = sortingData.currentSortingFunction.comparisonFunction({} as unknown as IItem, 0, {} as unknown as IItem, 0) * sortingData.order
 
       // Assert
@@ -129,22 +112,19 @@ describe('SortingService', () => {
         functions: {},
         itemCategoryIds: [ItemCategoryId.other]
       }
-      let sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
+      const sortingData = new FilterAndSortingDataImplementation(sortingFunctions)
       sortingData.property = 'name'
       sortingData.order = SortingOrder.desc
-
-      const sortService = new SortingService()
 
       const logServiceMock = mock<LogService>()
       Services.configure(LogService, undefined, instance(logServiceMock))
 
       // Act
-      sortingData = sortService.setSortingProperty(sortingData, 'invalid')
+      sortingData.property = 'invalid'
 
       // Assert
       expect(sortingData.property).toBe('name')
       expect(sortingData.order).toBe(SortingOrder.desc)
-      verify(logServiceMock.logError('message.sortingFunctionNotFound', anything())).once()
     })
   })
 
@@ -159,7 +139,7 @@ describe('SortingService', () => {
           }
         }
       }
-      let sortingData: FilterAndSortingData<IBuildSummary> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
+      const sortingData = new FilterAndSortingDataImplementation(sortingFunctions)
       const buildSummaries = [
         { ergonomics: 10, name: 'e' } as IBuildSummary,
         { ergonomics: 20, name: 'f' } as IBuildSummary,
@@ -170,7 +150,7 @@ describe('SortingService', () => {
       const sortingService = new SortingService()
 
       // Act
-      sortingData = sortingService.setSortingProperty(sortingData, 'ergonomics')
+      sortingData.property = 'ergonomics'
       const result = await sortingService.sortAsync(buildSummaries, sortingData!)
 
       // Assert
@@ -194,7 +174,7 @@ describe('SortingService', () => {
         },
         itemCategoryIds: [ItemCategoryId.other]
       }
-      let sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
+      const sortingData = new FilterAndSortingDataImplementation(sortingFunctions)
       const items = [
         { categoryId: 'cat1', shortName: 'e', name: 'e' } as unknown as IItem,
         { categoryId: 'cat2', shortName: 'f', name: 'f2' } as unknown as IItem,
@@ -205,7 +185,7 @@ describe('SortingService', () => {
       const sortingService = new SortingService()
 
       // Act
-      sortingData = sortingService.setSortingProperty(sortingData, 'shortName')
+      sortingData.property = 'shortName'
       const result = await sortingService.sortAsync(items, sortingData)
 
       // Assert

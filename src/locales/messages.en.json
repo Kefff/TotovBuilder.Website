@@ -475,7 +475,6 @@
     "serviceNotConfigured": "Service \"{name}\" not configured.",
     "shareBuildExplanation": "This link allows another person to get a copy of this build.\nThe person will be able to edit it and save it as their own version.",
     "sharedBuildMigrationErrorNotification": "Error while updating build to version \"{newVersion}\".",
-    "sortingFunctionNotFound": "Sorting function for property \"{property}\" not found.",
     "tarkovValuesFetched": "{date} Tarkov values fetched with success.",
     "tarkovValuesNotFetched": "No Tarkov value could be fetched.",
     "warningLog": "Warning : {message}",

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IArmor } from '../../../../models/item/IArmor'
 import { ItemCategoryId } from '../../../../models/item/IItem'
-import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
@@ -31,9 +30,10 @@ describe('comparisonFunction', () => {
       ergonomicsModifierPercentage: 1
     } as IArmor
 
+    const sortingData = new ItemFilterAndSortingData(ArmorSortingFunctions)
+    sortingData.property = property
+
     const sortingService = new SortingService()
-    let sortingData: FilterAndSortingData<IArmor> | undefined = new ItemFilterAndSortingData(ArmorSortingFunctions)
-    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)
