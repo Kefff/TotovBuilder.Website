@@ -98,7 +98,7 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
  * @param elementIndex - Index of the element to scroll to. First element when undefined.
  */
 function scrollToElement(elementIndex?: number): void {
-  if (elementIndex == null && !props.autoScrollToFirstElement) {
+  if (!props.autoScrollToFirstElement) {
     return
   }
 

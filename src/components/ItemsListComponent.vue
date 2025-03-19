@@ -249,63 +249,64 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 
 
 <template>
-  <div
-    v-if="isLoading || !isInitialed"
-    class="items-list-loading"
-  >
-    <Loading />
-  </div>
-  <div
-    v-if="isInitialed"
-    v-show="!isLoading"
-    class="items-list"
-  >
-    <FilterChips
-      v-model:filter-and-sorting-data="modelFilterAndSortingData"
-      :element-to-stick-to="elementToStickTo"
-      filter-sidebar-component="ItemsListSidebar"
-    />
-    <InfiniteScroller
-      v-if="filteredAnSortedItems.length > 0 && infiniteScrolling"
-      :auto-scroll-to-first-element="autoScrollToFirstElement"
-      :element-height="selectionOptions.isEnabled ? 211 : 162"
-      :elements-per-line="itemsPerLine"
-      :elements="filteredAnSortedItems"
-      :get-key-function="i => (i as IItem).id"
-      :scroll-to-index="firstSelectedItemIndex"
-    >
-      <template #element="{ element }">
-        <ItemCard
-          :item="<IItem>element"
-          :is-selected="checkIsSelected(<IItem>element)"
-          :selection-options="selectionOptions"
-          @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
-        />
-      </template>
-    </InfiniteScroller>
-    <Paginator
-      v-else-if="filteredAnSortedItems.length > 0 && !infiniteScrolling"
-      :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
-      :elements-per-line="itemsPerLine"
-      :elements="filteredAnSortedItems"
-      :get-key-function="i => (i as IItem).id"
-      :lines-per-page="linesPerPage"
-      :scroll-to-index="firstSelectedItemIndex"
-    >
-      <template #element="{ element }">
-        <ItemCard
-          :item="<IItem>element"
-          :is-selected="checkIsSelected(<IItem>element)"
-          :selection-options="selectionOptions"
-          @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
-        />
-      </template>
-    </Paginator>
+  <div class="items-list-container">
     <div
-      v-else
-      class="items-list-no-results-message"
+      v-if="!isInitialed || isLoading"
+      class="items-list-loading"
     >
-      {{ $t('message.noItemsFound') }}
+      <Loading />
+    </div>
+    <div
+      v-if="isInitialed"
+      class="items-list"
+    >
+      <FilterChips
+        v-model:filter-and-sorting-data="modelFilterAndSortingData"
+        :element-to-stick-to="elementToStickTo"
+        filter-sidebar-component="ItemsListSidebar"
+      />
+      <InfiniteScroller
+        v-if="infiniteScrolling && filteredAnSortedItems.length > 0 && !isLoading"
+        :auto-scroll-to-first-element="autoScrollToFirstElement"
+        :element-height="selectionOptions.isEnabled ? 211 : 162"
+        :elements-per-line="itemsPerLine"
+        :elements="filteredAnSortedItems"
+        :get-key-function="i => (i as IItem).id"
+        :scroll-to-index="firstSelectedItemIndex"
+      >
+        <template #element="{ element }">
+          <ItemCard
+            :item="<IItem>element"
+            :is-selected="checkIsSelected(<IItem>element)"
+            :selection-options="selectionOptions"
+            @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
+          />
+        </template>
+      </InfiniteScroller>
+      <Paginator
+        v-else-if="!infiniteScrolling && filteredAnSortedItems.length > 0 && !isLoading"
+        :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
+        :elements-per-line="itemsPerLine"
+        :elements="filteredAnSortedItems"
+        :get-key-function="i => (i as IItem).id"
+        :lines-per-page="linesPerPage"
+        :scroll-to-index="firstSelectedItemIndex"
+      >
+        <template #element="{ element }">
+          <ItemCard
+            :item="<IItem>element"
+            :is-selected="checkIsSelected(<IItem>element)"
+            :selection-options="selectionOptions"
+            @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
+          />
+        </template>
+      </Paginator>
+      <div
+        v-else
+        class="items-list-no-results-message"
+      >
+        {{ $t('message.noItemsFound') }}
+      </div>
     </div>
   </div>
 </template>
@@ -325,6 +326,10 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
   flex-direction: column;
   height: 100%;
   width: 100%;
+}
+
+.items-list-container {
+  height: 100%;
 }
 
 .items-list-loading {
