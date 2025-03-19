@@ -466,6 +466,7 @@ function switchSortOrder(): void {
                 v-model:value="filterInternal"
                 :caption="$t('caption.addFilter')"
                 caption-mode="placeholder"
+                :autofocus="!isTouchScreen"
               />
             </div>
           </div>

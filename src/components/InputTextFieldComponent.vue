@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
+import { computed, nextTick, useTemplateRef, watch } from 'vue'
 
 const modelValue = defineModel<string>('value')
 
@@ -34,8 +34,16 @@ const inputClasses = computed(() => ({
 }))
 const invalid = computed(() => props.required && (modelValue.value == null || modelValue.value === ''))
 
-onMounted(() => {
-  if (props.autofocus) {
+watch(
+  () => input.value,
+  () => setFocus(),
+  { immediate: true })
+
+/**
+ * Sets the focus on the text input.
+ */
+function setFocus(): void {
+  if (props.autofocus && input.value != null) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const element = (input.value as any)?.$el // Cast as any needed otherwise $el is considered to not exist while it does
 
@@ -43,7 +51,7 @@ onMounted(() => {
       nextTick(() => element.select()) // nextTick required for the focus to work in sidebars
     }
   }
-})
+}
 </script>
 
 

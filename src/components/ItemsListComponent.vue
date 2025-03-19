@@ -256,7 +256,8 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     <Loading />
   </div>
   <div
-    v-else
+    v-if="isInitialed"
+    v-show="!isLoading"
     class="items-list"
   >
     <FilterChips

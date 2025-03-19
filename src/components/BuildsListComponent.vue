@@ -270,7 +270,8 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     <Loading />
   </div>
   <div
-    v-else
+    v-if="isInitialized"
+    v-show="!isLoading"
     class="builds-list"
   >
     <FilterChips
