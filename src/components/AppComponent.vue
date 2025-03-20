@@ -442,7 +442,7 @@ body {
 html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background-image: url('../../assets/images/Background.webp');
+  background-image: url('/images/background.webp');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

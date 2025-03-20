@@ -5,13 +5,13 @@
 
 @font-face {
   font-family: 'Escape From Tarkov';
-  src: url('../../assets/fonts/escape-from-tarkov-bender.otf') format('opentype');
+  src: url('/fonts/escape-from-tarkov-bender.otf') format('opentype');
   font-display: fallback;
 }
 
 @font-face {
   font-family: 'Escape From Tarkov Title';
-  src: url('../../assets/fonts/escape-from-tarkov.ttf') format('truetype');
+  src: url('/fonts/escape-from-tarkov.ttf') format('truetype');
   font-display: fallback;
 }
 
@@ -258,8 +258,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('Roboto'), local('Roboto-Regular'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-regular.woff2') format('woff2'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-regular.woff') format('woff');
+    url('/fonts/roboto-v20-latin-ext_latin-regular.woff2') format('woff2'),
+    url('/fonts/roboto-v20-latin-ext_latin-regular.woff') format('woff');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
@@ -269,8 +269,8 @@
   font-style: normal;
   font-weight: 500;
   src: local('Roboto Medium'), local('Roboto-Medium'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-500.woff2') format('woff2'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-500.woff') format('woff');
+    url('/fonts/roboto-v20-latin-ext_latin-500.woff2') format('woff2'),
+    url('/fonts/roboto-v20-latin-ext_latin-500.woff') format('woff');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
@@ -280,8 +280,8 @@
   font-style: normal;
   font-weight: 700;
   src: local('Roboto Bold'), local('Roboto-Bold'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-700.woff2') format('woff2'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-700.woff') format('woff');
+    url('/fonts/roboto-v20-latin-ext_latin-700.woff2') format('woff2'),
+    url('/fonts/roboto-v20-latin-ext_latin-700.woff') format('woff');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 

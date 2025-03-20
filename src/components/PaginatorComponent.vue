@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useElementBounding, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { useElementBounding, useScrollLock, useSwipe, UseSwipeDirection } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
@@ -61,6 +61,7 @@ const swipeMinLeft = computed(() => modelCurrentPage.value === lastPageIndex.val
 const transitionEnterFromTranslate = computed(() => previousPageIndex.value < modelCurrentPage.value ? 'translateX(100vw)' : 'translateX(-100vw)')
 const transitionLeaveToTranslate = computed(() => previousPageIndex.value < modelCurrentPage.value ? 'translateX(-100vw)' : 'translateX(100vw)')
 
+const isScrollLocked = useScrollLock(document.getElementById('app'))
 const leftPosition = ref('0')
 const paginator = useTemplateRef('paginator')
 const { height: paginatorHeight } = useElementBounding(paginator)
@@ -103,6 +104,11 @@ function onPageChange(newPage: number): void {
  * Positions the inventory slot according to the swipe movement.
  */
 function onSwipe(): void {
+  if (swipeDirection.value !== 'left' && swipeDirection.value !== 'right') {
+    return
+  }
+
+  isScrollLocked.value = true
   let left = Math.max(Math.abs(swipeLength.value) - _swipeDeadzone, 0)
 
   if (swipeDirection.value === 'left') {
@@ -137,6 +143,8 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   } else {
     leftPosition.value = '0'
   }
+
+  isScrollLocked.value = false
 }
 
 /**

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useElementBounding, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { useElementBounding, useScrollLock, useSwipe, UseSwipeDirection } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
@@ -45,6 +45,7 @@ const swipeMinLeft = computed(() => !props.canGoToNext ? -swipeBlock.value : und
 
 const acceptedItems = ref<IItem[]>([])
 const inventorySlot = useTemplateRef('inventorySlot')
+const isScrollLocked = useScrollLock(document.getElementById('app'))
 const leftPosition = ref('0')
 const { height: inventorySlotHeight } = useElementBounding(inventorySlot)
 const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
@@ -97,6 +98,11 @@ function onMerchantFilterChanged(): void {
  * Positions the inventory slot according to the swipe movement.
  */
 function onSwipe(): void {
+  if (swipeDirection.value !== 'left' && swipeDirection.value !== 'right') {
+    return
+  }
+
+  isScrollLocked.value = true
   let left = Math.max(Math.abs(swipeLength.value) - _swipeDeadzone, 0)
 
   if (swipeDirection.value === 'left') {
@@ -116,6 +122,7 @@ function onSwipe(): void {
  * React to the swip action on the inventory slot stopping.
  *
  * Repositions the inventory slot at its original place or trigger the inventory slot change.
+ * Unblocks the vertical scrolling.
  */
 function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   if (direction === 'right'
@@ -129,6 +136,8 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   } else {
     leftPosition.value = '0'
   }
+
+  isScrollLocked.value = false
 }
 </script>
 

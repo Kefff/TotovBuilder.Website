@@ -813,7 +813,7 @@ describe('getShoppingListAsync', () => {
         item: {
           categoryId: ItemCategoryId.notFound,
           conflictingItemIds: [],
-          iconLink: '/assets/images/unknown_item.webp',
+          iconLink: '/images/unknown_item.webp',
           id: 'invalid',
           imageLink: '',
           marketLink: '',

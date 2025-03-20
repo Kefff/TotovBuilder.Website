@@ -13,7 +13,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: ({ name }) => {
-          if (/\.(gif|jpe?g|png|svg|webp)$/.test(name ?? '')) {
+          if (/\.(gif|jpeg|png|svg|webp)$/.test(name ?? '')) {
             return 'images/[name]-[hash][extname]'
           } else if (/\.(css|js)$/.test(name ?? '')) {
             return 'src/[name]-[hash][extname]'
@@ -21,7 +21,7 @@ export default defineConfig({
             return 'fonts/[name]-[hash][extname]'
           }
 
-          return 'assets/[name]-[hash][extname]'
+          return '[name]-[hash][extname]'
         },
         chunkFileNames: 'src/[name]-[hash].js',
         entryFileNames: 'src/[name]-[hash].js'
