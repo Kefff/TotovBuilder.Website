@@ -195,7 +195,7 @@ export class BuildPropertiesService {
     const merchants: IShoppingListMerchant[] = []
 
     for (const item of shoppingList) {
-      if (item.price == null || item.price.valueInMainCurrency === 0) {
+      if (item.price == null || item.price.merchant === '') {
         // Happens when an item only has barters that have items with a missing price
         // This allows to display the barter to the user and to display the missing price icon on the barter items instead of the item itself
         continue
