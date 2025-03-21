@@ -7,7 +7,6 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
 
@@ -49,7 +48,6 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
   }))
 
 const filterInternal = ref(modelParameters.value.filter)
-const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 watch(
   () => modelParameters.value.filter,
@@ -128,7 +126,7 @@ function reset(): void {
         <InputTextField
           ref="buildsListSidebarFilterInput"
           v-model:value="filterInternal"
-          :autofocus="!isTouchScreen"
+          :autofocus="true"
           class="builds-list-sidebar-value"
           @keydown="onFilterKeyDown"
         />

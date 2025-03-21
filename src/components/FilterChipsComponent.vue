@@ -307,6 +307,7 @@ function switchSortOrder(): void {
       <!-- Sorting chip -->
       <Chip class="filter-chip">
         <Tooltip
+          :disabled-on-mobile="true"
           :full-size="true"
           :tooltip="switchSortOrderButtonTooltip"
           class="filter-chip-icon-button-left"
@@ -477,6 +478,7 @@ function switchSortOrder(): void {
           class="filter-chip-icon-button-right"
         >
           <Tooltip
+            :disabled-on-mobile="true"
             :full-size="true"
             :tooltip="$t('caption.removeFilter')"
             style="color: var(--error-color);"
