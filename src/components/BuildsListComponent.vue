@@ -341,15 +341,18 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 
 
 <style scoped>
-.builds-list-container {
-  height: 100%;
-}
-
 .builds-list {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
+}
+
+.builds-list-container {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
 }
 
 .builds-list-loading {

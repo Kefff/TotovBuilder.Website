@@ -320,7 +320,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 
 
 
-<style>
+<style scoped>
 .items-list {
   display: flex;
   flex-direction: column;
@@ -329,7 +329,10 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 }
 
 .items-list-container {
+  align-items: center;
+  display: flex;
   height: 100%;
+  justify-content: center;
 }
 
 .items-list-loading {
