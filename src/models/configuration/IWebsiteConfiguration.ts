@@ -103,6 +103,11 @@ export interface IWebsiteConfiguration {
   exportWarningShowedStorageKey: string
 
   /**
+   * Storage key for the value indicating whether the export warning should be showed.
+   */
+  exportWarningStorageKey: string
+
+  /**
    * Maximum number of tries when an error occurs when fetching data.
    */
   fetchMaxTries: number

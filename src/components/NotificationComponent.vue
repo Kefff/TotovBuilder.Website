@@ -9,6 +9,8 @@ const _notificationService = Services.get(NotificationService)
 
 const notifications = ref<INotification[]>([])
 
+const doNotShowAgain = ref(false)
+
 onMounted(() => {
   _notificationService.emitter.on(_notificationService.addedEventName, onNewNotification)
 })
@@ -16,6 +18,17 @@ onMounted(() => {
 onUnmounted(() => {
   _notificationService.emitter.off(_notificationService.addedEventName, onNewNotification)
 })
+
+/**
+ * Reacts to a notification being closed.
+ *
+ * Saves the "Do not show again" value.
+ */
+function onClose(notification: INotification): void {
+  if (notification.showNotificationStorageKey != null) {
+    localStorage.setItem(notification.showNotificationStorageKey, (!doNotShowAgain.value).toString())
+  }
+}
 
 /**
  * Executes the action linked to a notification button.
@@ -26,6 +39,8 @@ function executeButtonAction(notification: INotification, button: INotificationB
   if (button.action != null) {
     button.action()
   }
+
+  onClose(notification)
 
   const notificationIndex = notifications.value.indexOf(notification)
   notifications.value.splice(notificationIndex, 1)
@@ -86,9 +101,20 @@ function onNewNotification(notification: INotification): void {
       :life="notification.toastDuration"
       :severity="notification.type"
       :sticky="false"
+      @close="() => onClose(notification)"
     >
       <div class="notification-text">
         {{ notification.message }}
+      </div>
+      <div
+        v-if="notification.showNotificationStorageKey != null"
+        class="notification-do-not-show-again"
+      >
+        <Checkbox
+          v-model="doNotShowAgain"
+          :binary="true"
+        />
+        <span>{{ $t('caption.doNotShowAgain') }}</span>
       </div>
       <div class="notification-buttons">
         <div
@@ -167,6 +193,12 @@ function onNewNotification(notification: INotification): void {
 
 .notification-buttons-text {
   width: 100%;
+}
+
+.notification-do-not-show-again {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 /* Smartphone in portrait */

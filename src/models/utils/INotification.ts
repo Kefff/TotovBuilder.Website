@@ -31,6 +31,12 @@ export interface INotification {
   message: string
 
   /**
+   * Storage key of a value indicating whether the notification should be shown.
+   * Used to display a "Do not show again" checkbox.
+   */
+  showNotificationStorageKey?: string,
+
+  /**
    * Toast duration.
    */
   toastDuration: number | undefined

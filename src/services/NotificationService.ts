@@ -75,13 +75,21 @@ export class NotificationService {
    * @param buttons - Buttons to display.
    * When at least button exists, the default close button is hidden.
    * Clicking a button closes the notification.
+   * @param closable - Indicates whether the close button should be shown.
+   * @param showNotificationStorageKey - Storage key of a value indicating whether the notification should be shown.
+   * Used to display a "Do not show again" checkbox.
    */
   public notify(
     type: NotificationType,
     message: string,
     toastDuration: number | undefined = undefined,
     buttons: INotificationButton[] | undefined = undefined,
-    closable: boolean | undefined = undefined): void {
+    closable: boolean | undefined = undefined,
+    showNotificationStorageKey: string | undefined = undefined): void {
+    if (showNotificationStorageKey == null) {
+      return
+    }
+
     if (toastDuration == null) {
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
@@ -118,6 +126,7 @@ export class NotificationService {
     const notification: INotification = {
       buttons: buttons ?? [],
       closable: closable ?? (buttons?.length ?? 0) === 0,
+      showNotificationStorageKey,
       date: new Date(),
       id: Guid.create().toString(),
       message,

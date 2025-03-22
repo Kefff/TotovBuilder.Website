@@ -130,12 +130,26 @@ watch(
  * Checks whether builds have not been exported. Displays a warning if that is the case.
  */
 function checkBuildsNotExported(buildSummaries: IBuild[]): void {
-  const exportWarningShowedKey = _websiteConfigurationService.configuration.exportWarningShowedStorageKey
-  const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
+  let exportWarning = true
+  const rawExportWarning = localStorage.getItem(_websiteConfigurationService.configuration.exportWarningStorageKey)
+
+  if (rawExportWarning != null) {
+    exportWarning = rawExportWarning === 'true'
+  }
+
+  if (!exportWarning) {
+    return
+  }
+
+  const exportWarningShowed = sessionStorage.getItem(_websiteConfigurationService.configuration.exportWarningShowedStorageKey)
+
+  if (exportWarningShowed != null) {
+    return
+  }
 
   const hasBuildsNotExported = buildSummaries.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date()))
 
-  if (!hasBuildsNotExported || exportWarningShowed != null) {
+  if (!hasBuildsNotExported) {
     return
   }
 
@@ -152,9 +166,10 @@ function checkBuildsNotExported(buildSummaries: IBuild[]): void {
         type: NotificationType.success
       }
     ],
-    true
+    true,
+    _websiteConfigurationService.configuration.exportWarningStorageKey
   )
-  sessionStorage.setItem(exportWarningShowedKey, '')
+  sessionStorage.setItem(_websiteConfigurationService.configuration.exportWarningShowedStorageKey, '')
 }
 
 /**
