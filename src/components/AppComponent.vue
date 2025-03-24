@@ -109,7 +109,7 @@ async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
   discordUrl.value = _websiteConfigurationService.configuration.discordUrl
   githubUrl.value = _websiteConfigurationService.configuration.githubUrl
 
-  Services.get(GeneralOptionsService).getAllowCookiesIndicator() // Used to trigger the allow cookie check and display a notification
+  Services.get(GeneralOptionsService).getAllowCookiesOption() // Used to trigger the allow cookie check and display a notification
 
   if (_websiteConfigurationService.configuration.postUpdatePeriod) {
     Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)

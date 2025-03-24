@@ -86,10 +86,6 @@ export class NotificationService {
     buttons: INotificationButton[] | undefined = undefined,
     closable: boolean | undefined = undefined,
     showNotificationStorageKey: string | undefined = undefined): void {
-    if (showNotificationStorageKey == null) {
-      return
-    }
-
     if (toastDuration == null) {
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 

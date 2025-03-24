@@ -8,6 +8,7 @@ import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildService } from '../services/BuildService'
 import { ExportService } from '../services/ExportService'
+import { GeneralOptionsService } from '../services/GeneralOptionsService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ImportService } from '../services/ImportService'
@@ -130,12 +131,7 @@ watch(
  * Checks whether builds have not been exported. Displays a warning if that is the case.
  */
 function checkBuildsNotExported(buildSummaries: IBuild[]): void {
-  let exportWarning = true
-  const rawExportWarning = localStorage.getItem(_websiteConfigurationService.configuration.exportWarningStorageKey)
-
-  if (rawExportWarning != null) {
-    exportWarning = rawExportWarning === 'true'
-  }
+  const exportWarning = Services.get(GeneralOptionsService).getExportWarningOption()
 
   if (!exportWarning) {
     return

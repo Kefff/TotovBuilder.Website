@@ -14,10 +14,10 @@ export class GeneralOptionsService {
   private hasDisplayedAllowCookiesNotification = false
 
   /**
-   * Gets the allow cookies indicator.
-   * @returns `true` if no cookie
+   * Gets the allow cookies option.
+   * @returns `true` if no choice has been made, otherwise the choice value.
    */
-  public getAllowCookiesIndicator(): boolean {
+  public getAllowCookiesOption(): boolean {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     let allowCookies = true
@@ -36,14 +36,14 @@ export class GeneralOptionsService {
         0,
         [
           {
-            action: (): void => /* c8 ignore next */ this.setAllowCookiesIndicator(true),
+            action: (): void => /* c8 ignore next */ this.setAllowCookiesOption(true),
             caption: vueI18n.t('caption.allowCookies'),
             icon: undefined,
             name: 'allow',
             type: NotificationType.success
           },
           {
-            action: (): void => /* c8 ignore next */ this.setAllowCookiesIndicator(false),
+            action: (): void => /* c8 ignore next */ this.setAllowCookiesOption(false),
             caption: vueI18n.t('caption.rejectCookies'),
             icon: undefined,
             name: 'deny',
@@ -56,9 +56,26 @@ export class GeneralOptionsService {
   }
 
   /**
-   Sets the allow cookies indicator and deletes Application Insights cookies when disabling cookies.
+   * Gets the export warning option.
+   * @returns Export warning option value.
+   */
+  public getExportWarningOption(): boolean {
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+    let exportWarning = true
+    const storedValue = localStorage.getItem(websiteConfigurationService.configuration.exportWarningStorageKey)
+
+    if (storedValue != null) {
+      exportWarning = JSON.parse(storedValue)
+    }
+
+    return exportWarning
+  }
+
+  /**
+   Sets the allow cookies option and deletes Application Insights cookies when disabling cookies.
  */
-  public setAllowCookiesIndicator(allowCookies: boolean): void {
+  public setAllowCookiesOption(allowCookies: boolean): void {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     localStorage.setItem(websiteConfigurationService.configuration.allowCookiesStorageKey, allowCookies.toString())
     this.setCookieUsage(allowCookies)

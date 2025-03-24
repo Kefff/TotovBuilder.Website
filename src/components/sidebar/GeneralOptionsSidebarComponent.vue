@@ -4,18 +4,24 @@ import { IGeneralOption } from '../../models/utils/IGeneralOption'
 import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import Services from '../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
 
+const _generalOptionsService = Services.get(GeneralOptionsService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
 const allowCookies = ref(true)
+const exportWarning = ref(true)
 
 const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
 const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
 const additionalOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
 
 onMounted(() => {
-  allowCookies.value = Services.get(GeneralOptionsService).getAllowCookiesIndicator()
+  allowCookies.value = _generalOptionsService.getAllowCookiesOption()
+  exportWarning.value = _generalOptionsService.getExportWarningOption()
 })
 
 /**
@@ -36,19 +42,37 @@ function getAdditionalOptionCssClasses(option: IGeneralOption): string {
 /**
  * Reacts to the allow cookies option being changed.
  *
- * Sets the allow cookie indicator.
+ * Sets the allow cookies option.
  */
 function onAllowCookiesChanged(): void {
-  Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
+  _generalOptionsService.setAllowCookiesOption(allowCookies.value)
 }
 
 /**
- * Toggles a the allow cookes indicator.
+ * Reacts to the export warning option being changed.
+ *
+ * Sets the export warning option.
+ */
+function onExportWarningChanged(): void {
+  localStorage.setItem(_websiteConfigurationService.configuration.exportWarningStorageKey, exportWarning.value.toString())
+}
+
+/**
+ * Toggles the allow cookies option.
  * @param filter - Filter.
  */
-function toggleAllowCookies(): void {
+function toggleAllowCookiesValue(): void {
   allowCookies.value = !allowCookies.value
   onAllowCookiesChanged()
+}
+
+/**
+ * Toggles the export warning option.
+ * @param filter - Filter.
+ */
+function toggleExportWarningValue(): void {
+  exportWarning.value = !exportWarning.value
+  onExportWarningChanged()
 }
 </script>
 
@@ -93,14 +117,12 @@ function toggleAllowCookies(): void {
         @change="onAllowCookiesChanged()"
       />
     </div>
-    <div>
-      <div
-        class="general-options-name"
-        :class="!allowCookies ? ' sidebar-option-disabled' : ''"
-        @click="toggleAllowCookies()"
-      >
-        {{ $t('caption.allowCookies') }}
-      </div>
+    <div
+      class="general-options-name"
+      :class="!allowCookies ? ' sidebar-option-disabled' : ''"
+      @click="toggleAllowCookiesValue()"
+    >
+      {{ $t('caption.allowCookies') }}
     </div>
   </div>
   <div class="sidebar-option-description">
@@ -110,6 +132,22 @@ function toggleAllowCookies(): void {
     <span class="general-options-cookies-explanation">
       {{ $t('message.cookiesExplanation') }}
     </span>
+  </div>
+  <div class="sidebar-option">
+    <div class="sidebar-option-icon">
+      <Checkbox
+        v-model="exportWarning"
+        :binary="true"
+        @change="onExportWarningChanged()"
+      />
+    </div>
+    <div
+      class="general-options-name"
+      :class="!exportWarning ? ' sidebar-option-disabled' : ''"
+      @click="toggleExportWarningValue()"
+    >
+      {{ $t('caption.exportWarning') }}
+    </div>
   </div>
   <div
     v-for="(additionalGeneralOption, index) of additionalGeneralOptions"

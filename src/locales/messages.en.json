@@ -144,6 +144,7 @@
     "explosionRangeValue": "{min} to {max} m",
     "export": "Save to file",
     "exportBuilds": "Save builds to a file",
+    "exportWarning": "Notification for unexported builds",
     "filter": "Filter",
     "filteredWith1": "Category : {category}",
     "filteredWith2": "Filter : {filter}",

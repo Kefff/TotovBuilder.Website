@@ -113,6 +113,7 @@
     "explosionRangeValue": "{min} à {max} m",
     "export": "Sauvegarder vers fichier",
     "exportBuilds": "Sauvegarder équipements vers fichier",
+    "exportWarning": "Notification d'équipements non exportés",
     "filter": "Filtre",
     "filteredWith1": "Catégorie : {category}",
     "filteredWith2": "Filtre : {filter}",
