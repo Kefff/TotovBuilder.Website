@@ -817,9 +817,10 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
           <div
             v-show="isCompactBuildSummaryExpanded"
             class="build-summary-popup-button build-summary-popup-pin-button"
-            :class="{ 'build-summary-popup-unpin-button': isCompactBuildSummaryPinned }"
+            :style="{ 'background-color': isCompactBuildSummaryPinned ? 'var(--primary-color)' : 'var(--surface-a)' }"
             @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
           >
+            <!-- Style needed here instead of a class because the style was not updating when unpinning on mobile when deployed -->
             <font-awesome-icon icon="thumbtack" />
           </div>
         </div>
@@ -1063,10 +1064,6 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   left: calc(50% - 2.5rem);
   /* 5rem long element being centered */
   width: 5rem;
-}
-
-.build-summary-popup-unpin-button {
-  background-color: var(--primary-color);
 }
 
 .build-title {
