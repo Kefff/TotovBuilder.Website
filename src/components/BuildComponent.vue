@@ -567,7 +567,7 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
   if (isCompactBuildSummaryExpanded.value
     && isStickied
     && !isCompactBuildSummaryPinned.value) {
-    toggleCompactBuildSummaryAsync(false)
+    toggleCompactBuildSummaryAsync()
   }
 }
 
@@ -683,16 +683,10 @@ function startEdit(): void {
 
 /**
  * Toggles the visibility of the compact build summary.
- * @param unpin - Indicates whether the compact build summary must be unpinned if it is pinned.
- * Used when the compact build summary is pinned and compact build summary is hidden by cliking on the button.
  */
-async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
+async function toggleCompactBuildSummaryAsync(): Promise<void> {
   if (_isCompactSummaryExpanding) {
     return
-  }
-
-  if (unpin) {
-    isCompactBuildSummaryPinned.value = false
   }
 
   _isCompactSummaryExpanding = true
@@ -809,7 +803,7 @@ async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
         >
           <div
             class="build-summary-popup-button build-summary-popup-toggle-button"
-            @click="() => toggleCompactBuildSummaryAsync(true)"
+            @click="() => toggleCompactBuildSummaryAsync()"
           >
             <font-awesome-icon
               v-if="!isCompactBuildSummaryExpanded"
