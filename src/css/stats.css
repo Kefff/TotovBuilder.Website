@@ -21,6 +21,11 @@
   margin-top: 0.25rem;
 }
 
+.stats-highlighted {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
 .stats-line {
   display: grid;
   grid-column-gap: 5rem;

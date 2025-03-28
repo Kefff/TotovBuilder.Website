@@ -4,6 +4,7 @@ import { IItem } from '../../models/item/IItem'
 import { IModdable } from '../../models/item/IModdable'
 import { IPrice } from '../../models/item/IPrice'
 import { IListSelectionOptions } from '../../models/utils/IListSelectionOptions'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -17,10 +18,15 @@ import ItemCardSelector from './ItemCardSelectorComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
-const props = defineProps<{
-  item: IItem,
-  selectionOptions: IListSelectionOptions
-}>()
+const props = withDefaults(
+  defineProps<{
+    filterAndSortingData?: ItemFilterAndSortingData,
+    item: IItem,
+    selectionOptions: IListSelectionOptions
+  }>(),
+  {
+    filterAndSortingData: undefined
+  })
 
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -152,7 +158,10 @@ function showDetails(): void {
             v-if="item.weight != 0"
             :tooltip="$t('caption.weight')"
           >
-            <div class="card-value">
+            <div
+              class="card-value"
+              :class="StatsUtils.getSortedPropertyColorClass('weight', filterAndSortingData)"
+            >
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-before-text"
@@ -165,12 +174,16 @@ function showDetails(): void {
           <div
             v-if="(itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0) || itemUnitPrice?.currencyName === 'barter'"
             class="item-card-price"
+            :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
             <Price :price="itemUnitPrice" />
           </div>
         </div>
         <!-- Specialized stats -->
-        <ItemCardSelector :item="item" />
+        <ItemCardSelector
+          :filter-and-sorting-data="filterAndSortingData"
+          :item="item"
+        />
         <div
           v-if="selectionOptions.isEnabled"
           class="card-buttons"

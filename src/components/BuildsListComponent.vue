@@ -291,6 +291,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         <template #element="{ element }">
           <BuildCard
             :build-summary="element as IBuildSummary"
+            :filter-and-sorting-data="modelFilterAndSortingData"
             :is-selected="checkIsSelected(element as IBuildSummary)"
             :selection-options="selectionOptions"
             :show-actions-button="showActionsButton"
@@ -312,6 +313,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         <template #element="{ element }">
           <BuildCard
             :build-summary="element as IBuildSummary"
+            :filter-and-sorting-data="modelFilterAndSortingData"
             :is-selected="checkIsSelected(element as IBuildSummary)"
             :selection-options="selectionOptions"
             :show-actions-button="showActionsButton"

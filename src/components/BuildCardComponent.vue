@@ -2,6 +2,7 @@
 import { useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { IItem } from '../models/item/IItem'
+import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -18,12 +19,14 @@ const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 const props = withDefaults(
   defineProps<{
     buildSummary: IBuildSummary,
+    filterAndSortingData?: BuildFilterAndSortingData,
     selectionOptions: IListSelectionOptions,
     showActionsButton?: boolean,
     showNotExported: boolean,
     showShoppingList?: boolean
   }>(),
   {
+    filterAndSortingData: undefined,
     showActionsButton: true,
     showShoppingList: true
   })
@@ -197,7 +200,10 @@ function displayStats(item: IItem): void {
             v-if="buildSummary.weight !== 0"
             :tooltip="$t('caption.weight')"
           >
-            <div class="card-value">
+            <div
+              class="card-value"
+              :class="StatsUtils.getSortedPropertyColorClass('weight', filterAndSortingData)"
+            >
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-before-text"
@@ -210,6 +216,7 @@ function displayStats(item: IItem): void {
           <div
             v-if="buildSummary.price.priceInMainCurrency > 0"
             class="build-card-price"
+            :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
             <InventoryPrice
               :inventory-price="buildSummary.price"
@@ -228,7 +235,10 @@ function displayStats(item: IItem): void {
             v-if="buildSummary.recoil.verticalRecoil !== 0"
             :tooltip="$t('caption.verticalRecoil')"
           >
-            <div class="card-value">
+            <div
+              class="card-value"
+              :class="StatsUtils.getSortedPropertyColorClass('recoil', filterAndSortingData)"
+            >
               <font-awesome-icon
                 icon="arrows-alt-v"
                 class="icon-before-text"
@@ -252,7 +262,10 @@ function displayStats(item: IItem): void {
             v-if="buildSummary.ergonomics !== 0"
             :tooltip="$t('caption.ergonomicsModifierPercentage')"
           >
-            <div class="card-value">
+            <div
+              class="card-value"
+              :class="StatsUtils.getSortedPropertyColorClass('ergonomics', filterAndSortingData)"
+            >
               <font-awesome-icon
                 icon="hand-paper"
                 class="icon-before-text"
@@ -290,7 +303,10 @@ function displayStats(item: IItem): void {
             v-if="buildSummary.armorModifiers.armorClass > 0"
             :tooltip="$t('caption.armorClass')"
           >
-            <div class="card-value">
+            <div
+              class="card-value"
+              :class="StatsUtils.getSortedPropertyColorClass('armorClass', filterAndSortingData)"
+            >
               <font-awesome-icon
                 icon="award"
                 class="icon-before-text"
@@ -440,7 +456,6 @@ function displayStats(item: IItem): void {
 
 .build-card-title {
   font-size: 1rem;
-  font-weight: normal;
   overflow: hidden;
   width: 100%;
   max-height: 2.25rem;

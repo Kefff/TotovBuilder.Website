@@ -276,6 +276,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       >
         <template #element="{ element }">
           <ItemCard
+            :filter-and-sorting-data="filterAndSortingData"
             :item="<IItem>element"
             :is-selected="checkIsSelected(<IItem>element)"
             :selection-options="selectionOptions"
@@ -294,6 +295,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       >
         <template #element="{ element }">
           <ItemCard
+            :filter-and-sorting-data="filterAndSortingData"
             :item="<IItem>element"
             :is-selected="checkIsSelected(<IItem>element)"
             :selection-options="selectionOptions"

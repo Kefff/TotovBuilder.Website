@@ -1,6 +1,6 @@
 import { round } from 'round-ts'
-import { TarkovValuesService } from '../services/TarkovValuesService'
-import Services from '../services/repository/Services'
+import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
+import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 
 /**
  * Represents an utility class for manipulating item stats values.
@@ -41,6 +41,21 @@ export default class StatsUtils {
     }
 
     return displayValue
+  }
+
+  /**
+   * Gets the color class for highlighting a value based on sorting data.
+   * @param propertyName - Name of the property of the value to highlight.
+   * @param filterAndSortingData - Sorting data.
+   */
+  public static getSortedPropertyColorClass(
+    propertyName: string,
+    filterAndSortingData: BuildFilterAndSortingData | ItemFilterAndSortingData): string | undefined {
+    if (filterAndSortingData.property === propertyName) {
+      return 'stats-highlighted'
+    }
+
+    return undefined
   }
 
   /**
@@ -155,14 +170,17 @@ export default class StatsUtils {
    * @param weight - Weight.
    * @returns CSS color class.
    */
-  public static getWeightColorClass(weight: number): string {
-    if (weight > Services.get(TarkovValuesService).values.heavyEncumbermentWeight) {
-      return 'stats-encumberment-heavy'
-    } else if (weight > Services.get(TarkovValuesService).values.lightEncumbermentWeight) {
-      return 'stats-encumberment-light'
-    }
+  public static getWeightColorClass(weight: number): string | undefined {
+    // For now, since encumberment is based on the character strength that is not configurable,
+    // we do no display an encumberment color
 
-    return ''
+    // if (weight > Services.get(TarkovValuesService).values.heavyEncumbermentWeight) {
+    //   return 'stats-encumberment-heavy'
+    // } else if (weight > Services.get(TarkovValuesService).values.lightEncumbermentWeight) {
+    //   return 'stats-encumberment-light'
+    // }
+
+    return undefined
   }
 }
 
