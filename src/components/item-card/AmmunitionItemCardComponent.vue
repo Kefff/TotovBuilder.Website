@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { IAmmunition } from '../../models/item/IAmmunition'
 import { IItem } from '../../models/item/IItem'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import vueI18n from '../../plugins/vueI18n'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
@@ -11,10 +12,12 @@ import Tooltip from '../TooltipComponent.vue'
 const props = withDefaults(
   defineProps<{
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
-    displayEmptyLines: true
+    displayEmptyLines: true,
+    filterAndSortingData: undefined
   })
 
 const _chestHp = Services.get(TarkovValuesService).values.chestHp
@@ -53,7 +56,10 @@ const tooltip = computed(() =>
       class="ammunition-item-card-flesh-damage-group"
     >
       <Tooltip :tooltip="tooltip">
-        <div class="card-value ammunition-item-card-flesh-damage">
+        <div
+          class="card-value ammunition-item-card-flesh-damage"
+          :class="StatsUtils.getSortedPropertyColorClass('fleshDamage', filterAndSortingData)"
+        >
           <div class="flesh-damage">
             <font-awesome-icon
               icon="heart-broken"
@@ -88,7 +94,10 @@ const tooltip = computed(() =>
       v-if="ammunition.penetratedArmorLevel > 0"
       :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('penetratedArmorLevel', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="award"
           :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
@@ -100,7 +109,10 @@ const tooltip = computed(() =>
       v-if="ammunition.penetrationPower > 0"
       :tooltip="$t('caption.penetrationPower')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('penetrationPower', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="bolt"
           class="icon-before-text"
@@ -150,7 +162,10 @@ const tooltip = computed(() =>
       v-if="ammunition.fragmentationChance > 0"
       :tooltip="$t('caption.fragmentationChance')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('fragmentationChance', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="viruses"
           class="icon-before-text"
@@ -162,7 +177,10 @@ const tooltip = computed(() =>
       v-if="ammunition.recoilModifier !== 0"
       :tooltip="$t('caption.recoilModifier')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('recoilModifier', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="arrows-alt"
           class="icon-before-text"
@@ -176,7 +194,10 @@ const tooltip = computed(() =>
       v-if="ammunition.accuracyModifierPercentage !== 0"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('accuracyModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="bullseye"
           class="icon-before-text"

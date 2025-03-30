@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import AmmunitionItemCard from './AmmunitionItemCardComponent.vue'
@@ -23,10 +24,12 @@ type SpecializedComponent = typeof AmmunitionItemCard | typeof ArmorItemCard | t
 
 const props = withDefaults(
   defineProps<{
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     isSelectable?: boolean
   }>(),
   {
+    filterAndSortingData: undefined,
     isSelectable: false
   })
 
@@ -100,6 +103,7 @@ function getSpecializedComponent(itemCategoryId: ItemCategoryId): SpecializedCom
   <component
     :is="specializedComponent"
     v-if="specializedComponent != null"
+    :filter-and-sorting-data="filterAndSortingData"
     :item="item"
   />
 </template>

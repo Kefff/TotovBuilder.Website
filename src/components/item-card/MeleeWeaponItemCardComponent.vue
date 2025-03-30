@@ -3,10 +3,19 @@ import { computed } from 'vue'
 import Images from '../../images'
 import { IItem } from '../../models/item/IItem'
 import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import StatsUtils from '../../utils/StatsUtils'
 import CustomIcon from '../CustomIconComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
 
-const props = defineProps<{ item: IItem }>()
+const props = withDefaults(
+  defineProps<{
+    filterAndSortingData?: ItemFilterAndSortingData,
+    item: IItem
+  }>(),
+  {
+    filterAndSortingData: undefined
+  })
 
 const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 </script>
@@ -22,7 +31,10 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 
 <template>
   <div class="card-line card-line4">
-    <Tooltip :tooltip="$t('caption.chopDamage')">
+    <Tooltip
+      :tooltip="$t('caption.chopDamage')"
+      :class="StatsUtils.getSortedPropertyColorClass('chopDamage', filterAndSortingData)"
+    >
       <CustomIcon
         :icon="Images.chop"
         position="before"
@@ -30,7 +42,10 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
         <span>{{ meleeWeapon.chopDamage }}</span>
       </CustomIcon>
     </Tooltip>
-    <Tooltip :tooltip="$t('caption.stabDamage')">
+    <Tooltip
+      :tooltip="$t('caption.stabDamage')"
+      :class="StatsUtils.getSortedPropertyColorClass('stabDamage', filterAndSortingData)"
+    >
       <CustomIcon
         :icon="Images.stab"
         position="before"
@@ -38,7 +53,10 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
         <span>{{ meleeWeapon.stabDamage }}</span>
       </CustomIcon>
     </Tooltip>
-    <Tooltip :tooltip="$t('caption.hitRadius')">
+    <Tooltip
+      :tooltip="$t('caption.hitRadius')"
+      :class="StatsUtils.getSortedPropertyColorClass('hitRadius', filterAndSortingData)"
+    >
       <div class="card-value">
         <font-awesome-icon
           icon="dot-circle"

@@ -2,16 +2,19 @@
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IMod } from '../../models/item/IMod'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
-    displayEmptyLines: true
+    displayEmptyLines: true,
+    filterAndSortingData: undefined
   })
 
 const ergonomicsModifier = computed(() => mod.value.presetErgonomicsModifier ?? mod.value.ergonomicsModifier)
@@ -37,7 +40,10 @@ const mod = computed(() => props.item as IMod)
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('ergonomicsModifier', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="hand-paper"
           class="icon-before-text"

@@ -2,16 +2,19 @@
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
-    displayEmptyLines: true
+    displayEmptyLines: true,
+    filterAndSortingData: undefined
   })
 
 const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
@@ -39,7 +42,10 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('ergonomicsModifier', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="hand-paper"
           class="icon-before-text"
@@ -53,7 +59,10 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
       v-if="rangedWeaponMod.recoilModifierPercentage !== 0"
       :tooltip="$t('caption.recoilModifierPercentage')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('recoilModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="arrows-alt"
           class="icon-before-text"
@@ -67,7 +76,10 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
       v-if="rangedWeaponMod.accuracyModifierPercentage !== 0"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('accuracyModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="bullseye"
           class="icon-before-text"

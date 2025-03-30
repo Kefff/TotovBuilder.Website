@@ -4,7 +4,9 @@ import Images from '../../images'
 import { IHeadwear } from '../../models/item/IHeadwear'
 import { IItem } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import StatsUtils from '../../utils/StatsUtils'
 import CustomIcon from '../CustomIconComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
 import ArmorItemCard from './ArmorItemCardComponent.vue'
@@ -13,6 +15,7 @@ const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
     item: IItem,
@@ -21,6 +24,7 @@ const props = withDefaults(
   {
     armorModifiersOverride: undefined,
     displayEmptyLines: true,
+    filterAndSortingData: undefined,
     isBaseItem: false,
     includeModsAndContent: false,
     wearableModifiersOverride: undefined
@@ -45,23 +49,29 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
   <ArmorItemCard
     :armor-modifiers-override="armorModifiers"
     :display-empty-lines="displayEmptyLines"
+    :filter-and-sorting-data="filterAndSortingData"
     :include-mods-and-content="includeModsAndContent"
     :is-base-item="isBaseItem"
     :item="headwear"
     :wearable-modifiers-override="wearableModifiers"
   >
-    <Tooltip
-      v-if="!isBaseItem && hasRicochetChance"
-      :tooltip="$t('caption.ricochetChance')"
-      :class="{ 'headwear-item-card-bold': props.includeModsAndContent }"
-    >
-      <CustomIcon
-        :icon="Images.ricochet"
-        position="before"
+    <template #slot>
+      <Tooltip
+        v-if="!isBaseItem && hasRicochetChance"
+        :tooltip="$t('caption.ricochetChance')"
+        :class="[
+          props.includeModsAndContent ? 'headwear-item-card-bold' : undefined,
+          StatsUtils.getSortedPropertyColorClass('ricochetChance', filterAndSortingData)
+        ]"
       >
-        <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
-      </CustomIcon>
-    </Tooltip>
+        <CustomIcon
+          :icon="Images.ricochet"
+          position="before"
+        >
+          <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
+        </CustomIcon>
+      </Tooltip>
+    </template>
   </ArmorItemCard>
 </template>
 

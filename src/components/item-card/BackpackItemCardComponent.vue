@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { IBackpack } from '../../models/item/IBackpack'
 import { IItem } from '../../models/item/IItem'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import ContainerItemCard from './ContainerItemCardComponent.vue'
 import WearableItemCard from './WearableItemCardComponent.vue'
@@ -9,11 +10,13 @@ import WearableItemCard from './WearableItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     displayEmptyLines: true,
+    filterAndSortingData: undefined,
     wearableModifiersOverride: undefined
   })
 
@@ -31,9 +34,13 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? back
 
 
 <template>
-  <ContainerItemCard :item="backpack" />
+  <ContainerItemCard
+    :filter-and-sorting-data="filterAndSortingData"
+    :item="backpack"
+  />
   <WearableItemCard
     :display-empty-lines="displayEmptyLines"
+    :filter-and-sorting-data="filterAndSortingData"
     :item="backpack"
     :wearable-modifiers-override="wearableModifiers"
   />

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 import ContainerItemCard from './ContainerItemCardComponent.vue'
@@ -9,10 +10,12 @@ import ContainerItemCard from './ContainerItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
-    displayEmptyLines: true
+    displayEmptyLines: true,
+    filterAndSortingData: undefined
   })
 
 const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
@@ -29,7 +32,10 @@ const magazine = computed(() => props.item as IMagazine)
 
 
 <template>
-  <ContainerItemCard :item="magazine" />
+  <ContainerItemCard
+    :filter-and-sorting-data="filterAndSortingData"
+    :item="magazine"
+  />
   <div
     v-if="displayEmptyLines
       || ergonomicsModifier !== 0
@@ -41,7 +47,10 @@ const magazine = computed(() => props.item as IMagazine)
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('ergonomicsModifier', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="hand-paper"
           class="icon-before-text"
@@ -55,7 +64,10 @@ const magazine = computed(() => props.item as IMagazine)
       v-if="magazine.loadSpeedModifierPercentage !== 0"
       :tooltip="$t('caption.loadSpeedModifierPercentage')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('loadSpeedModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="sync-alt"
           class="icon-before-text"
@@ -69,7 +81,10 @@ const magazine = computed(() => props.item as IMagazine)
       v-if="magazine.checkSpeedModifierPercentage !== 0"
       :tooltip="$t('caption.checkSpeedModifierPercentage')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('checkSpeedModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="eye"
           class="icon-before-text"

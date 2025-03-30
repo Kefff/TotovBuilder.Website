@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IWearable } from '../../models/item/IWearable'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
@@ -9,12 +10,14 @@ import Tooltip from '../TooltipComponent.vue'
 const props = withDefaults(
   defineProps<{
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     displayEmptyLines: true,
+    filterAndSortingData: undefined,
     includeModsAndContent: false,
     wearableModifiersOverride: undefined
   })
@@ -47,7 +50,10 @@ const wearable = computed(() => props.item as IWearable)
       :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('ergonomicsModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="hand-paper"
           class="icon-before-text"
@@ -62,7 +68,10 @@ const wearable = computed(() => props.item as IWearable)
       :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('movementSpeedModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="walking"
           class="icon-before-text"
@@ -77,7 +86,10 @@ const wearable = computed(() => props.item as IWearable)
       :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('turningSpeedModifierPercentage', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="undo"
           class="icon-before-text"

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { IArmorMod } from '../../models/item/IArmorMod'
 import { IItem } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import ArmorItemCard from './ArmorItemCardComponent.vue'
 
@@ -10,12 +11,14 @@ const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     armorModifiersOverride: undefined,
     displayEmptyLines: true,
+    filterAndSortingData: undefined,
     wearableModifiersOverride: undefined
   })
 
@@ -37,6 +40,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? armo
   <ArmorItemCard
     :armor-modifiers-override="armorModifiers"
     :display-empty-lines="displayEmptyLines"
+    :filter-and-sorting-data="filterAndSortingData"
     :item="armorMod"
     :wearable-modifiers-override="wearableModifiers"
   />

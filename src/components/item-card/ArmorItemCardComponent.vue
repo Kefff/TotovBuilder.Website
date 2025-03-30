@@ -3,10 +3,12 @@ import { computed } from 'vue'
 import { IArmor } from '../../models/item/IArmor'
 import { IItem } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import vueI18n from '../../plugins/vueI18n'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
+import StatsUtils from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 import WearableItemCard from './WearableItemCardComponent.vue'
 
@@ -14,6 +16,7 @@ const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers
     displayEmptyLines?: boolean,
+    filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
     item: IItem,
@@ -22,6 +25,7 @@ const props = withDefaults(
   {
     armorModifiersOverride: undefined,
     displayEmptyLines: true,
+    filterAndSortingData: undefined,
     includeModsAndContent: false,
     isBaseItem: false,
     wearableModifiersOverride: undefined
@@ -66,7 +70,10 @@ const tooltipSuffix = computed(() => {
       :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.durability') + tooltipSuffix"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('durability', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="heart"
           class="icon-before-text armor-item-card-durability"
@@ -79,7 +86,10 @@ const tooltipSuffix = computed(() => {
       :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.armorClass') + tooltipSuffix"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('armorClass', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="award"
           class="icon-before-text"
@@ -91,6 +101,7 @@ const tooltipSuffix = computed(() => {
   </div>
   <WearableItemCard
     :display-empty-lines="displayEmptyLines"
+    :filter-and-sorting-data="filterAndSortingData"
     :include-mods-and-content="includeModsAndContent"
     :item="armor"
     :wearable-modifiers-override="wearableModifiersOverride"

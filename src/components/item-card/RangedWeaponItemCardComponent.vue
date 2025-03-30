@@ -4,6 +4,7 @@ import Images from '../../images'
 import { IItem } from '../../models/item/IItem'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
@@ -11,12 +12,14 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     item: IItem,
     isBaseItem?: boolean,
     rangedWeaponsModifiersOverride?: IRangedWeaponModifiers
   }>(),
   {
+    filterAndSortingData: undefined,
     includeModsAndContent: false,
     isBaseItem: false,
     rangedWeaponsModifiersOverride: undefined
@@ -43,7 +46,10 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('verticalRecoil', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="arrows-alt-v"
           class="icon-before-text"
@@ -55,7 +61,10 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.horizontalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('horizontalRecoil', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="arrows-alt-h"
           class="icon-before-text"
@@ -67,7 +76,10 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.ergonomics') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <div class="card-value">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('ergonomics', filterAndSortingData)"
+      >
         <font-awesome-icon
           icon="hand-paper"
           class="icon-before-text"
@@ -80,7 +92,10 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     v-if="!isBaseItem"
     class="card-line card-line4"
   >
-    <Tooltip :tooltip="$t('caption.fireRate')">
+    <Tooltip
+      :tooltip="$t('caption.fireRate')"
+      :class="StatsUtils.getSortedPropertyColorClass('fireRate', filterAndSortingData)"
+    >
       <CustomIcon
         :icon="Images.fireRate"
         position="before"
@@ -93,6 +108,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     <Tooltip
       :tooltip="$t('caption.caliber')"
       class="ranged-weapon-item-card-long"
+      :class="StatsUtils.getSortedPropertyColorClass('caliber', filterAndSortingData)"
     >
       <CustomIcon
         :icon="Images.caliber"

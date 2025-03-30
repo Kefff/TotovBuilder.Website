@@ -50,8 +50,8 @@ export default class StatsUtils {
    */
   public static getSortedPropertyColorClass(
     propertyName: string,
-    filterAndSortingData: BuildFilterAndSortingData | ItemFilterAndSortingData): string | undefined {
-    if (filterAndSortingData.property === propertyName) {
+    filterAndSortingData: BuildFilterAndSortingData | ItemFilterAndSortingData | undefined): string | undefined {
+    if (filterAndSortingData?.property === propertyName) {
       return 'stats-highlighted'
     }
 

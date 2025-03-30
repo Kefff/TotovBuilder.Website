@@ -282,7 +282,7 @@ function openNewBuild(): void {
           :get-builds-function="getLastBuilds"
           :max-elements-per-line="_lastBuildsCount"
           :selection-options="{
-            canUnselect: true,
+            canUnselect: false,
             isEnabled: true,
             isMultiSelection: false,
             selectionButtonCaption: 'caption.edit',
