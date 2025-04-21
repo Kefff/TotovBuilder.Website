@@ -138,8 +138,7 @@ async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<v
     // Updating the filter and sorting data will call again filterAndSortItemsAsync.
     // The second time it is called, itemsListNeedsUpdate will be false and items will only be filtered and sorted
   } else {
-    itemsToFilterAndSort = filteredAnSortedItems.value
-
+    itemsToFilterAndSort = [...filteredAnSortedItems.value]
     itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
     itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
     filteredAnSortedItems.value = itemsToFilterAndSort
@@ -266,7 +265,8 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         filter-sidebar-component="ItemsListSidebar"
       />
       <InfiniteScroller
-        v-if="infiniteScrolling && filteredAnSortedItems.length > 0 && !isLoading"
+        v-if="infiniteScrolling && filteredAnSortedItems.length > 0"
+        v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
         :element-height="selectionOptions.isEnabled ? 211 : 162"
         :elements-per-line="itemsPerLine"
@@ -285,7 +285,8 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         </template>
       </InfiniteScroller>
       <Paginator
-        v-else-if="!infiniteScrolling && filteredAnSortedItems.length > 0 && !isLoading"
+        v-else-if="!infiniteScrolling && filteredAnSortedItems.length > 0"
+        v-show="!isLoading"
         :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
         :elements-per-line="itemsPerLine"
         :elements="filteredAnSortedItems"

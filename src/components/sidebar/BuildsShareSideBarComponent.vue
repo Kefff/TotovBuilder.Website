@@ -460,6 +460,8 @@ function toggleSelection(): void {
 }
 
 .builds-share-sidebar-large > div {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -514,10 +516,12 @@ function toggleSelection(): void {
 
 .builds-share-sidebar-text {
   margin-top: 0.5rem;
-  width: 100%;
+  min-height: 30rem;
+  height: 100%;
 }
 
 .builds-share-sidebar-text > textarea {
+  height: 100%;
   width: 100%;
 }
 

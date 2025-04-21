@@ -281,7 +281,8 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         filter-sidebar-component="BuildsListSidebar"
       />
       <InfiniteScroller
-        v-if="infiniteScrolling && filteredAndSortedBuildSummaries.length > 0 && !isLoading"
+        v-if="infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
+        v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
         :element-height="244"
         :elements-per-line="buildsPerLine"
@@ -302,7 +303,8 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         </template>
       </InfiniteScroller>
       <Paginator
-        v-else-if="!infiniteScrolling && filteredAndSortedBuildSummaries.length > 0 && !isLoading"
+        v-else-if="!infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
+        v-show="!isLoading"
         v-model:current-page="modelCurrentPage"
         :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
         :elements-per-line="buildsPerLine"
