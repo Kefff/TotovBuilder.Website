@@ -6,6 +6,7 @@ import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOptio
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
+import { SocialMedias } from '../../models/utils/SocialMedias'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -44,16 +45,16 @@ const _toolbarButtons: IToolbarButton[] = [
 ]
 const _typeOptions: IBuildsShareTypeOption[] = [
   {
-    caption: 'caption.redditMarkdown',
-    icon: ['fab', 'reddit-alien'],
-    iconCssClass: 'builds-share-sidebar-type-option-reddit-icon',
-    type: 'redditMarkdown'
-  },
-  {
     caption: 'caption.discordMarkdown',
-    icon: ['fab', 'discord'],
+    icon: ['fab', SocialMedias.discord.iconName],
     iconCssClass: 'builds-share-sidebar-type-option-discord-icon',
     type: 'discordMarkdown'
+  },
+  {
+    caption: 'caption.redditMarkdown',
+    icon: ['fab', SocialMedias.reddit.iconName],
+    iconCssClass: 'builds-share-sidebar-type-option-reddit-icon',
+    type: 'redditMarkdown'
   },
   {
     caption: 'caption.simpleText',
@@ -540,6 +541,10 @@ function toggleSelection(): void {
   display: flex;
   gap: 0.5rem;
   height: 2.5rem;
+}
+
+.builds-share-sidebar-type-option > span {
+  white-space: normal;
 }
 
 .builds-share-sidebar-type-option-discord-icon {

@@ -191,41 +191,43 @@ function scrollToElement(elementIndex?: number): void {
 
 
 <template>
-  <div class="paginator-container">
-    <TransitionGroup name="paginator-page-transition">
-      <div
-        :key="modelCurrentPage"
-        ref="paginator"
-        class="paginator"
-        :class="{ 'paginator-animated': !isSwiping }"
-      >
+  <div>
+    <div class="paginator-container">
+      <TransitionGroup name="paginator-page-transition">
         <div
-          v-for="(line, index) of displayedLines"
-          :key="index"
-          class="paginator-line"
+          :key="modelCurrentPage"
+          ref="paginator"
+          class="paginator"
+          :class="{ 'paginator-animated': !isSwiping }"
         >
-          <slot
-            v-for="element of line"
-            :key="getKeyFunction(element)"
-            name="element"
-            :element="element"
-          />
+          <div
+            v-for="(line, index) of displayedLines"
+            :key="index"
+            class="paginator-line"
+          >
+            <slot
+              v-for="element of line"
+              :key="getKeyFunction(element)"
+              name="element"
+              :element="element"
+            />
+          </div>
         </div>
-      </div>
-    </TransitionGroup>
-  </div>
-  <div
-    v-if="hasMultiplePages"
-    class="paginator-pages"
-  >
-    <Paginator
-      v-model:first="first"
-      :rows="linesPerPage"
-      :total-records="groupedElements.length"
-      :page-link-size="pageLinksCount"
-      template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown"
-      @page="onPageChange($event.page)"
-    />
+      </TransitionGroup>
+    </div>
+    <div
+      v-if="hasMultiplePages"
+      class="paginator-pages"
+    >
+      <Paginator
+        v-model:first="first"
+        :rows="linesPerPage"
+        :total-records="groupedElements.length"
+        :page-link-size="pageLinksCount"
+        template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown"
+        @page="onPageChange($event.page)"
+      />
+    </div>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDiscord, faGithub, faRedditAlien } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faFacebook, faFacebookMessenger, faGithub, faMastodon, faRedditAlien, faTelegram, faTwitter, faVk, faWeixin, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
   faArrowLeft,
   faArrowRight,
@@ -132,12 +132,15 @@ export function useFontAwesome(app: App<Element>): void {
     faEdit,
     faEllipsisH,
     faEnvelope,
+    faEnvelope,
     faEuroSign,
     faExchangeAlt,
     faExclamationCircle,
     faExclamationTriangle,
     faEye,
     faEyeSlash,
+    faFacebook,
+    faFacebookMessenger,
     faFile,
     faFileUpload,
     faFilter,
@@ -162,6 +165,7 @@ export function useFontAwesome(app: App<Element>): void {
     faLock,
     faLowVision,
     faMask,
+    faMastodon,
     faMinusSquare,
     faPlus,
     faPlusSquare,
@@ -183,20 +187,25 @@ export function useFontAwesome(app: App<Element>): void {
     faSwatchbook,
     faSyncAlt,
     faTablets,
+    faTelegram,
     faThLarge,
     faThumbtack,
     faTimes,
     faTint,
     faTrash,
     faTv,
+    faTwitter,
     faUndo,
     faUserTag,
     faVest,
     faViruses,
+    faVk,
     faWalking,
     faWalking,
     faWallet,
     faWeightHanging,
+    faWeixin,
+    faWhatsapp,
     faWind
   )
   app.component('FontAwesomeIcon', FontAwesomeIcon)

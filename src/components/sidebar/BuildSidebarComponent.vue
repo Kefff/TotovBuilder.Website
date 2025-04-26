@@ -6,6 +6,7 @@ import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import ShareButtons from '../ShareButtonsComponent.vue'
 
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
 
@@ -80,15 +81,19 @@ function exportBuild(): void {
 
 <template>
   <div class="sidebar-option">
+    <ShareButtons :get-url-to-share-function="() => _buildService.toSharableUrlAsync(parameters)" />
+  </div>
+  <div class="sidebar-option">
     <Button
       class="build-sidebar-button"
+      outlined
       @click="displayBuildsShareSideBar()"
     >
       <font-awesome-icon
         icon="share-alt"
         class="icon-before-text"
       />
-      <span>{{ $t('caption.share') }}</span>
+      <span>{{ $t('caption.more-sharing-options') }}</span>
     </Button>
   </div>
   <div class="sidebar-option">
