@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SocialMedia, SocialMedias } from '../models/utils/SocialMedias'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{ getUrlToShareFunction: () => Promise<string | undefined> }>()
@@ -9,15 +10,22 @@ const props = defineProps<{ getUrlToShareFunction: () => Promise<string | undefi
  *
  * Gets the URL to use to share and opens it.
  */
-async function onClickAsync(socialMedia: SocialMedia): Promise<void> {
+async function onClickAsync(socialMedia: SocialMedia | 'link'): Promise<void> {
   const urlToShare = await props.getUrlToShareFunction()
 
-  if (urlToShare != null) {
-    const socialMediaUrl = SocialMedias.getSociamMediaShareUrl(socialMedia, urlToShare)
-    window.open(socialMediaUrl, '_blank')
+  if (urlToShare == null) {
+    return
   }
-}
 
+  if (socialMedia === 'link') {
+    WebBrowserUtils.copyToClipboardAsync(urlToShare)
+
+    return
+  }
+
+  const socialMediaUrl = SocialMedias.getSocialMediaShareUrl(socialMedia, urlToShare)
+  window.open(socialMediaUrl, '_blank')
+}
 </script>
 
 
@@ -31,6 +39,17 @@ async function onClickAsync(socialMedia: SocialMedia): Promise<void> {
 
 <template>
   <div class="share-buttons">
+    <Tooltip
+      :tooltip="$t('caption.shareByLink')"
+      :disabled-on-mobile="true"
+    >
+      <a
+        class="link share-buttons-link"
+        @click="() => onClickAsync('link')"
+      >
+        <font-awesome-icon :icon="['fas', 'link']" />
+      </a>
+    </Tooltip>
     <Tooltip
       :tooltip="$t('caption.shareOnDiscord')"
       :disabled-on-mobile="true"
@@ -220,8 +239,14 @@ async function onClickAsync(socialMedia: SocialMedia): Promise<void> {
   color: #0866ff;
 }
 
+.share-buttons-link {
+  color: white;
+  font-size: 1.25rem;
+}
+
 .share-buttons-mail {
   color: white;
+  font-size: 1.25rem;
 }
 
 .share-buttons-mastodon {

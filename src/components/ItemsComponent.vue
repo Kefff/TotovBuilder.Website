@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
+import { Seo } from '../models/utils/Seo'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
@@ -55,6 +56,10 @@ const isLoading = ref(true)
 const itemsToolbar = useTemplateRef('itemsToolbar')
 
 const toolbarContainer = computed(() => itemsToolbar.value?.container)
+
+Seo.updateSeoMetadata({
+  title: vueI18n.t('caption.items')
+})
 
 onMounted(() => getInitialFilterAndSortingData())
 

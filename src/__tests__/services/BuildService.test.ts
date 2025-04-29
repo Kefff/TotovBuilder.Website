@@ -408,10 +408,10 @@ describe('toSharableUrlAsync', () => {
     const service = new BuildService()
 
     // Act
-    const sharableString = await service.toSharableUrlAsync(build)
+    const sharableUrl = await service.toSharableUrlAsync(build)
 
     // Assert
-    expect(sharableString).toBe(`localhost:3000/s/${expectedSharableString}`)
+    expect(sharableUrl).toBe(`localhost:3000/s/${expectedSharableString}`)
   })
 
   it('should return undefined and notify when the URL is longer thant 2048 characters', async () => {
@@ -427,10 +427,10 @@ describe('toSharableUrlAsync', () => {
     const service = new BuildService()
 
     // Act
-    const sharableStringResult = await service.toSharableUrlAsync(build1)
+    const sharableUrl = await service.toSharableUrlAsync(build1)
 
     // Assert
-    expect(sharableStringResult).toBeUndefined()
+    expect(sharableUrl).toBeUndefined()
     verify(notificationServiceMock.notify(NotificationType.warning, 'Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Save builds to a file" button to save it as a file that can be imported by another person.')).once()
   })
 })

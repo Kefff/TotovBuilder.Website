@@ -2,6 +2,7 @@
 import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import Images from '../images'
 import { IBuild } from '../models/build/IBuild'
+import { Seo } from '../models/utils/Seo'
 import vueI18n from '../plugins/vueI18n'
 import router from '../plugins/vueRouter'
 import { BuildService } from '../services/BuildService'
@@ -29,6 +30,7 @@ const hasBuilds = ref(false)
 const isLoadingWebsite = ref(true)
 const isLoadingLastBuilds = ref(true)
 
+Seo.updateSeoMetadata()
 
 onMounted(() => {
   _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)

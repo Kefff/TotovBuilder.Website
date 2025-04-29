@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Images from '../images'
+import { Seo } from '../models/utils/Seo'
 import vueI18n from '../plugins/vueI18n'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
@@ -52,6 +53,8 @@ const githubUrl = ref<string>()
 const hasNewVersion = ref(false)
 const loading = ref(true)
 const version = ref('1.0.0')
+
+Seo.initialize()
 
 onMounted(() => {
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {

@@ -7,6 +7,7 @@ import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { InventorySlotSelectorSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
+import { Seo } from '../models/utils/Seo'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
@@ -282,7 +283,6 @@ function addNavigationGuards(): void {
         || from.name === 'ShareBuild'
       if (isBuildScreen
         && isEditing.value) {
-        //const confirmationDialogResult = confirm(vueI18n.t('message.confirmLeaveBuildWithoutSaving'))
         const action = new Promise<void>((resolve) => {
           displayConfirmationDialog({
             mainButtonAction: () => {
@@ -471,6 +471,14 @@ async function getSharedBuildAsync(sharableString: string): Promise<void> {
 }
 
 /**
+ * Updates SEO metadata.
+ */
+function updateSeoMetadata(): void {
+  const seoMetadata = _buildPropertiesService.toSeoMetadata(summary.value, window.location.toString())
+  Seo.updateSeoMetadata(seoMetadata)
+}
+
+/**
  * Redirects to the builds page.
  */
 function goToBuilds(): void {
@@ -636,8 +644,6 @@ async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Pro
     isLoading.value = false
     isEditing.value = false
   })
-
-
 }
 
 /**
@@ -649,6 +655,7 @@ async function setSummaryAsync(): Promise<void> {
   }
 
   summary.value = await _buildPropertiesService.getSummaryAsync(build.value)
+  updateSeoMetadata() // Updating SEO metadata with informations about the build
 }
 
 /**

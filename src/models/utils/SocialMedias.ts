@@ -86,7 +86,7 @@ export class SocialMedias {
  * @param socialMedia - Social media.
  * @param urlToShare - URL to share.
  */
-  public static getSociamMediaShareUrl(socialMedia: SocialMedia, urlToShare: string): string {
+  public static getSocialMediaShareUrl(socialMedia: SocialMedia, urlToShare: string): string {
     switch (socialMedia) {
       case SocialMedia.bluesky:
         return ''

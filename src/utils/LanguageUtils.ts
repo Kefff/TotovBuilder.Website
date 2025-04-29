@@ -1,4 +1,3 @@
-import { useSeoMeta } from 'unhead'
 import vueI18n from '../plugins/vueI18n'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
@@ -36,10 +35,5 @@ export default class LanguageUtils {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     vueI18n.locale.value = language as 'en' | 'fr'
     localStorage.setItem(websiteConfigurationService.configuration.languageStorageKey, language)
-
-    useSeoMeta({
-      title: vueI18n.t('caption.metaTitle'),
-      description: vueI18n.t('caption.metaDescription')
-    })
   }
 }

@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
+import { Seo } from '../models/utils/Seo'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildService } from '../services/BuildService'
@@ -106,6 +107,10 @@ const currentPage = ref(0)
 const filterAndSortingData = ref(new BuildFilterAndSortingData())
 const isLoading = ref(true)
 const hasBuilds = ref(false)
+
+Seo.updateSeoMetadata({
+  title: vueI18n.t('caption.builds')
+})
 
 onMounted(() => {
   _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
