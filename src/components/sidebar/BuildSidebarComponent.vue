@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
@@ -11,9 +13,14 @@ import ShareButtons from '../ShareButtonsComponent.vue'
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
 
 const _buildService = Services.get(BuildService)
+const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+
 const _router = useRouter()
+
+let _getSummaryPromise: Promise<IBuildSummary> | undefined = undefined
+let _summary: IBuildSummary | undefined = undefined
 
 const isDeleting = ref(false)
 
@@ -68,6 +75,36 @@ function exportBuild(): void {
   _exportService.exportAsync([props.parameters])
   _globalSidebarService.close('BuildSidebar')
 }
+
+/**
+ * Gets the description of a build for SEO.
+ */
+async function getSeoDescriptionAsync(): Promise<string> {
+  if (_summary == null && _getSummaryPromise == null) {
+    _getSummaryPromise = _buildPropertiesService.getSummaryAsync(props.parameters)
+    _summary = await _getSummaryPromise
+  } else {
+    await _getSummaryPromise
+  }
+
+  const description = _buildPropertiesService.getSeoDescription(_summary!)
+
+  return description
+}
+
+/**
+ * Gets the title of a build for SEO.
+ */
+async function getSeoTitleAsync(): Promise<string> {
+  if (_summary == null && _getSummaryPromise == null) {
+    _getSummaryPromise = _buildPropertiesService.getSummaryAsync(props.parameters)
+    _summary = await _getSummaryPromise
+  } else {
+    await _getSummaryPromise
+  }
+
+  return _summary!.name
+}
 </script>
 
 
@@ -81,7 +118,11 @@ function exportBuild(): void {
 
 <template>
   <div class="sidebar-option">
-    <ShareButtons :get-url-to-share-function="() => _buildService.toSharableUrlAsync(parameters)" />
+    <ShareButtons
+      :get-url-to-share-function="() => _buildService.toSharableUrlAsync(parameters)"
+      :get-description-function="getSeoDescriptionAsync"
+      :get-title-function="getSeoTitleAsync"
+    />
   </div>
   <div class="sidebar-option">
     <Button

@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { Seo } from '../models/utils/Seo'
 import { SocialMedia, SocialMedias } from '../models/utils/SocialMedias'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Tooltip from './TooltipComponent.vue'
 
-const props = defineProps<{ getUrlToShareFunction: () => Promise<string | undefined> }>()
+const props = withDefaults(
+  defineProps<{
+    getDescriptionFunction?: () => Promise<string | undefined>
+    getTitleFunction?: () => Promise<string | undefined>
+    getUrlToShareFunction: () => Promise<string | undefined>
+  }>(),
+  {
+    getDescriptionFunction: () => Promise.resolve(Seo.description),
+    getTitleFunction: () => Promise.resolve(Seo.title)
+  })
 
 /**
  * Reacts to the click on a share button.
@@ -23,7 +33,9 @@ async function onClickAsync(socialMedia: SocialMedia | 'link'): Promise<void> {
     return
   }
 
-  const socialMediaUrl = SocialMedias.getSocialMediaShareUrl(socialMedia, urlToShare)
+  const description = await props.getDescriptionFunction?.()
+  const title = await props.getTitleFunction?.()
+  const socialMediaUrl = SocialMedias.getSocialMediaShareUrl(socialMedia, urlToShare, title, description)
   window.open(socialMediaUrl, '_blank')
 }
 </script>
@@ -138,17 +150,6 @@ async function onClickAsync(socialMedia: SocialMedia | 'link'): Promise<void> {
       </a>
     </Tooltip>
     <Tooltip
-      :tooltip="$t('caption.shareOnMastodon')"
-      :disabled-on-mobile="true"
-    >
-      <a
-        class="link share-buttons-mastodon"
-        @click="() => onClickAsync(SocialMedias.mastodon.name)"
-      >
-        <font-awesome-icon :icon="['fab', SocialMedias.mastodon.iconName]" />
-      </a>
-    </Tooltip>
-    <Tooltip
       :tooltip="$t('caption.shareOnFacebook')"
       :disabled-on-mobile="true"
     >
@@ -247,10 +248,6 @@ async function onClickAsync(socialMedia: SocialMedia | 'link'): Promise<void> {
 .share-buttons-mail {
   color: white;
   font-size: 1.25rem;
-}
-
-.share-buttons-mastodon {
-  color: #5b4be1;
 }
 
 .share-buttons-messenger {

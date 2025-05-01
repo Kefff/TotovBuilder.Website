@@ -190,6 +190,25 @@ export class BuildPropertiesService {
   }
 
   /**
+   * Gets the description of a build formatted for SEO.
+   */
+  public getSeoDescription(summary: IBuildSummary): string {
+    const description = this.getStatsAsString(
+      summary,
+      {
+        includeEmojis: true,
+        includeLink: false,
+        includePrices: true,
+        language: vueI18n.locale.value,
+        linkOnly: false,
+        type: BuildsToTextType.simpleText
+      },
+      true)
+
+    return description
+  }
+
+  /**
    * Gets the merchants and their maximum level from a shopping list.
    */
   public getShoppingListMerchants(shoppingList: IShoppingListItem[]): IShoppingListMerchant[] {
@@ -409,17 +428,7 @@ ${sharableUrl}`
    * @param sharableUrl - Sharable URL of the build.
    */
   public toSeoMetadata(summary: IBuildSummary, sharableUrl: string): ISeoMetadata {
-    const description = this.getStatsAsString(
-      summary,
-      {
-        includeEmojis: true,
-        includeLink: false,
-        includePrices: true,
-        language: vueI18n.locale.value,
-        linkOnly: false,
-        type: BuildsToTextType.simpleText
-      },
-      true)
+    const description = this.getSeoDescription(summary)
 
     return {
       description,
@@ -640,7 +649,10 @@ ${sharableUrl}`
   }
 
   /**
-   *
+   * Gets the stats of a build as a string.
+   * @param buildSummary - Build summary.
+   * @param options - Options.
+   * @param singleLine - Indicates whether the text should be on a single line.
    */
   private getStatsAsString(buildSummary: IBuildSummary, options: IBuildsToTextOptions, singleLine: boolean = false): string {
     const itemService = Services.get(ItemService)

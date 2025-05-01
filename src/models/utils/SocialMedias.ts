@@ -5,7 +5,6 @@ export enum SocialMedia {
   bluesky = 'bluesky',
   discord = 'discord',
   facebook = 'facebook',
-  mastodon = 'mastodon',
   mail = 'mail',
   messenger = 'messenger',
   reddit = 'reddit',
@@ -22,62 +21,68 @@ export enum SocialMedia {
 export class SocialMedias {
   public static bluesky: ISocialMediaDefinition = {
     iconName: 'bluesky',
-    name: SocialMedia.bluesky
+    name: SocialMedia.bluesky,
+    useUrlShortener: false
   }
 
   public static discord: ISocialMediaDefinition = {
     iconName: 'discord',
-    name: SocialMedia.discord
+    name: SocialMedia.discord,
+    useUrlShortener: false
   }
 
   public static facebook: ISocialMediaDefinition = {
     iconName: 'facebook',
-    name: SocialMedia.facebook
-  }
-
-  public static mastodon: ISocialMediaDefinition = {
-    iconName: 'mastodon',
-    name: SocialMedia.mastodon
+    name: SocialMedia.facebook,
+    useUrlShortener: false
   }
 
   public static mail: ISocialMediaDefinition = {
     iconName: 'envelope',
-    name: SocialMedia.mail
+    name: SocialMedia.mail,
+    useUrlShortener: false
   }
 
   public static messenger: ISocialMediaDefinition = {
     iconName: 'facebook-messenger',
-    name: SocialMedia.messenger
+    name: SocialMedia.messenger,
+    useUrlShortener: false
   }
 
   public static reddit: ISocialMediaDefinition = {
     iconName: 'reddit-alien',
-    name: SocialMedia.reddit
+    name: SocialMedia.reddit,
+    useUrlShortener: false
   }
 
   public static telegram: ISocialMediaDefinition = {
     iconName: 'telegram',
-    name: SocialMedia.telegram
+    name: SocialMedia.telegram,
+    useUrlShortener: false
   }
 
   public static twitter: ISocialMediaDefinition = {
     iconName: 'twitter',
-    name: SocialMedia.twitter
+    name: SocialMedia.twitter,
+    useUrlShortener: true
   }
 
   public static vKontakte: ISocialMediaDefinition = {
     iconName: 'vk',
-    name: SocialMedia.vKontakte
+    name: SocialMedia.vKontakte,
+    useUrlShortener: false
   }
 
   public static weChat: ISocialMediaDefinition = {
     iconName: 'weixin',
-    name: SocialMedia.weChat
+    name: SocialMedia.weChat,
+    useUrlShortener: false
   }
 
   public static whatsapp: ISocialMediaDefinition = {
     iconName: 'whatsapp',
-    name: SocialMedia.whatsapp
+    name: SocialMedia.whatsapp,
+    useUrlShortener: false
   }
 
 
@@ -86,34 +91,46 @@ export class SocialMedias {
  * @param socialMedia - Social media.
  * @param urlToShare - URL to share.
  */
-  public static getSocialMediaShareUrl(socialMedia: SocialMedia, urlToShare: string): string {
+  public static getSocialMediaShareUrl(socialMedia: SocialMedia, urlToShare: string, title?: string, description?: string): string {
+    let socialMediaUrl = ''
+
     switch (socialMedia) {
       case SocialMedia.bluesky:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.discord:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.facebook:
-        // return 'https://www.facebook.com/sharer.php?u=https://www.totovbuilder.com/s/XQAAAAL9BgAAAAAAAABBKEnKkjM2lYkrJxkWGvsWno5Sckyrv4-fRQJfkT1g33VVwznLHK0oo86r-na3Q0zbBjRNIU1YWEAs9Ynlz81oJjWK2xI3T9rl34NnRjnmRadnSQtsd_yXbl14oVXEnZzgnKC7E1B2hC_XUZ6OlJpr4Q_eqwVgzQ6qUYbpsOLouHoSSKLlckAKyXoxSUBBhX_75gjre6sSpxHPRou9u8f-Jygo0B6DYi5rHTmV1f9RDLKTr9trsius9HpGU8rLUUXAzT6eKNSh_kmtsar1JtmIW5mTPYVn-9KMZkmNArnVF1k-x2qdLlDbUd4r8gYF7LeT-kAM0b_WqCp-gtyY-HltQQ_gcio9JKh_prp6PwGgLenL2wKRCnnYVphCUq0u1_Vacj22Lf4bO70ICxbx0Y2RBXGqZxdEMzg7g1l3Qf_-z007SPAecdWqNwQmbXzy7nfcCyMSfvH4GzvLbs8xgLDhhTBJ5UBdyGBk9CZ9Rq_uW7BG6X4cGJgJyEBk5XiU5RzgOFSlfAE3mSgVHj9ZPLhGxb70zhM3kFVdy1ZBUpA4H1J-XqUpeY89RHvGazU27i4d9bU878ncEg-Uz_LpNSvbayJMo0npPc0JTdkWUAS61YO3URzXJj0uv1zlNWeSbNDF-tBeAgjUhTWKMFtvbYPsu6K7tzRgSPg-KhUgt8eFBSRJctMJsuxwNx8JPaJBIuw9Q0B_UIYiejZMxAk2nYKsXcIx_VI0e4Nt5ZEWdCSZC4eMevbe8mps9vBPUs1Aw6421DxtkqmSkRgsJPDw5aaeEQ2aeZXj054i6hRXpHNKULH0KmzZtqM8Qq5BcujjjWFhHQjqm09mC_tq6xYCRcA9nLhOp4c810W6bFZ3c09YmhMSU8AFyPcq4WA9HzCUEf_PNTCtRlMVU5hgnR3ugAqmd5g3BexGhI2N6PKmwTGMzMZQGM0DaMZ6P_mTNGKbmgUVZHAQsjX_IbsTAsO6KKD6vVAiHcfj0gGfv-VFUSGzFgFarYl_g22QH-kyqV_t27vK5qGeycgh_6s3OWx4lR2XDLqyQOAC29FGWU0Px8cZ-DAtf97uaND86g6DAqBsvb_PlUTFxJGXNcDHALDJeD68zzDw1i5MfDeHvxTEu4HH7Qzdh2DqoG528h6I5SiJv7CjAzOf_bJKMvjg-gmn87--iiD_S9FGAA'
-        return `https://www.facebook.com/sharer.php?u=${urlToShare}`
-      case SocialMedia.mastodon:
-        return ''
+        socialMediaUrl = `https://www.facebook.com/sharer.php?u=${urlToShare}`
+        break
       case SocialMedia.mail:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.messenger:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.reddit:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.telegram:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.twitter:
-        return ''
+        socialMediaUrl = `https://twitter.com/intent/tweet?url=${urlToShare}&text=${title}\n${description}\n`
+        break
       case SocialMedia.vKontakte:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.weChat:
-        return ''
+        socialMediaUrl = ''
+        break
       case SocialMedia.whatsapp:
-        return ''
+        socialMediaUrl = ''
+        break
     }
+
+    return encodeURI(socialMediaUrl)
   }
 }
 
@@ -129,5 +146,10 @@ interface ISocialMediaDefinition {
   /**
    * Name.
    */
-  name: SocialMedia
+  name: SocialMedia,
+
+  /**
+   * Indicates whether the link to share must be shortened.
+   */
+  useUrlShortener: boolean
 }

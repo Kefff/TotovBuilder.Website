@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDiscord, faFacebook, faFacebookMessenger, faGithub, faMastodon, faRedditAlien, faTelegram, faTwitter, faVk, faWeixin, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faFacebook, faFacebookMessenger, faGithub, faRedditAlien, faTelegram, faTwitter, faVk, faWeixin, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
   faArrowLeft,
   faArrowRight,
@@ -167,7 +167,6 @@ export function useFontAwesome(app: App<Element>): void {
     faLock,
     faLowVision,
     faMask,
-    faMastodon,
     faMinusSquare,
     faPlus,
     faPlusSquare,
