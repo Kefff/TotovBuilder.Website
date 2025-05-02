@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { Seo } from '../models/utils/Seo'
-import { SocialMedia, SocialMedias } from '../models/utils/SocialMedias'
+import { SocialMedia } from '../models/utils/ISocialMedia'
+import { SocialMedias } from '../models/utils/SocialMedias'
+import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Tooltip from './TooltipComponent.vue'
 
@@ -11,8 +13,8 @@ const props = withDefaults(
     getUrlToShareFunction: () => Promise<string | undefined>
   }>(),
   {
-    getDescriptionFunction: () => Promise.resolve(Seo.description),
-    getTitleFunction: () => Promise.resolve(Seo.title)
+    getDescriptionFunction: () => Promise.resolve(Services.get(SeoService).description),
+    getTitleFunction: () => Promise.resolve(Services.get(SeoService).title)
   })
 
 /**
@@ -35,7 +37,7 @@ async function onClickAsync(socialMedia: SocialMedia | 'link'): Promise<void> {
 
   const description = await props.getDescriptionFunction?.()
   const title = await props.getTitleFunction?.()
-  const socialMediaUrl = SocialMedias.getSocialMediaShareUrl(socialMedia, urlToShare, title, description)
+  const socialMediaUrl = Services.get(SeoService).getSocialMediaShareUrl(socialMedia, urlToShare, title, description)
   window.open(socialMediaUrl, '_blank')
 }
 </script>

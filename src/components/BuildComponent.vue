@@ -7,7 +7,6 @@ import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { InventorySlotSelectorSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
-import { Seo } from '../models/utils/Seo'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
@@ -21,6 +20,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildSummary from './BuildSummaryComponent.vue'
@@ -41,6 +41,7 @@ const _compatibilityService = Services.get(CompatibilityService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
+const _seoService = Services.get(SeoService)
 
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
@@ -474,8 +475,8 @@ async function getSharedBuildAsync(sharableString: string): Promise<void> {
  * Updates SEO metadata.
  */
 function updateSeoMetadata(): void {
-  const seoMetadata = _buildPropertiesService.toSeoMetadata(summary.value, window.location.toString())
-  Seo.updateSeoMetadata(seoMetadata)
+  const seoMetadata = _seoService.getBuildSeoMetadata(summary.value, window.location.toString())
+  _seoService.updateSeoMetadata(seoMetadata)
 }
 
 /**

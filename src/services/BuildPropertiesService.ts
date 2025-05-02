@@ -11,7 +11,6 @@ import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
-import { ISeoMetadata } from '../models/utils/ISeoMetadata'
 import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
@@ -190,25 +189,6 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the description of a build formatted for SEO.
-   */
-  public getSeoDescription(summary: IBuildSummary): string {
-    const description = this.getStatsAsString(
-      summary,
-      {
-        includeEmojis: true,
-        includeLink: false,
-        includePrices: true,
-        language: vueI18n.locale.value,
-        linkOnly: false,
-        type: BuildsToTextType.simpleText
-      },
-      true)
-
-    return description
-  }
-
-  /**
    * Gets the merchants and their maximum level from a shopping list.
    */
   public getShoppingListMerchants(shoppingList: IShoppingListItem[]): IShoppingListMerchant[] {
@@ -238,6 +218,117 @@ export class BuildPropertiesService {
     merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
 
     return merchants
+  }
+
+  /**
+   * Gets the stats of a build as a string.
+   * @param buildSummary - Build summary.
+   * @param options - Options.
+   * @param singleLine - Indicates whether the text should be on a single line.
+   */
+  public getStatsAsString(buildSummary: IBuildSummary, options: IBuildsToTextOptions, singleLine: boolean = false): string {
+    const itemService = Services.get(ItemService)
+
+    const mainCurrency = itemService.getMainCurrency()
+    const formattingTokens = this.getFormattingTokens(options)
+    const lineEnd = singleLine ? '    ' : `${formattingTokens.lineEnd}\n`
+
+    const hasArmor = buildSummary.armorModifiers.armorClass !== 0
+    const hasErgonomics = buildSummary.ergonomics !== 0
+    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
+    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+    const hasPrice = options.includePrices && buildSummary.price.priceInMainCurrency !== 0
+    const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
+    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
+    const hasWeight = buildSummary.weight !== 0
+
+    let statsAsString = ''
+
+    if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
+      if (hasRecoil) {
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '↕️')}${this.translate('caption.verticalRecoil', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, options.language)}${formattingTokens.boldToken}`
+        statsAsString += `   ${StringUtils.getTextStatEmoji(options, '↔️')}${this.translate('caption.horizontalRecoil', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasErgonomics) {
+        if (hasRecoil) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasErgonomicsModifierPercentage) {
+        if (hasErgonomics) {
+          statsAsString += ` (${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${formattingTokens.boldToken})`
+        } else {
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomicsModifierPercentage', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${formattingTokens.boldToken}`
+        }
+      }
+
+      statsAsString += lineEnd
+    }
+
+    // Armor stats
+    if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
+      if (hasArmor) {
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '🛡️')}${this.translate('caption.armorClass', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasMovementSpeedModifierPercentage) {
+        if (hasArmor) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '🏃')}${this.translate('caption.speed', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasMovementSpeedModifierPercentage) {
+        if (hasArmor || hasMovementSpeedModifierPercentage) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeedModifierPercentage', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
+      }
+
+      statsAsString += lineEnd
+    }
+
+    // Price / weight
+    if (hasPrice || hasWeight) {
+      if (hasPrice) {
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('caption.price', options.language)} `
+
+        for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
+          if (buildSummary.price.priceByCurrency.length > 1
+            && i == buildSummary.price.priceByCurrency.length - 1) {
+            statsAsString += ` ${this.translate('caption.and', options.language)} `
+          } else if (i > 0) {
+            statsAsString += ', '
+          }
+
+          const priceInCurrency = buildSummary.price.priceByCurrency[i]
+          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
+          statsAsString += `${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, options.language)}${priceCurrency.symbol}${formattingTokens.boldToken}`
+        }
+
+        if (buildSummary.price.priceByCurrency.length > 1) {
+          statsAsString += ` (= ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, options.language)}${mainCurrency.symbol}${formattingTokens.boldToken})`
+        }
+      }
+
+      if (hasWeight) {
+        if (hasPrice) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '⚓')}${this.translate('caption.weight', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, options.language)}${formattingTokens.boldToken}`
+      }
+
+      statsAsString += formattingTokens.lineEnd
+    }
+
+    return statsAsString
   }
 
   /**
@@ -420,23 +511,6 @@ ${sharableUrl}`
     }
 
     return buildsAsString
-  }
-
-  /**
-   * Gets SEO metadata corresponding to a build summary.
-   * @param summary - Build summary.
-   * @param sharableUrl - Sharable URL of the build.
-   */
-  public toSeoMetadata(summary: IBuildSummary, sharableUrl: string): ISeoMetadata {
-    const description = this.getSeoDescription(summary)
-
-    return {
-      description,
-      image: summary.shoppingList[0]?.item?.imageLink,
-      imageAlt: summary.name,
-      title: summary.name !== '' ? summary.name : vueI18n.t('caption.new'),
-      url: sharableUrl
-    }
   }
 
   /**
@@ -646,117 +720,6 @@ ${sharableUrl}`
     }
 
     return shoppingList
-  }
-
-  /**
-   * Gets the stats of a build as a string.
-   * @param buildSummary - Build summary.
-   * @param options - Options.
-   * @param singleLine - Indicates whether the text should be on a single line.
-   */
-  private getStatsAsString(buildSummary: IBuildSummary, options: IBuildsToTextOptions, singleLine: boolean = false): string {
-    const itemService = Services.get(ItemService)
-
-    const mainCurrency = itemService.getMainCurrency()
-    const formattingTokens = this.getFormattingTokens(options)
-    const lineEnd = singleLine ? '    ' : `${formattingTokens.lineEnd}\n`
-
-    const hasArmor = buildSummary.armorModifiers.armorClass !== 0
-    const hasErgonomics = buildSummary.ergonomics !== 0
-    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
-    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-    const hasPrice = options.includePrices && buildSummary.price.priceInMainCurrency !== 0
-    const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
-    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
-    const hasWeight = buildSummary.weight !== 0
-
-    let statsAsString = ''
-
-    if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
-      if (hasRecoil) {
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '↕️')}${this.translate('caption.verticalRecoil', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, options.language)}${formattingTokens.boldToken}`
-        statsAsString += `   ${StringUtils.getTextStatEmoji(options, '↔️')}${this.translate('caption.horizontalRecoil', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, options.language)}${formattingTokens.boldToken}`
-      }
-
-      if (hasErgonomics) {
-        if (hasRecoil) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, options.language)}${formattingTokens.boldToken}`
-      }
-
-      if (hasErgonomicsModifierPercentage) {
-        if (hasErgonomics) {
-          statsAsString += ` (${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${formattingTokens.boldToken})`
-        } else {
-          statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomicsModifierPercentage', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${formattingTokens.boldToken}`
-        }
-      }
-
-      statsAsString += lineEnd
-    }
-
-    // Armor stats
-    if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
-      if (hasArmor) {
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '🛡️')}${this.translate('caption.armorClass', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, options.language)}${formattingTokens.boldToken}`
-      }
-
-      if (hasMovementSpeedModifierPercentage) {
-        if (hasArmor) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '🏃')}${this.translate('caption.speed', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
-      }
-
-      if (hasMovementSpeedModifierPercentage) {
-        if (hasArmor || hasMovementSpeedModifierPercentage) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeedModifierPercentage', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
-      }
-
-      statsAsString += lineEnd
-    }
-
-    // Price / weight
-    if (hasPrice || hasWeight) {
-      if (hasPrice) {
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('caption.price', options.language)} `
-
-        for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
-          if (buildSummary.price.priceByCurrency.length > 1
-            && i == buildSummary.price.priceByCurrency.length - 1) {
-            statsAsString += ` ${this.translate('caption.and', options.language)} `
-          } else if (i > 0) {
-            statsAsString += ', '
-          }
-
-          const priceInCurrency = buildSummary.price.priceByCurrency[i]
-          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
-          statsAsString += `${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, options.language)}${priceCurrency.symbol}${formattingTokens.boldToken}`
-        }
-
-        if (buildSummary.price.priceByCurrency.length > 1) {
-          statsAsString += ` (= ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, options.language)}${mainCurrency.symbol}${formattingTokens.boldToken})`
-        }
-      }
-
-      if (hasWeight) {
-        if (hasPrice) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `${StringUtils.getTextStatEmoji(options, '⚓')}${this.translate('caption.weight', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, options.language)}${formattingTokens.boldToken}`
-      }
-
-      statsAsString += formattingTokens.lineEnd
-    }
-
-    return statsAsString
   }
 
   /**

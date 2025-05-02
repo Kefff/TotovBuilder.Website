@@ -8,6 +8,7 @@ import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import { SeoService } from '../../services/SeoService'
 import ShareButtons from '../ShareButtonsComponent.vue'
 
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
@@ -16,6 +17,7 @@ const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _seoService = Services.get(SeoService)
 
 const _router = useRouter()
 
@@ -87,7 +89,7 @@ async function getSeoDescriptionAsync(): Promise<string> {
     await _getSummaryPromise
   }
 
-  const description = _buildPropertiesService.getSeoDescription(_summary!)
+  const description = _seoService.getBuildSeoDescription(_summary!)
 
   return description
 }

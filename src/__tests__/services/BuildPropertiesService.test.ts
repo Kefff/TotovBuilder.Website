@@ -723,6 +723,76 @@ describe('BuildPropertiesService', () => {
     })
   })
 
+  describe('getStatsAsString', () => {
+    it.each([
+      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-9.5%**)  
+🛡️ Armor class **4**   🏃 Speed **-6%**   🔄 Turning speed **-9%**  
+💵 Price **525,754₽**   ⚓ Weight **24.153 kg**  `],
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)
+Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
+Poids 24,153 kg`],
+      [build2, true, false, 'fr', BuildsToTextType.markdown, `↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
+⚓ Poids **9,236 kg**  `],
+      [build2, false, true, 'en', BuildsToTextType.simpleText, `Vertical recoil 362   Horizontal recoil 249   Ergonomics 52 (-3%)
+Armor class 4   Speed -3%   Turning speed -1%
+Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
+    ])('should get the stats of a build', async (build: IBuild, includeEmojis: boolean, includePrices: boolean, language: string, type: BuildsToTextType, expected: string) => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+
+      const service = new BuildPropertiesService()
+      const summary = await service.getSummaryAsync(build)
+
+      // Act
+      const result = service.getStatsAsString(
+        summary,
+        {
+          includeEmojis,
+          includeLink: false,
+          includePrices,
+          language,
+          linkOnly: false,
+          type
+        },
+        false)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it.each([
+      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-9.5%**)    🛡️ Armor class **4**   🏃 Speed **-6%**   🔄 Turning speed **-9%**    💵 Price **525,754₽**   ⚓ Weight **24.153 kg**  '],
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)    Classe d\'armure 4   Vitesse -6%   Vitesse de rotation -9%    Poids 24,153 kg'],
+      [build2, true, false, 'fr', BuildsToTextType.markdown, '↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)    🛡️ Classe d\'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**    ⚓ Poids **9,236 kg**  '],
+      [build2, false, true, 'en', BuildsToTextType.simpleText, 'Vertical recoil 362   Horizontal recoil 249   Ergonomics 52 (-3%)    Armor class 4   Speed -3%   Turning speed -1%    Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg']
+    ])('should get the stats of a build as a single line', async (build: IBuild, includeEmojis: boolean, includePrices: boolean, language: string, type: BuildsToTextType, expected: string) => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+
+      const service = new BuildPropertiesService()
+      const summary = await service.getSummaryAsync(build)
+
+      // Act
+      const result = service.getStatsAsString(
+        summary,
+        {
+          includeEmojis,
+          includeLink: false,
+          includePrices,
+          language,
+          linkOnly: false,
+          type
+        },
+        true)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
   describe('toTextAsync() (markdown)', () => {
     it.each([
       [build1, 'fr', expectedMarkdownString1Fr],

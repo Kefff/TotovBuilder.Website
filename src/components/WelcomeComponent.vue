@@ -2,7 +2,6 @@
 import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import Images from '../images'
 import { IBuild } from '../models/build/IBuild'
-import { Seo } from '../models/utils/Seo'
 import vueI18n from '../plugins/vueI18n'
 import router from '../plugins/vueRouter'
 import { BuildService } from '../services/BuildService'
@@ -10,6 +9,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ImportService } from '../services/ImportService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import StringUtils from '../utils/StringUtils'
 import Loading from './LoadingComponent.vue'
@@ -30,10 +30,10 @@ const hasBuilds = ref(false)
 const isLoadingWebsite = ref(true)
 const isLoadingLastBuilds = ref(true)
 
-Seo.updateSeoMetadata()
-
 onMounted(() => {
   _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
+
+  Services.get(SeoService).updateSeoMetadata()
 
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
     _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)

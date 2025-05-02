@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
-import { Seo } from '../models/utils/Seo'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildService } from '../services/BuildService'
@@ -17,6 +16,7 @@ import {
   NotificationService,
   NotificationType
 } from '../services/NotificationService'
+import { SeoService } from '../services/SeoService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
 import BuildsList from './BuildsListComponent.vue'
@@ -107,10 +107,6 @@ const currentPage = ref(0)
 const filterAndSortingData = ref(new BuildFilterAndSortingData())
 const isLoading = ref(true)
 const hasBuilds = ref(false)
-
-Seo.updateSeoMetadata({
-  title: vueI18n.t('caption.builds')
-})
 
 onMounted(() => {
   _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
@@ -250,6 +246,10 @@ function getBuilds(): IBuild[] {
  * Initializes the component.
  */
 function initialize(): void {
+  Services.get(SeoService).updateSeoMetadata({
+    title: vueI18n.t('caption.builds')
+  })
+
   const page = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsPageStorageKey)
   currentPage.value = page != null
     ? Number.parseInt(page)
