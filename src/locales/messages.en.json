@@ -294,6 +294,7 @@
     "movementSpeedModifierPercentage": "Movement speed",
     "name": "Name",
     "new": "New",
+    "newBuild": "New build",
     "no": "No",
     "noNotifications": "No notifications",
     "notFoundItem": "Unknown item \"{id}\"",

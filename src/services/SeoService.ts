@@ -75,12 +75,13 @@ export class SeoService {
    */
   public getBuildSeoMetadata(summary: IBuildSummary, sharableUrl: string): ISeoMetadata {
     const description = this.getBuildSeoDescription(summary)
+    const title = summary.name !== '' ? summary.name : vueI18n.t('caption.newBuild')
 
     return {
       description,
       image: summary.shoppingList[0]?.item?.imageLink,
-      imageAlt: summary.name,
-      title: summary.name !== '' ? summary.name : vueI18n.t('caption.new'),
+      imageAlt: title,
+      title,
       url: sharableUrl
     }
   }
@@ -90,7 +91,7 @@ export class SeoService {
  * @param socialMedia - Social media.
  * @param urlToShare - URL to share.
  */
-  public getSocialMediaShareUrl(socialMedia: SocialMedia, urlToShare: string, title?: string, description?: string): string {
+  public getSocialMediaShareUrl(socialMedia: SocialMedia, urlToShare: string, title: string, description: string): string {
     let socialMediaUrl = ''
 
     switch (socialMedia) {

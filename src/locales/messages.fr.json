@@ -259,6 +259,7 @@
     "movementSpeedModifierPercentage": "Vitesse de déplacement",
     "name": "Nom",
     "new": "Nouveau",
+    "newBuild": "Nouvel équipement",
     "no": "Non",
     "noNotifications": "Aucune notification",
     "notFoundItem": "Objet inconnu {id}",
