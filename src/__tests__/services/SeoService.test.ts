@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-import { SocialMedia } from '../../models/utils/ISocialMedia'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Services from '../../services/repository/Services'
 import { SeoService } from '../../services/SeoService'
@@ -58,31 +57,6 @@ describe('SeoService', () => {
         title: buildHasName ? 'Build 1' : 'New build',
         url: sharableUrl
       })
-    })
-  })
-
-  describe('getSocialMediaShareUrl', () => {
-    it.each([
-      [SocialMedia.bluesky, 'TODO'],
-      [SocialMedia.discord, 'TODO'],
-      [SocialMedia.facebook, 'https://www.facebook.com/sharer.php?u=https://www.totovbuilder.com'],
-      [SocialMedia.mail, 'TODO'],
-      [SocialMedia.messenger, 'TODO'],
-      [SocialMedia.reddit, 'TODO'],
-      [SocialMedia.telegram, 'TODO'],
-      [SocialMedia.twitter, 'https://twitter.com/intent/tweet?url=https://www.totovbuilder.com&text=Totov%20Builder%0AGun%20builds%20and%20loadouts%0A'],
-      [SocialMedia.vKontakte, 'TODO'],
-      [SocialMedia.weChat, 'TODO'],
-      [SocialMedia.whatsapp, 'TODO']
-    ])('should get the URL for content on social medias', async (socialMedia: SocialMedia, expected: string) => {
-      // Arrange
-      const service = new SeoService()
-
-      // Act
-      const result = service.getSocialMediaShareUrl(socialMedia, 'https://www.totovbuilder.com', 'Totov Builder', 'Gun builds and loadouts')
-
-      // Assert
-      expect(result).toBe(expected)
     })
   })
 

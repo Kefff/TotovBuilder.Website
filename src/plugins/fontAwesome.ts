@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDiscord, faFacebook, faFacebookMessenger, faGithub, faRedditAlien, faTelegram, faTwitter, faVk, faWeixin, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faFacebook, faFacebookMessenger, faGithub, faRedditAlien, faTelegram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
   faArrowLeft,
   faArrowRight,
@@ -74,6 +74,7 @@ import {
   faShieldVirus,
   faShoppingCart,
   faSkull,
+  faSms,
   faSortAmountDownAlt,
   faSortAmountUp,
   faStopwatch,
@@ -181,6 +182,7 @@ export function useFontAwesome(app: App<Element>): void {
     faShieldVirus,
     faShoppingCart,
     faSkull,
+    faSms,
     faSortAmountDownAlt,
     faSortAmountUp,
     faStopwatch,
@@ -200,12 +202,10 @@ export function useFontAwesome(app: App<Element>): void {
     faUserTag,
     faVest,
     faViruses,
-    faVk,
     faWalking,
     faWalking,
     faWallet,
     faWeightHanging,
-    faWeixin,
     faWhatsapp,
     faWind
   )

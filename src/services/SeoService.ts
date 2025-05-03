@@ -3,7 +3,6 @@ import { computed, ref } from 'vue'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { BuildsToTextType } from '../models/utils/IBuildsToTextOptions'
 import { ISeoMetadata } from '../models/utils/ISeoMetadata'
-import { SocialMedia } from '../models/utils/ISocialMedia'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from './BuildPropertiesService'
 import Services from './repository/Services'
@@ -84,53 +83,6 @@ export class SeoService {
       title,
       url: sharableUrl
     }
-  }
-
-  /**
- * Gets the URL for sharing a something on a social media.
- * @param socialMedia - Social media.
- * @param urlToShare - URL to share.
- */
-  public getSocialMediaShareUrl(socialMedia: SocialMedia, urlToShare: string, title: string, description: string): string {
-    let socialMediaUrl = ''
-
-    switch (socialMedia) {
-      case SocialMedia.bluesky:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.discord:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.facebook:
-        socialMediaUrl = `https://www.facebook.com/sharer.php?u=${urlToShare}`
-        break
-      case SocialMedia.mail:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.messenger:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.reddit:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.telegram:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.twitter:
-        socialMediaUrl = `https://twitter.com/intent/tweet?url=${urlToShare}&text=${title}\n${description}\n`
-        break
-      case SocialMedia.vKontakte:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.weChat:
-        socialMediaUrl = ''
-        break
-      case SocialMedia.whatsapp:
-        socialMediaUrl = ''
-        break
-    }
-
-    return encodeURI(socialMediaUrl)
   }
 
   /**

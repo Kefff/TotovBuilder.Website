@@ -6,7 +6,7 @@ import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOptio
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
-import { SocialMedias } from '../../models/utils/SocialMedias'
+import { ShareButtons } from '../../models/utils/ShareButtons'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -46,13 +46,13 @@ const _toolbarButtons: IToolbarButton[] = [
 const _typeOptions: IBuildsShareTypeOption[] = [
   {
     caption: 'caption.discordMarkdown',
-    icon: ['fab', SocialMedias.discord.iconName],
+    icon: ShareButtons.discord.iconName!,
     iconCssClass: 'builds-share-sidebar-type-option-discord-icon',
     type: 'discordMarkdown'
   },
   {
     caption: 'caption.redditMarkdown',
-    icon: ['fab', SocialMedias.reddit.iconName],
+    icon: ShareButtons.reddit.iconName!,
     iconCssClass: 'builds-share-sidebar-type-option-reddit-icon',
     type: 'redditMarkdown'
   },
