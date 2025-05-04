@@ -459,10 +459,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     >
       <div>
         <div class="item-header">
-          <div
-            v-if="item != null && (!isEditing || isBaseItem)"
-            style="display: flex;"
-          >
+          <div v-if="item != null && (!isEditing || isBaseItem)">
             <ItemIcon
               :item="item"
               :quantity="quantity"
@@ -704,6 +701,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
   min-width: 3.875rem;
   width: 100%;
+}
+
+.item-header > div {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
 }
 
 .item-header-button {

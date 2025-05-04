@@ -19,9 +19,9 @@ export class ShareButtons {
     tooltip: vueI18n.t('caption.shareOnBluesky'),
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const isMobile = WebBrowserUtils.isTouchScreen().value
-      const url = isMobile
+      const url = encodeURI(isMobile
         ? `bluesky://intent/compose?text=${title}\n${text}\n${urlToShare}`
-        : `https://bsky.app/intent/compose?text=${title}\n${text}\n${urlToShare}`
+        : `https://bsky.app/intent/compose?text=${title}\n${text}\n${urlToShare}`)
       window.open(url)
     }
   }
@@ -36,9 +36,7 @@ export class ShareButtons {
     name: ShareButtonTarget.discord,
     position: 1,
     tooltip: vueI18n.t('caption.shareOnDiscord'),
-    onClick: (urlToShare: string, title?: string, text?: string) => {
-      // TODO
-    }
+    onClick: () => { }
   }
 
   /**
@@ -81,7 +79,7 @@ export class ShareButtons {
     position: 10,
     tooltip: vueI18n.t('caption.shareByMail'),
     onClick: (urlToShare: string, title?: string, text?: string) => {
-      const url = encodeURI(`mailto:?subject=${title}&body=${title}\n${text}\n${urlToShare}"`)
+      const url = encodeURI(`mailto:?subject=${title}&body=${title}\n${text}\n${urlToShare}`)
       window.open(url)
     }
   }

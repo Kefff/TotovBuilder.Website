@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { ShareButtons } from '../../models/utils/ShareButtons'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import { SeoService } from '../../services/SeoService'
-import ShareButtons from '../ShareButtonsComponent.vue'
+import ShareButtonsComponent from '../ShareButtonsComponent.vue'
 
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
 
@@ -25,6 +26,19 @@ let _getSummaryPromise: Promise<IBuildSummary> | undefined = undefined
 let _summary: IBuildSummary | undefined = undefined
 
 const isDeleting = ref(false)
+
+onMounted(() => {
+  // Dynamically setting the action of the Discord button because it does not open a share link
+  // but opens the BuildsShareSideBar
+  ShareButtons.discord.onClick = (): void => {
+    Services.get(GlobalSidebarService).display({
+      displayedComponentType: 'BuildsShareSideBar',
+      displayedComponentParameters: {
+        buildToShare: props.parameters
+      }
+    })
+  }
+})
 
 /**
  * Cancels the build deletion.
@@ -120,7 +134,7 @@ async function getSeoTitleAsync(): Promise<string> {
 
 <template>
   <div class="sidebar-option">
-    <ShareButtons
+    <ShareButtonsComponent
       :get-url-to-share-function="() => _buildService.toSharableUrlAsync(parameters)"
       :get-description-function="getSeoDescriptionAsync"
       :get-title-function="getSeoTitleAsync"

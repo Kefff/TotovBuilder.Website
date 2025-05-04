@@ -102,6 +102,7 @@ export type BuildsShareSideBarParameters = {
    * Build to share sharing directly from a build (no selection screen).
    */
   buildToShare?: IBuild
+
   /**
    * Function for getting the builds the user can share from a selection screen.
    */
