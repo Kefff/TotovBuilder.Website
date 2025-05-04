@@ -45,7 +45,7 @@ async function onClickAsync(shareButton: IShareButton): Promise<void> {
 
   const description = await props.getDescriptionFunction?.()
   const title = await props.getTitleFunction?.()
-  shareButton.onClick(urlToShare, description, title)
+  shareButton.onClick(urlToShare, title, description)
 }
 </script>
 

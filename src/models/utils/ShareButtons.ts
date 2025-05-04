@@ -20,8 +20,8 @@ export class ShareButtons {
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const isMobile = WebBrowserUtils.isTouchScreen().value
       const url = encodeURI(isMobile
-        ? `bluesky://intent/compose?text=${title}\n${text}\n${urlToShare}`
-        : `https://bsky.app/intent/compose?text=${title}\n${text}\n${urlToShare}`)
+        ? `bluesky://intent/compose?text=${title}   ${text}   ${urlToShare}`
+        : `https://bsky.app/intent/compose?text=${title}   ${text}   ${urlToShare}`)
       window.open(url)
     }
   }

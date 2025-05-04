@@ -29,8 +29,8 @@ describe('ShareButtons', () => {
         // Assert
         expect(openedUrl).toBe(
           isMobile
-            ? 'bluesky://intent/compose?text=Totov%20Builder%0AThis%20is%20the%20text%0Ahttps://www.totovbuilder.com/s/a%25&=%C3%B9*_z'
-            : 'https://bsky.app/intent/compose?text=Totov%20Builder%0AThis%20is%20the%20text%0Ahttps://www.totovbuilder.com/s/a%25&=%C3%B9*_z')
+            ? 'bluesky://intent/compose?text=Totov%20Builder%E2%80%81%E2%80%81%E2%80%81This%20is%20the%20text%E2%80%81%E2%80%81%E2%80%81https://www.totovbuilder.com/s/a%25&=%C3%B9*_z'
+            : 'https://bsky.app/intent/compose?text=Totov%20Builder%E2%80%81%E2%80%81%E2%80%81This%20is%20the%20text%E2%80%81%E2%80%81%E2%80%81https://www.totovbuilder.com/s/a%25&=%C3%B9*_z')
 
       })
     })
