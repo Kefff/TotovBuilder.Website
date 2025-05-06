@@ -12,6 +12,7 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import Services from '../../services/repository/Services'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
+import BuildShareButtons from '../BuildShareButtonsComponent.vue'
 import BuildsList from '../BuildsListComponent.vue'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
 import Loading from '../LoadingComponent.vue'
@@ -246,6 +247,20 @@ function toggleSelection(): void {
     </div>
     <div v-else-if="!isLoading">
       <div class="builds-share-sidebar-options">
+        <div v-if="parameters.buildToShare != null">
+          <div class="sidebar-title">
+            {{ $t('caption.quickShare') }}
+          </div>
+          <div class="sidebar-option">
+            <BuildShareButtons
+              :build="parameters.buildToShare"
+              :hidden="['discord']"
+            />
+          </div>
+        </div>
+        <div class="sidebar-title">
+          {{ $t('caption.manualShare') }}
+        </div>
         <div class="builds-share-sidebar-option">
           <Dropdown
             v-model="typeOption"
@@ -308,6 +323,7 @@ function toggleSelection(): void {
         >
           <Checkbox
             v-model="linkOnly"
+            class="builds-share-sidebar-checkbox"
             :binary="true"
             @change="getTextAsync()"
           />
@@ -330,6 +346,7 @@ function toggleSelection(): void {
         >
           <Checkbox
             v-model="includeLink"
+            class="builds-share-sidebar-checkbox"
             :binary="true"
             @change="getTextAsync()"
           />
@@ -363,6 +380,7 @@ function toggleSelection(): void {
         >
           <Checkbox
             v-model="includePrices"
+            class="builds-share-sidebar-checkbox"
             :binary="true"
             @change="getTextAsync()"
           />
@@ -385,6 +403,7 @@ function toggleSelection(): void {
         >
           <Checkbox
             v-model="includeEmojis"
+            class="builds-share-sidebar-checkbox"
             :binary="true"
             @change="getTextAsync()"
           />
@@ -401,7 +420,7 @@ function toggleSelection(): void {
             {{ $t('caption.includeEmojis') }}
           </div>
         </div>
-        <div class="builds-share-sidebar-option builds-share-sidebar-copy-button">
+        <div class="builds-share-sidebar-option">
           <Button
             v-if="!isGenerating && typeOption != null"
             @click="copyText()"
@@ -433,7 +452,6 @@ function toggleSelection(): void {
         <TextArea
           v-if="typeOption != null"
           v-model="text"
-          rows="20"
         />
       </div>
     </div>
@@ -466,19 +484,20 @@ function toggleSelection(): void {
   height: 100%;
 }
 
+.builds-share-sidebar-checkbox {
+  display: flex;
+  justify-content: center;
+  width: 1.75rem;
+}
+
 .builds-share-sidebar-checkbox-caption {
   align-items: center;
   cursor: pointer;
   display: flex;
-  height: 2.5rem;
 }
 
 .builds-share-sidebar-checkbox-caption-disabled {
   opacity: 50%;
-}
-
-.builds-share-sidebar-copy-button {
-  margin-top: 2.5rem;
 }
 
 .builds-share-sidebar-loading {
@@ -492,7 +511,8 @@ function toggleSelection(): void {
 .builds-share-sidebar-option {
   align-items: center;
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
+  margin-top: 1rem;
   width: 100%;
 }
 
@@ -500,7 +520,6 @@ function toggleSelection(): void {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   width: 50%;
 }
 

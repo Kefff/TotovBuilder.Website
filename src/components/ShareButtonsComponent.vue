@@ -12,14 +12,17 @@ const props = withDefaults(
     getDescriptionFunction?: () => Promise<string | undefined>
     getTitleFunction?: () => Promise<string | undefined>
     getUrlToShareFunction: () => Promise<string | undefined>
+    hidden?: (keyof typeof ShareButtons)[]
   }>(),
   {
     getDescriptionFunction: () => Promise.resolve(Services.get(SeoService).description),
-    getTitleFunction: () => Promise.resolve(Services.get(SeoService).title)
+    getTitleFunction: () => Promise.resolve(Services.get(SeoService).title),
+    hidden: () => []
   })
 
 const shareButtons = computed(() => {
   let buttons = Object.keys(ShareButtons).map(key => ShareButtons[key as keyof typeof ShareButtons]) as IShareButton[]
+  buttons = buttons.filter(b => !props.hidden.includes(b.name))
 
   if (!WebBrowserUtils.isTouchScreen().value) {
     buttons = buttons.filter(b => !b.mobileOnly)
@@ -106,10 +109,8 @@ async function onClickAsync(shareButton: IShareButton): Promise<void> {
   align-items: center;
   display: flex;
   gap: 1rem;
-  justify-content: center;
   font-size: 1.5rem;
   flex-wrap: wrap;
-  width: 100%;
 }
 
 .share-buttons a {

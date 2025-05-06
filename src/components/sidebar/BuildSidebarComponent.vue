@@ -1,29 +1,21 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { ShareButtons } from '../../models/utils/ShareButtons'
-import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import { SeoService } from '../../services/SeoService'
-import ShareButtonsComponent from '../ShareButtonsComponent.vue'
+import BuildShareButtons from '../BuildShareButtonsComponent.vue'
 
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
 
 const _buildService = Services.get(BuildService)
-const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
-const _seoService = Services.get(SeoService)
 
 const _router = useRouter()
-
-let _getSummaryPromise: Promise<IBuildSummary> | undefined = undefined
-let _summary: IBuildSummary | undefined = undefined
 
 const isDeleting = ref(false)
 
@@ -91,36 +83,6 @@ function exportBuild(): void {
   _exportService.exportAsync([props.parameters])
   _globalSidebarService.close('BuildSidebar')
 }
-
-/**
- * Gets the description of a build for SEO.
- */
-async function getSeoDescriptionAsync(): Promise<string> {
-  if (_summary == null && _getSummaryPromise == null) {
-    _getSummaryPromise = _buildPropertiesService.getSummaryAsync(props.parameters)
-    _summary = await _getSummaryPromise
-  } else {
-    await _getSummaryPromise
-  }
-
-  const description = _seoService.getBuildSeoDescription(_summary!)
-
-  return description
-}
-
-/**
- * Gets the title of a build for SEO.
- */
-async function getSeoTitleAsync(): Promise<string> {
-  if (_summary == null && _getSummaryPromise == null) {
-    _getSummaryPromise = _buildPropertiesService.getSummaryAsync(props.parameters)
-    _summary = await _getSummaryPromise
-  } else {
-    await _getSummaryPromise
-  }
-
-  return _summary!.name
-}
 </script>
 
 
@@ -133,12 +95,8 @@ async function getSeoTitleAsync(): Promise<string> {
 
 
 <template>
-  <div class="sidebar-option">
-    <ShareButtonsComponent
-      :get-url-to-share-function="() => _buildService.toSharableUrlAsync(parameters)"
-      :get-description-function="getSeoDescriptionAsync"
-      :get-title-function="getSeoTitleAsync"
-    />
+  <div class="sidebar-option build-sidebar-quick-share">
+    <BuildShareButtons :build="parameters" />
   </div>
   <div class="sidebar-option">
     <Button
@@ -271,6 +229,11 @@ async function getSeoTitleAsync(): Promise<string> {
 
 .build-sidebar-name {
   margin-left: 2.5rem;
+}
+
+.build-sidebar-quick-share {
+  display: flex;
+  justify-content: center;
 }
 
 .build-sidebar-save-to-file-explanation {
