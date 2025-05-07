@@ -73,9 +73,10 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest
 
 
 <style scoped>
-.vest-item-card-bold {
+.selected-item-item-card .vest-item-card-bold.card-line {
   font-style: italic;
   font-weight: bolder;
   gap: 0;
+  /* Overrides the style of ContainerItemCard because it contains a .card-line that breaks gaps */
 }
 </style>
