@@ -97,6 +97,6 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 }
 
 .shopping-list-sidebar-merchants {
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 </style>

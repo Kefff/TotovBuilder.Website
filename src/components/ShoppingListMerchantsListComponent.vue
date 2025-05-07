@@ -96,7 +96,6 @@ function setRequiredMerchants(): void {
 }
 
 .shopping-list-merchants-list-container {
-  padding-top: 0.5rem;
   position: relative;
   width: 100%;
 }
