@@ -372,7 +372,7 @@ function openNewBuild(): void {
 }
 
 .welcome-action {
-  width: 15rem;
+  width: 12rem;
 }
 
 .welcome-actions {
