@@ -86,16 +86,17 @@ function setRequiredMerchants(): void {
 <style scoped>
 .shopping-list-merchants-list {
   overflow-x: auto;
-  padding-bottom: 0.5rem;
 }
 
 .shopping-list-merchants-list > div {
   display: flex;
   gap: 1rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .shopping-list-merchants-list-container {
+  flex-shrink: 0;
+  height: 3.125rem;
   position: relative;
   width: 100%;
 }

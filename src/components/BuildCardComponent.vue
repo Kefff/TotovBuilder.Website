@@ -391,6 +391,10 @@ function displayStats(item: IItem): void {
 
 
 <style scoped>
+.build-card {
+  height: 21.5rem;
+}
+
 .build-card-header {
   align-items: center;
   display: flex;
@@ -402,15 +406,17 @@ function displayStats(item: IItem): void {
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
-  padding-bottom: 0.5rem;
+  height: 4.125rem;
   overflow-x: auto;
   width: 100%;
 }
 
+.build-card-items > div {
+  padding-bottom: 0.25rem;
+}
+
 .build-card-items-container {
   position: relative;
-  height: 4.75rem;
-  flex-shrink: 0;
 }
 
 .build-card-items-icon {
