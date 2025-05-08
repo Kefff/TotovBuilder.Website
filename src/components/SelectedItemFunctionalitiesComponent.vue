@@ -126,8 +126,9 @@ function setSelectedTab(newValue: SelectableTab): void {
         class="selected-item-button-mods"
       >
         <Tooltip
-          :tooltip="modsButtonCaption"
           :apply-hover-style="false"
+          :disabled-on-mobile="true"
+          :tooltip="modsButtonCaption"
         >
           <Button
             :class="{

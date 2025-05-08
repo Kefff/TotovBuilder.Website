@@ -1,4 +1,4 @@
-import { anyString, instance, mock, verify, when } from 'ts-mockito'
+import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import TarkovValuesMock from '../../../public/data/tarkov-values.json'
 import { ITarkovValues } from '../../models/configuration/ITarkovValues'
@@ -30,7 +30,7 @@ describe('initializeAsync', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.getAsync(anyString())).thenResolve(undefined)
+    when(fetchServiceMock.fetchWithRetryAsync(anything())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()

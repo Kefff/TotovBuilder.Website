@@ -67,7 +67,7 @@ export class WebsiteConfigurationService {
       Services.get(LogService).logInformation('message.fetchingWebsiteConfiguration', { date: new Date().toISOString() })
     }
 
-    const websiteConfiguration = await fetchService.getAsync<IWebsiteConfiguration>('/' + this._configuration.endpointWebsiteConfiguration)
+    const websiteConfiguration = await fetchService.fetchWithRetryAsync<IWebsiteConfiguration>({ endpoint: '/' + this._configuration.endpointWebsiteConfiguration })
 
     if (websiteConfiguration == null) {
       Services.get(LogService).logException('message.websiteConfigurationNotFetched')

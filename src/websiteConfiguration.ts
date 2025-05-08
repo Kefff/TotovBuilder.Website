@@ -50,6 +50,7 @@ const updatableWbsiteConfiguration = {
   endpointPrices: 'data/prices.json',
   endpointTarkovValues: 'data/tarkov-values.json',
   endpointWebsiteConfiguration: 'data/website-configuration.json',
+  endpointUrlShortener: 'https://spoo.me/',
   fetchMaxTries: 6,
   fetchTimeout: 9,
   fetchWaitTimeBetweenRetries: 1,

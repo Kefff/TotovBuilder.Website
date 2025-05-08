@@ -83,6 +83,11 @@ export interface IWebsiteConfiguration {
   endpointTarkovValues: string
 
   /**
+   * URL shortener endpoint.
+   */
+  endpointUrlShortener: string
+
+  /**
    * Website configuration endpoint.
    */
   endpointWebsiteConfiguration: string

@@ -17,6 +17,7 @@ const websiteConfiguration: IWebsiteConfiguration = {
   endpointPresets: 'data/presets.json',
   endpointPrices: 'data/prices.json',
   endpointTarkovValues: 'data/tarkov-values.json',
+  endpointUrlShortener: 'https://spoo.me/',
   endpointWebsiteConfiguration: 'data/website-configuration.json',
   exportFileExtension: '.ttb',
   exportFileNamePrefix: 'TotovBuilder',
