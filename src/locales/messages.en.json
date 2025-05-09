@@ -494,6 +494,7 @@
     "sharedBuildMigrationErrorNotification": "Error while updating build to version \"{newVersion}\".",
     "tarkovValuesFetched": "{date} Tarkov values fetched with success.",
     "tarkovValuesNotFetched": "No Tarkov value could be fetched.",
+    "urlShorteningError": "URL \"{url}\" could not be shortened.",
     "warningLog": "Warning : {message}",
     "websiteConfigurationFetched": "{date} Website configuration fetched with success.",
     "websiteConfigurationNotFetched": "No website configuration could be fetched.",
