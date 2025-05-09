@@ -49,6 +49,7 @@ export class ReductionService {
 
     const build = Services.get(BuildService).create(true)
     build.name = reducedBuild['n'] as string ?? ''
+    build.lastWebsiteVersion = reducedBuild['v'] as string
 
     for (const reducedInventorySlot of reducedInventorySlots) {
       const inventorySlot = this.parseReducedInventorySlot(reducedInventorySlot)
@@ -253,6 +254,7 @@ export class ReductionService {
 
     reducedBuild['n'] = build.name
     reducedBuild['s'] = reducedInventorySlots
+    reducedBuild['v'] = build.lastWebsiteVersion
 
     return reducedBuild
   }

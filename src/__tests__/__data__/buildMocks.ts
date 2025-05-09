@@ -765,7 +765,8 @@ export const reducedBuild1: Record<string, unknown> = {
       ],
       't': 'faceCover'
     }
-  ]
+  ],
+  'v': '1.1.0'
 }
 
 export const reducedBuild2: Record<string, unknown> = {
@@ -900,5 +901,6 @@ export const reducedBuild2: Record<string, unknown> = {
       ],
       't': 'scabbard'
     }
-  ]
+  ],
+  'v': undefined
 }

@@ -472,14 +472,6 @@ async function getSharedBuildAsync(sharableString: string): Promise<void> {
 }
 
 /**
- * Updates SEO metadata.
- */
-function updateSeoMetadata(): void {
-  const seoMetadata = _seoService.getBuildSeoMetadata(summary.value, window.location.toString())
-  _seoService.updateSeoMetadata(seoMetadata)
-}
-
-/**
  * Redirects to the builds page.
  */
 function goToBuilds(): void {
@@ -708,6 +700,14 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 
   isCompactBuildSummaryExpanded.value = !isCompactBuildSummaryExpanded.value
   setTimeout(() => _isCompactSummaryExpanding = false, _compactBuildSummaryExpansionAnimationLenght) // Prevents toggleCompactBuildSummary from being called during the animation to avoid weird behaviors
+}
+
+/**
+ * Updates SEO metadata based on the properties of the build.
+ */
+function updateSeoMetadata(): void {
+  const seoMetadata = _seoService.getBuildSeoMetadata(summary.value, window.location.toString())
+  _seoService.updateSeoMetadata(seoMetadata)
 }
 </script>
 

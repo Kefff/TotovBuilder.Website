@@ -8,9 +8,10 @@ import vueI18n from '../plugins/vueI18n'
 import { LogService } from './LogService'
 import { NotificationService, NotificationType } from './NotificationService'
 import { ReductionService } from './ReductionService'
+import Services from './repository/Services'
+import { UrlShortenerService } from './UrlShortenerService'
 import { VersionService } from './VersionService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing builds.
@@ -223,6 +224,10 @@ export class BuildService {
    * @returns Encoded URL.
    */
   public async toSharableUrlAsync(build: IBuild): Promise<string | undefined> {
+    if (build.sharabledUrl != null) {
+      return build.sharabledUrl
+    }
+
     // Reducing the size of the build
     const reducedBuild = Services.get(ReductionService).reduceBuild(build)
 
@@ -240,7 +245,11 @@ export class BuildService {
       return undefined
     }
 
-    return sharableURL
+    const shortenedUrl = await Services.get(UrlShortenerService).shortenAsync(sharableURL)
+    build.sharabledUrl = shortenedUrl
+    await this.updateAsync(build)
+
+    return shortenedUrl
   }
 
   /**

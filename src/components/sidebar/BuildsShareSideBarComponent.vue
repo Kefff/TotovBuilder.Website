@@ -525,6 +525,8 @@ function toggleSelection(): void {
 
 .builds-share-sidebar-option-explanation {
   grid-column: span 2;
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 .builds-share-sidebar-selection {

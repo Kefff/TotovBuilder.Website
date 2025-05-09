@@ -368,6 +368,7 @@
     "buildNotFound": "Equipement \"{id}\" introuvable. Il peut avoir été supprimé.",
     "buildSaved": "Equipement \"{name}\" sauvegardé.",
     "buildsExported": "Fichier d'équipements enregistré.",
+    "buildSharableUrlOutdated": "Le dernier lien utilisé pour partager l'équipement n'est maintenant plus à jour.",
     "buildsImported": "Equipements importés",
     "buildsListFilterExplanation": "Le filtre recherche le texte dans le nom des équipements ainsi que des objets qu'ils contiennent.",
     "buildsNotExported": "Les équipements avec un symbole d'avertissement peuvent être perdus si vous effacez les données du navigateur.\nSauvegardez-les vers un fichier pour éviter cela.",

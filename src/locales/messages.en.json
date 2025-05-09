@@ -406,6 +406,7 @@
     "buildParsingError": "Cannot parse build \"{id}\".",
     "buildSaved": "Build \"{name}\" saved.",
     "buildsExported": "Builds file saved.",
+    "buildSharableUrlOutdated": "The last link used to share the build is now outdated.",
     "buildsImported": "Builds imported",
     "buildsListFilterExplanation": "The filter searches the text in the name of the builds as well as the name of the items they contain.",
     "buildsNotExported": "Builds with a warning sign can be lost if you clear your browser data.\nSave them to a file to avoid this.",

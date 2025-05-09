@@ -55,6 +55,12 @@ export class BuildComponentService {
     const buildService = Services.get(BuildService)
     const notificationService = Services.get(NotificationService)
 
+    const lastSharableUrl = build.sharabledUrl
+
+    if (lastSharableUrl != null) {
+      build.sharabledUrl = undefined // Resetting the sharable URL because changes may have been made
+    }
+
     if (build.id === '') {
       // New build
       const newBuildId = await buildService.addAsync(build)
@@ -65,5 +71,9 @@ export class BuildComponentService {
     }
 
     notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))
+
+    if (lastSharableUrl != null) {
+      notificationService.notify(NotificationType.warning, vueI18n.t('message.buildSharableUrlOutdated'))
+    }
   }
 }
