@@ -2,8 +2,10 @@ import { Router } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildService } from '../BuildService'
+import { GeneralOptionsService } from '../GeneralOptionsService'
 import { NotificationService, NotificationType } from '../NotificationService'
 import Services from '../repository/Services'
+import { WebsiteConfigurationService } from '../WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for managing a BuildComponent.
@@ -53,8 +55,6 @@ export class BuildComponentService {
    */
   public async saveBuildAsync(router: Router, build: IBuild): Promise<void> {
     const buildService = Services.get(BuildService)
-    const notificationService = Services.get(NotificationService)
-
     const lastSharableUrl = build.sharabledUrl
 
     if (lastSharableUrl != null) {
@@ -70,10 +70,34 @@ export class BuildComponentService {
       await buildService.updateAsync(build)
     }
 
-    notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))
+    this.displaySaveNotifications(build.name, lastSharableUrl)
+  }
+
+  /**
+   * Displays notifications for alerting the user that the build has been saved.
+   * @param buildName - buildName Name of the build.
+   * @param lastSharableUrl - lastSharableUrl Last sharable URL of the build.
+   */
+  private displaySaveNotifications(buildName: string, lastSharableUrl: string | undefined): void {
+    const notificationService = Services.get(NotificationService)
+    notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: buildName }))
 
     if (lastSharableUrl != null) {
-      notificationService.notify(NotificationType.warning, vueI18n.t('message.buildSharableUrlOutdated'))
+      const outdatedSharableUrlWarning = Services.get(GeneralOptionsService).getOutdatedSharableUrlWarningOption()
+
+      if (!outdatedSharableUrlWarning) {
+        return
+      }
+
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+      notificationService.notify(
+        NotificationType.warning,
+        vueI18n.t('message.buildSharableUrlOutdated'),
+        undefined,
+        undefined,
+        undefined,
+        websiteConfigurationService.configuration.outdatedSharableUrlWarningStorageKey
+      )
     }
   }
 }

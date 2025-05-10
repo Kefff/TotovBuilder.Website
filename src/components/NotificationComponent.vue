@@ -28,6 +28,8 @@ function onClose(notification: INotification): void {
   if (notification.showNotificationStorageKey != null) {
     localStorage.setItem(notification.showNotificationStorageKey, (!doNotShowAgain.value).toString())
   }
+
+  doNotShowAgain.value = false
 }
 
 /**
@@ -102,6 +104,7 @@ function onNewNotification(notification: INotification): void {
       :severity="notification.type"
       :sticky="false"
       @close="() => onClose(notification)"
+      @life-end="() => onClose(notification)"
     >
       <div class="notification-text">
         {{ notification.message }}
