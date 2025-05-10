@@ -774,6 +774,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-dropdown-value-placeholder-icon {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
   color: var(--success-color);
 }
 

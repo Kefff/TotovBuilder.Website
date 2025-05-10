@@ -76,7 +76,7 @@ const _toolbarButtons: IToolbarButton[] = [
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.save'),
     icon: () => 'save',
-    isDisabled: () => isInvalid.value,
+    isDisabled: () => !hasChanges.value || isInvalid.value,
     isVisible: () => isEditing.value,
     name: 'save',
     variant: () => 'success',
@@ -204,6 +204,7 @@ const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
+const hasChanges = ref(false)
 const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
 const isBuildSummaryStickied = ref(false)
 const isCompactBuildSummaryPinned = ref(false)
@@ -318,6 +319,7 @@ function addNavigationGuards(): void {
  */
 function cancelEdit(): void {
   isEditing.value = false
+  hasChanges.value = false
 
   if (isNewBuild.value) {
     goToBuilds()
@@ -340,13 +342,6 @@ function copy(): void {
     top: 0,
     behavior: 'smooth'
   })
-}
-
-/**
- * Displays the general options.
- */
-function displayGeneralOptions(): void {
-  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
 }
 
 /**
@@ -402,6 +397,13 @@ function displayConfirmationDialog(options: {
 
   confirmationDialogMessage.value = options.message
   confirmationDialogIsDisplayed.value = true
+}
+
+/**
+ * Displays the general options.
+ */
+function displayGeneralOptions(): void {
+  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
 }
 
 /**
@@ -494,6 +496,7 @@ function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
  * Signals to the build one of its inventory slots has changed.
  */
 function onInventorySlotChanged(): void {
+  hasChanges.value = true
   setSummaryAsync()
 }
 
@@ -636,6 +639,7 @@ async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Pro
   nextTick(() => {
     isLoading.value = false
     isEditing.value = false
+    hasChanges.value = false
   })
 }
 
