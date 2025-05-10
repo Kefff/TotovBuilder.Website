@@ -19,7 +19,7 @@ describe('ReductionService', () => {
           id: '',
           lastExported: undefined,
           lastUpdated: undefined,
-          lastWebsiteVersion: '1.1.0'
+          lastWebsiteVersion: undefined
         }
       ],
       [
@@ -1001,8 +1001,7 @@ describe('ReductionService', () => {
               ],
               't': 'pockets'
             }
-          ],
-          'v': undefined
+          ]
         }
       ]
     ])('should reduce a build', (build: IBuild, expected: Record<string, unknown>) => {
