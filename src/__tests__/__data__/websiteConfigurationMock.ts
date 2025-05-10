@@ -39,6 +39,7 @@ const websiteConfiguration: IWebsiteConfiguration = {
   notificationInformationDuration: 5,
   notificationSuccessDuration: 5,
   notificationWarningDuration: 10,
+  outdatedSharableUrlWarningStorageKey: 'outdated_sharable_url_warning',
   postUpdatePeriod: false,
   version: '1.6.0',
   versionStorageKey: 'version'

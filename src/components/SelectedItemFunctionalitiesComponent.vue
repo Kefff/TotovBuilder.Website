@@ -25,12 +25,6 @@ const props = withDefaults(
 
 const isEditing = inject<Ref<boolean>>('isEditing')
 
-const contentButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.content
-  ? vueI18n.t('caption.showContent')
-  : vueI18n.t('caption.hideContent'))
-const modsButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
-  ? vueI18n.t('caption.showMods')
-  : vueI18n.t('caption.hideMods'))
 const buttonBorderBottomRadius = computed(() => {
   if (!props.canHaveContent || !props.canHaveMods) {
     return '6px'
@@ -38,6 +32,7 @@ const buttonBorderBottomRadius = computed(() => {
     return '0'
   }
 })
+const buttonsBorderBottomStyle = computed(() => modelSelectedTab.value === SelectableTab.hidden ? 'none' : 'solid')
 const buttonsBorderBottomLeftRadius = computed(() => {
   if (!props.canHaveContent || !props.canHaveMods) {
     return '6px'
@@ -56,6 +51,12 @@ const buttonsBorderBottomRightRadius = computed(() => {
     return '0'
   }
 })
+const contentButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.content
+  ? vueI18n.t('caption.showContent')
+  : vueI18n.t('caption.hideContent'))
+const modsButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
+  ? vueI18n.t('caption.showMods')
+  : vueI18n.t('caption.hideMods'))
 
 watch(() => props.canHaveContent, () => {
   if (!props.canHaveContent && modelSelectedTab.value === SelectableTab.content) {
@@ -183,7 +184,7 @@ function setSelectedTab(newValue: SelectableTab): void {
 .selected-item-functionalities-buttons {
   align-items: center;
   border-bottom-color: var(--primary-color6);
-  border-bottom-style: solid;
+  border-bottom-style: v-bind(buttonsBorderBottomStyle);
   border-bottom-width: 1px;
   border-bottom-left-radius: v-bind(buttonsBorderBottomLeftRadius);
   border-bottom-right-radius: v-bind(buttonsBorderBottomRightRadius);

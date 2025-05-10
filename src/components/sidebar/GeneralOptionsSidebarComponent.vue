@@ -4,13 +4,11 @@ import { IGeneralOption } from '../../models/utils/IGeneralOption'
 import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
 
 const _generalOptionsService = Services.get(GeneralOptionsService)
-const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const allowCookies = ref(true)
 const exportWarning = ref(true)
@@ -54,7 +52,7 @@ function onAllowCookiesChanged(): void {
  * Sets the export warning option.
  */
 function onExportWarningChanged(): void {
-  localStorage.setItem(_websiteConfigurationService.configuration.exportWarningStorageKey, exportWarning.value.toString())
+  _generalOptionsService.setExportWarningOption(exportWarning.value)
 }
 
 /**

@@ -30,6 +30,7 @@ const fixedConfiguration = {
   itemsSortPropertyStorageKey: 'items_sort_field',
   itemsSortOrderStorageKey: 'items_sort_order',
   languageStorageKey: 'language',
+  outdatedSharableUrlWarningStorageKey: 'outdated_sharable_url_warning',
   version,
   versionStorageKey: 'version'
 }
