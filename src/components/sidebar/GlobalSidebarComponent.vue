@@ -314,6 +314,8 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
 
 <style scoped>
 .global-sidebar-content {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   max-width: calc(50vw - 1rem);
   /* -1rem for the left padding of the side bar */
