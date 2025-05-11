@@ -17,6 +17,7 @@ const websiteConfiguration: IWebsiteConfiguration = {
   endpointPresets: 'data/presets.json',
   endpointPrices: 'data/prices.json',
   endpointTarkovValues: 'data/tarkov-values.json',
+  endpointUrlShortener: 'https://spoo.me/',
   endpointWebsiteConfiguration: 'data/website-configuration.json',
   exportFileExtension: '.ttb',
   exportFileNamePrefix: 'TotovBuilder',
@@ -38,6 +39,7 @@ const websiteConfiguration: IWebsiteConfiguration = {
   notificationInformationDuration: 5,
   notificationSuccessDuration: 5,
   notificationWarningDuration: 10,
+  outdatedSharableUrlWarningStorageKey: 'outdated_sharable_url_warning',
   postUpdatePeriod: false,
   version: '1.6.0',
   versionStorageKey: 'version'

@@ -30,7 +30,7 @@ export class ItemFetcherService {
       Services.get(LogService).logInformation('message.fetchingItems', { date: new Date().toISOString() })
     }
 
-    const reducedItems = await fetchService.getAsync<Record<string, unknown>[]>(endpoint)
+    const reducedItems = await fetchService.fetchWithRetryAsync<Record<string, unknown>[]>({ endpoint })
 
     if (reducedItems == null || reducedItems.length === 0) {
       Services.get(LogService).logException('message.itemsNotFetched')
@@ -65,7 +65,7 @@ export class ItemFetcherService {
       Services.get(LogService).logInformation('message.fetchingPrices', { date: new Date().toISOString() })
     }
 
-    const reducedPrices = await fetchService.getAsync<Record<string, unknown>[]>(endpoint)
+    const reducedPrices = await fetchService.fetchWithRetryAsync<Record<string, unknown>[]>({ endpoint })
 
     if (reducedPrices == null || reducedPrices.length === 0) {
       Services.get(LogService).logException('message.pricesNotFetched')
@@ -100,7 +100,7 @@ export class ItemFetcherService {
       Services.get(LogService).logInformation('message.fetchingPresets', { date: new Date().toISOString() })
     }
 
-    const reducedPresets = await fetchService.getAsync<Record<string, unknown>[]>(endpoint)
+    const reducedPresets = await fetchService.fetchWithRetryAsync<Record<string, unknown>[]>({ endpoint })
 
     if (reducedPresets == null || reducedPresets.length === 0) {
       Services.get(LogService).logException('message.presetsNotFetched')

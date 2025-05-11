@@ -284,7 +284,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         v-if="infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
         v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
-        :element-height="244"
+        :element-height="301"
         :elements-per-line="buildsPerLine"
         :elements="filteredAndSortedBuildSummaries"
         :get-key-function="i => (i as IBuildSummary).id"

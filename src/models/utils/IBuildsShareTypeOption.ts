@@ -21,5 +21,7 @@ export interface IBuildsShareTypeOption {
   /**
    * Type.
    */
-  type: 'discordMarkdown' | 'redditMarkdown' | 'simpleText'
+  type: BuildShareType
 }
+
+export type BuildShareType = 'discordMarkdown' | 'redditMarkdown' | 'simpleText'

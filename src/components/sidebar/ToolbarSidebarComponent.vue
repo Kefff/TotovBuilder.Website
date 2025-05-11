@@ -43,7 +43,7 @@ function executeAction(action: () => void): void {
         class="toolbar-sidebar-button"
         :class="{
           'button-discreet': button.style?.() === 'discreet',
-          'p-button-text': button.style?.() != null
+          'p-button-text': button.style?.() === 'discreet'
         }"
         @click="() => executeAction(button.action)"
       >
@@ -73,7 +73,7 @@ function executeAction(action: () => void): void {
         class="toolbar-sidebar-button"
         :class="{
           'button-discreet': button.style?.() === 'discreet',
-          'p-button-text': button.style?.() != null
+          'p-button-text': button.style?.() === 'discreet'
         }"
         @click="() => executeAction(button.action)"
       >

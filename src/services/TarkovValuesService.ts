@@ -50,7 +50,7 @@ export class TarkovValuesService {
       Services.get(LogService).logInformation('message.fetchingTarkovValues', { date: new Date().toISOString() })
     }
 
-    const tarkovValues = await fetchService.getAsync<ITarkovValues>(endpoint)
+    const tarkovValues = await fetchService.fetchWithRetryAsync<ITarkovValues>({ endpoint })
 
     if (tarkovValues == null) {
       Services.get(LogService).logException('message.tarkovValuesNotFetched')

@@ -50,12 +50,33 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest
     :item="vest"
     :wearable-modifiers-override="wearableModifiers"
   >
-    <template #slot>
+    <template
+      v-if="!isBaseItem"
+      #slot
+    >
       <ContainerItemCard
-        v-if="!isBaseItem"
         :filter-and-sorting-data="filterAndSortingData"
         :item="vest"
+        :class="{ 'vest-item-card-bold': includeModsAndContent }"
       />
     </template>
   </ArmorItemCard>
 </template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.selected-item-item-card .vest-item-card-bold.card-line {
+  font-style: italic;
+  font-weight: bolder;
+  gap: 0;
+  /* Overrides the style of ContainerItemCard because it contains a .card-line that breaks gaps */
+}
+</style>

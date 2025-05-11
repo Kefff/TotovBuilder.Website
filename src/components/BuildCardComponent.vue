@@ -12,6 +12,7 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import InventoryPrice from './InventoryPriceComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
+import ShoppingListMerchantsList from './ShoppingListMerchantsListComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
@@ -343,6 +344,7 @@ function displayStats(item: IItem): void {
             </div>
           </Tooltip>
         </div>
+        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
       </div>
       <div
         v-if="!modelIsSelected
@@ -390,22 +392,27 @@ function displayStats(item: IItem): void {
 
 <style scoped>
 .build-card {
-  height: 17.375rem;
+  height: 21.5rem;
 }
 
 .build-card-header {
   align-items: center;
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  height: 2rem;
 }
 
 .build-card-items {
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
-  padding-bottom: 0.25rem;
+  height: 4.125rem;
   overflow-x: auto;
   width: 100%;
+}
+
+.build-card-items > div {
+  padding-bottom: 0.25rem;
 }
 
 .build-card-items-container {

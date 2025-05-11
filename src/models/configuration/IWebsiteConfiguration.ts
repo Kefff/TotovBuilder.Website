@@ -83,6 +83,11 @@ export interface IWebsiteConfiguration {
   endpointTarkovValues: string
 
   /**
+   * URL shortener endpoint.
+   */
+  endpointUrlShortener: string
+
+  /**
    * Website configuration endpoint.
    */
   endpointWebsiteConfiguration: string
@@ -186,6 +191,11 @@ export interface IWebsiteConfiguration {
    * Warning notifications duration (in seconds).
    */
   notificationWarningDuration: number
+
+  /**
+   * Storage key for the value indicating whether the a warning should be displayed when saving changes to a build that was shared indicating that the link is no longer up to date.
+   */
+  outdatedSharableUrlWarningStorageKey: string
 
   /**
    * Indicates whether we are in a post-update period and items and prices are being updated.

@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDiscord, faGithub, faRedditAlien } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faFacebook, faFacebookMessenger, faGithub, faRedditAlien, faTelegram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import {
   faArrowLeft,
   faArrowRight,
@@ -56,6 +56,7 @@ import {
   faInfoCircle,
   faItalic,
   faLanguage,
+  faLink,
   faList,
   faLock,
   faLowVision,
@@ -73,6 +74,7 @@ import {
   faShieldVirus,
   faShoppingCart,
   faSkull,
+  faSms,
   faSortAmountDownAlt,
   faSortAmountUp,
   faStopwatch,
@@ -132,12 +134,15 @@ export function useFontAwesome(app: App<Element>): void {
     faEdit,
     faEllipsisH,
     faEnvelope,
+    faEnvelope,
     faEuroSign,
     faExchangeAlt,
     faExclamationCircle,
     faExclamationTriangle,
     faEye,
     faEyeSlash,
+    faFacebook,
+    faFacebookMessenger,
     faFile,
     faFileUpload,
     faFilter,
@@ -158,6 +163,7 @@ export function useFontAwesome(app: App<Element>): void {
     faInfoCircle,
     faItalic,
     faLanguage,
+    faLink,
     faList,
     faLock,
     faLowVision,
@@ -176,6 +182,7 @@ export function useFontAwesome(app: App<Element>): void {
     faShieldVirus,
     faShoppingCart,
     faSkull,
+    faSms,
     faSortAmountDownAlt,
     faSortAmountUp,
     faStopwatch,
@@ -183,12 +190,14 @@ export function useFontAwesome(app: App<Element>): void {
     faSwatchbook,
     faSyncAlt,
     faTablets,
+    faTelegram,
     faThLarge,
     faThumbtack,
     faTimes,
     faTint,
     faTrash,
     faTv,
+    faTwitter,
     faUndo,
     faUserTag,
     faVest,
@@ -197,6 +206,7 @@ export function useFontAwesome(app: App<Element>): void {
     faWalking,
     faWallet,
     faWeightHanging,
+    faWhatsapp,
     faWind
   )
   app.component('FontAwesomeIcon', FontAwesomeIcon)

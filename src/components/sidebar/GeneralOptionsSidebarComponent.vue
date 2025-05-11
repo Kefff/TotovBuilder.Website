@@ -4,16 +4,15 @@ import { IGeneralOption } from '../../models/utils/IGeneralOption'
 import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
 
 const _generalOptionsService = Services.get(GeneralOptionsService)
-const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const allowCookies = ref(true)
 const exportWarning = ref(true)
+const outdatedSharableUrlWarning = ref(true)
 
 const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
 const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
@@ -22,6 +21,7 @@ const additionalOptionGroups = computed(() => props.parameters?.filter(og => og.
 onMounted(() => {
   allowCookies.value = _generalOptionsService.getAllowCookiesOption()
   exportWarning.value = _generalOptionsService.getExportWarningOption()
+  outdatedSharableUrlWarning.value = _generalOptionsService.getOutdatedSharableUrlWarningOption()
 })
 
 /**
@@ -54,12 +54,20 @@ function onAllowCookiesChanged(): void {
  * Sets the export warning option.
  */
 function onExportWarningChanged(): void {
-  localStorage.setItem(_websiteConfigurationService.configuration.exportWarningStorageKey, exportWarning.value.toString())
+  _generalOptionsService.setExportWarningOption(exportWarning.value)
+}
+
+/**
+ * Reacts to the outdated sharable URL warning option being changed.
+ *
+ * Sets the OutdatedSharableUrl warning option.
+ */
+function onOutdatedSharableUrlWarningChanged(): void {
+  _generalOptionsService.setOutdatedSharableUrlWarningOption(outdatedSharableUrlWarning.value)
 }
 
 /**
  * Toggles the allow cookies option.
- * @param filter - Filter.
  */
 function toggleAllowCookiesValue(): void {
   allowCookies.value = !allowCookies.value
@@ -68,11 +76,18 @@ function toggleAllowCookiesValue(): void {
 
 /**
  * Toggles the export warning option.
- * @param filter - Filter.
  */
 function toggleExportWarningValue(): void {
   exportWarning.value = !exportWarning.value
   onExportWarningChanged()
+}
+
+/**
+ * Toggles the outdated sharable URL warning option.
+ */
+function toggleOutdatedSharableUrlWarningValue(): void {
+  outdatedSharableUrlWarning.value = !outdatedSharableUrlWarning.value
+  onOutdatedSharableUrlWarningChanged()
 }
 </script>
 
@@ -87,9 +102,11 @@ function toggleExportWarningValue(): void {
 
 <template>
   <!-- Display options -->
+  <!-- Language -->
   <div class="sidebar-option">
     <ApplicationLanguageSelector />
   </div>
+  <!-- Additional display options -->
   <div
     v-for="(additionalDisplayOption, index) of additionalDisplayOptions"
     :key="index"
@@ -109,6 +126,7 @@ function toggleExportWarningValue(): void {
     </div>
     <span>{{ $t('caption.generalOptions') }}</span>
   </div>
+  <!-- Allow cookies -->
   <div class="sidebar-option">
     <div class="sidebar-option-icon">
       <Checkbox
@@ -129,10 +147,11 @@ function toggleExportWarningValue(): void {
     <div class="sidebar-option-icon">
       <font-awesome-icon icon="info-circle" />
     </div>
-    <span class="general-options-cookies-explanation">
+    <span>
       {{ $t('message.cookiesExplanation') }}
     </span>
   </div>
+  <!-- Build export warning -->
   <div class="sidebar-option">
     <div class="sidebar-option-icon">
       <Checkbox
@@ -149,6 +168,40 @@ function toggleExportWarningValue(): void {
       {{ $t('caption.exportWarning') }}
     </div>
   </div>
+  <div class="sidebar-option-description">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
+    </div>
+    <span>
+      {{ $t('message.exportExplanation') }}
+    </span>
+  </div>
+  <!-- Build outdated sharable URL -->
+  <div class="sidebar-option">
+    <div class="sidebar-option-icon">
+      <Checkbox
+        v-model="outdatedSharableUrlWarning"
+        :binary="true"
+        @change="onOutdatedSharableUrlWarningChanged()"
+      />
+    </div>
+    <div
+      class="general-options-name"
+      :class="!outdatedSharableUrlWarning ? ' sidebar-option-disabled' : ''"
+      @click="toggleOutdatedSharableUrlWarningValue()"
+    >
+      {{ $t('caption.outdatedSharableUrlWarning') }}
+    </div>
+  </div>
+  <div class="sidebar-option-description">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
+    </div>
+    <span>
+      {{ $t('message.outdatedShareUrlExplanation') }}
+    </span>
+  </div>
+  <!-- Additional general options -->
   <div
     v-for="(additionalGeneralOption, index) of additionalGeneralOptions"
     :key="index"
@@ -165,7 +218,7 @@ function toggleExportWarningValue(): void {
   <div
     v-for="additionalOptionsGroup of additionalOptionGroups"
     :key="additionalOptionsGroup.name"
-    class="general-options-addition-group"
+    class="general-options-additional-group"
   >
     <div class="sidebar-title">
       <div class="sidebar-title-icon">
@@ -202,12 +255,8 @@ function toggleExportWarningValue(): void {
 
 
 <style scoped>
-.general-options-addition-group {
+.general-options-additional-group {
   margin-top: 3rem;
-}
-
-.general-options-cookies-explanation {
-  max-width: 20rem;
 }
 
 .general-options-name {

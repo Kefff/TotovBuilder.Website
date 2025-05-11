@@ -73,12 +73,45 @@ export class GeneralOptionsService {
   }
 
   /**
-   Sets the allow cookies option and deletes Application Insights cookies when disabling cookies.
- */
+   * Gets the outdated sharable URL option.
+   * @returns Outdated sharable URL option value.
+   */
+  public getOutdatedSharableUrlWarningOption(): boolean {
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+    let outdatedSharableUrWarning = true
+    const storedValue = localStorage.getItem(websiteConfigurationService.configuration.outdatedSharableUrlWarningStorageKey)
+
+    if (storedValue != null) {
+      outdatedSharableUrWarning = JSON.parse(storedValue)
+    }
+
+    return outdatedSharableUrWarning
+  }
+
+  /**
+   * Sets the allow cookies option and deletes Application Insights cookies when disabling cookies.
+   */
   public setAllowCookiesOption(allowCookies: boolean): void {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     localStorage.setItem(websiteConfigurationService.configuration.allowCookiesStorageKey, allowCookies.toString())
     this.setCookieUsage(allowCookies)
+  }
+
+  /**
+   * Sets the export warning option.
+   */
+  public setExportWarningOption(exportWarning: boolean): void {
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    localStorage.setItem(websiteConfigurationService.configuration.exportWarningStorageKey, exportWarning.toString())
+  }
+
+  /**
+   * Sets the outdated sharable URL warning option.
+   */
+  public setOutdatedSharableUrlWarningOption(outdatedSharableUrlWarning: boolean): void {
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    localStorage.setItem(websiteConfigurationService.configuration.outdatedSharableUrlWarningStorageKey, outdatedSharableUrlWarning.toString())
   }
 
   /**

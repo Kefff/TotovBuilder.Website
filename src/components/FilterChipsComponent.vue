@@ -94,7 +94,7 @@ const merchantsTooltip = computed(() => {
   }
 
   if (!globalFilter.value.excludeItemsWithoutMatchingPrice) {
-    tooltip += `\n\n${vueI18n.t('caption.merchantItemsOptions_showItemsWithoutMatchingPrice')}`
+    tooltip += `\n\n${vueI18n.t('caption.showItemsWithoutMatchingPrice')}`
   }
 
   if (!globalFilter.value.excludePresetBaseItems) {
@@ -102,7 +102,7 @@ const merchantsTooltip = computed(() => {
       tooltip += '\n\n'
     }
 
-    tooltip += vueI18n.t('caption.merchantItemsOptions_showPresetBaseItems')
+    tooltip += vueI18n.t('caption.showPresetBaseItems')
   }
 
   if (enabledMerchants.value.length > 0) {

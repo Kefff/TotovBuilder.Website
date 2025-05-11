@@ -30,6 +30,7 @@ const fixedConfiguration = {
   itemsSortPropertyStorageKey: 'items_sort_field',
   itemsSortOrderStorageKey: 'items_sort_order',
   languageStorageKey: 'language',
+  outdatedSharableUrlWarningStorageKey: 'outdated_sharable_url_warning',
   version,
   versionStorageKey: 'version'
 }
@@ -50,6 +51,7 @@ const updatableWbsiteConfiguration = {
   endpointPrices: 'data/prices.json',
   endpointTarkovValues: 'data/tarkov-values.json',
   endpointWebsiteConfiguration: 'data/website-configuration.json',
+  endpointUrlShortener: 'https://spoo.me/',
   fetchMaxTries: 6,
   fetchTimeout: 9,
   fetchWaitTimeBetweenRetries: 1,

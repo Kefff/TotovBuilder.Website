@@ -55,9 +55,11 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
     :item="headwear"
     :wearable-modifiers-override="wearableModifiers"
   >
-    <template #slot>
+    <template
+      v-if="!isBaseItem && hasRicochetChance"
+      #slot
+    >
       <Tooltip
-        v-if="!isBaseItem && hasRicochetChance"
         :tooltip="$t('caption.ricochetChance')"
         :class="[
           props.includeModsAndContent ? 'headwear-item-card-bold' : undefined,

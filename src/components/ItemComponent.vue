@@ -4,7 +4,6 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IContainer } from '../models/item/IContainer'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
-import { IMagazine } from '../models/item/IMagazine'
 import { IModdable } from '../models/item/IModdable'
 import { ItemSelectionSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
@@ -12,6 +11,7 @@ import { SelectableTab } from '../models/utils/UI/SelectableTab'
 import { CompatibilityRequestType } from '../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../services/compatibility/CompatibilityService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { ItemComponentService } from '../services/ItemComponentService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
@@ -52,6 +52,7 @@ const props = withDefaults(
 
 const _compatibilityService = Services.get(CompatibilityService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _itemComponentService = Services.get(ItemComponentService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
 const _presetService = Services.get(PresetService)
@@ -383,49 +384,15 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   } else {
     quantity.value = maxSelectableQuantity.value
     const ignorePrice = modelInventoryItem.value?.ignorePrice ?? false
+    const newContent = _itemComponentService.getReplacingItemContent(modelInventoryItem.value, newItem)
+    const newModSlots = _itemComponentService.getReplacingModSlots(modelInventoryItem.value, newItem)
 
-    // Keeping the old item content if the new item is a container
-    const newContent: IInventoryItem[] = []
-    const newItemIsContainer = _itemPropertiesService.canContain(newItem)
-
-    if (newItemIsContainer
-      && modelInventoryItem.value != null
-      && modelInventoryItem.value.content.length > 0) {
-      const newItemIsMagazine = _itemPropertiesService.isMagazine(newItem)
-
-      if (newItemIsMagazine) {
-        const magazine = (newItem as IMagazine)
-
-        for (const ammunitionInventoryItem of modelInventoryItem.value.content) {
-          const isCompatible = magazine.acceptedAmmunitionIds.some(aci => aci === ammunitionInventoryItem.itemId)
-
-          if (isCompatible) {
-            ammunitionInventoryItem.quantity = magazine.capacity
-            newContent.push(ammunitionInventoryItem)
-          }
-        }
-      } else {
-        newContent.push(...modelInventoryItem.value.content)
-      }
-    }
-
-    // Setting the preset content and mods when the newly selected item is a preset
-    const preset = _presetService.getPreset(newItem.id)
-
-    if (preset != null) {
-      // Creating a copy of the preset, otherwise the preset is modified for the whole application
-      const newSelectedInventoryItem = JSON.parse(JSON.stringify(preset)) as IInventoryItem
-      newSelectedInventoryItem.content = newContent
-      newSelectedInventoryItem.ignorePrice = ignorePrice
-      modelInventoryItem.value = newSelectedInventoryItem
-    } else {
-      modelInventoryItem.value = {
-        content: newContent,
-        ignorePrice,
-        itemId: newItem.id,
-        modSlots: [],
-        quantity: quantity.value
-      }
+    modelInventoryItem.value = {
+      content: newContent,
+      ignorePrice,
+      itemId: newItem.id,
+      modSlots: newModSlots,
+      quantity: quantity.value
     }
 
     setBaseItem(newItem)
@@ -459,10 +426,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     >
       <div>
         <div class="item-header">
-          <div
-            v-if="item != null && (!isEditing || isBaseItem)"
-            style="display: flex;"
-          >
+          <div v-if="item != null && (!isEditing || isBaseItem)">
             <ItemIcon
               :item="item"
               :quantity="quantity"
@@ -706,6 +670,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   width: 100%;
 }
 
+.item-header > div {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+}
+
 .item-header-button {
   display: flex;
   flex-shrink: 0;
@@ -771,6 +741,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-dropdown-value-placeholder-icon {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
   color: var(--success-color);
 }
 

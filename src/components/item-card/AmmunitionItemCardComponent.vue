@@ -46,6 +46,7 @@ const tooltip = computed(() =>
       || ammunition.fleshDamage > 0
       || ammunition.penetratedArmorLevel > 0
       || ammunition.penetrationPower > 0
+      || ammunition.fragmentationChance > 0
       || ammunition.subsonic
       || ammunition.tracer
       || ammunition.blinding"
@@ -90,34 +91,52 @@ const tooltip = computed(() =>
         </Tooltip>
       </div>
     </div>
+    <div style="display: flex; gap: 0.25rem">
+      <Tooltip
+        v-if="ammunition.penetrationPower > 0"
+        :tooltip="$t('caption.penetrationPower')"
+      >
+        <div
+          class="card-value"
+          :class="StatsUtils.getSortedPropertyColorClass('penetrationPower', filterAndSortingData)"
+        >
+          <font-awesome-icon
+            icon="bolt"
+            class="icon-before-text"
+          />
+          <span>{{ ammunition.penetrationPower }}</span>
+        </div>
+      </Tooltip>
+      <Tooltip
+        v-if="ammunition.penetratedArmorLevel > 0"
+        :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
+      >
+        <div
+          style="font-size: 0.875rem; display: flex; align-items: center; gap: 0.125rem"
+          class="card-value"
+          :class="StatsUtils.getSortedPropertyColorClass('penetratedArmorLevel', filterAndSortingData)"
+        >
+          ( <font-awesome-icon
+            icon="award"
+            :class="`armor-penetration${ammunition.penetratedArmorLevel}`"
+          />
+          <span>{{ ammunition.penetratedArmorLevel }}</span> )
+        </div>
+      </Tooltip>
+    </div>
     <Tooltip
-      v-if="ammunition.penetratedArmorLevel > 0"
-      :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
+      v-if="ammunition.fragmentationChance > 0"
+      :tooltip="$t('caption.fragmentationChance')"
     >
       <div
         class="card-value"
-        :class="StatsUtils.getSortedPropertyColorClass('penetratedArmorLevel', filterAndSortingData)"
+        :class="StatsUtils.getSortedPropertyColorClass('fragmentationChance', filterAndSortingData)"
       >
         <font-awesome-icon
-          icon="award"
-          :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
-        />
-        <span>{{ ammunition.penetratedArmorLevel }}</span>
-      </div>
-    </Tooltip>
-    <Tooltip
-      v-if="ammunition.penetrationPower > 0"
-      :tooltip="$t('caption.penetrationPower')"
-    >
-      <div
-        class="card-value"
-        :class="StatsUtils.getSortedPropertyColorClass('penetrationPower', filterAndSortingData)"
-      >
-        <font-awesome-icon
-          icon="bolt"
+          icon="viruses"
           class="icon-before-text"
         />
-        <span>{{ ammunition.penetrationPower }}</span>
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
       </div>
     </Tooltip>
     <div class="ammunition-item-card-attributes">
@@ -150,29 +169,7 @@ const tooltip = computed(() =>
       </Tooltip>
     </div>
   </div>
-  <div
-    v-if="displayEmptyLines
-      || ammunition.fragmentationChance > 0
-      || ammunition.recoilModifier !== 0
-      || ammunition.accuracyModifierPercentage !== 0
-      || ammunition.durabilityBurnModifierPercentage !== 0"
-    class="card-line card-line4"
-  >
-    <Tooltip
-      v-if="ammunition.fragmentationChance > 0"
-      :tooltip="$t('caption.fragmentationChance')"
-    >
-      <div
-        class="card-value"
-        :class="StatsUtils.getSortedPropertyColorClass('fragmentationChance', filterAndSortingData)"
-      >
-        <font-awesome-icon
-          icon="viruses"
-          class="icon-before-text"
-        />
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
-      </div>
-    </Tooltip>
+  <div class="card-line card-line4">
     <Tooltip
       v-if="ammunition.recoilModifier !== 0"
       :tooltip="$t('caption.recoilModifier')"
@@ -218,6 +215,20 @@ const tooltip = computed(() =>
         />
         <span :class="StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
           {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
+        </span>
+      </div>
+    </Tooltip>
+    <Tooltip :tooltip="$t('caption.velocity')">
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('accuracyModifierPercentage', filterAndSortingData)"
+      >
+        <font-awesome-icon
+          icon="wind"
+          class="icon-before-text"
+        />
+        <span>
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.velocity, ammunition.velocity) }}
         </span>
       </div>
     </Tooltip>

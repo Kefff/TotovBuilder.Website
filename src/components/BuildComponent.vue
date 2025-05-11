@@ -20,6 +20,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildSummary from './BuildSummaryComponent.vue'
@@ -40,6 +41,7 @@ const _compatibilityService = Services.get(CompatibilityService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
+const _seoService = Services.get(SeoService)
 
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
@@ -74,7 +76,7 @@ const _toolbarButtons: IToolbarButton[] = [
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.save'),
     icon: () => 'save',
-    isDisabled: () => isInvalid.value,
+    isDisabled: () => !hasChanges.value || isInvalid.value,
     isVisible: () => isEditing.value,
     name: 'save',
     variant: () => 'success',
@@ -202,6 +204,7 @@ const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
+const hasChanges = ref(false)
 const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
 const isBuildSummaryStickied = ref(false)
 const isCompactBuildSummaryPinned = ref(false)
@@ -282,7 +285,6 @@ function addNavigationGuards(): void {
         || from.name === 'ShareBuild'
       if (isBuildScreen
         && isEditing.value) {
-        //const confirmationDialogResult = confirm(vueI18n.t('message.confirmLeaveBuildWithoutSaving'))
         const action = new Promise<void>((resolve) => {
           displayConfirmationDialog({
             mainButtonAction: () => {
@@ -317,6 +319,7 @@ function addNavigationGuards(): void {
  */
 function cancelEdit(): void {
   isEditing.value = false
+  hasChanges.value = false
 
   if (isNewBuild.value) {
     goToBuilds()
@@ -339,13 +342,6 @@ function copy(): void {
     top: 0,
     behavior: 'smooth'
   })
-}
-
-/**
- * Displays the general options.
- */
-function displayGeneralOptions(): void {
-  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
 }
 
 /**
@@ -401,6 +397,13 @@ function displayConfirmationDialog(options: {
 
   confirmationDialogMessage.value = options.message
   confirmationDialogIsDisplayed.value = true
+}
+
+/**
+ * Displays the general options.
+ */
+function displayGeneralOptions(): void {
+  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
 }
 
 /**
@@ -493,6 +496,7 @@ function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
  * Signals to the build one of its inventory slots has changed.
  */
 function onInventorySlotChanged(): void {
+  hasChanges.value = true
   setSummaryAsync()
 }
 
@@ -635,9 +639,8 @@ async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Pro
   nextTick(() => {
     isLoading.value = false
     isEditing.value = false
+    hasChanges.value = false
   })
-
-
 }
 
 /**
@@ -649,6 +652,7 @@ async function setSummaryAsync(): Promise<void> {
   }
 
   summary.value = await _buildPropertiesService.getSummaryAsync(build.value)
+  updateSeoMetadata() // Updating SEO metadata with informations about the build
 }
 
 /**
@@ -700,6 +704,14 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 
   isCompactBuildSummaryExpanded.value = !isCompactBuildSummaryExpanded.value
   setTimeout(() => _isCompactSummaryExpanding = false, _compactBuildSummaryExpansionAnimationLenght) // Prevents toggleCompactBuildSummary from being called during the animation to avoid weird behaviors
+}
+
+/**
+ * Updates SEO metadata based on the properties of the build.
+ */
+function updateSeoMetadata(): void {
+  const seoMetadata = _seoService.getBuildSeoMetadata(summary.value, window.location.toString())
+  _seoService.updateSeoMetadata(seoMetadata)
 }
 </script>
 

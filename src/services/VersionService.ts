@@ -321,7 +321,7 @@ export class VersionService {
       Services.get(LogService).logInformation('message.fetchingChangelog', { date: new Date().toISOString() })
     }
 
-    const changelog = await fetchService.getAsync<IChangelogEntry[]>(endpoint)
+    const changelog = await fetchService.fetchWithRetryAsync<IChangelogEntry[]>({ endpoint })
 
     if (changelog == null || changelog.length === 0) {
       Services.get(LogService).logException('message.changelogNotFetched')

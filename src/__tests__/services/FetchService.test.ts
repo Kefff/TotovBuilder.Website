@@ -21,7 +21,7 @@ beforeEach(() => {
   fetchMock.resetMocks()
 })
 
-describe('getAsync', () => {
+describe('fetchAsync', () => {
   it('should send a request and get a response', async () => {
     // Arrange
     const response = `[
@@ -63,7 +63,7 @@ describe('getAsync', () => {
     fetchMock.mockOnceIf(endpoint, response, { status: 200 })
 
     // Act
-    const result = await new FetchService().getAsync(endpoint)
+    const result = await new FetchService().fetchAsync({ endpoint })
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -121,7 +121,171 @@ describe('getAsync', () => {
     fetchMock.mockOnceIf('localhost:3000/method?id=590c392f86f77444754deb29', response, { status: 200 })
 
     // Act
-    const result = await new FetchService().getAsync('localhost:3000/method', { name: 'id', value: '590c392f86f77444754deb29' })
+    const result = await new FetchService().fetchAsync({ endpoint: 'localhost:3000/method', parameters: { id: '590c392f86f77444754deb29' } })
+
+    // Assert
+    expect(fetchMock.mock.calls.length).toBe(1)
+    expect(result).toStrictEqual([
+      {
+        ic: 'https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp',
+        i: '590c392f86f77444754deb29',
+        im: 'https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp',
+        m: 'https://tarkov.dev/item/ssd-drive',
+        n: 'SSD drive',
+        s: 'SSD',
+        w: 0.04,
+        wi: 'https://escapefromtarkov.fandom.com/wiki/SSD_drive'
+      }
+    ])
+  })
+
+  it('should return undefined data when the response is empty', async () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+    const endpoint = 'data/prices.ts'
+    fetchMock.mockOnceIf('localhost:3000/' + endpoint, '', { status: 200 })
+
+    // Act
+    const result = await new FetchService().fetchAsync({ endpoint })
+
+    // Assert
+    expect(fetchMock.mock.calls.length).toBe(1)
+    expect(result).toBeUndefined()
+    verify(logServiceMock.logError('message.fetchError', anything())).once()
+  })
+
+  it('should return undefined if it times out', async () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    websiteConfigurationService.configuration.fetchTimeout = 0.5
+
+    fetchMock.doMock(async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      return ''
+    })
+
+    const service = new FetchService()
+
+    // Act
+    const result = await service.fetchAsync({ endpoint: 'item', parameters: { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' } })
+
+    // Assert
+    expect(result).toBeUndefined()
+    verify(logServiceMock.logError('message.fetchError', anything())).once()
+  })
+})
+
+describe('fetchWithRetryAsync', () => {
+  it('should send a request and get a response', async () => {
+    // Arrange
+    const response = `[
+  {
+    "ic": "https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp",
+    "i": "590c392f86f77444754deb29",
+    "im": "https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp",
+    "m": "https://tarkov.dev/item/ssd-drive",
+    "n": "SSD drive",
+    "s": "SSD",
+    "w": 0.04,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/SSD_drive"
+  },
+  {
+    "e": -1,
+    "mo": [
+      {
+        "i": [
+          "5addba3e5acfc4001669f0ab",
+          "5aafa49ae5b5b00015042a58"
+        ],
+        "n": "mod_sight_front"
+      }
+    ],
+    "r": -0.06,
+    "c": "rangedWeaponMod",
+    "ic": "https://assets.tarkov.dev/5addbbb25acfc40015621bd9-icon.webp",
+    "i": "5addbbb25acfc40015621bd9",
+    "im": "https://assets.tarkov.dev/5addbbb25acfc40015621bd9-image.webp",
+    "m": "https://tarkov.dev/item/m14-yankee-hill-phantom-762x51-flash-hider",
+    "n": "M14 Yankee Hill Phantom 7.62x51 flash hider",
+    "s": "Phantom",
+    "w": 0.07,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/M14_Yankee_Hill_Phantom_7.62x51_flash_hider"
+  }
+]`
+    const endpoint = 'data/prices.ts'
+    useWebsiteConfigurationServiceMock()
+    fetchMock.mockOnceIf(endpoint, response, { status: 200 })
+
+    // Act
+    const result = await new FetchService().fetchWithRetryAsync({ endpoint })
+
+    // Assert
+    expect(fetchMock.mock.calls.length).toBe(1)
+    expect(result).toStrictEqual([
+      {
+        ic: 'https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp',
+        i: '590c392f86f77444754deb29',
+        im: 'https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp',
+        m: 'https://tarkov.dev/item/ssd-drive',
+        n: 'SSD drive',
+        s: 'SSD',
+        w: 0.04,
+        wi: 'https://escapefromtarkov.fandom.com/wiki/SSD_drive'
+      },
+      {
+        e: -1,
+        mo: [
+          {
+            'i': [
+              '5addba3e5acfc4001669f0ab',
+              '5aafa49ae5b5b00015042a58'
+            ],
+            'n': 'mod_sight_front'
+          }
+        ],
+        r: -0.06,
+        c: 'rangedWeaponMod',
+        ic: 'https://assets.tarkov.dev/5addbbb25acfc40015621bd9-icon.webp',
+        i: '5addbbb25acfc40015621bd9',
+        im: 'https://assets.tarkov.dev/5addbbb25acfc40015621bd9-image.webp',
+        m: 'https://tarkov.dev/item/m14-yankee-hill-phantom-762x51-flash-hider',
+        n: 'M14 Yankee Hill Phantom 7.62x51 flash hider',
+        s: 'Phantom',
+        w: 0.07,
+        wi: 'https://escapefromtarkov.fandom.com/wiki/M14_Yankee_Hill_Phantom_7.62x51_flash_hider'
+      }
+    ])
+  })
+
+  it('should send a request with parameters and get a response', async () => {
+    // Arrange
+    const response = `[
+  {
+    "ic": "https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp",
+    "i": "590c392f86f77444754deb29",
+    "im": "https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp",
+    "m": "https://tarkov.dev/item/ssd-drive",
+    "n": "SSD drive",
+    "s": "SSD",
+    "w": 0.04,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/SSD_drive"
+  }
+]`
+    useWebsiteConfigurationServiceMock()
+    fetchMock.mockOnceIf('localhost:3000/method?id=590c392f86f77444754deb29', response, { status: 200 })
+
+    // Act
+    const result = await new FetchService().fetchWithRetryAsync({ endpoint: 'localhost:3000/method', parameters: { id: '590c392f86f77444754deb29' } })
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -154,7 +318,7 @@ describe('getAsync', () => {
       .mockResponse(successResponse, { status: 200 })
 
     // Act
-    const result = await new FetchService().getAsync('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await new FetchService().fetchWithRetryAsync({ endpoint: 'item', parameters: { uid: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' } })
 
     // Assert
     expect(result).toStrictEqual({ success: 'Access granted' })
@@ -174,7 +338,7 @@ describe('getAsync', () => {
     fetchMock.mockOnceIf('localhost:3000/' + endpoint, '', { status: 200 })
 
     // Act
-    const result = await new FetchService().getAsync(endpoint)
+    const result = await new FetchService().fetchWithRetryAsync({ endpoint })
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -202,7 +366,7 @@ describe('getAsync', () => {
     fetchMock.doMock(response, { status: 401 })
 
     // Act
-    const result = await new FetchService().getAsync('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await new FetchService().fetchWithRetryAsync({ endpoint: 'item', parameters: { uid: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' } })
 
     // Assert
     expect(result).toBeUndefined()
@@ -230,7 +394,7 @@ describe('getAsync', () => {
     const service = new FetchService()
 
     // Act
-    const result = await service.getAsync('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await service.fetchWithRetryAsync({ endpoint: 'item', parameters: { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' } })
 
     // Assert
     expect(result).toBeUndefined()

@@ -44,6 +44,7 @@ function save(): void {
 
 
 <template>
+  <!-- Exclude items without matching prices -->
   <div
     class="sidebar-option"
     :class="{ 'sidebar-option-disabled': globalFilter.excludeItemsWithoutMatchingPrice }"
@@ -64,17 +65,18 @@ function save(): void {
         hasChanged = true
       }"
     >
-      {{ $t('caption.merchantItemsOptions_showItemsWithoutMatchingPrice') }}
+      {{ $t('caption.showItemsWithoutMatchingPrice') }}
     </div>
   </div>
   <div class="sidebar-option-description">
     <div class="sidebar-option-icon">
       <font-awesome-icon icon="info-circle" />
     </div>
-    <span class="merchant-items-options-explanation">
-      {{ $t('message.merchantItemsOptions_showItemsWithoutMatchingPriceExplanation') }}
+    <span>
+      {{ $t('message.showItemsWithoutMatchingPriceExplanation') }}
     </span>
   </div>
+  <!-- Exclude preset base item -->
   <div
     class="sidebar-option"
     :class="{ 'sidebar-option-disabled': globalFilter.excludePresetBaseItems }"
@@ -95,9 +97,10 @@ function save(): void {
         hasChanged = true
       }"
     >
-      {{ $t('caption.merchantItemsOptions_showPresetBaseItems') }}
+      {{ $t('caption.showPresetBaseItems') }}
     </div>
   </div>
+  <!-- Merchants  -->
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
       <font-awesome-icon icon="user-tag" />
@@ -111,18 +114,3 @@ function save(): void {
     />
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-.merchant-items-options-explanation {
-  max-width: 20rem;
-}
-</style>

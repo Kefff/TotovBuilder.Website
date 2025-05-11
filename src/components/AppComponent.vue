@@ -6,6 +6,7 @@ import vueI18n from '../plugins/vueI18n'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { NotificationService, NotificationType } from '../services/NotificationService'
+import { SeoService } from '../services/SeoService'
 import { VersionService } from '../services/VersionService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
@@ -22,6 +23,7 @@ const GlobalSidebar = defineAsyncComponent({
 })
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _seoService = Services.get(SeoService)
 const _versionService = Services.get(VersionService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
@@ -54,6 +56,8 @@ const loading = ref(true)
 const version = ref('1.0.0')
 
 onMounted(() => {
+  _seoService.initialize()
+
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
     _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitializedAsync)
     loading.value = true
@@ -127,7 +131,7 @@ async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
  * Sets the language.
  */
 function setLanguage(): void {
-  const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+  const language = localStorage.getItem(_websiteConfigurationService.configuration.languageStorageKey) ?? 'en'
   LanguageUtils.setLanguage(language)
 }
 </script>

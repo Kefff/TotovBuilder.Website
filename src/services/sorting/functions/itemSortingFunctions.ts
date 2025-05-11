@@ -74,6 +74,10 @@ export const AmmunitionSortingFunctions: IItemSortingFunctionList = {
     recoilModifier: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
       comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).recoilModifier)
+    },
+    velocity: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).velocity)
     }
   },
   itemCategoryIds: [ItemCategoryId.ammunition]

@@ -62,7 +62,7 @@ describe('fetchItemsAsync', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.getAsync('/' + WebsiteConfigurationMock.endpointItems)).thenResolve(undefined)
+    when(fetchServiceMock.fetchWithRetryAsync({ endpoint: '/' + WebsiteConfigurationMock.endpointItems })).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -130,7 +130,7 @@ describe('fetchPricesAsync', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.getAsync('/' + WebsiteConfigurationMock.endpointPrices)).thenResolve(undefined)
+    when(fetchServiceMock.fetchWithRetryAsync({ endpoint: '/' + WebsiteConfigurationMock.endpointPrices })).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -192,7 +192,7 @@ describe('fetchPresetsAsync', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.getAsync('/' + WebsiteConfigurationMock.endpointPresets)).thenResolve(undefined)
+    when(fetchServiceMock.fetchWithRetryAsync({ endpoint: '/' + WebsiteConfigurationMock.endpointPresets })).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()

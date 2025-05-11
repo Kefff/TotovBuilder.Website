@@ -9,6 +9,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ImportService } from '../services/ImportService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import StringUtils from '../utils/StringUtils'
 import Loading from './LoadingComponent.vue'
@@ -29,9 +30,10 @@ const hasBuilds = ref(false)
 const isLoadingWebsite = ref(true)
 const isLoadingLastBuilds = ref(true)
 
-
 onMounted(() => {
   _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
+
+  Services.get(SeoService).updateSeoMetadata()
 
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
     _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
@@ -370,7 +372,7 @@ function openNewBuild(): void {
 }
 
 .welcome-action {
-  width: 15rem;
+  width: 12rem;
 }
 
 .welcome-actions {

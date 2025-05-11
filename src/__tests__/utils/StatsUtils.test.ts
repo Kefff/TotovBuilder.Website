@@ -26,6 +26,7 @@ describe('StringUtils', () => {
       [DisplayValueType.recoilModifier, '+1,234.6'],
       [DisplayValueType.recoilModifierPercentage, '+123,456.8%'],
       [DisplayValueType.turningSpeedModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.velocity, '1,235 m/s'],
       [DisplayValueType.weight, '1,234.568 kg'],
       [999, 'Error']
     ])('should get the display value in the standard format associated with the value type', (type: DisplayValueType, expected: string) => {

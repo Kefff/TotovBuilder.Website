@@ -1,20 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { ShareButtons } from '../../models/utils/ShareButtons'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import BuildShareButtons from '../BuildShareButtonsComponent.vue'
 
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
 
 const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+
 const _router = useRouter()
 
 const isDeleting = ref(false)
+
+onMounted(() => {
+  // Dynamically setting the action of the Discord button because it does not open a share link
+  // but opens the BuildsShareSideBar
+  ShareButtons.discord.onClick = (): void => {
+    Services.get(GlobalSidebarService).display({
+      displayedComponentType: 'BuildsShareSideBar',
+      displayedComponentParameters: {
+        buildToShare: props.parameters
+      }
+    })
+  }
+})
 
 /**
  * Cancels the build deletion.
@@ -79,16 +95,20 @@ function exportBuild(): void {
 
 
 <template>
+  <div class="sidebar-option build-sidebar-quick-share">
+    <BuildShareButtons :build="parameters" />
+  </div>
   <div class="sidebar-option">
     <Button
       class="build-sidebar-button"
+      outlined
       @click="displayBuildsShareSideBar()"
     >
       <font-awesome-icon
         icon="share-alt"
         class="icon-before-text"
       />
-      <span>{{ $t('caption.share') }}</span>
+      <span>{{ $t('caption.more-sharing-options') }}</span>
     </Button>
   </div>
   <div class="sidebar-option">
@@ -209,6 +229,11 @@ function exportBuild(): void {
 
 .build-sidebar-name {
   margin-left: 2.5rem;
+}
+
+.build-sidebar-quick-share {
+  display: flex;
+  justify-content: center;
 }
 
 .build-sidebar-save-to-file-explanation {

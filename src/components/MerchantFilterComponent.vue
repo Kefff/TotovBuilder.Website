@@ -88,6 +88,7 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
       <Tooltip
         :apply-hover-style="false"
         :tooltip="$t('caption.level')"
+        :disabled-on-mobile="true"
       >
         <Dropdown
           v-if="hasLevels(merchantFilter.merchant)"

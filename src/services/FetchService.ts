@@ -1,4 +1,4 @@
-import { IRequestParameter } from '../models/utils/IRequestParameter'
+import { IFetchOptions } from '../models/utils/IFetchOptions'
 import vueI18n from '../plugins/vueI18n'
 import { LogService } from './LogService'
 import Services from './repository/Services'
@@ -9,18 +9,37 @@ import { WebsiteConfigurationService } from './WebsiteConfigurationService'
  */
 export class FetchService {
   /**
-   * Sends a GET request.
+   * Sends a request.
    * @param endpoint - Endpoint to call.
+   * @param method - HTTP method.
    * @param parameters - Parameters to pass in the endpoint address.
+   * @param headers - Headers.
    * @returns Response data.
    */
-  public async getAsync<TResult>(endpoint: string, ...parameters: IRequestParameter[]): Promise<TResult | undefined> {
+  public async fetchAsync<TResult>(options: IFetchOptions)
+    : Promise<TResult | undefined> {
+    const result = await this.executeAsync<TResult>(options)
+
+    return result
+  }
+
+  /**
+   * Sends a request.
+   * If the request fails, retries until a response is gotten or the maximum number of tries is reached.
+   * @param endpoint - Endpoint to call.
+   * @param method - HTTP method.
+   * @param parameters - Parameters to pass in the endpoint address.
+   * @param headers - Headers.
+   * @returns Response data.
+   */
+  public async fetchWithRetryAsync<TResult>(options: IFetchOptions)
+    : Promise<TResult | undefined> {
     const maxTries = Services.get(WebsiteConfigurationService).configuration.fetchMaxTries
     let tries = 0
     let lastResult: TResult | undefined
 
     do {
-      lastResult = await this.executeGetAsync<TResult>(endpoint, parameters)
+      lastResult = await this.executeAsync<TResult>(options)
 
       if (lastResult != null) {
         break
@@ -31,7 +50,7 @@ export class FetchService {
     } while (tries < maxTries)
 
     if (lastResult == null) {
-      Services.get(LogService).logException('message.fetchMaxTriesError', { endpoint, maxTries })
+      Services.get(LogService).logException('message.fetchMaxTriesError', { endpoint: options.endpoint, maxTries })
     }
 
     return lastResult
@@ -43,13 +62,20 @@ export class FetchService {
    * @param parameters - Parameters to pass in the endpoint address.
    * @returns Response data.
    */
-  private async executeGetAsync<TResult>(endpoint: string, parameters: IRequestParameter[]): Promise<TResult | undefined> {
+  private async executeAsync<TResult>(options: IFetchOptions): Promise<TResult | undefined> {
     const logService = Services.get(LogService)
 
-    endpoint += this.getParametersString(parameters)
+    options.endpoint += this.getParametersString(options.parameters ?? {})
     const fetchTimeout = Services.get(WebsiteConfigurationService).configuration.fetchTimeout * 1000 // In milliseconds
 
-    const result: TResult | undefined = await fetch(endpoint, { method: 'GET', signal: AbortSignal.timeout(fetchTimeout) })
+    const result: TResult | undefined = await fetch(
+      options.endpoint,
+      {
+        body: options.body,
+        headers: options.headers,
+        method: options.method ?? 'GET',
+        signal: AbortSignal.timeout(fetchTimeout)
+      })
       .then(async (response) => {
         if (response.ok) {
           const responseData = await response.text()
@@ -61,7 +87,7 @@ export class FetchService {
 
           /* c8 ignore start */ // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
           if (this.isEmptyResponseData(errorRespondeData)) {
-            logService.logError('message.fetchError', { endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') })
+            logService.logError('message.fetchError', { endpoint: options.endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') })
 
             return undefined
           }
@@ -70,13 +96,13 @@ export class FetchService {
           const result = JSON.parse(errorRespondeData) as Record<string, unknown>
           const errorMessage = result['error'] as string
 
-          logService.logError('message.fetchError', { endpoint, errorMessage })
+          logService.logError('message.fetchError', { endpoint: options.endpoint, errorMessage })
 
           return undefined
         }
       })
       .catch((error: Error) => {
-        logService.logError('message.fetchError', { endpoint, errorMessage: error.message })
+        logService.logError('message.fetchError', { endpoint: options.endpoint, errorMessage: error.message })
 
         return undefined
       })
@@ -89,11 +115,11 @@ export class FetchService {
    * @param parameters - Parameters.
    * @returns Parameters string.
    */
-  private getParametersString(parameters: IRequestParameter[]): string {
+  private getParametersString(parameters: Record<string, string>): string {
     let parametersString = ''
 
-    for (const parameter of parameters) {
-      parametersString += `?${parameter.name}=${parameter.value}`
+    for (const key in parameters) {
+      parametersString += `?${key}=${parameters[key]}`
     }
 
     return parametersString

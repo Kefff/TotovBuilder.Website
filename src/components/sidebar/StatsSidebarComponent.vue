@@ -20,6 +20,7 @@ import ModStats from '../stats/ModStatsComponent.vue'
 import RangedWeaponModStats from '../stats/RangedWeaponModStatsComponent.vue'
 import RangedWeaponStats from '../stats/RangedWeaponStatsComponent.vue'
 import VestStats from '../stats/VestStatsComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 type SpecializedComponent = typeof AmmunitionStats | typeof ArmorModStats | typeof ArmorStats | typeof BackpackStats | typeof ContainerStats | typeof EyewearStats | typeof GrenadeStats | typeof HeadwearStats | typeof ItemStats | typeof MagazineStats | typeof MeleeWeaponStats | typeof ModStats | typeof RangedWeaponModStats | typeof RangedWeaponStats | typeof VestStats | undefined
 

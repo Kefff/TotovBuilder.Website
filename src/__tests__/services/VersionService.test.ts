@@ -1,4 +1,4 @@
-import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito'
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
@@ -483,7 +483,7 @@ describe('getChangelogAsync', () => {
     Services.configure(BuildService)
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.getAsync(anything())).thenResolve(undefined)
+    when(fetchServiceMock.fetchWithRetryAsync(anything())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -518,7 +518,7 @@ describe('getChangelogAsync', () => {
     await service.getChangelogAsync()
 
     // Assert
-    verify(fetchSpy.getAsync(anyString())).once()
+    verify(fetchSpy.fetchWithRetryAsync(anything())).once()
   })
 
   it('should not fetch the changelog while it is already being fetched', async () => {
@@ -537,7 +537,7 @@ describe('getChangelogAsync', () => {
     await promise
 
     // Assert
-    verify(fetchSpy.getAsync(anyString())).once()
+    verify(fetchSpy.fetchWithRetryAsync(anything())).once()
   })
 })
 

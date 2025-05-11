@@ -8,6 +8,7 @@ import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import ItemsList from './ItemsListComponent.vue'
@@ -56,7 +57,13 @@ const itemsToolbar = useTemplateRef('itemsToolbar')
 
 const toolbarContainer = computed(() => itemsToolbar.value?.container)
 
-onMounted(() => getInitialFilterAndSortingData())
+onMounted(() => {
+  Services.get(SeoService).updateSeoMetadata({
+    title: vueI18n.t('caption.items')
+  })
+
+  getInitialFilterAndSortingData()
+})
 
 /**
  * Displays the general options sidebar.

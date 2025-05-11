@@ -13,9 +13,6 @@ import { initializeServicesAsync } from './servicesConfiguration'
 // Polyfill
 polyfill()
 
-// SEO
-useUnhead()
-
 // Services
 void initializeServicesAsync()
 
@@ -28,6 +25,7 @@ useFloatingVue(app)
 useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)
+useUnhead(app)
 useVueRouter(app)
 
 // Start
