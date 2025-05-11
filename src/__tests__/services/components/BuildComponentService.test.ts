@@ -2,7 +2,9 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { Router } from 'vue-router'
 import { IBuild } from '../../../models/build/IBuild'
+import vueI18n from '../../../plugins/vueI18n'
 import { BuildService } from '../../../services/BuildService'
+import { GeneralOptionsService } from '../../../services/GeneralOptionsService'
 import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import { BuildComponentService } from '../../../services/components/BuildComponentService'
 import Services from '../../../services/repository/Services'
@@ -135,10 +137,14 @@ describe('BuildComponentService', () => {
       verify(routerMock.push(anything())).once()
     })
 
-    it('should update an existing build', async () => {
+    it.each([[true], [false]])('should update an existing build', async (outdatedSharableUrlWarning: boolean) => {
       // Arrange
       const buildServiceMock = mock<BuildService>()
       Services.configure(BuildService, undefined, instance(buildServiceMock))
+
+      const generalOptionsServiceMock = mock<GeneralOptionsService>()
+      when(generalOptionsServiceMock.getOutdatedSharableUrlWarningOption()).thenReturn(outdatedSharableUrlWarning)
+      Services.configure(GeneralOptionsService, undefined, instance(generalOptionsServiceMock))
 
       const notificationServiceMock = mock<NotificationService>()
       Services.configure(NotificationService, undefined, instance(notificationServiceMock))
@@ -163,8 +169,13 @@ describe('BuildComponentService', () => {
       // Assert
       expect(build.sharabledUrl).toBeUndefined()
       verify(buildServiceMock.updateAsync(build)).once()
-      verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
-      verify(notificationServiceMock.notify(NotificationType.warning, 'The last link used to share the build is now outdated.')).once()
+      verify(notificationServiceMock.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))).once()
+
+      if (outdatedSharableUrlWarning) {
+        verify(notificationServiceMock.notify(NotificationType.warning, vueI18n.t('message.buildSharableUrlOutdated'), undefined, undefined, undefined, websiteConfigurationMock.outdatedSharableUrlWarningStorageKey)).once()
+      } else {
+        verify(notificationServiceMock.notify(NotificationType.warning, vueI18n.t('message.buildSharableUrlOutdated'), undefined, undefined, undefined, websiteConfigurationMock.outdatedSharableUrlWarningStorageKey)).never()
+      }
       verify(routerMock.push(anything())).never()
     })
   })

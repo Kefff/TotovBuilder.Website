@@ -99,7 +99,7 @@ const fleshDamageText = computed(() =>
         <span>{{ $t('caption.velocity') }} :</span>
       </div>
       <div class="stats-value">
-        {{ ammunition.velocity }}m/s
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.velocity, ammunition.velocity) }}
       </div>
     </div>
     <div

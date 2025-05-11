@@ -12,7 +12,8 @@ describe('comparisonFunction', () => {
     ['fragmentationChance'],
     ['penetratedArmorLevel'],
     ['penetrationPower'],
-    ['recoilModifier']
+    ['recoilModifier'],
+    ['velocity']
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
@@ -23,7 +24,8 @@ describe('comparisonFunction', () => {
       penetratedArmorLevel: 2,
       penetrationPower: 2,
       projectiles: 2,
-      recoilModifier: 2
+      recoilModifier: 2,
+      velocity: 2
     } as IAmmunition
 
     const item2 = {
@@ -34,7 +36,8 @@ describe('comparisonFunction', () => {
       penetratedArmorLevel: 1,
       penetrationPower: 1,
       projectiles: 1,
-      recoilModifier: 1
+      recoilModifier: 1,
+      velocity: 1
     } as IAmmunition
 
     const sortingData = new ItemFilterAndSortingData(AmmunitionSortingFunctions)

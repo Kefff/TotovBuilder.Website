@@ -120,6 +120,9 @@ export default class StatsUtils {
       case DisplayValueType.recoilModifier:
         displayValue = StatsUtils.getDisplayValue(value, true, 1, undefined, language)
         break
+      case DisplayValueType.velocity:
+        displayValue = StatsUtils.getDisplayValue(value, false, 0, undefined, language) + ' m/s'
+        break
       case DisplayValueType.weight:
         displayValue = StatsUtils.getDisplayValue(value, false, 3, 3, language) + ' kg'
         break
@@ -186,7 +189,7 @@ export default class StatsUtils {
 
 
 /**
- * Specifies the display value types
+ * Specifies the display value types.
  */
 export enum DisplayValueType {
   // Flat values
@@ -212,4 +215,5 @@ export enum DisplayValueType {
   movementSpeedModifierPercentage,
   recoilModifierPercentage,
   turningSpeedModifierPercentage,
+  velocity
 }

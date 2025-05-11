@@ -1,5 +1,6 @@
 import { anything, spy, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
+import vueI18n from '../../plugins/vueI18n'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
@@ -40,7 +41,7 @@ describe('GeneralOptionsService', () => {
       } else {
         verify(notificationServiceSpy.notify(
           NotificationType.information,
-          'Totov Builder uses cookies to anonymously detect errors that may occur during your visit.\nAccepting cookies is not necessary but helps to improve the website.',
+          vueI18n.t('message.cookiesExplanation'),
           0,
           anything())).once()
       }
