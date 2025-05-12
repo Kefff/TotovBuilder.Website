@@ -1652,6 +1652,46 @@ export const m9a3Cap: IRangedWeaponMod = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_thread_protection_cap'
 }
 
+export const magazine6l20: IMagazine = {
+  acceptedAmmunitionIds: [
+    '5c0d5e4486f77478390952fe',
+    '61962b617c6c7b169525f168',
+    '56dfef82d2720bbd668b4567',
+    '56dff026d2720bb8668b4567',
+    '56dff061d2720bb5668b4567',
+    '56dff0bed2720bb0668b4567',
+    '56dff216d2720bbd668b4568',
+    '56dff2ced2720bb4668b4567',
+    '56dff338d2720bbd668b4569',
+    '56dff3afd2720bba668b4567',
+    '56dff421d2720b5f5a8b4567',
+    '56dff4a2d2720bbd668b456a',
+    '56dff4ecd2720b5f5a8b4568'
+  ],
+  baseItemId: undefined,
+  capacity: 30,
+  categoryId: ItemCategoryId.magazine,
+  checkSpeedModifierPercentage: 0,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -3,
+  iconLink: 'https://assets.tarkov.dev/564ca99c4bdc2d16268b4589-icon.webp',
+  id: '564ca99c4bdc2d16268b4589',
+  imageLink: 'https://assets.tarkov.dev/564ca99c4bdc2d16268b4589-image.webp',
+  loadSpeedModifierPercentage: 0,
+  malfunctionPercentage: 0.07,
+  marketLink: 'https://tarkov.dev/item/ak-74-545x39-6l20-30-round-magazine',
+  maxStackableAmount: 1,
+  modSlots: [],
+  name: 'AK-74 5.45x39 6L20 30-round magazine',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: '6L20',
+  weight: 0.215,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-74_5.45x39_6L20_30-round_magazine'
+}
+
 export const mechanism: IBackpack = {
   capacity: 32,
   categoryId: ItemCategoryId.backpack,
@@ -3648,6 +3688,7 @@ export const ItemMocks: IItem[] = [
   m9a3SideGrip,
   m9a3Slide,
   m9a3Thr,
+  magazine6l20,
   mechanism,
   monocletePe,
   morphine,

@@ -2,6 +2,7 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IItem } from '../models/item/IItem'
 import { IMagazine } from '../models/item/IMagazine'
+import { IModdable } from '../models/item/IModdable'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { PresetService } from './PresetService'
 import Services from './repository/Services'
@@ -55,13 +56,44 @@ export class ItemComponentService {
    * @param newItem - Item replacing the old item.
    */
   public getReplacingModSlots(oldItem: IInventoryItem | undefined, newItem: IItem): IInventoryModSlot[] {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
+    const isNewItemModdable = itemPropertiesService.isModdable(newItem)
+
+    if (!isNewItemModdable) {
+      return []
+    }
+
     const presetService = Services.get(PresetService)
     const preset = presetService.getPreset(newItem.id)
 
-    const newModSlots: IInventoryModSlot[] = []
-
     if (preset != null) {
-      newModSlots.push(...preset.modSlots)
+      // Creating a copy of the preset mod slots, otherwise the preset is modified for the whole application
+      const presetModSlots = JSON.parse(JSON.stringify(preset.modSlots)) as IInventoryModSlot[]
+
+      return presetModSlots
+    }
+
+    const newModSlots: IInventoryModSlot[] = []
+    const oldModSlotsWithItem = oldItem?.modSlots.filter(ms => ms.item != null) ?? []
+
+    for (const newItemModSlot of (newItem as IModdable).modSlots) {
+      let oldModSlotItem: IInventoryItem | undefined = undefined
+      const similarOldModSlotIndex = oldModSlotsWithItem.findIndex(omswi => omswi.modSlotName === newItemModSlot.name)
+
+      if (similarOldModSlotIndex >= 0) {
+        const similarOldModSlot = oldModSlotsWithItem[similarOldModSlotIndex]
+        oldModSlotsWithItem.splice(similarOldModSlotIndex, 1) // Removing the old mod slot with item to not take it into acount a second time
+
+        if (newItemModSlot.compatibleItemIds.includes(similarOldModSlot.item!.itemId)) {
+          oldModSlotItem = similarOldModSlot.item
+        }
+      }
+
+      newModSlots.push({
+        modSlotName: newItemModSlot.name,
+        item: oldModSlotItem
+      })
     }
 
     return newModSlots
