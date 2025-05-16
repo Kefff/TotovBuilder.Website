@@ -53,7 +53,7 @@ const comparisonItem = computed(() =>
     ? modelSelectedItems.value[0]
     : undefined)
 const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
-const itemHeight = computed(() => 161 /* 11.5rem */ + (props.selectionOptions.isEnabled ? 49 /* 3.5rem */ : 0) + (props.selectionOptions.showStatsComparison ? 14 /* 1rem */ : 0))
+const itemHeight = computed(() => 161 /* 11.5rem */ + (props.selectionOptions.isEnabled ? 49 /* 3.5rem */ : 0))
 const itemsPerLine = computed(() => {
   let columns = 5
 

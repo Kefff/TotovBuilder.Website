@@ -40,7 +40,7 @@
   align-items: center;
   display: grid;
   gap: 0.5rem;
-  height: 1.25rem;
+  min-height: 1.25rem;
 }
 
 .card-line > span {

@@ -25,13 +25,12 @@ export default class StatsUtils {
     value = round(value, roundingDecimalCount)
 
     if (fixedDecimalCount !== 0) {
-      displayValue = round(value, roundingDecimalCount)
-        .toLocaleString(
-          language,
-          {
-            minimumFractionDigits: fixedDecimalCount,
-            maximumFractionDigits: fixedDecimalCount
-          })
+      displayValue = value.toLocaleString(
+        language,
+        {
+          minimumFractionDigits: fixedDecimalCount,
+          maximumFractionDigits: fixedDecimalCount
+        })
     } else {
       displayValue = value.toLocaleString(language)
     }

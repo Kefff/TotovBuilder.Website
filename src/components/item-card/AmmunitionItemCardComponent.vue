@@ -8,6 +8,7 @@ import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
+import ValueComparison from '../ValueComparisonComponent.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -26,7 +27,8 @@ const _chestHp = Services.get(TarkovValuesService).values.chestHp
 
 const ammunition = computed(() => props.item as IAmmunition)
 const canOneshot = computed(() => totalFleshDamage.value >= _chestHp)
-const comparisonItemInternal = computed(() => props.comparisonItem as IAmmunition | undefined)
+const comparisonItemInternal = computed(() => props.comparisonItem?.id !== props.item.id ? props.comparisonItem as IAmmunition : undefined)
+const showStatsComparison = computed(() => comparisonItemInternal.value != null && comparisonItemInternal.value.id !== props.item.id)
 const totalFleshDamage = computed(() => ammunition.value.fleshDamage * ammunition.value.projectiles)
 const tooltip = computed(() =>
   `${vueI18n.t('caption.fleshDamage')}${ammunition.value.projectiles > 1
@@ -55,10 +57,7 @@ const tooltip = computed(() =>
       || ammunition.blinding"
     class="card-line card-line4"
   >
-    <div
-      v-if="ammunition.fleshDamage > 0"
-      class="ammunition-item-card-flesh-damage-group"
-    >
+    <div class="ammunition-item-card-flesh-damage-group">
       <Tooltip :tooltip="tooltip">
         <div
           class="card-value ammunition-item-card-flesh-damage"
@@ -70,16 +69,26 @@ const tooltip = computed(() =>
               class="icon-before-text flesh-damage-color"
             />
           </div>
-          <span v-if="ammunition.projectiles > 1">
-            {{ ammunition.projectiles }}
-          </span>
-          <span
-            v-if="ammunition.projectiles > 1"
-            class="ammunition-item-card-multiply"
-          >
-            x
-          </span>
           <span>{{ ammunition.fleshDamage }}</span>
+          <div>
+            <div>
+              <span v-if="ammunition.projectiles > 1">
+                {{ ammunition.projectiles }}
+              </span>
+              <span
+                v-if="ammunition.projectiles > 1"
+                class="ammunition-item-card-multiply"
+              >
+                x
+              </span>
+            </div>
+            <ValueComparison
+              v-if="showStatsComparison"
+              :compare-to-value="comparisonItemInternal?.fleshDamage"
+              :current-value="ammunition.fleshDamage"
+              :is-percentage="false"
+            />
+          </div>
         </div>
       </Tooltip>
       <div
@@ -94,9 +103,25 @@ const tooltip = computed(() =>
         </Tooltip>
       </div>
     </div>
-    <div style="display: flex; gap: 0.25rem">
+    <div class="ammunition-item-card-penetration-power">
       <Tooltip
-        v-if="ammunition.penetrationPower > 0"
+        v-if="ammunition.penetratedArmorLevel > 0"
+        :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
+      >
+        <div
+          style="font-size: 0.875rem; display: flex; align-items: center; gap: 0.125rem"
+          class="card-value"
+          :class="StatsUtils.getSortedPropertyColorClass('penetratedArmorLevel', filterAndSortingData)"
+        >
+          <font-awesome-icon
+            icon="award"
+            :class="`armor-penetration${ammunition.penetratedArmorLevel}`"
+          />
+          <span>{{ ammunition.penetratedArmorLevel }}</span>
+        </div>
+      </Tooltip>
+      <Tooltip
+        v-if="ammunition.penetrationPower !== 0 && ammunition.penetrationPower != comparisonItemInternal?.penetrationPower"
         :tooltip="$t('caption.penetrationPower')"
       >
         <div
@@ -109,28 +134,15 @@ const tooltip = computed(() =>
           />
           <span>{{ ammunition.penetrationPower }}</span>
         </div>
-      </Tooltip>
-      <Tooltip
-        v-if="ammunition.penetratedArmorLevel > 0"
-        :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
-      >
-        <div
-          style="font-size: 0.875rem; display: flex; align-items: center; gap: 0.125rem"
-          class="card-value"
-          :class="StatsUtils.getSortedPropertyColorClass('penetratedArmorLevel', filterAndSortingData)"
-        >
-          ( <font-awesome-icon
-            icon="award"
-            :class="`armor-penetration${ammunition.penetratedArmorLevel}`"
-          />
-          <span>{{ ammunition.penetratedArmorLevel }}</span> )
-        </div>
+        <ValueComparison
+          v-if="showStatsComparison"
+          :compare-to-value="comparisonItemInternal?.penetrationPower"
+          :current-value="ammunition.penetrationPower"
+          :is-percentage="false"
+        />
       </Tooltip>
     </div>
-    <Tooltip
-      v-if="ammunition.fragmentationChance > 0"
-      :tooltip="$t('caption.fragmentationChance')"
-    >
+    <Tooltip :tooltip="$t('caption.fragmentationChance')">
       <div
         class="card-value"
         :class="StatsUtils.getSortedPropertyColorClass('fragmentationChance', filterAndSortingData)"
@@ -141,6 +153,12 @@ const tooltip = computed(() =>
         />
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
       </div>
+      <ValueComparison
+        v-if="showStatsComparison"
+        :compare-to-value="comparisonItemInternal?.fragmentationChance"
+        :current-value="ammunition.fragmentationChance"
+        :is-percentage="true"
+      />
     </Tooltip>
     <div class="ammunition-item-card-attributes">
       <Tooltip
@@ -174,7 +192,7 @@ const tooltip = computed(() =>
   </div>
   <div class="card-line card-line4">
     <Tooltip
-      v-if="ammunition.recoilModifier !== 0"
+      v-if="ammunition.recoilModifier !== 0 && ammunition.recoilModifier != comparisonItemInternal?.recoilModifier"
       :tooltip="$t('caption.recoilModifier')"
     >
       <div
@@ -189,9 +207,15 @@ const tooltip = computed(() =>
           {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifier, ammunition.recoilModifier) }}
         </span>
       </div>
+      <ValueComparison
+        v-if="showStatsComparison"
+        :compare-to-value="comparisonItemInternal?.recoilModifier"
+        :current-value="ammunition.recoilModifier"
+        :invert="true"
+      />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.accuracyModifierPercentage !== 0"
+      v-if="ammunition.accuracyModifierPercentage !== 0 && ammunition.accuracyModifierPercentage != comparisonItemInternal?.accuracyModifierPercentage"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
       <div
@@ -206,9 +230,15 @@ const tooltip = computed(() =>
           {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
         </span>
       </div>
+      <ValueComparison
+        v-if="showStatsComparison"
+        :compare-to-value="comparisonItemInternal?.accuracyModifierPercentage"
+        :current-value="ammunition.accuracyModifierPercentage"
+        :is-percentage="true"
+      />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.durabilityBurnModifierPercentage !== 0"
+      v-if="ammunition.durabilityBurnModifierPercentage !== 0 && ammunition.durabilityBurnModifierPercentage != comparisonItemInternal?.durabilityBurnModifierPercentage"
       :tooltip="$t('caption.durabilityBurn')"
     >
       <div class="card-value">
@@ -220,6 +250,13 @@ const tooltip = computed(() =>
           {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
         </span>
       </div>
+      <ValueComparison
+        v-if="showStatsComparison"
+        :compare-to-value="comparisonItemInternal?.durabilityBurnModifierPercentage"
+        :current-value="ammunition.durabilityBurnModifierPercentage"
+        :invert="true"
+        :is-percentage="true"
+      />
     </Tooltip>
     <Tooltip :tooltip="$t('caption.velocity')">
       <div
@@ -279,5 +316,11 @@ const tooltip = computed(() =>
   position: relative;
   right: 5px;
   top: 3px;
+}
+
+.ammunition-item-card-penetration-power {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem
 }
 </style>
