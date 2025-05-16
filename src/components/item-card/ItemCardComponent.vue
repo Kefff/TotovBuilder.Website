@@ -20,11 +20,13 @@ const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     selectionOptions: IListSelectionOptions
   }>(),
   {
+    comparisonItem: undefined,
     filterAndSortingData: undefined
   })
 
@@ -33,9 +35,14 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 const _inventoryItemService = Services.get(InventoryItemService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 
-const height = computed(() => `${props.selectionOptions.isEnabled ? 15 : 11.5}rem`)
+const comparisonItemWeight = computed(() => props.comparisonItem?.presetWeight ?? props.comparisonItem?.weight ?? 0)
+const height = computed(() => `${11.5 + (props.selectionOptions.isEnabled ? 3.5 : 0) + (props.selectionOptions.showStatsComparison ? 1 : 0)}rem`)
 const itemIsModdable = computed(() => _itemPropertiesService.isModdable(props.item))
 const modSlotsCount = computed(() => itemIsModdable.value ? (props.item as IModdable).modSlots.length : 0)
+const priceComparison = computed(() =>
+  showStatsComparison.value
+    ? itemUnitPrice.value!.valueInMainCurrency - comparisonItemUnitPriceInMainCurrency.value!
+    : undefined)
 const selectionButtonCaptionInternal = computed(() => {
   if (props.selectionOptions.selectionButtonCaption != null) {
     return props.selectionOptions.selectionButtonCaption
@@ -54,26 +61,55 @@ const selectionButtonIconInternal = computed(() => {
     return 'check'
   }
 })
+const showStatsComparison = computed(() =>
+  props.selectionOptions.showStatsComparison
+  && props.comparisonItem != null
+  && props.comparisonItem.id !== props.item.id
+  && itemUnitPrice.value != null
+  && itemUnitPrice.value.valueInMainCurrency > 0)
 const weight = computed(() => props.item.presetWeight ?? props.item.weight)
+const weightComparison = computed(() => showStatsComparison.value ? weight.value - comparisonItemWeight.value : undefined)
 
+const comparisonItemUnitPriceInMainCurrency = ref<number>(0)
 const itemUnitPrice = ref<IPrice>()
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-  getPriceAsync()
+  getItemPriceAsync()
 })
 
 onUnmounted(() => {
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-watch(() => props.item, () => getPriceAsync())
+watch(() => props.item.id, () => getItemPriceAsync())
+watch(() => props.comparisonItem?.id, () => getComparisonItemPriceAsync())
 
 /**
- * Gets the price of the item.
+ * Gets the price of an item.
  */
-async function getPriceAsync(): Promise<void> {
+async function getComparisonItemPriceAsync(): Promise<void> {
+  if (!showStatsComparison.value) {
+    comparisonItemUnitPriceInMainCurrency.value = 0
+
+    return
+  }
+
+  const comparisonItemPrice = await _inventoryItemService.getPriceAsync({
+    content: [],
+    ignorePrice: false,
+    itemId: props.comparisonItem!.id,
+    modSlots: [],
+    quantity: 1
+  })
+  comparisonItemUnitPriceInMainCurrency.value = comparisonItemPrice.unitPrice.valueInMainCurrency
+}
+
+/**
+ * Gets the price of an item.
+ */
+async function getItemPriceAsync(): Promise<void> {
   const itemPrice = await _inventoryItemService.getPriceAsync({
     content: [],
     ignorePrice: false,
@@ -82,6 +118,8 @@ async function getPriceAsync(): Promise<void> {
     quantity: 1
   })
   itemUnitPrice.value = itemPrice.unitPrice
+
+  getComparisonItemPriceAsync()
 }
 
 /**
@@ -90,7 +128,7 @@ async function getPriceAsync(): Promise<void> {
  * Updates the item price to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged(): void {
-  getPriceAsync()
+  getItemPriceAsync()
 }
 
 /**
@@ -126,7 +164,7 @@ function showDetails(): void {
         </div>
         <Tooltip
           v-if="modSlotsCount > 0"
-          :tooltip="$t('caption.hasModSlots', { modSlotsCount })"
+          :tooltip="$t('caption.modSlotsCount', { modSlotsCount })"
         >
           <div class="item-card-mods">
             <font-awesome-icon icon="puzzle-piece" />
@@ -162,13 +200,15 @@ function showDetails(): void {
               class="card-value"
               :class="StatsUtils.getSortedPropertyColorClass('weight', filterAndSortingData)"
             >
-              <font-awesome-icon
-                icon="weight-hanging"
-                class="icon-before-text"
-              />
-              <span>
-                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
-              </span>
+              <div>
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-before-text"
+                />
+                <span>
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
+                </span>
+              </div>
             </div>
           </Tooltip>
           <div
@@ -178,9 +218,31 @@ function showDetails(): void {
           >
             <Price :price="itemUnitPrice" />
           </div>
+          <div
+            v-if="weightComparison != null"
+            class="stats-value-comparison item-card-weight-comparison"
+          >
+            <span :class="StatsUtils.getValueColorClass(weightComparison, true)">
+              {{ StatsUtils.getDisplayValue(weightComparison, true, 3, 3) + ' kg' }}
+            </span>
+          </div>
+          <div
+            v-if="priceComparison != null"
+            class="stats-value-comparison item-card-price"
+            style="grid-column: span 3;"
+          >
+            <span :class="StatsUtils.getValueColorClass(priceComparison, true)">
+              <font-awesome-icon
+                icon="ruble-sign"
+                class="currency-RUB"
+              />
+              <span>{{ StatsUtils.getDisplayValue(priceComparison, true, 0) }}</span>
+            </span>
+          </div>
         </div>
         <!-- Specialized stats -->
         <ItemCardSelector
+          :comparison-item="comparisonItem"
           :filter-and-sorting-data="filterAndSortingData"
           :item="item"
         />
@@ -219,7 +281,9 @@ function showDetails(): void {
 }
 
 .item-card-price {
+  align-items: center;
   display: flex;
+  gap: 0.5rem;
   grid-column: span 3;
 }
 
@@ -267,6 +331,11 @@ function showDetails(): void {
 }
 
 .item-card-weight-and-price-line {
-  height: 2rem;
+  height: 3rem;
+  grid-row-gap: 0;
+}
+
+.item-card-weight-comparison {
+  margin-left: 1.25rem;
 }
 </style>

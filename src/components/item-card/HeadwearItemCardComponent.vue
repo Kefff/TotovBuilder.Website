@@ -14,6 +14,7 @@ import ArmorItemCard from './ArmorItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
@@ -23,6 +24,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined,
     isBaseItem: false,
@@ -31,6 +33,7 @@ const props = withDefaults(
   })
 
 const armorModifiers = computed(() => props.armorModifiersOverride ?? headwear.value.presetArmorModifiers)
+const comparisonItemInternal = computed(() => props.comparisonItem as IHeadwear | undefined)
 const hasRicochetChance = computed(() => headwear.value.ricochetChance !== '')
 const headwear = computed(() => props.item as IHeadwear)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? headwear.value.presetWearableModifiers)

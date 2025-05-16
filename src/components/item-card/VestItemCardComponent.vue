@@ -11,6 +11,7 @@ import ContainerItemCard from './ContainerItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
@@ -20,6 +21,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
@@ -28,6 +30,7 @@ const props = withDefaults(
   })
 
 const armorModifiers = computed(() => props.armorModifiersOverride ?? vest.value.presetArmorModifiers)
+const comparisonItemInternal = computed(() => props.comparisonItem as IVest | undefined)
 const vest = computed(() => props.item as IVest)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest.value.presetWearableModifiers)
 </script>

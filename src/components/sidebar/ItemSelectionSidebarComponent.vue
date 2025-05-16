@@ -41,7 +41,8 @@ function onSelectedItemsChanged(): void {
       :selection-options="{
         canUnselect: false,
         isEnabled: true,
-        isMultiSelection: false
+        isMultiSelection: false,
+        showStatsComparison: true
       }"
       @update:selected-items="onSelectedItemsChanged"
     />

@@ -9,18 +9,21 @@ import WearableItemCard from './WearableItemCardComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined,
     wearableModifiersOverride: undefined
   })
 
 const backpack = computed(() => props.item as IBackpack)
+const comparisonItemInternal = computed(() => props.comparisonItem as IBackpack | undefined)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? backpack.value.presetWearableModifiers)
 </script>
 

@@ -48,7 +48,12 @@ const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
+const comparisonItem = computed(() =>
+  !props.selectionOptions.isMultiSelection && props.selectionOptions.showStatsComparison
+    ? modelSelectedItems.value[0]
+    : undefined)
 const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
+const itemHeight = computed(() => 161 /* 11.5rem */ + (props.selectionOptions.isEnabled ? 49 /* 3.5rem */ : 0) + (props.selectionOptions.showStatsComparison ? 14 /* 1rem */ : 0))
 const itemsPerLine = computed(() => {
   let columns = 5
 
@@ -268,7 +273,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         v-if="infiniteScrolling && filteredAnSortedItems.length > 0"
         v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
-        :element-height="selectionOptions.isEnabled ? 211 : 162"
+        :element-height="itemHeight"
         :elements-per-line="itemsPerLine"
         :elements="filteredAnSortedItems"
         :get-key-function="i => (i as IItem).id"
@@ -276,6 +281,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       >
         <template #element="{ element }">
           <ItemCard
+            :comparison-item="comparisonItem"
             :filter-and-sorting-data="filterAndSortingData"
             :item="<IItem>element"
             :is-selected="checkIsSelected(<IItem>element)"
@@ -296,6 +302,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       >
         <template #element="{ element }">
           <ItemCard
+            :comparison-item="comparisonItem"
             :filter-and-sorting-data="filterAndSortingData"
             :item="<IItem>element"
             :is-selected="checkIsSelected(<IItem>element)"

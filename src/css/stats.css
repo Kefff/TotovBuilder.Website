@@ -38,6 +38,12 @@
   text-align: right;
 }
 
+.stats-value-comparison {
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 0.875rem;
+}
+
 .stats-value-positive {
   color: var(--success-color);
 }

@@ -11,11 +11,13 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined
   })
@@ -24,6 +26,7 @@ const _chestHp = Services.get(TarkovValuesService).values.chestHp
 
 const ammunition = computed(() => props.item as IAmmunition)
 const canOneshot = computed(() => totalFleshDamage.value >= _chestHp)
+const comparisonItemInternal = computed(() => props.comparisonItem as IAmmunition | undefined)
 const totalFleshDamage = computed(() => ammunition.value.fleshDamage * ammunition.value.projectiles)
 const tooltip = computed(() =>
   `${vueI18n.t('caption.fleshDamage')}${ammunition.value.projectiles > 1

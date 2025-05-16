@@ -12,6 +12,7 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     item: IItem,
@@ -19,12 +20,14 @@ const props = withDefaults(
     rangedWeaponsModifiersOverride?: IRangedWeaponModifiers
   }>(),
   {
+    comparisonItem: undefined,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
     isBaseItem: false,
     rangedWeaponsModifiersOverride: undefined
   })
 
+const comparisonItemInternal = computed(() => props.comparisonItem as IRangedWeapon | undefined)
 const ergonomics = computed(() => props.rangedWeaponsModifiersOverride?.ergonomics ?? rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
 const horizontalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.horizontalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
 const rangedWeapon = computed(() => props.item as IRangedWeapon)

@@ -24,11 +24,13 @@ type SpecializedComponent = typeof AmmunitionItemCard | typeof ArmorItemCard | t
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     isSelectable?: boolean
   }>(),
   {
+    comparisonItem: undefined,
     filterAndSortingData: undefined,
     isSelectable: false
   })
@@ -103,6 +105,7 @@ function getSpecializedComponent(itemCategoryId: ItemCategoryId): SpecializedCom
   <component
     :is="specializedComponent"
     v-if="specializedComponent != null"
+    :comparison-item="comparisonItem"
     :filter-and-sorting-data="filterAndSortingData"
     :item="item"
   />

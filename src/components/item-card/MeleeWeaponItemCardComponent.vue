@@ -10,13 +10,16 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
+    comparisonItem: undefined,
     filterAndSortingData: undefined
   })
 
+const comparisonItemInternal = computed(() => props.comparisonItem as IMeleeWeapon | undefined)
 const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 </script>
 

@@ -27,4 +27,9 @@ export interface IListSelectionOptions {
    * Item to display on the selection button of each element.
    */
   selectionButtonIcon?: string
+
+  /**
+   * Show the difference in stats between the selected element and other element when isMultiSelection is false.
+   */
+  showStatsComparison?: boolean
 }

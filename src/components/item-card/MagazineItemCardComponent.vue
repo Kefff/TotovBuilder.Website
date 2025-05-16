@@ -9,15 +9,18 @@ import ContainerItemCard from './ContainerItemCardComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined
   })
 
+const comparisonItemInternal = computed(() => props.comparisonItem as IMagazine | undefined)
 const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
 const magazine = computed(() => props.item as IMagazine)
 </script>

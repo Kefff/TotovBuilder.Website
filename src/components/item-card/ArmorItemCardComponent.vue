@@ -14,7 +14,8 @@ import WearableItemCard from './WearableItemCardComponent.vue'
 
 const props = withDefaults(
   defineProps<{
-    armorModifiersOverride?: IArmorModifiers
+    armorModifiersOverride?: IArmorModifiers,
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
@@ -24,6 +25,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
@@ -35,6 +37,7 @@ const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const armor = computed(() => props.item as IArmor)
 const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
+const comparisonItemInternal = computed(() => props.comparisonItem as IArmor | undefined)
 const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
 const isHeadwear = computed(() => _itemPropertiesService.isHeadwear(props.item))
 const tooltipSuffix = computed(() => {

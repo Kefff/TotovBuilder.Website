@@ -10,6 +10,7 @@ import ArmorItemCard from './ArmorItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
@@ -17,6 +18,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined,
     wearableModifiersOverride: undefined
@@ -24,6 +26,7 @@ const props = withDefaults(
 
 const armorMod = computed(() => props.item as IArmorMod)
 const armorModifiers = computed(() => props.armorModifiersOverride ?? armorMod.value.presetArmorModifiers)
+const comparisonItemInternal = computed(() => props.comparisonItem as IArmorMod | undefined)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? armorMod.value.presetWearableModifiers)
 </script>
 

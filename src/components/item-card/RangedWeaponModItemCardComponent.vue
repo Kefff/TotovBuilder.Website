@@ -8,15 +8,18 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    comparisonItem?: IItem,
     displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
+    comparisonItem: undefined,
     displayEmptyLines: true,
     filterAndSortingData: undefined
   })
 
+const comparisonItemInternal = computed(() => props.comparisonItem as IRangedWeaponMod | undefined)
 const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
 const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
 </script>
