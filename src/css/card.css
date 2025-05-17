@@ -38,12 +38,16 @@
 
 .card-line {
   align-items: center;
+  column-gap: 0.5rem;
   display: grid;
-  gap: 0.5rem;
-  min-height: 1.25rem;
+}
+
+.card-line > div {
+  min-height: 2rem;
 }
 
 .card-line > span {
+  min-height: 2rem;
   white-space: nowrap;
 }
 
@@ -58,7 +62,6 @@
 .card-lines {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
   height: 100%;
 }
 

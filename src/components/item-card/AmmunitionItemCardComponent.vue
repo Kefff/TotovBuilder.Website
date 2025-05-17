@@ -7,19 +7,18 @@ import vueI18n from '../../plugins/vueI18n'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import Tooltip from '../TooltipComponent.vue'
 import ValueComparison from '../ValueComparisonComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     comparisonItem?: IItem,
-    displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
     comparisonItem: undefined,
-    displayEmptyLines: true,
     filterAndSortingData: undefined
   })
 
@@ -34,6 +33,8 @@ const tooltip = computed(() =>
   `${vueI18n.t('caption.fleshDamage')}${ammunition.value.projectiles > 1
     ? ` (${vueI18n.t('caption.total').toLocaleLowerCase()} : ${totalFleshDamage.value})`
     : ''}`)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -47,17 +48,16 @@ const tooltip = computed(() =>
 
 <template>
   <div
-    v-if="displayEmptyLines
-      || ammunition.fleshDamage > 0
-      || ammunition.penetratedArmorLevel > 0
-      || ammunition.penetrationPower > 0
-      || ammunition.fragmentationChance > 0
-      || ammunition.subsonic
-      || ammunition.tracer
-      || ammunition.blinding"
-    class="card-line card-line4"
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
   >
-    <div class="ammunition-item-card-flesh-damage-group">
+    <div
+      v-if="ammunition.fleshDamage > 0 || ammunition.fleshDamage !== comparisonItemInternal?.fleshDamage"
+      class="ammunition-item-card-flesh-damage-group"
+    >
       <Tooltip :tooltip="tooltip">
         <div
           class="card-value ammunition-item-card-flesh-damage"
@@ -103,11 +103,11 @@ const tooltip = computed(() =>
         </Tooltip>
       </div>
     </div>
-    <div class="ammunition-item-card-penetration-power">
-      <Tooltip
-        v-if="ammunition.penetratedArmorLevel > 0"
-        :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
-      >
+    <div
+      v-if="ammunition.penetrationPower > 0 || ammunition.penetrationPower !== comparisonItemInternal?.penetrationPower"
+      class="ammunition-item-card-penetration-power"
+    >
+      <Tooltip :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })">
         <div
           style="font-size: 0.875rem; display: flex; align-items: center; gap: 0.125rem"
           class="card-value"
@@ -142,7 +142,10 @@ const tooltip = computed(() =>
         />
       </Tooltip>
     </div>
-    <Tooltip :tooltip="$t('caption.fragmentationChance')">
+    <Tooltip
+      v-if="ammunition.fragmentationChance > 0 || ammunition.fragmentationChance !== comparisonItemInternal?.fragmentationChance"
+      :tooltip="$t('caption.fragmentationChance')"
+    >
       <div
         class="card-value"
         :class="StatsUtils.getSortedPropertyColorClass('fragmentationChance', filterAndSortingData)"
@@ -160,39 +163,8 @@ const tooltip = computed(() =>
         :is-percentage="true"
       />
     </Tooltip>
-    <div class="ammunition-item-card-attributes">
-      <Tooltip
-        v-if="ammunition.subsonic"
-        :tooltip="$t('caption.subsonic')"
-      >
-        <font-awesome-icon
-          icon="deaf"
-          :class="`icon-before-text`"
-        />
-      </Tooltip>
-      <Tooltip
-        v-if="ammunition.tracer"
-        :tooltip="$t('caption.tracer')"
-      >
-        <font-awesome-icon
-          icon="eye"
-          :class="`icon-before-text`"
-        />
-      </Tooltip>
-      <Tooltip
-        v-if="ammunition.blinding"
-        :tooltip="$t('caption.blinding')"
-      >
-        <font-awesome-icon
-          icon="dizzy"
-          :class="`icon-before-text`"
-        />
-      </Tooltip>
-    </div>
-  </div>
-  <div class="card-line card-line4">
     <Tooltip
-      v-if="ammunition.recoilModifier !== 0 && ammunition.recoilModifier != comparisonItemInternal?.recoilModifier"
+      v-if="ammunition.recoilModifier !== 0 || ammunition.recoilModifier != comparisonItemInternal?.recoilModifier"
       :tooltip="$t('caption.recoilModifier')"
     >
       <div
@@ -215,7 +187,7 @@ const tooltip = computed(() =>
       />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.accuracyModifierPercentage !== 0 && ammunition.accuracyModifierPercentage != comparisonItemInternal?.accuracyModifierPercentage"
+      v-if="ammunition.accuracyModifierPercentage !== 0 || ammunition.accuracyModifierPercentage != comparisonItemInternal?.accuracyModifierPercentage"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
       <div
@@ -238,7 +210,7 @@ const tooltip = computed(() =>
       />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.durabilityBurnModifierPercentage !== 0 && ammunition.durabilityBurnModifierPercentage != comparisonItemInternal?.durabilityBurnModifierPercentage"
+      v-if="ammunition.durabilityBurnModifierPercentage !== 0 || ammunition.durabilityBurnModifierPercentage != comparisonItemInternal?.durabilityBurnModifierPercentage"
       :tooltip="$t('caption.durabilityBurn')"
     >
       <div class="card-value">
@@ -272,6 +244,38 @@ const tooltip = computed(() =>
         </span>
       </div>
     </Tooltip>
+    <div
+      v-if="ammunition.subsonic || ammunition.tracer || ammunition.blinding"
+      class="ammunition-item-card-attributes"
+    >
+      <Tooltip
+        v-if="ammunition.subsonic"
+        :tooltip="$t('caption.subsonic')"
+      >
+        <font-awesome-icon
+          icon="deaf"
+          :class="`icon-before-text`"
+        />
+      </Tooltip>
+      <Tooltip
+        v-if="ammunition.tracer"
+        :tooltip="$t('caption.tracer')"
+      >
+        <font-awesome-icon
+          icon="eye"
+          :class="`icon-before-text`"
+        />
+      </Tooltip>
+      <Tooltip
+        v-if="ammunition.blinding"
+        :tooltip="$t('caption.blinding')"
+      >
+        <font-awesome-icon
+          icon="dizzy"
+          :class="`icon-before-text`"
+        />
+      </Tooltip>
+    </div>
   </div>
 </template>
 
@@ -298,6 +302,8 @@ const tooltip = computed(() =>
 }
 
 .ammunition-item-card-flesh-damage-group {
+  align-items: center;
+  display: flex;
   position: relative;
 }
 

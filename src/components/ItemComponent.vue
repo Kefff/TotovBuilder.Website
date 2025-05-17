@@ -455,6 +455,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                 <Tooltip
                   v-if="item != null"
                   :apply-hover-style="false"
+                  :disabled-on-mobile="true"
                   :tooltip="item?.name"
                 >
                   <div class="item-header-dropdown-value">

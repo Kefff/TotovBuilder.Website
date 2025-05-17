@@ -53,7 +53,19 @@ const comparisonItem = computed(() =>
     ? modelSelectedItems.value[0]
     : undefined)
 const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
-const itemHeight = computed(() => 161 /* 11.5rem */ + (props.selectionOptions.isEnabled ? 49 /* 3.5rem */ : 0))
+const itemHeight = computed(() => {
+  let h = 169 // 12rem + 1px base height with one weight / price line and 2 stats lines
+
+  if (props.selectionOptions.isEnabled) {
+    h += 49 // 3.5rem for the select button
+  }
+
+  if (isSmartphonePortrait.value) {
+    h += 28 // 2rem because when in smartphone portrait, one less stats columns but one more stats line
+  }
+
+  return h
+})
 const itemsPerLine = computed(() => {
   let columns = 5
 
