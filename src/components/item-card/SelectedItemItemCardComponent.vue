@@ -204,7 +204,7 @@ async function setWeightAsync(): Promise<void> {
       <div
         v-if="(includeModsAndContent && selectedItemWeight.weightWithContent > 0)
           || (showWeight && selectedItemWeight.weight > 0)"
-        class="selected-item-item-card-weights"
+        class="selected-item-item-card-weights card-line"
       >
         <div
           v-if="includeModsAndContent && selectedItemWeight.weightWithContent !== selectedItemWeight.unitWeight"
@@ -303,14 +303,12 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   font-size: 0.85rem;
   font-style: italic;
-  height: 2rem;
 }
 
 .selected-item-item-card-price {
   align-items: center;
   display: flex;
   gap: 0.75rem;
-  height: 2rem;
 }
 
 .selected-item-item-card-prices {
@@ -330,7 +328,6 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-weight {
   align-items: center;
   display: flex;
-  height: 2rem;
 }
 
 .selected-item-item-card-weights {
@@ -367,16 +364,8 @@ async function setWeightAsync(): Promise<void> {
 
 <style>
 .selected-item-item-card .card-line {
-  gap: 1.5rem;
-  height: 2rem;
-}
-
-.selected-item-item-card.selected-item-item-card-compact .card-line {
-  height: 1.5rem;
-}
-
-.selected-item-item-card.selected-item-item-card-compact .card-line.selected-item-item-card-prices-and-weight {
-  height: unset;
+  align-items: unset;
+  column-gap: 1.5rem;
 }
 
 .selected-item-item-card-compact .selected-item-item-card-prices > .selected-item-item-card-with-mods,

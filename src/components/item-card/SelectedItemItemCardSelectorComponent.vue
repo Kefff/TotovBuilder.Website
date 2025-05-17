@@ -180,38 +180,32 @@ async function setWearableModifiersAsync(): Promise<void> {
   >
     <AmmunitionItemCard
       v-if="specializedComponent === AmmunitionItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <ArmorModItemCard
       v-if="specializedComponent === ArmorModItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
-      :display-empty-lines="false"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <ArmorItemCard
       v-if="specializedComponent === ArmorItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
-      :display-empty-lines="false"
       :include-mods-and-content="includeModsAndContent"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <BackpackItemCard
       v-if="specializedComponent === BackpackItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <ContainerItemCard
       v-if="specializedComponent === ContainerItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <EyewearItemCard
       v-if="specializedComponent === EyewearItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <GrenadeItemCard
@@ -221,7 +215,6 @@ async function setWearableModifiersAsync(): Promise<void> {
     <HeadwearItemCard
       v-if="specializedComponent === HeadwearItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
-      :display-empty-lines="false"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"
@@ -229,22 +222,18 @@ async function setWearableModifiersAsync(): Promise<void> {
     />
     <MagazineItemCard
       v-if="specializedComponent === MagazineItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <MeleeWeaponItemCard
       v-if="specializedComponent === MeleeWeaponItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <ModItemCard
       v-if="specializedComponent === ModItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <RangedWeaponModItemCard
       v-if="specializedComponent === RangedWeaponModItemCard"
-      :display-empty-lines="false"
       :item="selectedItem"
     />
     <RangedWeaponItemCard
@@ -257,7 +246,6 @@ async function setWearableModifiersAsync(): Promise<void> {
     <VestItemCard
       v-if="specializedComponent === VestItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
-      :display-empty-lines="false"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"
