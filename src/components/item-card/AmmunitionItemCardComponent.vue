@@ -55,7 +55,8 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     }"
   >
     <div
-      v-if="ammunition.fleshDamage > 0 || ammunition.fleshDamage !== comparisonItemInternal?.fleshDamage"
+      v-if="ammunition.fleshDamage !== 0
+        || (comparisonItemInternal?.fleshDamage ?? 0 !== 0)"
       class="ammunition-item-card-flesh-damage-group"
     >
       <Tooltip :tooltip="tooltip">
@@ -104,7 +105,8 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       </div>
     </div>
     <div
-      v-if="ammunition.penetrationPower > 0 || ammunition.penetrationPower !== comparisonItemInternal?.penetrationPower"
+      v-if="ammunition.penetrationPower > 0
+        || (comparisonItemInternal?.penetrationPower ?? 0 !== 0)"
       class="ammunition-item-card-penetration-power"
     >
       <Tooltip :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })">
@@ -143,7 +145,8 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       </Tooltip>
     </div>
     <Tooltip
-      v-if="ammunition.fragmentationChance > 0 || ammunition.fragmentationChance !== comparisonItemInternal?.fragmentationChance"
+      v-if="ammunition.fragmentationChance !== 0
+        || (comparisonItemInternal?.fragmentationChance ?? 0 !== 0)"
       :tooltip="$t('caption.fragmentationChance')"
     >
       <div
@@ -164,7 +167,8 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.recoilModifier !== 0 || ammunition.recoilModifier != comparisonItemInternal?.recoilModifier"
+      v-if="ammunition.recoilModifier !== 0
+        || (comparisonItemInternal?.recoilModifier ?? 0 !== 0)"
       :tooltip="$t('caption.recoilModifier')"
     >
       <div
@@ -187,7 +191,8 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.accuracyModifierPercentage !== 0 || ammunition.accuracyModifierPercentage != comparisonItemInternal?.accuracyModifierPercentage"
+      v-if="ammunition.accuracyModifierPercentage !== 0
+        || (comparisonItemInternal?.accuracyModifierPercentage ?? 0 !== 0)"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
       <div
@@ -210,7 +215,8 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       />
     </Tooltip>
     <Tooltip
-      v-if="ammunition.durabilityBurnModifierPercentage !== 0 || ammunition.durabilityBurnModifierPercentage != comparisonItemInternal?.durabilityBurnModifierPercentage"
+      v-if="ammunition.durabilityBurnModifierPercentage !== 0
+        || (comparisonItemInternal?.durabilityBurnModifierPercentage ?? 0 !== 0)"
       :tooltip="$t('caption.durabilityBurn')"
     >
       <div class="card-value">
@@ -245,7 +251,9 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       </div>
     </Tooltip>
     <div
-      v-if="ammunition.subsonic || ammunition.tracer || ammunition.blinding"
+      v-if="ammunition.subsonic
+        || ammunition.tracer
+        || ammunition.blinding"
       class="ammunition-item-card-attributes"
     >
       <Tooltip
