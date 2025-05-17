@@ -188,10 +188,7 @@ function displayStats(item: IItem): void {
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div
-        class="card-lines build-card-stats"
-        style="margin-top: 0.5rem;"
-      >
+      <div class="card-lines">
         <div
           v-if="buildSummary.price.priceInMainCurrency > 0
             || buildSummary.weight !== 0"
@@ -392,7 +389,7 @@ function displayStats(item: IItem): void {
 
 <style scoped>
 .build-card {
-  height: 21.5rem;
+  height: 20.75rem;
 }
 
 .build-card-header {
@@ -455,10 +452,6 @@ function displayStats(item: IItem): void {
 .build-card-price {
   display: flex;
   grid-column: span 2;
-}
-
-.build-card-stats {
-  margin-top: 0.5rem;
 }
 
 .build-card-title {

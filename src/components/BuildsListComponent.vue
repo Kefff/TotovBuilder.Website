@@ -62,6 +62,7 @@ const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
+const _elementHeight = 290.5 // 20.75rem
 
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4
@@ -76,6 +77,10 @@ const buildsPerLine = computed(() => {
 
   return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
 })
+
+const filteredAndSortedBuildSummaries = ref<IBuildSummary[]>([])
+const isInitialized = ref(false)
+const isLoading = ref(true)
 const {
   isSmartphoneLandscapeOrSmaller,
   isTabletLandscapeOrSmaller,
@@ -90,10 +95,6 @@ const linesPerPage = computed(() => {
 
   return lines
 })
-
-const filteredAndSortedBuildSummaries = ref<IBuildSummary[]>([])
-const isInitialized = ref(false)
-const isLoading = ref(true)
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
@@ -284,7 +285,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         v-if="infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
         v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
-        :element-height="301"
+        :element-height="_elementHeight"
         :elements-per-line="buildsPerLine"
         :elements="filteredAndSortedBuildSummaries"
         :get-key-function="i => (i as IBuildSummary).id"

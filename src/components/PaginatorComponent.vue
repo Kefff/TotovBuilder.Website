@@ -21,9 +21,17 @@ const props = withDefaults(
     scrollToIndex: undefined
   })
 
+let _fixedLineHeight: number | undefined = undefined
 const _swipeDeadzone = 50
 
-const containerHeight = computed(() => `${paginatorHeight.value}px`)
+const containerHeight = computed(() => {
+  const lh = _fixedLineHeight ?? firstLineHeight.value
+  const linesCount = displayedLines.value.length
+  const gapsHeight = (linesCount - 1) * 14 // 1rem per between each line
+  const ch = lh * linesCount + gapsHeight
+
+  return `${ch}px`
+})
 const displayedLines = computed<unknown[][]>(() => {
   let last = first.value + props.linesPerPage
   const lines = groupedElements.value.slice(first.value, last)
@@ -31,6 +39,7 @@ const displayedLines = computed<unknown[][]>(() => {
   return lines
 })
 const first = computed(() => modelCurrentPage.value * props.linesPerPage)
+const firstLine = computed(() => lines.value?.[0])
 const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const groupedElements = computed<unknown[][]>(() => {
   const groups: unknown[][] = []
@@ -63,8 +72,9 @@ const transitionLeaveToTranslate = computed(() => previousPageIndex.value < mode
 
 const isScrollLocked = useScrollLock(document.getElementById('app'))
 const leftPosition = ref('0')
+const lines = useTemplateRef('lines')
 const paginator = useTemplateRef('paginator')
-const { height: paginatorHeight } = useElementBounding(paginator)
+const { height: firstLineHeight } = useElementBounding(firstLine)
 const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
   paginator,
   {
@@ -92,6 +102,10 @@ onMounted(() => {
  * Reacts to the paginator current page being changed.
  */
 function onPageChange(newPage: number): void {
+  if (_fixedLineHeight == null) {
+    _fixedLineHeight = firstLineHeight.value
+  }
+
   previousPageIndex.value = modelCurrentPage.value
   modelCurrentPage.value = newPage
 
@@ -175,7 +189,7 @@ function scrollToElement(elementIndex?: number): void {
     const line = document.getElementsByClassName('paginator-line')[lineIndex]
 
     if (line != null) {
-      line.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      line.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   })
 }
@@ -203,6 +217,7 @@ function scrollToElement(elementIndex?: number): void {
           <div
             v-for="(line, index) of displayedLines"
             :key="index"
+            ref="lines"
             class="paginator-line"
           >
             <slot
@@ -240,7 +255,7 @@ function scrollToElement(elementIndex?: number): void {
 
 
 
-<style>
+<style scoped>
 .paginator {
   display: flex;
   flex-direction: column;
@@ -306,7 +321,9 @@ function scrollToElement(elementIndex?: number): void {
 .paginator-pages > nav {
   width: 100%;
 }
+</style>
 
+<style>
 .paginator-pages nav .p-paginator {
   padding: 0.25rem;
 }

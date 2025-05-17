@@ -52,8 +52,7 @@ const comparisonItem = computed(() =>
   !props.selectionOptions.isMultiSelection && props.selectionOptions.showStatsComparison
     ? modelSelectedItems.value[0]
     : undefined)
-const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
-const itemHeight = computed(() => {
+const elementHeight = computed(() => {
   let h = 169 // 12rem + 1px base height with one weight / price line and 2 stats lines
 
   if (props.selectionOptions.isEnabled) {
@@ -66,7 +65,7 @@ const itemHeight = computed(() => {
 
   return h
 })
-const itemsPerLine = computed(() => {
+const elementsitemsPerLine = computed(() => {
   let columns = 5
 
   if (isSmartphonePortrait.value) {
@@ -81,6 +80,7 @@ const itemsPerLine = computed(() => {
 
   return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
+const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
 const linesPerPage = computed(() => {
   let lines = 4
 
@@ -285,8 +285,8 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         v-if="infiniteScrolling && filteredAnSortedItems.length > 0"
         v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
-        :element-height="itemHeight"
-        :elements-per-line="itemsPerLine"
+        :element-height="elementHeight"
+        :elements-per-line="elementsitemsPerLine"
         :elements="filteredAnSortedItems"
         :get-key-function="i => (i as IItem).id"
         :scroll-to-index="firstSelectedItemIndex"
@@ -306,7 +306,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         v-else-if="!infiniteScrolling && filteredAnSortedItems.length > 0"
         v-show="!isLoading"
         :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
-        :elements-per-line="itemsPerLine"
+        :elements-per-line="elementsitemsPerLine"
         :elements="filteredAnSortedItems"
         :get-key-function="i => (i as IItem).id"
         :lines-per-page="linesPerPage"
