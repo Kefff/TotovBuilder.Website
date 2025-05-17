@@ -11,9 +11,11 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import ItemIcon from '../ItemIconComponent.vue'
 import Price from '../PriceComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
+import ValueComparison from '../ValueComparisonComponent.vue'
 import ItemCardSelector from './ItemCardSelectorComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
@@ -35,14 +37,21 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 const _inventoryItemService = Services.get(InventoryItemService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 
-const comparisonItemWeight = computed(() => props.comparisonItem?.presetWeight ?? props.comparisonItem?.weight ?? 0)
-const height = computed(() => `${11.5 + (props.selectionOptions.isEnabled ? 3.5 : 0) + (props.selectionOptions.showStatsComparison ? 1 : 0)}rem`)
+const height = computed(() => {
+  let h = 12 // Base height with one weight / price line and 2 stats lines
+
+  if (props.selectionOptions.isEnabled) {
+    h += 3.5 // For the select button
+  }
+
+  if (isSmartphonePortrait.value) {
+    h += 2 // Because when in smartphone portrait, one less stats columns but one more stats line
+  }
+
+  return `${h}rem`
+})
 const itemIsModdable = computed(() => _itemPropertiesService.isModdable(props.item))
 const modSlotsCount = computed(() => itemIsModdable.value ? (props.item as IModdable).modSlots.length : 0)
-const priceComparison = computed(() =>
-  showStatsComparison.value
-    ? itemUnitPrice.value!.valueInMainCurrency - comparisonItemUnitPriceInMainCurrency.value!
-    : undefined)
 const selectionButtonCaptionInternal = computed(() => {
   if (props.selectionOptions.selectionButtonCaption != null) {
     return props.selectionOptions.selectionButtonCaption
@@ -64,13 +73,11 @@ const selectionButtonIconInternal = computed(() => {
 const showStatsComparison = computed(() =>
   props.selectionOptions.showStatsComparison
   && props.comparisonItem != null
-  && props.comparisonItem.id !== props.item.id
-  && itemUnitPrice.value != null
-  && itemUnitPrice.value.valueInMainCurrency > 0)
+  && props.comparisonItem.id !== props.item.id)
 const weight = computed(() => props.item.presetWeight ?? props.item.weight)
-const weightComparison = computed(() => showStatsComparison.value ? weight.value - comparisonItemWeight.value : undefined)
 
 const comparisonItemUnitPriceInMainCurrency = ref<number>(0)
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 const itemUnitPrice = ref<IPrice>()
 
 onMounted(() => {
@@ -191,11 +198,8 @@ function showDetails(): void {
     <template #content>
       <div class="card-lines">
         <!-- Weight and price -->
-        <div class="card-line card-line4 item-card-weight-and-price-line">
-          <Tooltip
-            v-if="item.weight != 0"
-            :tooltip="$t('caption.weight')"
-          >
+        <div class="card-line card-line4 item-card-weight-and-price">
+          <Tooltip :tooltip="$t('caption.weight')">
             <div
               class="card-value"
               :class="StatsUtils.getSortedPropertyColorClass('weight', filterAndSortingData)"
@@ -210,6 +214,14 @@ function showDetails(): void {
                 </span>
               </div>
             </div>
+            <ValueComparison
+              v-if="showStatsComparison"
+              :compare-to-value="props.comparisonItem?.presetWeight ?? props.comparisonItem?.weight"
+              :current-value="weight"
+              :fixed-decimal-count="3"
+              :invert="true"
+              :round-decimal-count="3"
+            />
           </Tooltip>
           <div
             v-if="(itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0) || itemUnitPrice?.currencyName === 'barter'"
@@ -217,27 +229,19 @@ function showDetails(): void {
             :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
             <Price :price="itemUnitPrice" />
-          </div>
-          <div
-            v-if="weightComparison != null"
-            class="stats-value-comparison item-card-weight-comparison"
-          >
-            <span :class="StatsUtils.getValueColorClass(weightComparison, true)">
-              {{ StatsUtils.getDisplayValue(weightComparison, true, 3, 3) + ' kg' }}
-            </span>
-          </div>
-          <div
-            v-if="priceComparison != null"
-            class="stats-value-comparison item-card-price"
-            style="grid-column: span 3;"
-          >
-            <span :class="StatsUtils.getValueColorClass(priceComparison, true)">
-              <font-awesome-icon
-                icon="ruble-sign"
-                class="currency-RUB"
-              />
-              <span>{{ StatsUtils.getDisplayValue(priceComparison, true, 0) }}</span>
-            </span>
+            <ValueComparison
+              v-if="showStatsComparison"
+              :compare-to-value="comparisonItemUnitPriceInMainCurrency"
+              :current-value="itemUnitPrice.valueInMainCurrency"
+              :invert="true"
+            >
+              <template #prefix>
+                <font-awesome-icon
+                  icon="ruble-sign"
+                  class="currency-RUB"
+                />
+              </template>
+            </ValueComparison>
           </div>
         </div>
         <!-- Specialized stats -->
@@ -283,7 +287,6 @@ function showDetails(): void {
 .item-card-price {
   align-items: center;
   display: flex;
-  gap: 0.5rem;
   grid-column: span 3;
 }
 
@@ -328,14 +331,5 @@ function showDetails(): void {
 
 .item-card-title > span {
   max-height: 100%;
-}
-
-.item-card-weight-and-price-line {
-  height: 3rem;
-  grid-row-gap: 0;
-}
-
-.item-card-weight-comparison {
-  margin-left: 1.25rem;
 }
 </style>
