@@ -4,27 +4,27 @@ import { IBackpack } from '../../models/item/IBackpack'
 import { IItem } from '../../models/item/IItem'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import ContainerItemCard from './ContainerItemCardComponent.vue'
-import WearableItemCard from './WearableItemCardComponent.vue'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
+import ContainerItemCardInternal from './ContainerItemCardInternalComponent.vue'
+import WearableItemCardInternal from './WearableItemCardInternalComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     comparisonItem?: IItem,
-    displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     comparisonItem: undefined,
-    displayEmptyLines: true,
     filterAndSortingData: undefined,
     wearableModifiersOverride: undefined
   })
 
 const backpack = computed(() => props.item as IBackpack)
-const comparisonItemInternal = computed(() => props.comparisonItem as IBackpack | undefined)
-const wearableModifiers = computed(() => props.wearableModifiersOverride ?? backpack.value.presetWearableModifiers)
+const comparisonBackpack = computed(() => props.comparisonItem as IBackpack)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -37,14 +37,23 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? back
 
 
 <template>
-  <ContainerItemCard
-    :filter-and-sorting-data="filterAndSortingData"
-    :item="backpack"
-  />
-  <WearableItemCard
-    :display-empty-lines="displayEmptyLines"
-    :filter-and-sorting-data="filterAndSortingData"
-    :item="backpack"
-    :wearable-modifiers-override="wearableModifiers"
-  />
+  <div
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
+  >
+    <ContainerItemCardInternal
+      :comparison-item="comparisonBackpack"
+      :container="backpack"
+      :filter-and-sorting-data="filterAndSortingData"
+    />
+    <WearableItemCardInternal
+      :comparison-item="comparisonBackpack"
+      :filter-and-sorting-data="filterAndSortingData"
+      :wearable="backpack"
+      :wearable-modifiers-override="wearableModifiersOverride"
+    />
+  </div>
 </template>

@@ -5,13 +5,13 @@ import { IItem } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import ArmorItemCard from './ArmorItemCardComponent.vue'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
+import ArmorItemCardInternal from './ArmorItemCardInternalComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
     comparisonItem?: IItem,
-    displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
@@ -19,15 +19,14 @@ const props = withDefaults(
   {
     armorModifiersOverride: undefined,
     comparisonItem: undefined,
-    displayEmptyLines: true,
     filterAndSortingData: undefined,
     wearableModifiersOverride: undefined
   })
 
 const armorMod = computed(() => props.item as IArmorMod)
-const armorModifiers = computed(() => props.armorModifiersOverride ?? armorMod.value.presetArmorModifiers)
-const comparisonItemInternal = computed(() => props.comparisonItem as IArmorMod | undefined)
-const wearableModifiers = computed(() => props.wearableModifiersOverride ?? armorMod.value.presetWearableModifiers)
+const comparisonArmorMod = computed(() => props.comparisonItem as IArmorMod)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -40,11 +39,19 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? armo
 
 
 <template>
-  <ArmorItemCard
-    :armor-modifiers-override="armorModifiers"
-    :display-empty-lines="displayEmptyLines"
-    :filter-and-sorting-data="filterAndSortingData"
-    :item="armorMod"
-    :wearable-modifiers-override="wearableModifiers"
-  />
+  <div
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
+  >
+    <ArmorItemCardInternal
+      :armor-modifiers-override="armorModifiersOverride"
+      :armor="armorMod"
+      :comparison-item="comparisonArmorMod"
+      :filter-and-sorting-data="filterAndSortingData"
+      :wearable-modifiers-override="wearableModifiersOverride"
+    />
+  </div>
 </template>

@@ -66,7 +66,7 @@ const valueClass = computed(() => StatsUtils.getValueColorClass(comparisonValue.
 <style scoped>
 .value-comparison {
   color: var(--text-color);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: normal;
   height: 1rem;
   margin-left: 0.25rem;

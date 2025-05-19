@@ -1,0 +1,136 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import { IWearable } from '../../models/item/IWearable'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import Tooltip from '../TooltipComponent.vue'
+import ValueComparison from '../ValueComparisonComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    comparisonItem?: IItem,
+    filterAndSortingData?: ItemFilterAndSortingData,
+    includeModsAndContent?: boolean,
+    wearable: IWearable,
+    wearableModifiersOverride?: IWearableModifiers
+  }>(),
+  {
+    comparisonItem: undefined,
+    filterAndSortingData: undefined,
+    includeModsAndContent: false,
+    wearableModifiersOverride: undefined
+  })
+
+const comparisonWearable = computed(() => props.comparisonItem?.id !== props.wearable.id ? props.comparisonItem as IWearable : undefined)
+const ergonomicsModifierPercentage = computed(() => props.wearableModifiersOverride?.ergonomicsModifierPercentage ?? props.wearable.presetWearableModifiers?.ergonomicsModifierPercentage ?? props.wearable.ergonomicsModifierPercentage)
+const movementSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.movementSpeedModifierPercentage ?? props.wearable.presetWearableModifiers?.movementSpeedModifierPercentage ?? props.wearable.movementSpeedModifierPercentage)
+const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.turningSpeedModifierPercentage ?? props.wearable.presetWearableModifiers?.turningSpeedModifierPercentage ?? props.wearable.turningSpeedModifierPercentage)
+</script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <Tooltip
+    v-if="ergonomicsModifierPercentage !== 0
+      || (comparisonWearable?.presetWearableModifiers?.ergonomicsModifierPercentage ?? comparisonWearable?.ergonomicsModifierPercentage ?? 0) !== 0"
+    :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
+    :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
+  >
+    <div
+      class="card-value"
+      :class="StatsUtils.getSortedPropertyColorClass('ergonomicsModifierPercentage', filterAndSortingData)"
+    >
+      <font-awesome-icon
+        icon="hand-paper"
+        class="icon-before-text"
+      />
+      <span :class="StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
+      </span>
+    </div>
+    <ValueComparison
+      v-if="comparisonWearable != null"
+      :compare-to-value="comparisonWearable?.presetWearableModifiers?.ergonomicsModifierPercentage ?? comparisonWearable?.ergonomicsModifierPercentage"
+      :current-value="ergonomicsModifierPercentage"
+      :is-percentage="true"
+      :round-decimal-count="1"
+    />
+  </Tooltip>
+  <Tooltip
+    v-if="movementSpeedModifierPercentage !== 0
+      || (comparisonWearable?.presetWearableModifiers?.movementSpeedModifierPercentage ?? comparisonWearable?.movementSpeedModifierPercentage ?? 0) !== 0"
+    :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
+    :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
+  >
+    <div
+      class="card-value"
+      :class="StatsUtils.getSortedPropertyColorClass('movementSpeedModifierPercentage', filterAndSortingData)"
+    >
+      <font-awesome-icon
+        icon="walking"
+        class="icon-before-text"
+      />
+      <span :class="StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
+      </span>
+    </div>
+    <ValueComparison
+      v-if="comparisonWearable != null"
+      :compare-to-value="comparisonWearable?.presetWearableModifiers?.movementSpeedModifierPercentage ?? comparisonWearable?.movementSpeedModifierPercentage"
+      :current-value="movementSpeedModifierPercentage"
+      :is-percentage="true"
+      :round-decimal-count="1"
+    />
+  </Tooltip>
+  <Tooltip
+    v-if="turningSpeedModifierPercentage !== 0
+      || (comparisonWearable?.presetWearableModifiers?.turningSpeedModifierPercentage ?? comparisonWearable?.turningSpeedModifierPercentage ?? 0) !== 0"
+    :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
+    :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
+  >
+    <div
+      class="card-value"
+      :class="StatsUtils.getSortedPropertyColorClass('turningSpeedModifierPercentage', filterAndSortingData)"
+    >
+      <font-awesome-icon
+        icon="undo"
+        class="icon-before-text"
+      />
+      <span :class="StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}
+      </span>
+    </div>
+    <ValueComparison
+      v-if="comparisonWearable != null"
+      :compare-to-value="comparisonWearable?.presetWearableModifiers?.turningSpeedModifierPercentage ?? comparisonWearable?.turningSpeedModifierPercentage"
+      :current-value="turningSpeedModifierPercentage"
+      :is-percentage="true"
+      :round-decimal-count="1"
+    />
+  </Tooltip>
+</template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.wearable-summary-bold {
+  font-style: italic;
+  font-weight: bolder;
+}
+</style>
