@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import Images from '../images'
 import { IBuild } from '../models/build/IBuild'
 import vueI18n from '../plugins/vueI18n'
@@ -12,6 +12,7 @@ import Services from '../services/repository/Services'
 import { SeoService } from '../services/SeoService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import StringUtils from '../utils/StringUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Loading from './LoadingComponent.vue'
 
 const BuildsList = defineAsyncComponent({
@@ -26,9 +27,20 @@ const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const _lastBuildsCount = 3
 
+const actionsGridColumnTemplate = computed(() => {
+  if (isSmartphoneLandscape.value) {
+    return '1fr 1fr 1fr'
+  } else if (isSmartphonePortrait.value) {
+    return '1fr 1fr'
+  } else {
+    return '1fr 1fr 1fr 1fr 1fr'
+  }
+})
+
 const hasBuilds = ref(false)
 const isLoadingWebsite = ref(true)
 const isLoadingLastBuilds = ref(true)
+const { isSmartphoneLandscape, isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 
 onMounted(() => {
   _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
@@ -372,14 +384,13 @@ function openNewBuild(): void {
 }
 
 .welcome-action {
-  width: 12rem;
+  width: 100%;
 }
 
 .welcome-actions {
   align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: v-bind(actionsGridColumnTemplate);
   gap: 1rem;
   justify-content: center;
   margin-top: auto;

@@ -12,7 +12,15 @@ const modelParameters = defineModel<InventorySlotSelectorSidebarParameters>('par
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const height = computed(() => `${round(selectorHeight.value * scale.value) + 2}px`) // +2 otherwise the bottom border is not visible
-const scale = computed(() => round(sidebarWidth.value / selectorWidth.value, 2) - 0.01) // -0.01 otherwise the right border is not visible
+const scale = computed(() => {
+  let s = round(sidebarWidth.value / selectorWidth.value, 2) - 0.01 // -0.01 otherwise the right border is not visible
+
+  if (s > 1) {
+    s = 1
+  }
+
+  return s
+})
 const transform = computed(() => `scale(${scale.value})`)
 
 const selectorElement = ref<HTMLDivElement | null | undefined>()
@@ -70,11 +78,12 @@ function onSelectedInventorySlotChanged(): void {
 
 <style>
 .inventory-slot-selector-sidebar {
-  overflow: hidden;
+  overflow-x: hidden;
   height: v-bind(height);
 }
 
 .inventory-slot-selector-sidebar-selector {
+  height: v-bind(height);
   transform: v-bind(transform);
   transform-origin: top left;
   width: 100%;

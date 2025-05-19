@@ -38,7 +38,7 @@ const valueClass = computed(() => StatsUtils.getValueColorClass(comparisonValue.
 
 <template>
   <div
-    v-if="compareToValue !== 0 && comparisonValue !== 0"
+    v-if="comparisonValue !== 0"
     class="value-comparison"
   >
     <span>(</span>

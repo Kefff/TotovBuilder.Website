@@ -62,7 +62,7 @@ const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
-const _elementHeight = 290.5 // 20.75rem
+const _elementHeight = 308 // 22rem
 
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4

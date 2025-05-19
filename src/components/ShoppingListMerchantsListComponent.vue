@@ -97,7 +97,6 @@ function setRequiredMerchants(): void {
 .shopping-list-merchants-list-container {
   flex-shrink: 0;
   height: 3.125rem;
-  margin-top: auto;
   position: relative;
   width: 100%;
 }

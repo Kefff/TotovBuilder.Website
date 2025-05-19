@@ -569,7 +569,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         v-if="item != null"
         v-model:selected-tab="selectedTab"
         :can-be-looted="canBeLooted"
-        :can-have-content="itemIsContainer"
+        :can-have-content="itemIsContainer && !isBaseItem"
         :can-have-mods="itemIsModdable && !isBaseItem && (!hasOnlyBaseItem || (isEditing ?? false))"
         :can-ignore-price="canIgnorePrice"
         :contains-base-item="baseItem != null"
