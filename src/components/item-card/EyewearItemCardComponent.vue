@@ -3,24 +3,35 @@ import { computed } from 'vue'
 import { IEyewear } from '../../models/item/IEyewear'
 import { IItem } from '../../models/item/IItem'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import Tooltip from '../TooltipComponent.vue'
+import ValueComparison from '../ValueComparisonComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     comparisonItem?: IItem,
-    displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem
   }>(),
   {
     comparisonItem: undefined,
-    displayEmptyLines: true,
     filterAndSortingData: undefined
   })
 
-const comparisonItemInternal = computed(() => props.comparisonItem as IEyewear | undefined)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+const comparisonEyewear = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.isEyewear(props.comparisonItem)
+    && props.comparisonItem?.id !== props.item.id
+    ? props.comparisonItem as IEyewear
+    : undefined)
 const eyewear = computed(() => props.item as IEyewear)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -33,12 +44,15 @@ const eyewear = computed(() => props.item as IEyewear)
 
 <template>
   <div
-    v-if="displayEmptyLines
-      || eyewear.blindnessProtectionPercentage !== 0"
-    class="card-line card-line4"
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
   >
     <Tooltip
-      v-if="eyewear.blindnessProtectionPercentage !== 0"
+      v-if="eyewear.blindnessProtectionPercentage !== 0
+        || (comparisonEyewear?.blindnessProtectionPercentage ?? 0 !== 0)"
       :tooltip="$t('caption.blindnessProtectionPercentage')"
     >
       <div
@@ -53,6 +67,12 @@ const eyewear = computed(() => props.item as IEyewear)
           {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
         </span>
       </div>
+      <ValueComparison
+        v-if="comparisonEyewear != null"
+        :compare-to-value="comparisonEyewear?.blindnessProtectionPercentage"
+        :current-value="eyewear.blindnessProtectionPercentage"
+        :is-percentage="true"
+      />
     </Tooltip>
   </div>
 </template>

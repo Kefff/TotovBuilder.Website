@@ -10,7 +10,8 @@ const props = withDefaults(
     fixedDecimalCount?: number
     invert?: boolean,
     isPercentage?: boolean,
-    roundDecimalCount?: number
+    roundDecimalCount?: number,
+    suffix?: string
   }>(),
   {
     fixedDecimalCount: undefined,
@@ -20,10 +21,19 @@ const props = withDefaults(
     suffix: undefined
   })
 
-const currentValueInternal = computed(() => props.currentValue ?? 0)
 const compareToValueInternal = computed(() => props.compareToValue ?? 0)
 const comparisonValue = computed(() => round((currentValueInternal.value - compareToValueInternal.value) * (props.isPercentage ? 100 : 1), props.roundDecimalCount))
+const currentValueInternal = computed(() => props.currentValue ?? 0)
 const displayValue = computed(() => StatsUtils.getDisplayValue(comparisonValue.value, true, props.roundDecimalCount, props.fixedDecimalCount))
+const suffixInternal = computed(() => {
+  if (props.suffix != null) {
+    return `${props.suffix}`
+  } else if (props.isPercentage) {
+    return '%'
+  } else {
+    return ''
+  }
+})
 const valueClass = computed(() => StatsUtils.getValueColorClass(comparisonValue.value, props.invert))
 </script>
 
@@ -47,7 +57,7 @@ const valueClass = computed(() => StatsUtils.getValueColorClass(comparisonValue.
       :class="valueClass"
     >
       <slot name="prefix" />
-      <span>{{ displayValue }}</span>
+      <span>{{ `${displayValue}${suffixInternal}` }}</span>
       <slot name="suffix" />
     </div>
     <span>)</span>

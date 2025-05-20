@@ -3,8 +3,12 @@ import { computed } from 'vue'
 import { IGrenade } from '../../models/item/IGrenade'
 import { IItem } from '../../models/item/IItem'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import Tooltip from '../TooltipComponent.vue'
+import ValueComparison from '../ValueComparisonComponent.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -17,8 +21,17 @@ const props = withDefaults(
     filterAndSortingData: undefined
   })
 
-const comparisonItemInternal = computed(() => props.comparisonItem as IGrenade | undefined)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+const comparisonGrenade = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.isGrenade(props.comparisonItem)
+    && props.comparisonItem?.id !== props.item.id
+    ? props.comparisonItem as IGrenade
+    : undefined)
 const grenade = computed(() => props.item as IGrenade)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -31,7 +44,13 @@ const grenade = computed(() => props.item as IGrenade)
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
+  >
     <Tooltip :tooltip="$t('caption.explosionDelay')">
       <div
         class="card-value"
@@ -43,9 +62,17 @@ const grenade = computed(() => props.item as IGrenade)
         />
         <span>{{ $t('caption.explosionDelayValue', { delay: grenade.explosionDelay }) }}</span>
       </div>
+      <ValueComparison
+        v-if="comparisonGrenade != null"
+        :compare-to-value="comparisonGrenade?.explosionDelay"
+        :current-value="grenade.explosionDelay"
+        :invert="true"
+        suffix=" s"
+      />
     </Tooltip>
     <Tooltip
-      v-if="grenade.maximumExplosionRange > 0"
+      v-if="grenade.maximumExplosionRange !== 0
+        || (comparisonGrenade?.maximumExplosionRange ?? 0 !== 0)"
       :tooltip="$t('caption.explosionRange')"
     >
       <div
@@ -59,9 +86,16 @@ const grenade = computed(() => props.item as IGrenade)
         <span v-if="grenade.minimumExplosionRange !== grenade.maximumExplosionRange">{{ $t('caption.explosionRangeValue', { min: grenade.minimumExplosionRange, max: grenade.maximumExplosionRange }) }}</span>
         <span v-else>{{ $t('caption.explosionRangeSingleValue', { range: grenade.maximumExplosionRange }) }}</span>
       </div>
+      <ValueComparison
+        v-if="comparisonGrenade != null"
+        :compare-to-value="comparisonGrenade?.maximumExplosionRange"
+        :current-value="grenade.maximumExplosionRange"
+        suffix=" m"
+      />
     </Tooltip>
     <Tooltip
-      v-if="grenade.fragmentsAmount > 0"
+      v-if="grenade.fragmentsAmount !== 0
+        || (comparisonGrenade?.fragmentsAmount ?? 0 !== 0)"
       :tooltip="$t('caption.fragmentsAmount')"
     >
       <div
@@ -74,6 +108,11 @@ const grenade = computed(() => props.item as IGrenade)
         />
         <span>{{ grenade.fragmentsAmount }}</span>
       </div>
+      <ValueComparison
+        v-if="comparisonGrenade != null"
+        :compare-to-value="comparisonGrenade?.fragmentsAmount"
+        :current-value="grenade.fragmentsAmount"
+      />
     </Tooltip>
   </div>
 </template>

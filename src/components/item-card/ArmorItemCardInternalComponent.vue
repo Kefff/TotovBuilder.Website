@@ -35,7 +35,14 @@ const props = withDefaults(
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? props.armor.presetArmorModifiers?.armorClass ?? props.armor.armorClass)
-const comparisonArmor = computed(() => props.comparisonItem?.id !== props.armor.id ? props.comparisonItem as IArmor : undefined)
+const comparisonArmor = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.canHaveArmor(props.comparisonItem)
+    && props.comparisonItem?.id !== props.armor.id
+    ? props.comparisonItem as IArmor
+    : undefined)
+const comparisonArmorArmorClass = computed(() => comparisonArmor.value?.presetArmorModifiers?.armorClass ?? comparisonArmor.value?.armorClass)
+const comparisonArmorDurability = computed(() => comparisonArmor.value?.presetArmorModifiers?.durability ?? comparisonArmor.value?.durability)
 const durability = computed(() => props.armorModifiersOverride?.durability ?? props.armor.presetArmorModifiers?.durability ?? props.armor.durability)
 const isHeadwear = computed(() => _itemPropertiesService.isHeadwear(props.armor))
 const tooltipSuffix = computed(() => {
@@ -62,7 +69,7 @@ const tooltipSuffix = computed(() => {
   <Tooltip
     v-if="!isBaseItem
       && (durability !== 0
-        || ((comparisonArmor?.presetArmorModifiers?.durability ?? comparisonArmor?.durability ?? 0) !== 0))"
+        || ((comparisonArmorDurability ?? 0) !== 0))"
     :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.durability') + tooltipSuffix"
   >
@@ -78,15 +85,14 @@ const tooltipSuffix = computed(() => {
     </div>
     <ValueComparison
       v-if="comparisonArmor != null"
-      :compare-to-value="comparisonArmor?.presetArmorModifiers?.durability ?? comparisonArmor?.durability"
+      :compare-to-value="comparisonArmorDurability"
       :current-value="durability"
-      :is-percentage="false"
     />
   </Tooltip>
   <Tooltip
     v-if="!isBaseItem
       && (armorClass !== 0
-        || ((comparisonArmor?.presetArmorModifiers?.armorClass ?? comparisonArmor?.armorClass ?? 0) !== 0))"
+        || ((comparisonArmorArmorClass ?? 0) !== 0))"
     :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.armorClass') + tooltipSuffix"
   >
@@ -102,9 +108,8 @@ const tooltipSuffix = computed(() => {
     </div>
     <ValueComparison
       v-if="comparisonArmor != null"
-      :compare-to-value="comparisonArmor?.presetArmorModifiers?.armorClass ?? comparisonArmor?.armorClass"
+      :compare-to-value="comparisonArmorArmorClass"
       :current-value="armorClass"
-      :is-percentage="false"
     />
   </Tooltip>
   <WearableItemCardInternal

@@ -341,10 +341,7 @@ function displayStats(item: IItem): void {
             </div>
           </Tooltip>
         </div>
-        <ShoppingListMerchantsList
-          :shopping-list="buildSummary.shoppingList"
-          class="build-card-merchants"
-        />
+        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
       </div>
       <div
         v-if="!modelIsSelected
@@ -450,11 +447,6 @@ function displayStats(item: IItem): void {
 .build-card-not-exported {
   color: var(--warning-color);
   margin-left: 0.5rem;
-}
-
-.build-card-merchants {
-  margin-bottom: auto;
-  margin-top: auto;
 }
 
 .build-card-price {

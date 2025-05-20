@@ -17,7 +17,6 @@ const props = withDefaults(
     filterAndSortingData: undefined
   })
 
-const comparisonContainer = computed(() => props.comparisonItem as IContainer)
 const container = computed(() => props.item as IContainer)
 
 const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
@@ -41,7 +40,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     }"
   >
     <ContainerItemCardInternal
-      :comparison-item="comparisonContainer"
+      :comparison-item="comparisonItem"
       :filter-and-sorting-data="filterAndSortingData"
       :container="container"
     />

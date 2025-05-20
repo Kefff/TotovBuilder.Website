@@ -3,6 +3,8 @@ import { computed } from 'vue'
 import { IContainer } from '../../models/item/IContainer'
 import { IItem } from '../../models/item/IItem'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 import ValueComparison from '../ValueComparisonComponent.vue'
@@ -18,7 +20,14 @@ const props = withDefaults(
     filterAndSortingData: undefined
   })
 
-const comparisonContainer = computed(() => props.comparisonItem?.id !== props.container.id ? props.comparisonItem as IContainer : undefined)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+const comparisonContainer = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.canContain(props.comparisonItem)
+    && props.comparisonItem?.id !== props.container.id
+    ? props.comparisonItem as IContainer
+    : undefined)
 </script>
 
 
@@ -32,7 +41,8 @@ const comparisonContainer = computed(() => props.comparisonItem?.id !== props.co
 
 <template>
   <Tooltip
-    v-if="container.capacity !== 0"
+    v-if="container.capacity !== 0
+      || (comparisonContainer?.capacity ?? 0 !== 0)"
     :tooltip="$t('caption.capacity')"
   >
     <div
@@ -49,7 +59,6 @@ const comparisonContainer = computed(() => props.comparisonItem?.id !== props.co
       v-if="comparisonContainer != null"
       :compare-to-value="comparisonContainer?.capacity"
       :current-value="container.capacity"
-      :is-percentage="false"
     />
   </Tooltip>
 </template>

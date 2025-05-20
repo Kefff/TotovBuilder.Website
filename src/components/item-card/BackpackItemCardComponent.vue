@@ -22,7 +22,6 @@ const props = withDefaults(
   })
 
 const backpack = computed(() => props.item as IBackpack)
-const comparisonBackpack = computed(() => props.comparisonItem as IBackpack)
 
 const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
@@ -45,12 +44,12 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     }"
   >
     <ContainerItemCardInternal
-      :comparison-item="comparisonBackpack"
+      :comparison-item="comparisonItem"
       :container="backpack"
       :filter-and-sorting-data="filterAndSortingData"
     />
     <WearableItemCardInternal
-      :comparison-item="comparisonBackpack"
+      :comparison-item="comparisonItem"
       :filter-and-sorting-data="filterAndSortingData"
       :wearable="backpack"
       :wearable-modifiers-override="wearableModifiersOverride"

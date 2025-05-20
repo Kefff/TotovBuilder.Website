@@ -221,6 +221,7 @@ function showDetails(): void {
               :fixed-decimal-count="3"
               :invert="true"
               :round-decimal-count="3"
+              suffix=" kg"
             />
           </Tooltip>
           <div

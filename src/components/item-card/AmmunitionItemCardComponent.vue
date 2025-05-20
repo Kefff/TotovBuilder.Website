@@ -4,6 +4,7 @@ import { IAmmunition } from '../../models/item/IAmmunition'
 import { IItem } from '../../models/item/IItem'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import vueI18n from '../../plugins/vueI18n'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -22,11 +23,18 @@ const props = withDefaults(
     filterAndSortingData: undefined
   })
 
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
 const _chestHp = Services.get(TarkovValuesService).values.chestHp
 
 const ammunition = computed(() => props.item as IAmmunition)
 const canOneshot = computed(() => totalFleshDamage.value >= _chestHp)
-const comparisonAmmunition = computed(() => props.comparisonItem?.id !== props.item.id ? props.comparisonItem as IAmmunition : undefined)
+const comparisonAmmunition = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.isAmmunition(props.comparisonItem)
+    && props.comparisonItem?.id !== props.item.id
+    ? props.comparisonItem as IAmmunition
+    : undefined)
 const totalFleshDamage = computed(() => ammunition.value.fleshDamage * ammunition.value.projectiles)
 const tooltip = computed(() =>
   `${vueI18n.t('caption.fleshDamage')}${ammunition.value.projectiles > 1
@@ -86,7 +94,6 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
               v-if="comparisonAmmunition != null"
               :compare-to-value="comparisonAmmunition?.fleshDamage"
               :current-value="ammunition.fleshDamage"
-              :is-percentage="false"
             />
           </div>
         </div>
@@ -139,7 +146,6 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
           v-if="comparisonAmmunition != null"
           :compare-to-value="comparisonAmmunition?.penetrationPower"
           :current-value="ammunition.penetrationPower"
-          :is-percentage="false"
         />
       </Tooltip>
     </div>

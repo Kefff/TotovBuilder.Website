@@ -5,10 +5,14 @@ import { IItem } from '../../models/item/IItem'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import CustomIcon from '../CustomIconComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
+import ValueComparison from '../ValueComparisonComponent.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -27,11 +31,23 @@ const props = withDefaults(
     rangedWeaponsModifiersOverride: undefined
   })
 
-const comparisonItemInternal = computed(() => props.comparisonItem as IRangedWeapon | undefined)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+const comparisonRangedWeapon = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.isRangedWeapon(props.comparisonItem)
+    && props.comparisonItem?.id !== props.item.id
+    ? props.comparisonItem as IRangedWeapon
+    : undefined)
+const comparisonRangedWeaponErgonomics = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.verticalRecoil ?? comparisonRangedWeapon.value?.verticalRecoil)
+const comparisonRangedWeaponHorizontalRecoil = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.horizontalRecoil ?? comparisonRangedWeapon.value?.horizontalRecoil)
+const comparisonRangedWeaponVerticalRecoil = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.verticalRecoil ?? comparisonRangedWeapon.value?.verticalRecoil)
 const ergonomics = computed(() => props.rangedWeaponsModifiersOverride?.ergonomics ?? rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
 const horizontalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.horizontalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
 const rangedWeapon = computed(() => props.item as IRangedWeapon)
 const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.verticalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -44,7 +60,13 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
+  >
     <Tooltip
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
@@ -59,6 +81,12 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
         />
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, verticalRecoil) }}</span>
       </div>
+      <ValueComparison
+        v-if="comparisonRangedWeapon != null"
+        :compare-to-value="comparisonRangedWeaponVerticalRecoil"
+        :current-value="verticalRecoil"
+        :invert="true"
+      />
     </Tooltip>
     <Tooltip
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
@@ -74,6 +102,12 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
         />
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, horizontalRecoil) }}</span>
       </div>
+      <ValueComparison
+        v-if="comparisonRangedWeapon != null"
+        :compare-to-value="comparisonRangedWeaponHorizontalRecoil"
+        :current-value="horizontalRecoil"
+        :invert="true"
+      />
     </Tooltip>
     <Tooltip
       :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
@@ -89,6 +123,11 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
         />
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, ergonomics) }}</span>
       </div>
+      <ValueComparison
+        v-if="comparisonRangedWeapon != null"
+        :compare-to-value="comparisonRangedWeaponErgonomics"
+        :current-value="ergonomics"
+      />
     </Tooltip>
   </div>
   <div
@@ -107,6 +146,12 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
           {{ $t('caption.fireRateValueShort', { fireRate: rangedWeapon.fireRate }) }}
         </div>
       </CustomIcon>
+      <ValueComparison
+        v-if="comparisonRangedWeapon != null"
+        :compare-to-value="comparisonRangedWeapon?.fireRate"
+        :current-value="rangedWeapon.fireRate"
+        suffix="/m"
+      />
     </Tooltip>
     <Tooltip
       :tooltip="$t('caption.caliber')"

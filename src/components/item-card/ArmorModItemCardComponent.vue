@@ -24,7 +24,6 @@ const props = withDefaults(
   })
 
 const armorMod = computed(() => props.item as IArmorMod)
-const comparisonArmorMod = computed(() => props.comparisonItem as IArmorMod)
 
 const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
@@ -49,7 +48,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     <ArmorItemCardInternal
       :armor-modifiers-override="armorModifiersOverride"
       :armor="armorMod"
-      :comparison-item="comparisonArmorMod"
+      :comparison-item="comparisonItem"
       :filter-and-sorting-data="filterAndSortingData"
       :wearable-modifiers-override="wearableModifiersOverride"
     />

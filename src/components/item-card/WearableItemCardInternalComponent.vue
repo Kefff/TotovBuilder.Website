@@ -4,6 +4,8 @@ import { IItem } from '../../models/item/IItem'
 import { IWearable } from '../../models/item/IWearable'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 import ValueComparison from '../ValueComparisonComponent.vue'
@@ -23,7 +25,17 @@ const props = withDefaults(
     wearableModifiersOverride: undefined
   })
 
-const comparisonWearable = computed(() => props.comparisonItem?.id !== props.wearable.id ? props.comparisonItem as IWearable : undefined)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+const comparisonWearable = computed(() =>
+  props.comparisonItem != null
+    && _itemPropertiesService.isWearable(props.comparisonItem)
+    && props.comparisonItem?.id !== props.wearable.id
+    ? props.comparisonItem as IWearable
+    : undefined)
+const comparisonWearableErgonomicsModifierPercentage = computed(() => comparisonWearable.value?.presetWearableModifiers?.ergonomicsModifierPercentage ?? comparisonWearable.value?.ergonomicsModifierPercentage)
+const comparisonWearableMovementSpeedModifierPercentage = computed(() => comparisonWearable.value?.presetWearableModifiers?.movementSpeedModifierPercentage ?? comparisonWearable.value?.movementSpeedModifierPercentage)
+const comparisonWearableTurningSpeedModifierPercentage = computed(() => comparisonWearable.value?.presetWearableModifiers?.turningSpeedModifierPercentage ?? comparisonWearable.value?.turningSpeedModifierPercentage)
 const ergonomicsModifierPercentage = computed(() => props.wearableModifiersOverride?.ergonomicsModifierPercentage ?? props.wearable.presetWearableModifiers?.ergonomicsModifierPercentage ?? props.wearable.ergonomicsModifierPercentage)
 const movementSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.movementSpeedModifierPercentage ?? props.wearable.presetWearableModifiers?.movementSpeedModifierPercentage ?? props.wearable.movementSpeedModifierPercentage)
 const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.turningSpeedModifierPercentage ?? props.wearable.presetWearableModifiers?.turningSpeedModifierPercentage ?? props.wearable.turningSpeedModifierPercentage)
@@ -41,7 +53,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
 <template>
   <Tooltip
     v-if="ergonomicsModifierPercentage !== 0
-      || (comparisonWearable?.presetWearableModifiers?.ergonomicsModifierPercentage ?? comparisonWearable?.ergonomicsModifierPercentage ?? 0) !== 0"
+      || (comparisonWearableErgonomicsModifierPercentage ?? 0) !== 0"
     :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
   >
@@ -59,7 +71,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
     </div>
     <ValueComparison
       v-if="comparisonWearable != null"
-      :compare-to-value="comparisonWearable?.presetWearableModifiers?.ergonomicsModifierPercentage ?? comparisonWearable?.ergonomicsModifierPercentage"
+      :compare-to-value="comparisonWearableErgonomicsModifierPercentage"
       :current-value="ergonomicsModifierPercentage"
       :is-percentage="true"
       :round-decimal-count="1"
@@ -67,7 +79,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
   </Tooltip>
   <Tooltip
     v-if="movementSpeedModifierPercentage !== 0
-      || (comparisonWearable?.presetWearableModifiers?.movementSpeedModifierPercentage ?? comparisonWearable?.movementSpeedModifierPercentage ?? 0) !== 0"
+      || (comparisonWearableMovementSpeedModifierPercentage ?? 0) !== 0"
     :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
   >
@@ -85,7 +97,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
     </div>
     <ValueComparison
       v-if="comparisonWearable != null"
-      :compare-to-value="comparisonWearable?.presetWearableModifiers?.movementSpeedModifierPercentage ?? comparisonWearable?.movementSpeedModifierPercentage"
+      :compare-to-value="comparisonWearableMovementSpeedModifierPercentage"
       :current-value="movementSpeedModifierPercentage"
       :is-percentage="true"
       :round-decimal-count="1"
@@ -93,7 +105,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
   </Tooltip>
   <Tooltip
     v-if="turningSpeedModifierPercentage !== 0
-      || (comparisonWearable?.presetWearableModifiers?.turningSpeedModifierPercentage ?? comparisonWearable?.turningSpeedModifierPercentage ?? 0) !== 0"
+      || (comparisonWearableTurningSpeedModifierPercentage ?? 0) !== 0"
     :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
   >
@@ -111,7 +123,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
     </div>
     <ValueComparison
       v-if="comparisonWearable != null"
-      :compare-to-value="comparisonWearable?.presetWearableModifiers?.turningSpeedModifierPercentage ?? comparisonWearable?.turningSpeedModifierPercentage"
+      :compare-to-value="comparisonWearableTurningSpeedModifierPercentage"
       :current-value="turningSpeedModifierPercentage"
       :is-percentage="true"
       :round-decimal-count="1"

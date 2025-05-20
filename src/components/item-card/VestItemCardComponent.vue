@@ -5,14 +5,14 @@ import { IVest } from '../../models/item/IVest'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import ArmorItemCard from './ArmorItemCardComponent.vue'
-import ContainerItemCard from './ContainerItemCardComponent.vue'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
+import ArmorItemCardInternal from './ArmorItemCardInternalComponent.vue'
+import ContainerItemCardInternalComponent from './ContainerItemCardInternalComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
     comparisonItem?: IItem,
-    displayEmptyLines?: boolean,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
@@ -22,17 +22,15 @@ const props = withDefaults(
   {
     armorModifiersOverride: undefined,
     comparisonItem: undefined,
-    displayEmptyLines: true,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
     isBaseItem: false,
     wearableModifiersOverride: undefined
   })
 
-const armorModifiers = computed(() => props.armorModifiersOverride ?? vest.value.presetArmorModifiers)
-const comparisonItemInternal = computed(() => props.comparisonItem as IVest | undefined)
 const vest = computed(() => props.item as IVest)
-const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest.value.presetWearableModifiers)
+
+const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 
@@ -45,25 +43,28 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest
 
 
 <template>
-  <ArmorItemCard
-    :armor-modifiers-override="armorModifiers"
-    :display-empty-lines="displayEmptyLines"
-    :filter-and-sorting-data="filterAndSortingData"
-    :include-mods-and-content="includeModsAndContent"
-    :item="vest"
-    :wearable-modifiers-override="wearableModifiers"
+  <div
+    class="card-line"
+    :class="{
+      'card-line3': isSmartphonePortrait,
+      'card-line4': !isSmartphonePortrait
+    }"
   >
-    <template
-      v-if="!isBaseItem"
-      #slot
-    >
-      <ContainerItemCard
-        :filter-and-sorting-data="filterAndSortingData"
-        :item="vest"
-        :class="{ 'vest-item-card-bold': includeModsAndContent }"
-      />
-    </template>
-  </ArmorItemCard>
+    <ContainerItemCardInternalComponent
+      :class="{ 'vest-item-card-bold': includeModsAndContent }"
+      :comparison-item="comparisonItem"
+      :container="vest"
+      :filter-and-sorting-data="filterAndSortingData"
+    />
+    <ArmorItemCardInternal
+      :armor-modifiers-override="armorModifiersOverride"
+      :armor="vest"
+      :comparison-item="comparisonItem"
+      :filter-and-sorting-data="filterAndSortingData"
+      :include-mods-and-content="includeModsAndContent"
+      :wearable-modifiers-override="wearableModifiersOverride"
+    />
+  </div>
 </template>
 
 
@@ -76,10 +77,8 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest
 
 
 <style scoped>
-.selected-item-item-card .vest-item-card-bold.card-line {
+.vest-item-card-bold {
   font-style: italic;
   font-weight: bolder;
-  gap: 0;
-  /* Overrides the style of ContainerItemCard because it contains a .card-line that breaks gaps */
 }
 </style>
