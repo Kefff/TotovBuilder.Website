@@ -39,7 +39,7 @@ const comparisonRangedWeapon = computed(() =>
     && props.comparisonItem?.id !== props.item.id
     ? props.comparisonItem as IRangedWeapon
     : undefined)
-const comparisonRangedWeaponErgonomics = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.verticalRecoil ?? comparisonRangedWeapon.value?.verticalRecoil)
+const comparisonRangedWeaponErgonomics = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.ergonomics ?? comparisonRangedWeapon.value?.ergonomics)
 const comparisonRangedWeaponHorizontalRecoil = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.horizontalRecoil ?? comparisonRangedWeapon.value?.horizontalRecoil)
 const comparisonRangedWeaponVerticalRecoil = computed(() => comparisonRangedWeapon.value?.presetRangedWeaponModifiers?.verticalRecoil ?? comparisonRangedWeapon.value?.verticalRecoil)
 const ergonomics = computed(() => props.rangedWeaponsModifiersOverride?.ergonomics ?? rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)

@@ -104,6 +104,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         :compare-to-value="comparisonMagazine?.loadSpeedModifierPercentage"
         :current-value="magazine.loadSpeedModifierPercentage"
         :is-percentage="true"
+        :invert="true"
       />
     </Tooltip>
     <Tooltip
@@ -128,6 +129,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         :compare-to-value="comparisonMagazine?.checkSpeedModifierPercentage"
         :current-value="magazine.checkSpeedModifierPercentage"
         :is-percentage="true"
+        :invert="true"
       />
     </Tooltip>
   </div>

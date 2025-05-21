@@ -174,7 +174,7 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
     return itemsToFilter
   }
 
-  const filtereditemsummaries: IItem[] = []
+  const filteredItemSummaries: IItem[] = []
   const promises: Promise<void>[] = []
 
   for (const itemToFilter of itemsToFilter) {
@@ -189,7 +189,7 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
           : _itemPropertiesService.checkMatchesFilter(itemToFilter, modelFilterAndSortingData.value.filter)
 
         if (matchesFilter) {
-          filtereditemsummaries.push(itemToFilter)
+          filteredItemSummaries.push(itemToFilter)
         }
       }
 
@@ -199,7 +199,7 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
 
   await Promise.allSettled(promises)
 
-  return filtereditemsummaries
+  return filteredItemSummaries
 }
 
 /**

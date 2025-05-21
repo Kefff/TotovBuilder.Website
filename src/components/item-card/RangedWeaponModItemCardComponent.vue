@@ -29,8 +29,8 @@ const comparisonRangedWeaponMod = computed(() =>
     && props.comparisonItem?.id !== props.item.id
     ? props.comparisonItem as IRangedWeaponMod
     : undefined)
-const comparisonRangedWeaponErgonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
-const comparisonRangedWeaponRecoilModifierPercentage = computed(() => rangedWeaponMod.value.presetRecoilModifierPercentage ?? rangedWeaponMod.value.presetRecoilModifierPercentage)
+const comparisonRangedWeaponErgonomicsModifier = computed(() => comparisonRangedWeaponMod.value?.presetErgonomicsModifier ?? comparisonRangedWeaponMod.value?.ergonomicsModifier)
+const comparisonRangedWeaponRecoilModifierPercentage = computed(() => comparisonRangedWeaponMod.value?.presetRecoilModifierPercentage ?? comparisonRangedWeaponMod.value?.recoilModifierPercentage)
 const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
 const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
 const recoilModifierPercentage = computed(() => rangedWeaponMod.value.presetRecoilModifierPercentage ?? rangedWeaponMod.value.recoilModifierPercentage)

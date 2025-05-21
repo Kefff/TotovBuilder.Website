@@ -74,7 +74,6 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         v-if="comparisonMod != null"
         :compare-to-value="comparisonModErgonomics"
         :current-value="mod.ergonomicsModifier"
-        :invert="true"
       />
     </Tooltip>
   </div>
