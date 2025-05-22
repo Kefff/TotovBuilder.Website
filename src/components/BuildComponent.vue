@@ -471,6 +471,7 @@ async function getSharedBuildAsync(sharableString: string): Promise<void> {
   }
 
   build.value = sharedBuild
+  hasChanges.value = true
 }
 
 /**

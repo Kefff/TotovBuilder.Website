@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
@@ -24,8 +24,6 @@ import RangedWeaponModItemCard from './RangedWeaponModItemCardComponent.vue'
 import SelectedItemItemCard from './SelectedItemItemCardComponent.vue'
 import VestItemCard from './VestItemCardComponent.vue'
 
-type SpecializedComponent = typeof AmmunitionItemCard | typeof ArmorItemCard | typeof ArmorModItemCard | typeof BackpackItemCard | typeof ContainerItemCard | typeof EyewearItemCard | typeof GrenadeItemCard | typeof HeadwearItemCard | typeof MagazineItemCard | typeof MeleeWeaponItemCard | typeof ModItemCard | typeof RangedWeaponItemCard | typeof RangedWeaponModItemCard | typeof SelectedItemItemCard | typeof VestItemCard | undefined
-
 const modelIgnorePrice = defineModel<boolean>('ignorePrice')
 
 const props = defineProps<{
@@ -46,75 +44,80 @@ const selectedItemArmorModifiers = ref<IArmorModifiers>()
 const selectedItemRangedWeaponModifiers = ref<IRangedWeaponModifiers>()
 const selectedItemWearableModifiers = ref<IWearableModifiers>()
 
-const specializedComponent = computed(() => getSpecializedComponent(props.selectedItem.categoryId))
+const specializedComponent = ref<string>()
+
+onMounted(() => setSpecializedComponent(props.selectedItem.categoryId))
+
+watch(() => props.inventoryItem.itemId, () => setSpecializedComponent(props.selectedItem.categoryId))
 
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedComponent {
+function setSpecializedComponent(itemCategoryId?: ItemCategoryId): void {
   if (itemCategoryId == null || itemCategoryId === ItemCategoryId.other) {
-    return undefined
+    specializedComponent.value = undefined
+    return
   }
 
   const itemPropertiesService = Services.get(ItemPropertiesService)
 
   if (itemPropertiesService.isAmmunition(itemCategoryId)) {
-    return AmmunitionItemCard
+    specializedComponent.value = 'AmmunitionItemCard'
   }
   else if (itemPropertiesService.isArmor(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return ArmorItemCard
+    specializedComponent.value = 'ArmorItemCard'
   }
   else if (itemPropertiesService.isArmorMod(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return ArmorModItemCard
+    specializedComponent.value = 'ArmorModItemCard'
   }
   else if (itemPropertiesService.isBackpack(itemCategoryId)) {
     setWearableModifiersAsync()
 
-    return BackpackItemCard
+    specializedComponent.value = 'BackpackItemCard'
   }
   else if (itemPropertiesService.isContainer(itemCategoryId)) {
-    return ContainerItemCard
+    specializedComponent.value = 'ContainerItemCard'
   }
   else if (itemPropertiesService.isEyewear(itemCategoryId)) {
-    return EyewearItemCard
+    specializedComponent.value = 'EyewearItemCard'
   }
   else if (itemPropertiesService.isGrenade(itemCategoryId)) {
-    return GrenadeItemCard
+    specializedComponent.value = 'GrenadeItemCard'
   }
   else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return HeadwearItemCard
+    specializedComponent.value = 'HeadwearItemCard'
   }
   else if (itemPropertiesService.isMagazine(itemCategoryId)) {
-    return MagazineItemCard
+    specializedComponent.value = 'MagazineItemCard'
   }
   else if (itemPropertiesService.isMeleeWeapon(itemCategoryId)) {
-    return MeleeWeaponItemCard
+    specializedComponent.value = 'MeleeWeaponItemCard'
   }
   else if (itemPropertiesService.isMod(itemCategoryId)) {
-    return ModItemCard
+    specializedComponent.value = 'ModItemCard'
   }
   else if (itemPropertiesService.isRangedWeapon(itemCategoryId)) {
     setRangedWeaponModifiersAsync()
 
-    return RangedWeaponItemCard
+    specializedComponent.value = 'RangedWeaponItemCard'
   }
   else if (itemPropertiesService.isRangedWeaponMod(itemCategoryId)) {
-    return RangedWeaponModItemCard
+    specializedComponent.value = 'RangedWeaponModItemCard'
   }
   else if (itemPropertiesService.isVest(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return VestItemCard
+    specializedComponent.value = 'VestItemCard'
   }
 }
 
@@ -179,41 +182,41 @@ async function setWearableModifiersAsync(): Promise<void> {
     :show-weight="showWeight"
   >
     <AmmunitionItemCard
-      v-if="specializedComponent === AmmunitionItemCard"
+      v-if="specializedComponent === 'AmmunitionItemCard'"
       :item="selectedItem"
     />
     <ArmorModItemCard
-      v-if="specializedComponent === ArmorModItemCard"
+      v-else-if="specializedComponent === 'ArmorModItemCard'"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <ArmorItemCard
-      v-if="specializedComponent === ArmorItemCard"
+      v-else-if="specializedComponent === 'ArmorItemCard'"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <BackpackItemCard
-      v-if="specializedComponent === BackpackItemCard"
+      v-else-if="specializedComponent === 'BackpackItemCard'"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <ContainerItemCard
-      v-if="specializedComponent === ContainerItemCard"
+      v-else-if="specializedComponent === 'ContainerItemCard'"
       :item="selectedItem"
     />
     <EyewearItemCard
-      v-if="specializedComponent === EyewearItemCard"
+      v-else-if="specializedComponent === 'EyewearItemCard'"
       :item="selectedItem"
     />
     <GrenadeItemCard
-      v-if="specializedComponent === GrenadeItemCard"
+      v-else-if="specializedComponent === 'GrenadeItemCard'"
       :item="selectedItem"
     />
     <HeadwearItemCard
-      v-if="specializedComponent === HeadwearItemCard"
+      v-else-if="specializedComponent === 'HeadwearItemCard'"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
@@ -221,30 +224,30 @@ async function setWearableModifiersAsync(): Promise<void> {
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <MagazineItemCard
-      v-if="specializedComponent === MagazineItemCard"
+      v-else-if="specializedComponent === 'MagazineItemCard'"
       :item="selectedItem"
     />
     <MeleeWeaponItemCard
-      v-if="specializedComponent === MeleeWeaponItemCard"
+      v-else-if="specializedComponent === 'MeleeWeaponItemCard'"
       :item="selectedItem"
     />
     <ModItemCard
-      v-if="specializedComponent === ModItemCard"
+      v-else-if="specializedComponent === 'ModItemCard'"
       :item="selectedItem"
     />
     <RangedWeaponModItemCard
-      v-if="specializedComponent === RangedWeaponModItemCard"
+      v-else-if="specializedComponent === 'RangedWeaponModItemCard'"
       :item="selectedItem"
     />
     <RangedWeaponItemCard
-      v-if="specializedComponent === RangedWeaponItemCard"
+      v-else-if="specializedComponent === 'RangedWeaponItemCard'"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"
       :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
     />
     <VestItemCard
-      v-if="specializedComponent === VestItemCard"
+      v-else-if="specializedComponent === 'VestItemCard'"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"

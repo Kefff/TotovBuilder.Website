@@ -151,7 +151,7 @@ async function setWeightAsync(): Promise<void> {
           || !isCompactMode)
           && ((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency)
             || showPrice)"
-        class="selected-item-item-card-prices"
+        class="selected-item-item-card-prices card-line"
       >
         <div
           v-if="includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency"
