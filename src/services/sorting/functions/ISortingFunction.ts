@@ -21,4 +21,14 @@ export interface ISortingFunction {
    * @param element - Element from which the value is gotten.
    */
   comparisonValueObtentionPromise: <T extends IBuildSummary | IItem>(element: T) => Promise<number | string>
+
+  /**
+   * Custom icon associated with the function.
+   */
+  customIcon: string | undefined
+
+  /**
+   * Icon associated with the function.
+   */
+  icon: string | undefined
 }

@@ -65,7 +65,12 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
   /**
    * Properties available for sorting.
    */
-  public sortableProperties: { name: string, caption: string }[] = []
+  public sortableProperties: {
+    caption: string,
+    customIcon: string | undefined
+    icon: string | undefined,
+    name: string,
+  }[] = []
 
   /**
    * List of available sorting functions.
@@ -115,12 +120,19 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
    * Sets the properties available for sorting based on the provided sorting functions.
    */
   protected setSortableProperties(sortingFunctions: ISortingFunctionList): void {
-    const properties: { name: string, caption: string }[] = []
+    const properties: {
+      caption: string,
+      customIcon: string | undefined
+      icon: string | undefined,
+      name: string,
+    }[] = []
 
     for (const propertyName of Object.keys(sortingFunctions.functions)) {
       properties.push({
-        name: propertyName,
-        caption: vueI18n.t(`caption.${propertyName}`)
+        caption: vueI18n.t(`caption.${propertyName}`),
+        customIcon: sortingFunctions.functions[propertyName].customIcon,
+        icon: sortingFunctions.functions[propertyName].icon,
+        name: propertyName
       })
     }
 

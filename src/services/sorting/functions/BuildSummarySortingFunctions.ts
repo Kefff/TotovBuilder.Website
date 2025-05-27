@@ -9,19 +9,27 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
   functions: {
     armorClass: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
-      comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).armorModifiers.armorClass)
+      comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).armorModifiers.armorClass),
+      customIcon: undefined,
+      icon: 'award'
     },
     ergonomics: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
-      comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).ergonomics)
+      comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).ergonomics),
+      customIcon: undefined,
+      icon: 'hand-paper'
     },
     name: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByString(bs1, bs1v, bs2, bs2v),
-      comparisonValueObtentionPromise: bs => Promise.resolve(bs.name)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.name),
+      customIcon: undefined,
+      icon: 'font'
     },
     price: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
-      comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).price.priceInMainCurrency)
+      comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).price.priceInMainCurrency),
+      customIcon: undefined,
+      icon: 'ruble-sign'
     },
     recoil: {
       comparisonFunction: (bs1, bs1v, bs2) => {
@@ -37,11 +45,15 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
 
         return comparisonResult
       },
-      comparisonValueObtentionPromise: () => Promise.resolve(0)
+      comparisonValueObtentionPromise: () => Promise.resolve(0),
+      customIcon: undefined,
+      icon: 'arrows-alt'
     },
     weight: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
-      comparisonValueObtentionPromise: bs => Promise.resolve(bs.weight)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.weight),
+      customIcon: undefined,
+      icon: 'weight-hanging'
     }
   }
 }

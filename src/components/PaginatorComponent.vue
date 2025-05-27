@@ -72,7 +72,7 @@ const transitionLeaveToTranslate = computed(() => previousPageIndex.value < mode
 
 const isScrollLocked = useScrollLock(document.getElementById('app'))
 const leftPosition = ref('0')
-const lines = useTemplateRef('lines')
+const lines = useTemplateRef<HTMLDivElement[]>('lines')
 const paginator = useTemplateRef('paginator')
 const { height: firstLineHeight } = useElementBounding(firstLine)
 const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(

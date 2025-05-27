@@ -13,6 +13,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
+import CustomIcon from './CustomIconComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
 import Sticky from './StickyComponent.vue'
@@ -334,12 +335,50 @@ function switchSortOrder(): void {
           <Dropdown
             v-model="property"
             :filter-fields="['caption']"
-            :option-label="o => $t(`caption.${o.name}`)"
             :options="modelFilterAndSortingData.sortableProperties"
             class="filter-chip-quick-filter-input"
             option-value="name"
             @click="($event: MouseEvent) => $event.stopPropagation()"
-          />
+          >
+            <template #option="slotProps">
+              <CustomIcon
+                v-if="slotProps.option.customIcon != null"
+                :icon="slotProps.option.customIcon"
+                position="before"
+              >
+                <span>{{ $t(`caption.${slotProps.option.name}`) }}</span>
+              </CustomIcon>
+              <div
+                v-else
+                class="filter-chip-quick-filter-input-option"
+              >
+                <font-awesome-icon
+                  :icon="slotProps.option.icon"
+                  class="icon-before-text"
+                />
+                <span>{{ $t(`caption.${slotProps.option.name}`) }}</span>
+              </div>
+            </template>
+            <template #value="slotProps">
+              <CustomIcon
+                v-if="modelFilterAndSortingData.currentSortingFunction.customIcon != null"
+                :icon="modelFilterAndSortingData.currentSortingFunction.customIcon!"
+                position="before"
+              >
+                <span>{{ $t(`caption.${slotProps.value}`) }}</span>
+              </CustomIcon>
+              <div
+                v-else
+                class="filter-chip-quick-filter-input-option"
+              >
+                <font-awesome-icon
+                  :icon="modelFilterAndSortingData.currentSortingFunction.icon"
+                  class="icon-before-text"
+                />
+                <span>{{ $t(`caption.${slotProps.value}`) }}</span>
+              </div>
+            </template>
+          </Dropdown>
         </div>
       </Chip>
       <!-- Merchants chip -->
@@ -598,6 +637,19 @@ function switchSortOrder(): void {
   margin-top: 0;
 }
 
+.filter-chip-quick-filter-input-option {
+  align-items: center;
+  display: flex;
+}
+
+.filter-chip-quick-filter-input-option > svg {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  width: 1rem;
+}
+
 .filter-chip-quick-filter-input-with-remove-button {
   margin-right: 0.5rem;
 }
@@ -665,6 +717,13 @@ function switchSortOrder(): void {
 
 .filter-chip-merchants-list > .merchant-icon > .merchant-icon-level {
   transform: translate(1.5rem, 0.5rem);
+}
+
+.filter-chip-quick-filter-input .custom-icon > img {
+  /* Corrects class icon-before-text in CustomIcon being overridden by .filter-chips .p-chip img */
+  height: 1rem;
+  margin-right: 0.25rem;
+  width: 1rem;
 }
 
 .filter-chip-text-mobile > div {

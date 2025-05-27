@@ -80,11 +80,15 @@ describe('SortingService', () => {
             comparisonFunction: () => {
               return 1
             },
-            comparisonValueObtentionPromise: i => Promise.resolve(i.name)
+            comparisonValueObtentionPromise: i => Promise.resolve(i.name),
+            customIcon: undefined,
+            icon: 'font'
           },
           price: {
             comparisonFunction: () => 2,
-            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).prices[0].valueInMainCurrency)
+            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).prices[0].valueInMainCurrency),
+            customIcon: undefined,
+            icon: 'ruble-sign'
           }
         },
         itemCategoryIds: [ItemCategoryId.other]
@@ -135,7 +139,9 @@ describe('SortingService', () => {
         functions: {
           ergonomics: {
             comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
-            comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).ergonomics)
+            comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).ergonomics),
+            customIcon: undefined,
+            icon: 'hand-paper'
           }
         }
       }
@@ -169,7 +175,9 @@ describe('SortingService', () => {
         functions: {
           shortName: {
             comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1, iv1, i2, iv2),
-            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).shortName)
+            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).shortName),
+            customIcon: undefined,
+            icon: 'font'
           }
         },
         itemCategoryIds: [ItemCategoryId.other]

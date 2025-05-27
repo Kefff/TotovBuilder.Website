@@ -59,7 +59,7 @@ const _typeOptions: IBuildsShareTypeOption[] = [
   },
   {
     caption: 'caption.simpleText',
-    icon: 'italic',
+    icon: 'font',
     type: 'simpleText'
   }
 ]
