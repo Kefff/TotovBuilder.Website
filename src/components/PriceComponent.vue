@@ -229,7 +229,7 @@ function togglePriceDetails(event: Event): void {
           <span>{{ displayedPrice }}</span>
         </div>
         <div
-          v-else-if="!missing"
+          v-else-if="!missing && ignorePriceStatus === IgnoredUnitPrice.notIgnored"
           class="price-missing-icon icon-before-text"
           style="width: unset;"
         >
