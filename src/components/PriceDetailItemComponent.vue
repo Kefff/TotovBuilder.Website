@@ -78,7 +78,7 @@ function displayItemStats(item: IItem): void {
         :price="price"
       />
       <div
-        v-if="quantity > 1"
+        v-if="quantity > 1 && !missing"
         class="price-detail-item-price-per-unit"
       >
         <Price

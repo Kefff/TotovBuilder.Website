@@ -98,7 +98,9 @@ export class SortingService {
 export function compareByElementName(element1: object, element2: object): number {
   const el1 = element1 as Record<string, unknown>
   const el2 = element2 as Record<string, unknown>
-  return StringUtils.compare(el1.name as string, el2.name as string)
+  const result = StringUtils.compare(el1.name as string, el2.name as string)
+
+  return result
 }
 
 /**

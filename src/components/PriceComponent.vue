@@ -228,6 +228,13 @@ function togglePriceDetails(event: Event): void {
           />
           <span>{{ displayedPrice }}</span>
         </div>
+        <div
+          v-else-if="!missing"
+          class="price-missing-icon icon-before-text"
+          style="width: unset;"
+        >
+          <font-awesome-icon icon="exclamation-triangle" />
+        </div>
         <div v-if="canShowIcon">
           <div
             v-if="ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored"
@@ -349,6 +356,7 @@ function togglePriceDetails(event: Event): void {
           v-for="(barterItem, index) of price.barterItems"
           :key="barterItem.itemId"
           :item="barterItems[index]"
+          :missing="barterItemPrices[index].unitPrice.valueInMainCurrency === 0"
           :price="barterItemPrices[index].price"
           :quantity="barterItem.quantity"
           :unit-price="barterItemPrices[index].unitPrice"

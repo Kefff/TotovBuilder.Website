@@ -52,6 +52,8 @@ const height = computed(() => {
 })
 const itemIsModdable = computed(() => _itemPropertiesService.isModdable(props.item))
 const modSlotsCount = computed(() => itemIsModdable.value ? (props.item as IModdable).modSlots.length : 0)
+const priceColSpan = computed(() => isSmartphonePortrait.value ? 'span 3' : 'span 2')
+const weightColSpan = computed(() => isSmartphonePortrait.value ? 'span 1' : 'span 2')
 const selectionButtonCaptionInternal = computed(() => {
   if (props.selectionOptions.selectionButtonCaption != null) {
     return props.selectionOptions.selectionButtonCaption
@@ -199,7 +201,10 @@ function showDetails(): void {
       <div class="card-lines">
         <!-- Weight and price -->
         <div class="card-line card-line4 item-card-weight-and-price">
-          <Tooltip :tooltip="$t('caption.weight')">
+          <Tooltip
+            :tooltip="$t('caption.weight')"
+            class="item-card-weight"
+          >
             <div
               class="card-value"
               :class="StatsUtils.getSortedPropertyColorClass('weight', filterAndSortingData)"
@@ -231,7 +236,7 @@ function showDetails(): void {
           >
             <Price :price="itemUnitPrice" />
             <ValueComparison
-              v-if="showStatsComparison"
+              v-if="showStatsComparison && itemUnitPrice.valueInMainCurrency > 0"
               :compare-to-value="comparisonItemUnitPriceInMainCurrency"
               :current-value="itemUnitPrice.valueInMainCurrency"
               :invert="true"
@@ -285,12 +290,6 @@ function showDetails(): void {
   height: v-bind(height);
 }
 
-.item-card-price {
-  align-items: center;
-  display: flex;
-  grid-column: span 3;
-}
-
 .item-card-header {
   align-items: center;
   display: flex;
@@ -322,6 +321,12 @@ function showDetails(): void {
   width: 1rem;
 }
 
+.item-card-price {
+  align-items: center;
+  display: flex;
+  grid-column: v-bind(priceColSpan);
+}
+
 .item-card-title {
   align-items: center;
   display: flex;
@@ -332,5 +337,9 @@ function showDetails(): void {
 
 .item-card-title > span {
   max-height: 100%;
+}
+
+.item-card-weight {
+  grid-column: v-bind(weightColSpan);
 }
 </style>
