@@ -17,12 +17,7 @@ export class BuildComponentService {
    * @param build - Build to delete.
    */
   public deleteBuild(router: Router, build: IBuild): void {
-    const buildService = Services.get(BuildService)
-    const notificationService = Services.get(NotificationService)
-    const buildName = build.name
-
-    buildService.delete(build.id)
-    notificationService.notify(NotificationType.information, vueI18n.t('message.buildDeleted', { name: buildName }))
+    Services.get(BuildService).delete(build.id)
     void router.push({ name: 'Builds' })
   }
 

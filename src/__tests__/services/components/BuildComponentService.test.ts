@@ -186,9 +186,6 @@ describe('BuildComponentService', () => {
       const buildServiceMock = mock<BuildService>()
       Services.configure(BuildService, undefined, instance(buildServiceMock))
 
-      const notificationServiceMock = mock<NotificationService>()
-      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
-
       const routerMock = mock<Router>()
 
       const build: IBuild = {
@@ -207,7 +204,6 @@ describe('BuildComponentService', () => {
 
       // Assert
       verify(buildServiceMock.delete('123')).once()
-      verify(notificationServiceMock.notify(NotificationType.information, anyString())).once()
       verify(routerMock.push(anything())).once()
     })
   })
