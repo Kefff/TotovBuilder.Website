@@ -463,7 +463,6 @@
     "fileWritingError": "Error while writing file.",
     "fileWritingException": "Error while writing file : {message}",
     "importError": "Error while importing builds.",
-    "includeLinkToInteractiveVersionExplanation": "Uncheck to save a lot of characters if the text is too long.",
     "invalidBuildFile": "Build file could not be read.",
     "invalidPath": "Path \"{path}\" is invalid.",
     "invalidSharableString": "Error while reading the shared link.\nIt seems to be corrupted.",

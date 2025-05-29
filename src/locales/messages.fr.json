@@ -395,7 +395,6 @@
     "fileReadingError": "Erreur lors de la lecture du fichier.",
     "fileWritingError": "Erreur lors de l'écriture du fichier.",
     "importError": "Erreur lors de l'import d'équipements.",
-    "includeLinkToInteractiveVersionExplanation": "Décocher pour économiser beaucoup de caractères si le texte est trop long.",
     "invalidSharableString": "Erreur lors de la lecture du lien partagé.\nIl semble être corrompu.",
     "itemWithMissingPrice": "Cet objet ou un de ses objets d'échange n'est vendu par aucun des marchands paramétrés.\nLe prix de l'équipement peut donc ne pas refléter la réalité.",
     "itemWithModsAndContentAndMissingPrice": "Cet objet ou un des objets qu'il contient n'est vendu par aucun des marchands paramétrés.\nLe prix de l'équipement peut donc ne pas refléter la réalité.",
