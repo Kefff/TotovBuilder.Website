@@ -57,28 +57,28 @@ const enabledMerchants = computed(() => {
 
   return merchants
 })
-const filterCaption = computed(() => modelFilterAndSortingData.value.filter)
-const filterTooltip = computed(() => {
-  let hasCategory = false
-
+const hasCategory = computed(() => {
   if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
-    hasCategory = (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
+    return (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
   }
 
-  const hasFilter = modelFilterAndSortingData.value.filter != null && modelFilterAndSortingData.value.filter !== ''
-
-  if (!hasCategory && !hasFilter) {
-    return vueI18n.t('caption.addFilter')
+  return false
+})
+const hasFilter = computed(() => modelFilterAndSortingData.value.filter != null && modelFilterAndSortingData.value.filter !== '')
+const filterCaption = computed(() => modelFilterAndSortingData.value.filter)
+const filterTooltip = computed(() => {
+  if (!hasCategory.value && !hasFilter.value) {
+    return vueI18n.t('caption.advancedFilter')
   }
 
   let tooltip = ''
 
-  if (hasCategory) {
+  if (hasCategory.value) {
     tooltip += vueI18n.t('caption.filteredWith1', { category: vueI18n.t(`caption.category${StringUtils.toUpperFirst((modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId!)}`) })
   }
 
-  if (hasFilter) {
-    if (hasCategory) {
+  if (hasFilter.value) {
+    if (hasCategory.value) {
       tooltip += '\n'
     }
 
@@ -413,36 +413,8 @@ function switchSortOrder(): void {
           </div>
         </Tooltip>
       </Chip>
-      <!-- Add filter chip -->
-      <Chip
-        v-if="(isCompactMode || isTouchScreen)
-          && categoryFilterCaption == null
-          && filterCaption == null"
-        class="filter-chip"
-        @click="showFilterAndSortSidebar"
-      >
-        <Tooltip :tooltip="$t('caption.addFilter')">
-          <div class="filter-chip-content">
-            <div
-              class="filter-chip-icon"
-              style="color: var(--success-color);"
-            >
-              <font-awesome-icon icon="plus" />
-            </div>
-            <span
-              class="filter-chip-text"
-              style="padding-left: 0;"
-            >
-              {{ $t('caption.filter') }}
-            </span>
-          </div>
-        </Tooltip>
-      </Chip>
       <!-- Filter chip -->
-      <Chip
-        v-else
-        class="filter-chip"
-      >
+      <Chip class="filter-chip">
         <!-- Mobile -->
         <Tooltip
           v-if="isCompactMode || isTouchScreen"
@@ -457,6 +429,7 @@ function switchSortOrder(): void {
             class="filter-chip-text"
             style="padding-left: 0;"
           >
+            <span v-show="!hasCategory && !hasFilter">{{ $t('caption.filter') }}</span>
             <span>{{ categoryFilterCaption }}</span>
             <span>{{ filterCaption }}</span>
           </div>
@@ -472,17 +445,7 @@ function switchSortOrder(): void {
             :tooltip="filterTooltip"
             :full-size="true"
           >
-            <div
-              v-if="categoryFilterCaption == null && filterCaption == null"
-              class="filter-chip-icon"
-              style="color: var(--success-color);"
-            >
-              <font-awesome-icon icon="plus" />
-            </div>
-            <div
-              v-else
-              class="filter-chip-icon"
-            >
+            <div class="filter-chip-icon">
               <font-awesome-icon icon="filter" />
             </div>
           </Tooltip>
@@ -504,7 +467,7 @@ function switchSortOrder(): void {
             >
               <InputTextField
                 v-model:value="filterInternal"
-                :caption="$t('caption.addFilter')"
+                :caption="$t('caption.filter')"
                 caption-mode="placeholder"
                 :autofocus="!isTouchScreen"
               />
