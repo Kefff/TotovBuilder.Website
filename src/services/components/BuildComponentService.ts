@@ -59,7 +59,7 @@ export class BuildComponentService {
     if (build.id === '') {
       // New build
       const newBuildId = await buildService.addAsync(build)
-      void router.push({ name: 'Build', params: { id: newBuildId } })
+      await router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
       await buildService.updateAsync(build)

@@ -254,6 +254,7 @@ onMounted(() => {
   addNavigationGuards()
 
   isEditing.value = isNewBuild.value
+  hasChanges.value = isNewBuild.value
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitializedAsync)
@@ -283,6 +284,7 @@ function addNavigationGuards(): void {
         || from.name === 'CopyBuild'
         || from.name === 'NewBuild'
         || from.name === 'ShareBuild'
+
       if (isBuildScreen
         && isEditing.value) {
         const action = new Promise<void>((resolve) => {
@@ -534,7 +536,7 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
   if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser save action to be triggered
 
-    if (isEditing.value && !isInvalid.value) {
+    if (hasChanges.value && isEditing.value && !isInvalid.value) {
       await saveAsync(false)
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
@@ -627,6 +629,8 @@ function removeNavigationGuards(): void {
  */
 async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Promise<void> {
   isLoading.value = true
+  isEditing.value = false
+  hasChanges.value = false
   await _buildComponentService.saveBuildAsync(router, build.value)
 
   if (changeCurrentInventorySlotIfEmpty) {
@@ -637,11 +641,7 @@ async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Pro
     }
   }
 
-  nextTick(() => {
-    isLoading.value = false
-    isEditing.value = false
-    hasChanges.value = false
-  })
+  nextTick(() => isLoading.value = false)
 }
 
 /**
