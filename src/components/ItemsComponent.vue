@@ -23,11 +23,18 @@ const _router = useRouter()
 const _toolbarButtons: IToolbarButton[] = [
   {
     action: goToHome,
-    canBeMovedToSidebar: () => false,
-    caption: () => vueI18n.t('caption.backToHome'),
+    caption: () => vueI18n.t('caption.goToHome'),
+    icon: () => 'home',
+    name: 'goToHome',
+    showCaption: () => 'never',
+    style: () => 'discreet'
+  },
+  {
+    action: goToBuildList,
+    caption: () => vueI18n.t('caption.goToBuildList'),
     followedBySeparation: true,
-    icon: () => 'arrow-left',
-    name: 'backToHome',
+    icon: () => 'list',
+    name: 'goToBuildList',
     showCaption: () => 'never',
     style: () => 'discreet'
   },
@@ -117,6 +124,13 @@ function goToHome(): void {
 }
 
 /**
+ * Redirects to the build list page.
+ */
+function goToBuildList(): void {
+  _router.push({ name: 'Builds' })
+}
+
+/**
  * Reacts to the filter and sorting data being changed.
  *
  * Saves filter and sorting data.
@@ -166,7 +180,7 @@ function onItemSelected(selectedItems: IItem[]): void {
 <template>
   <div class="items">
     <div class="items-title items-title-outside-toolbar">
-      {{ $t('caption.itemsList') }}
+      {{ $t('caption.itemList') }}
     </div>
     <Toolbar
       ref="itemsToolbar"
@@ -174,7 +188,7 @@ function onItemSelected(selectedItems: IItem[]): void {
     >
       <template #center>
         <div class="items-title items-title-in-toolbar">
-          {{ $t('caption.itemsList') }}
+          {{ $t('caption.itemList') }}
         </div>
       </template>
       <template #right>

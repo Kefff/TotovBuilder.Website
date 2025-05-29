@@ -2,7 +2,7 @@
   align-items: center;
   display: flex;
   flex-direction: row;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .sidebar-option:first-child {

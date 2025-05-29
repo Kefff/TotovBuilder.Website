@@ -147,7 +147,7 @@ function reset(): void {
       </div>
     </div>
   </div>
-  <div class="sidebar-option builds-list-sidebar-filter-explanation">
+  <div class="sidebar-option sidebar-option-description">
     <div class="sidebar-option-icon">
       <font-awesome-icon icon="info-circle" />
     </div>
@@ -248,11 +248,6 @@ function reset(): void {
   gap: 0.5rem;
   overflow-x: hidden;
   width: 100%;
-}
-
-.builds-list-sidebar-filter-explanation {
-  color: var(--util-color7);
-  margin-top: 0;
 }
 
 .builds-list-sidebar-filter-explanation > span {

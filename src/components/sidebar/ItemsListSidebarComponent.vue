@@ -298,12 +298,6 @@ function reset(): void {
   width: 100%;
 }
 
-.items-list-sidebar-filter-explanation > span {
-  font-size: 0.85rem;
-  max-width: 21rem;
-  white-space: preserve;
-}
-
 .items-list-sidebar-group {
   align-items: center;
   display: grid;

@@ -114,7 +114,6 @@ function executeAction(action: () => void): void {
 
 .toolbar-sidebar-separation {
   margin-top: 1rem;
-  margin-bottom: 1rem;
   width: 100%;
 }
 </style>

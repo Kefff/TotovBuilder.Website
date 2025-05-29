@@ -35,11 +35,18 @@ const _router = useRouter()
 const _toolbarButtons: IToolbarButton[] = [
   {
     action: goToHome,
-    canBeMovedToSidebar: () => false,
-    caption: () => vueI18n.t('caption.backToHome'),
+    caption: () => vueI18n.t('caption.goToHome'),
+    icon: () => 'home',
+    name: 'goToHome',
+    showCaption: () => 'never',
+    style: () => 'discreet'
+  },
+  {
+    action: goToItemList,
+    caption: () => vueI18n.t('caption.goToItemList'),
     followedBySeparation: true,
-    icon: () => 'arrow-left',
-    name: 'backToHome',
+    icon: () => 'list',
+    name: 'goToItemList',
     showCaption: () => 'never',
     style: () => 'discreet'
   },
@@ -273,6 +280,13 @@ function goToHome(): void {
 }
 
 /**
+ * Redirects to the item list page.
+ */
+function goToItemList(): void {
+  _router.push({ name: 'Items' })
+}
+
+/**
  * Reacts to a build being selected.
  *
  * Opens the build the user has selected.
@@ -340,7 +354,7 @@ function openNewBuild(): void {
 <template>
   <div class="builds">
     <div class="builds-title builds-title-outside-toolbar">
-      {{ $t('caption.buildsList') }}
+      {{ $t('caption.buildList') }}
     </div>
     <Toolbar
       ref="buildsToolbar"
@@ -348,7 +362,7 @@ function openNewBuild(): void {
     >
       <template #center>
         <div class="builds-title builds-title-in-toolbar">
-          {{ $t('caption.buildsList') }}
+          {{ $t('caption.buildList') }}
         </div>
       </template>
       <template #right>

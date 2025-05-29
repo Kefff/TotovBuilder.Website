@@ -84,9 +84,9 @@ function displayImportSidebar(): void {
 }
 
 /**
- * Displays the items list.
+ * Redirects to the item list page.
  */
-function displayItems(): void {
+function goToItemList(): void {
   router.push({ name: 'Items' })
 }
 
@@ -250,13 +250,13 @@ function openNewBuild(): void {
           <Button
             class="welcome-button"
             outlined
-            @click="displayItems()"
+            @click="goToItemList()"
           >
             <font-awesome-icon
               icon="clipboard-list"
               class="icon-before-text"
             />
-            <span>{{ $t('caption.itemsList') }}</span>
+            <span>{{ $t('caption.itemList') }}</span>
           </Button>
         </div>
         <div class="welcome-action">
