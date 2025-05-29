@@ -132,5 +132,30 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         :invert="true"
       />
     </Tooltip>
+    <Tooltip
+      v-if="magazine.malfunctionPercentage !== 0
+        || (comparisonMagazine?.malfunctionPercentage ?? 0 !== 0)"
+      :tooltip="$t('caption.malfunctionPercentage')"
+    >
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('malfunctionPercentage', filterAndSortingData)"
+      >
+        <font-awesome-icon
+          icon="exclamation"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(magazine.malfunctionPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.malfunctionPercentage, magazine.malfunctionPercentage) }}
+        </span>
+      </div>
+      <ValueComparison
+        v-if="comparisonMagazine != null"
+        :compare-to-value="comparisonMagazine?.malfunctionPercentage"
+        :current-value="magazine.malfunctionPercentage"
+        :is-percentage="true"
+        :invert="true"
+      />
+    </Tooltip>
   </div>
 </template>

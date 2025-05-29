@@ -272,6 +272,12 @@ export const MagazineSortingFunctions: IItemSortingFunctionList = {
       comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMagazine).loadSpeedModifierPercentage),
       customIcon: undefined,
       icon: 'sync-alt'
+    },
+    malfunctionPercentage: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMagazine).malfunctionPercentage),
+      customIcon: undefined,
+      icon: 'exclamation'
     }
   },
   itemCategoryIds: [ItemCategoryId.magazine]

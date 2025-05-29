@@ -103,6 +103,21 @@ async function getAcceptedAmmunitionAsync(): Promise<void> {
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, magazine.checkSpeedModifierPercentage) }}
       </div>
     </div>
+    <div
+      v-if="magazine.malfunctionPercentage !== 0"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="exclamation"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.malfunctionPercentage') }} :</span>
+      </div>
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(magazine.malfunctionPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.malfunctionPercentage, magazine.malfunctionPercentage) }}
+      </div>
+    </div>
   </div>
   <div
     v-if="acceptedAmmunition.length > 0"

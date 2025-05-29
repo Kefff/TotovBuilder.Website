@@ -138,6 +138,7 @@ export default class StatsUtils {
       case DisplayValueType.durabilityBurnModifierPercentage:
       case DisplayValueType.ergonomicsModifierPercentage:
       case DisplayValueType.loadSpeedModifierPercentage:
+      case DisplayValueType.malfunctionPercentage:
       case DisplayValueType.movementSpeedModifierPercentage:
       case DisplayValueType.recoilModifierPercentage:
       case DisplayValueType.turningSpeedModifierPercentage:
@@ -211,6 +212,7 @@ export enum DisplayValueType {
   ergonomicsModifierPercentage,
   fragmentationChance,
   loadSpeedModifierPercentage,
+  malfunctionPercentage,
   movementSpeedModifierPercentage,
   recoilModifierPercentage,
   turningSpeedModifierPercentage,

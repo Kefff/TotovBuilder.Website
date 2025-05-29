@@ -12,7 +12,9 @@ describe('comparisonFunction', () => {
     ['ergonomicsModifier', false],
     ['ergonomicsModifier', true],
     ['loadSpeedModifierPercentage', false],
-    ['loadSpeedModifierPercentage', true]
+    ['loadSpeedModifierPercentage', true],
+    ['malfunctionPercentage', false],
+    ['malfunctionPercentage', true]
   ])('should sort by %s', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
@@ -20,7 +22,8 @@ describe('comparisonFunction', () => {
       checkSpeedModifierPercentage: 2,
       ergonomicsModifier: 2,
       presetErgonomicsModifier: isPreset ? 2 : undefined,
-      loadSpeedModifierPercentage: 2
+      loadSpeedModifierPercentage: 2,
+      malfunctionPercentage: 2
     } as IMagazine
 
     const item2 = {
@@ -28,7 +31,8 @@ describe('comparisonFunction', () => {
       checkSpeedModifierPercentage: 1,
       ergonomicsModifier: 1,
       presetErgonomicsModifier: isPreset ? 1 : undefined,
-      loadSpeedModifierPercentage: 1
+      loadSpeedModifierPercentage: 1,
+      malfunctionPercentage: 1
     } as IMagazine
 
     const sortingData = new ItemFilterAndSortingData(MagazineSortingFunctions)

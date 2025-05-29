@@ -5,6 +5,10 @@
   white-space: nowrap;
 }
 
+.stats-caption > svg {
+  width: 1rem !important;
+}
+
 .stats-category {
   font-weight: bolder;
   margin-top: 1.5rem;
