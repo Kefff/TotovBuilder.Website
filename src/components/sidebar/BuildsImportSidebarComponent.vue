@@ -48,9 +48,10 @@ const importInput = ref<HTMLInputElement>()
 const isFileSelected = ref(false)
 const selectedBuilds = ref<IBuild[]>([])
 
-const allSelected = computed(() => selectedBuilds.value.length === builds.value.length)
 const isToggleSelectionVisible = computed(() => builds.value.length > 1)
 const toolbarContainer = computed(() => buildsImportToolbar.value?.container)
+
+const allSelected = ref(false)
 
 /**
  * Displays the file selection popup.
@@ -105,11 +106,7 @@ async function readBuildsAsync(): Promise<void> {
  * Toggles the selection.
  */
 function toggleSelection(): void {
-  if (allSelected.value) {
-    selectedBuilds.value = []
-  } else {
-    selectedBuilds.value = builds.value
-  }
+  allSelected.value = !allSelected.value
 }
 </script>
 
@@ -147,6 +144,7 @@ function toggleSelection(): void {
           style="margin-top: 1px;"
         />
         <BuildsList
+          v-model:all-selected="allSelected"
           v-model:selected-builds="selectedBuilds"
           :element-to-stick-to="toolbarContainer"
           :get-builds-function="() => builds"

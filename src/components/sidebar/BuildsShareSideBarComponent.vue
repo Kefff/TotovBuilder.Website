@@ -80,7 +80,6 @@ const selectedBuilds = ref<IBuild[]>([])
 const text = ref<string>()
 const typeOption = ref<IBuildsShareTypeOption>(_typeOptions[0])
 
-const allSelected = computed(() => selectedBuilds.value.length === builds.value.length)
 const buildsToTextType = computed(() => {
   switch (typeOption.value.type) {
     case 'discordMarkdown':
@@ -107,6 +106,7 @@ const shareExplanation = computed(() => {
 })
 const toolbarContainer = computed(() => buildsShareToolbar.value?.container)
 
+const allSelected = ref(false)
 const { isSmartphonePortrait, isTabletPortrait } = WebBrowserUtils.getScreenSize()
 
 onMounted(() => initialize())
@@ -201,11 +201,7 @@ function selectBuildsToShare(): void {
  * Toggles the selection.
  */
 function toggleSelection(): void {
-  if (allSelected.value) {
-    selectedBuilds.value = []
-  } else {
-    selectedBuilds.value = builds.value
-  }
+  allSelected.value = !allSelected.value
 }
 </script>
 
@@ -236,6 +232,7 @@ function toggleSelection(): void {
         style="margin-top: 1px;"
       />
       <BuildsList
+        v-model:all-selected="allSelected"
         v-model:selected-builds="selectedBuilds"
         :get-builds-function="getBuildsToShare"
         :element-to-stick-to="toolbarContainer"
@@ -247,7 +244,7 @@ function toggleSelection(): void {
           isMultiSelection: true
         }"
         :show-actions-button="false"
-        :show-not-exported="true"
+        :show-not-exported="false"
       />
     </div>
     <div v-else-if="!isLoading">

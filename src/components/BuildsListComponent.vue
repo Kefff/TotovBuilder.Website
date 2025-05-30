@@ -19,6 +19,7 @@ import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Paginator from './PaginatorComponent.vue'
 
+const modelAllSelected = defineModel<boolean>('allSelected', { default: false })
 const modelCurrentPage = defineModel<number>('currentPage', { default: 0 })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
 const modelSelectedBuilds = defineModel<IBuild[]>('selectedBuilds', { required: false, default: [] })
@@ -63,6 +64,7 @@ const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
 const _elementHeight = 308 // 22rem
+let _watchAllSelected = true
 
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4
@@ -119,8 +121,20 @@ onUnmounted(() => {
   _importService.emitter.off(ImportService.buildsImportedEvent, onBuildImported)
 })
 
+watch(modelAllSelected, (value) => {
+  if (!_watchAllSelected) {
+    return
+  }
+
+  if (value) {
+    selectAllFilteredBuilds()
+  } else {
+    modelSelectedBuilds.value = []
+  }
+})
+
 watch(
-  () => modelFilterAndSortingData.value,
+  modelFilterAndSortingData,
   (value: BuildFilterAndSortingData, oldValue: BuildFilterAndSortingData) => filterAndSortBuildsAsync(value.filter !== oldValue.filter))
 
 /**
@@ -161,6 +175,24 @@ async function filterAndSortBuildsAsync(buildsListNeedsUpdate: boolean): Promise
   buildSummariesToFilterAndSort = await filterBuildsAsync(buildSummariesToFilterAndSort)
   buildSummariesToFilterAndSort = await sortBuildsAsync(buildSummariesToFilterAndSort)
   filteredAndSortedBuildSummaries.value = buildSummariesToFilterAndSort
+
+  // Updating selected builds by removing previously selected builds that do not match filtered builds
+  if (props.selectionOptions.isMultiSelection) {
+    let selectedBuilds = [...modelSelectedBuilds.value]
+    const selectedBuildsNotVisibleAnymore = selectedBuilds.filter(sb => !filteredAndSortedBuildSummaries.value.some(fsbs => fsbs.id === sb.id))
+
+    for (const selectedBuildNotVisibleAnymore of selectedBuildsNotVisibleAnymore) {
+      const index = selectedBuilds.findIndex(sb => sb.id === selectedBuildNotVisibleAnymore.id)
+      selectedBuilds.splice(index, 1)
+    }
+
+    modelSelectedBuilds.value = selectedBuilds
+
+    // Updating the allSelected indicators because the new filtered builds may contain builds that are not
+    _watchAllSelected = false
+    modelAllSelected.value = selectedBuilds.length === filteredAndSortedBuildSummaries.value.length
+    nextTick(() => _watchAllSelected = true) // To avoid the watcher to be triggered and deselect everything
+  }
 
   nextTick(() => isLoading.value = false)
 }
@@ -219,6 +251,13 @@ function onBuildImported(): void {
  */
 function onMerchantFilterChanged(): void {
   filterAndSortBuildsAsync(false)
+}
+
+/**
+ * Selects all filtered builds and unselects builds that are not part of filtered builds.
+ */
+function selectAllFilteredBuilds(): void {
+  modelSelectedBuilds.value = _builds.filter(b => filteredAndSortedBuildSummaries.value.some(fsbs => fsbs.id === b.id))
 }
 
 /**

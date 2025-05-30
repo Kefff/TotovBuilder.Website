@@ -46,9 +46,10 @@ const builds = ref<IBuild[]>([])
 const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
 const selectedBuilds = ref<IBuild[]>([])
 
-const allSelected = computed(() => selectedBuilds.value.length === builds.value.length)
 const isToggleSelectionVisible = computed(() => builds.value.length > 1)
 const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
+
+const allSelected = ref(false)
 
 /**
  * Exports the selected builds.
@@ -94,11 +95,7 @@ function onKeyDown(event: KeyboardEvent): void {
  * Toggles the selection.
  */
 function toggleSelection(): void {
-  if (allSelected.value) {
-    selectedBuilds.value = []
-  } else {
-    selectedBuilds.value = builds.value
-  }
+  allSelected.value = !allSelected.value
 }
 </script>
 
@@ -120,6 +117,7 @@ function toggleSelection(): void {
         style="margin-top: 1px;"
       />
       <BuildsList
+        v-model:all-selected="allSelected"
         v-model:selected-builds="selectedBuilds"
         :get-builds-function="getBuildsToExport"
         :element-to-stick-to="toolbarContainer"
