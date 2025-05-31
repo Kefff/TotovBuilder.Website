@@ -133,13 +133,13 @@ export default class WebBrowserUtils {
    * @param options - Swipe options.
    * @returns Reactive swipe properties.
    */
+  /* v8 ignore start */ // Justification : required web browser interaction
   public static getSwipe(options: SwipeOptions): { isSwiping: Ref<boolean> } {
     const isScrollLocked = useScrollLock(document.getElementById('app'))
     const { direction, isSwiping, lengthX } = useSwipe(
       options.target,
       {
-        onSwipeStart: () => isScrollLocked.value = true,
-        onSwipe: () => this.onSwipe(options, direction.value, lengthX.value),
+        onSwipe: () => this.onSwipe(options, direction.value, lengthX.value, isScrollLocked),
         onSwipeEnd: (e: TouchEvent, d: UseSwipeDirection) => {
           this.onSwipeEnd(options, d, lengthX.value)
           isScrollLocked.value = false
@@ -149,6 +149,7 @@ export default class WebBrowserUtils {
 
     return { isSwiping }
   }
+  /* v8 ignore stop */
 
   /**
    * Indicates whether the screen is a touch screen.
@@ -167,12 +168,19 @@ export default class WebBrowserUtils {
    * @param options - Swipe options.
    * @param direction - Swipe direction.
    * @param lengthX - Swipe length.
+   * @param isScrollLocked - Defines whether the application scroll is locked. Set to true while swipping left or right.
    */
-  private static onSwipe(options: SwipeOptions, direction: UseSwipeDirection, lengthX: number): void {
+  /* v8 ignore start */ // Justification : required web browser interaction
+  private static onSwipe(
+    options: SwipeOptions,
+    direction: UseSwipeDirection,
+    lengthX: number,
+    isScrollLocked: Ref<boolean>): void {
     if (direction !== 'left' && direction !== 'right') {
       return
     }
 
+    isScrollLocked.value = true
     const blockLength = options.blockLength ?? this._swipeDefaultBlockLength
     const threshold = options.threshold ?? this._swipeDefaultThresholdLength
     let left = 0
@@ -195,6 +203,7 @@ export default class WebBrowserUtils {
 
     options.targetLeftPosition.value = `${left}px`
   }
+  /* v8 ignore stop */
 
   /**
    * Reacts to an element being swipped.
@@ -204,6 +213,7 @@ export default class WebBrowserUtils {
    * @param direction - Swipe direction.
    * @param lengthX - Swipe length.
    */
+  /* v8 ignore start */ // Justification : required web browser interaction
   private static onSwipeEnd(options: SwipeOptions, direction: UseSwipeDirection, lengthX: number): void {
     const actionTriggerLength = options.actionTriggerLength ?? this._swipeDefaultActionTriggerLength
     const threshold = options.threshold ?? this._swipeDefaultThresholdLength
@@ -226,6 +236,7 @@ export default class WebBrowserUtils {
 
     options.targetLeftPosition.value = '0'
   }
+  /* v8 ignore stop */
 }
 
 /**
