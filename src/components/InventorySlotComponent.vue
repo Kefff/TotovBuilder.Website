@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useElementBounding, useScrollLock, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { useElementBounding, UseSwipeDirection } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
@@ -11,6 +11,7 @@ import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 import StringUtils from '../utils/StringUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Item from './ItemComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
@@ -34,27 +35,23 @@ const _inventorySlotPropertiesService = Services.get(InventorySlotPropertiesServ
 const _itemService = Services.get(ItemService)
 
 let _acceptedItemsNeedsUpdated = true
-const _swipeDeadzone = 50
 
+const canSwipeLeft = computed(() => props.canGoToNext)
+const canSwipeRight = computed(() => props.canGoToPrevious)
 const containerHeight = computed(() => `${inventorySlotHeight.value}px`)
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
-const swipeBlock = computed(() => _swipeDeadzone / 2)
-const swipeChangeTrigger = computed(() => _swipeDeadzone * 3)
-const swipeMaxLeft = computed(() => !props.canGoToPrevious ? swipeBlock.value : undefined)
-const swipeMinLeft = computed(() => !props.canGoToNext ? -swipeBlock.value : undefined)
 
 const acceptedItems = ref<IItem[]>([])
 const inventorySlot = useTemplateRef('inventorySlot')
-const isScrollLocked = useScrollLock(document.getElementById('app'))
 const leftPosition = ref('0')
 const { height: inventorySlotHeight } = useElementBounding(inventorySlot)
-const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
-  inventorySlot,
-  {
-    onSwipe,
-    onSwipeEnd,
-    threshold: _swipeDeadzone
-  })
+const { isSwiping } = WebBrowserUtils.getSwipe({
+  action: onSwipeEnd,
+  canSwipeLeft: canSwipeLeft,
+  canSwipeRight: canSwipeRight,
+  target: inventorySlot,
+  targetLeftPosition: leftPosition
+})
 
 onMounted(() => _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
@@ -93,51 +90,18 @@ function onMerchantFilterChanged(): void {
 }
 
 /**
- * React to the inventory slot being swipped.
- *
- * Positions the inventory slot according to the swipe movement.
- */
-function onSwipe(): void {
-  if (swipeDirection.value !== 'left' && swipeDirection.value !== 'right') {
-    return
-  }
-
-  isScrollLocked.value = true
-  let left = Math.max(Math.abs(swipeLength.value) - _swipeDeadzone, 0)
-
-  if (swipeDirection.value === 'left') {
-    left = -left
-
-    if (swipeMinLeft.value != null && left < swipeMinLeft.value) {
-      left = swipeMinLeft.value
-    }
-  } else if (swipeMaxLeft.value != null && left > swipeMaxLeft.value) {
-    left = swipeMaxLeft.value
-  }
-
-  leftPosition.value = `${left}px`
-}
-
-/**
  * React to the swip action on the inventory slot stopping.
  *
  * Repositions the inventory slot at its original place or trigger the inventory slot change.
  * Unblocks the vertical scrolling.
+ * @param direction - Swipe direction.
  */
-function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
-  if (direction === 'right'
-    && props.canGoToPrevious
-    && swipeLength.value < -swipeChangeTrigger.value) {
-    emits('goToPrevious')
-  } else if (direction === 'left'
-    && props.canGoToNext
-    && swipeLength.value > swipeChangeTrigger.value) {
+function onSwipeEnd(direction: UseSwipeDirection): void {
+  if (direction === 'left') {
     emits('goToNext')
   } else {
-    leftPosition.value = '0'
+    emits('goToPrevious')
   }
-
-  isScrollLocked.value = false
 }
 </script>
 

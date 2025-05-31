@@ -119,7 +119,7 @@ async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
     Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
   }
 
-  await _versionService.getVersionAsync().then(v => version.value = v)
+  version.value = await _versionService.getVersionAsync()
   hasNewVersion.value = await _versionService.checkHasNewVersionAsync()
 
   if (hasNewVersion.value) {

@@ -1,5 +1,5 @@
-import { useBreakpoints, useMediaQuery } from '@vueuse/core'
-import { computed, ComputedRef, Ref } from 'vue'
+import { useBreakpoints, useMediaQuery, useScrollLock, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { computed, ComputedRef, Ref, ShallowRef } from 'vue'
 import vueI18n from '../plugins/vueI18n'
 import { LogService } from '../services/LogService'
 import { NotificationService, NotificationType } from '../services/NotificationService'
@@ -9,6 +9,21 @@ import Services from '../services/repository/Services'
  * Represents an utility class for manipulating the web browser.
  */
 export default class WebBrowserUtils {
+  /**
+   * Default length by which the target must be moved for the swipe action to be triggered when swipping ends.
+   */
+  private static _swipeDefaultActionTriggerLength = 50
+
+  /**
+   * Default length by which the target can be moved before being block when it cannot be swipped to a direction.
+   */
+  private static _swipeDefaultBlockLength = 50
+
+  /**
+   * Default length required to have been swipped before the target starts to be moved.
+   **/
+  private static _swipeDefaultThresholdLength = 50
+
   /**
    * Gets the breakpoints used by CSS media queries.
    */
@@ -112,6 +127,29 @@ export default class WebBrowserUtils {
     return result
   }
 
+
+  /**
+   * Gets reactive swipe properties.
+   * @param options - Swipe options.
+   * @returns Reactive swipe properties.
+   */
+  public static getSwipe(options: SwipeOptions): { isSwiping: Ref<boolean> } {
+    const isScrollLocked = useScrollLock(document.getElementById('app'))
+    const { direction, isSwiping, lengthX } = useSwipe(
+      options.target,
+      {
+        onSwipeStart: () => isScrollLocked.value = true,
+        onSwipe: () => this.onSwipe(options, direction.value, lengthX.value),
+        onSwipeEnd: (e: TouchEvent, d: UseSwipeDirection) => {
+          this.onSwipeEnd(options, d, lengthX.value)
+          isScrollLocked.value = false
+        },
+        threshold: options.threshold ?? 50
+      })
+
+    return { isSwiping }
+  }
+
   /**
    * Indicates whether the screen is a touch screen.
    * @returns `true` when the screen is a touch screen; otherwise `false`.
@@ -120,6 +158,73 @@ export default class WebBrowserUtils {
     const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
 
     return isTouchScreen
+  }
+
+  /**
+   * Reacts to an element being swipped.
+   *
+   * Calculates the left position used to visually move the element while it is being swipped.
+   * @param options - Swipe options.
+   * @param direction - Swipe direction.
+   * @param lengthX - Swipe length.
+   */
+  private static onSwipe(options: SwipeOptions, direction: UseSwipeDirection, lengthX: number): void {
+    if (direction !== 'left' && direction !== 'right') {
+      return
+    }
+
+    const blockLength = options.blockLength ?? this._swipeDefaultBlockLength
+    const threshold = options.threshold ?? this._swipeDefaultThresholdLength
+    let left = 0
+
+    if (direction === 'left' && lengthX > threshold) {
+      const canSwipeLeft = options.canSwipeLeft?.value ?? true
+      left = -lengthX + threshold
+
+      if (!canSwipeLeft && left < -blockLength) {
+        left = -blockLength
+      }
+    } else if (lengthX < -threshold) {
+      const canSwipeRight = options.canSwipeRight?.value ?? true
+      left = -(lengthX + threshold)
+
+      if (!canSwipeRight && left > blockLength) {
+        left = blockLength
+      }
+    }
+
+    options.targetLeftPosition.value = `${left}px`
+  }
+
+  /**
+   * Reacts to an element being swipped.
+   *
+   * Checks whether the length required to execute the swipe action is reached and executes the action when this is the case.
+   * @param options - Swipe options.
+   * @param direction - Swipe direction.
+   * @param lengthX - Swipe length.
+   */
+  private static onSwipeEnd(options: SwipeOptions, direction: UseSwipeDirection, lengthX: number): void {
+    const actionTriggerLength = options.actionTriggerLength ?? this._swipeDefaultActionTriggerLength
+    const threshold = options.threshold ?? this._swipeDefaultThresholdLength
+    let canTriggerAction
+    let left
+
+    if (direction === 'left' && lengthX > threshold) {
+      const canSwipeLeft = options.canSwipeLeft?.value ?? true
+      left = -lengthX + threshold
+      canTriggerAction = canSwipeLeft && left < -actionTriggerLength
+    } else if (lengthX < -threshold) {
+      const canSwipeRight = options.canSwipeRight?.value ?? true
+      left = -(lengthX + threshold)
+      canTriggerAction = canSwipeRight && left > actionTriggerLength
+    }
+
+    if (canTriggerAction) {
+      options.action(direction)
+    }
+
+    options.targetLeftPosition.value = '0'
   }
 }
 
@@ -153,4 +258,47 @@ type ScreenSizes = {
   isTabletPortrait: ComputedRef<boolean>,
   isTabletPortraitOrLarger: ComputedRef<boolean>,
   isTabletPortraitOrSmaller: Ref<boolean>
+}
+
+type SwipeOptions = {
+  /**
+   * Action to execute when swipping ends and the action trigger length has been reached.
+   * @param direction - Swipe direction.
+   */
+  action: (direction: UseSwipeDirection) => void,
+
+  /**
+   * Length requied to have been swipped to trigger the action when swipping ends.
+   */
+  actionTriggerLength?: number,
+
+  /**
+   * Length by which the target can be moved before being block when it cannot be swipped to a direction.
+   */
+  blockLength?: number,
+
+  /**
+   * Indicates whether the user can swipe to the left.
+   */
+  canSwipeLeft?: ComputedRef<boolean>
+
+  /**
+   * Indicates whether the user can swipe to the right.
+   */
+  canSwipeRight?: ComputedRef<boolean>
+
+  /**
+   * Element being swipped.
+   */
+  target: Readonly<ShallowRef<HTMLDivElement | null>>,
+
+  /**
+   * Left position of the target that is updated while the target is being swipped.
+   */
+  targetLeftPosition: Ref<string>,
+
+  /**
+   * Length required to have been swipped before the target starts to be moved.
+   */
+  threshold?: number
 }

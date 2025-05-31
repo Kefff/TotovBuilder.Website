@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useElementBounding, useScrollLock, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { useElementBounding, UseSwipeDirection } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
@@ -22,8 +22,9 @@ const props = withDefaults(
   })
 
 let _fixedLineHeight: number | undefined = undefined
-const _swipeDeadzone = 50
 
+const canSwipeLeft = computed(() => modelCurrentPage.value < lastPageIndex.value)
+const canSwipeRight = computed(() => modelCurrentPage.value > 0)
 const containerHeight = computed(() => {
   const lh = _fixedLineHeight ?? firstLineHeight.value
   const linesCount = displayedLines.value.length
@@ -63,25 +64,20 @@ const lastPageIndex = computed(() => {
 
   return lpi
 })
-const swipeBlock = computed(() => _swipeDeadzone / 2)
-const swipeChangeTrigger = computed(() => _swipeDeadzone * 3)
-const swipeMaxLeft = computed(() => modelCurrentPage.value === 0 ? swipeBlock.value : undefined)
-const swipeMinLeft = computed(() => modelCurrentPage.value === lastPageIndex.value ? -swipeBlock.value : undefined)
 const transitionEnterFromTranslate = computed(() => previousPageIndex.value < modelCurrentPage.value ? 'translateX(100vw)' : 'translateX(-100vw)')
 const transitionLeaveToTranslate = computed(() => previousPageIndex.value < modelCurrentPage.value ? 'translateX(-100vw)' : 'translateX(100vw)')
 
-const isScrollLocked = useScrollLock(document.getElementById('app'))
 const leftPosition = ref('0')
 const lines = useTemplateRef<HTMLDivElement[]>('lines')
 const paginator = useTemplateRef('paginator')
 const { height: firstLineHeight } = useElementBounding(firstLine)
-const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
-  paginator,
-  {
-    onSwipe,
-    onSwipeEnd,
-    threshold: _swipeDeadzone
-  })
+const { isSwiping } = WebBrowserUtils.getSwipe({
+  action: onSwipeEnd,
+  canSwipeLeft: canSwipeLeft,
+  canSwipeRight: canSwipeRight,
+  target: paginator,
+  targetLeftPosition: leftPosition
+})
 const previousPageIndex = ref(-1)
 
 watch(() => props.elements, () => scrollToElement(props.scrollToIndex))
@@ -113,52 +109,17 @@ function onPageChange(newPage: number): void {
 }
 
 /**
- * React to the inventory slot being swipped.
- *
- * Positions the inventory slot according to the swipe movement.
- */
-function onSwipe(): void {
-  if (swipeDirection.value !== 'left' && swipeDirection.value !== 'right') {
-    return
-  }
-
-  isScrollLocked.value = true
-  let left = Math.max(Math.abs(swipeLength.value) - _swipeDeadzone, 0)
-
-  if (swipeDirection.value === 'left') {
-    left = -left
-
-    if (swipeMinLeft.value != null && left < swipeMinLeft.value) {
-      left = swipeMinLeft.value
-    }
-  } else if (swipeMaxLeft.value != null && left > swipeMaxLeft.value) {
-    left = swipeMaxLeft.value
-  }
-
-  leftPosition.value = `${left}px`
-}
-
-/**
  * React to the swip action on the inventory slot stopping.
  *
  * Repositions the inventory slot at its original place or trigger the inventory slot change.
+ * @param direction - Swipe direction.
  */
-function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
-  if (direction === 'left'
-    && modelCurrentPage.value < lastPageIndex.value
-    && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
-    leftPosition.value = '0'
+function onSwipeEnd(direction: UseSwipeDirection): void {
+  if (direction === 'left') {
     onPageChange(modelCurrentPage.value + 1)
-  } else if (direction === 'right'
-    && modelCurrentPage.value > 0
-    && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
-    leftPosition.value = '0'
-    onPageChange(modelCurrentPage.value - 1)
   } else {
-    leftPosition.value = '0'
+    onPageChange(modelCurrentPage.value - 1)
   }
-
-  isScrollLocked.value = false
 }
 
 /**
