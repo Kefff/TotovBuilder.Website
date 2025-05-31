@@ -151,11 +151,20 @@ export class VersionService {
     }
 
     const changelogs: IChangelogEntry[] = []
-    const hasChangelogsInCurrentLanguage = this.changelog.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
 
     for (const changelog of this.changelog) {
       changelogs.push({
-        changes: changelog.changes.filter(c => c.language === (hasChangelogsInCurrentLanguage ? vueI18n.locale.value : vueI18n.fallbackLocale.value)),
+        changes: changelog.changes.map(c => {
+          const newChanges: Record<string, string> = {}
+
+          if (c[vueI18n.locale.value] != null) {
+            newChanges[vueI18n.locale.value] = c[vueI18n.locale.value]
+          } else if (c[vueI18n.fallbackLocale.value as string] != null) {
+            newChanges[vueI18n.locale.value] = c[vueI18n.fallbackLocale.value as string]
+          }
+
+          return newChanges
+        }),
         date: new Date(changelog.date),
         isNew: this.isNew(changelog.version),
         version: changelog.version

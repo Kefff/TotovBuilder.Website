@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
+import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { VersionService } from '../../services/VersionService'
 import Services from '../../services/repository/Services'
@@ -68,7 +69,7 @@ async function loadChangelogAsync(): Promise<void> {
             :key="index"
             class="changelog-change"
           >
-            {{ change.text }}
+            {{ change[vueI18n.locale.value] }}
           </li>
         </ul>
       </div>
