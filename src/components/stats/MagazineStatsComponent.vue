@@ -5,8 +5,9 @@ import { IMagazine } from '../../models/item/IMagazine'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import ItemIcon from '../ItemIconComponent.vue'
+import AmmunitionItemCard from '../item-card/AmmunitionItemCardComponent.vue'
 import ContainerStats from './ContainerStatsComponent.vue'
+import StatsItems from './StatsItemsComponent.vue'
 
 const props = defineProps<{
   item: IItem
@@ -24,16 +25,11 @@ const magazine = computed(() => props.item as IMagazine)
 onMounted(() => getAcceptedAmmunitionAsync())
 
 /**
- * Gets the captions of the accepted ammunition.
+ * Gets the accepted ammunition of the magazine.
  */
 async function getAcceptedAmmunitionAsync(): Promise<void> {
   const itemService = Services.get(ItemService)
-  acceptedAmmunition.value = []
-
-  for (const acceptedAmmunitionId of magazine.value.acceptedAmmunitionIds) {
-    const ammunition = await itemService.getItemAsync(acceptedAmmunitionId)
-    acceptedAmmunition.value.push(ammunition)
-  }
+  acceptedAmmunition.value = await itemService.getItemsAsync(magazine.value.acceptedAmmunitionIds, false)
 }
 </script>
 
@@ -119,51 +115,12 @@ async function getAcceptedAmmunitionAsync(): Promise<void> {
       </div>
     </div>
   </div>
-  <div
-    v-if="acceptedAmmunition.length > 0"
-    class="stats-category"
+  <StatsItems
+    :caption="$t('caption.acceptedAmmunition')"
+    :items="acceptedAmmunition"
   >
-    {{ $t('caption.acceptedAmmunition') }}
-  </div>
-  <div
-    v-if="acceptedAmmunition.length > 0"
-    class="stats-line"
-  >
-    <div
-      v-for="(ammunition, index) of acceptedAmmunition"
-      :key="index"
-      class="stats-entry magazine-stats-ammunition"
-    >
-      <div class="stats-caption">
-        <ItemIcon
-          :item="ammunition"
-          class="magazine-stats-ammunition-icon"
-        />
-        <span>{{ ammunition.name }}</span>
-      </div>
-    </div>
-  </div>
+    <template #specializedStats="slotProps">
+      <AmmunitionItemCard :item="slotProps.item" />
+    </template>
+  </StatsItems>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-.magazine-stats-ammunition {
-  height: unset;
-}
-
-.magazine-stats-ammunition:first-child {
-  margin-top: 0.5rem
-}
-
-.magazine-stats-ammunition-icon {
-  margin-right: 0.5rem;
-}
-</style>

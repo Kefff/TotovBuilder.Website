@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import ModdableStats from './ModdableStatsComponent.vue'
 
 const props = defineProps<{
   item: IItem
@@ -82,4 +83,5 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
       </div>
     </div>
   </div>
+  <ModdableStats :item="rangedWeaponMod" />
 </template>

@@ -129,12 +129,12 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
           </Button>
         </Tooltip>
       </div>
+      <ItemStats :item="parameters" />
       <!-- Specialized stats -->
       <component
         :is="specializedComponent"
         :item="parameters"
       />
-      <ItemStats :item="parameters" />
     </div>
   </div>
 </template>

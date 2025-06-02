@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { IArmor } from '../../models/item/IArmor'
 import { IItem } from '../../models/item/IItem'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import ModdableStats from './ModdableStatsComponent.vue'
 import WearableStats from './WearableStatsComponent.vue'
 
 const props =
@@ -129,6 +130,7 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
       </div>
     </div>
   </div>
+  <ModdableStats :item="armor" />
 </template>
 
 

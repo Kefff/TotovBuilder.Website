@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IMod } from '../../models/item/IMod'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import ModdableStats from './ModdableStatsComponent.vue'
 
 const props = defineProps<{
   item: IItem
@@ -45,4 +46,5 @@ const mod = computed(() => props.item as IMod)
       </div>
     </div>
   </div>
+  <ModdableStats :item="mod" />
 </template>

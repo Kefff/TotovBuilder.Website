@@ -6,6 +6,7 @@ import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
+import ModdableStats from './ModdableStatsComponent.vue'
 
 const props = defineProps<{
   item: IItem
@@ -96,4 +97,5 @@ const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModif
       </div>
     </div>
   </div>
+  <ModdableStats :item="rangedWeapon" />
 </template>

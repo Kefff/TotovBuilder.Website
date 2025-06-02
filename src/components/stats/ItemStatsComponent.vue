@@ -85,6 +85,53 @@ async function setPricesAsync(): Promise<void> {
 
 
 <template>
+  <!-- Links -->
+  <div
+    v-if="item.marketLink != null || item.wikiLink != null"
+    class="stats-category"
+  >
+    {{ $t('caption.links') }}
+  </div>
+  <div
+    v-if="item.marketLink != null || item.wikiLink != null"
+    class="stats-line"
+  >
+    <div
+      v-if="item.marketLink != null || item.wikiLink != null"
+      class="stats-entry"
+    >
+      <div
+        v-if="item.marketLink != null"
+        class="stats-caption"
+      >
+        <font-awesome-icon
+          icon="globe"
+          class="icon-before-text"
+        />
+        <span
+          class="link"
+          @click="openMarket()"
+        >
+          Tarkov.dev
+        </span>
+      </div>
+      <div
+        v-if="item.wikiLink != null"
+        class="stats-caption"
+      >
+        <font-awesome-icon
+          icon="globe"
+          class="icon-before-text"
+        />
+        <span
+          class="link"
+          @click="openWiki()"
+        >
+          Wiki
+        </span>
+      </div>
+    </div>
+  </div>
   <!-- Weight and prices -->
   <div
     v-if="weight > 0 || prices.length > 0"
@@ -130,52 +177,6 @@ async function setPricesAsync(): Promise<void> {
           :price="price"
           :use-merchant-filter="false"
         />
-      </div>
-    </div>
-  </div>
-  <!-- Links -->
-  <div
-    v-if="item.marketLink != null || item.wikiLink != null"
-    class="stats-category"
-  >
-    {{ $t('caption.links') }}
-  </div>
-  <div
-    v-if="item.marketLink != null || item.wikiLink != null"
-    class="stats-line"
-  >
-    <div
-      v-if="item.marketLink != null"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="globe"
-          class="icon-before-text"
-        />
-        <span
-          class="link"
-          @click="openMarket()"
-        >
-          Tarkov.dev
-        </span>
-      </div>
-    </div>
-    <div
-      v-if="item.wikiLink != null"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="globe"
-          class="icon-before-text"
-        />
-        <span
-          class="link"
-          @click="openWiki()"
-        >
-          Wiki
-        </span>
       </div>
     </div>
   </div>
