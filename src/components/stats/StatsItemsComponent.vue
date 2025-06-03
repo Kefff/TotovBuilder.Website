@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 import ItemIcon from '../ItemIconComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
@@ -53,16 +54,13 @@ function showDetails(item: IItem): void {
       :key="item.id"
       class="stats-items-item"
     >
-      <ItemIcon
-        :item="item"
-        class="stats-items-item-icon"
-      />
-      <div class="stats-items-item-stats">
-        <div class="stats-items-item-stats-header">
+      <div class="stats-items-item-stats-header">
+        <ItemIcon :item="item" />
+        <div class="stats-items-item-stats-title">
           <span>{{ item.name }}</span>
           <Tooltip
             v-if="item != null"
-            class="stats-items-item-stats-header-details-button"
+            class="stats-items-item-stats-details-button"
             :apply-hover-style="false"
             :disabled-on-mobile="true"
             :tooltip="$t('caption.showDetails')"
@@ -74,6 +72,23 @@ function showDetails(item: IItem): void {
             >
               <font-awesome-icon icon="clipboard-list" />
             </Button>
+          </Tooltip>
+        </div>
+      </div>
+      <div class="stats-items-item-stats-line">
+        <div class="card-line stats-items-item-stats-weight">
+          <Tooltip :tooltip="$t('caption.weight')">
+            <div class="card-value">
+              <div>
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-before-text"
+                />
+                <span>
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
+                </span>
+              </div>
+            </div>
           </Tooltip>
         </div>
         <slot
@@ -107,26 +122,37 @@ function showDetails(item: IItem): void {
   border-style: solid;
   border-width: 1px;
   display: flex;
+  flex-direction: column;
   padding: 0.25rem;
 }
 
-.stats-items-item-icon {
-  margin-right: 0.25rem;
+.stats-items-item-stats-details-button {
+  align-self: flex-start;
+  margin-left: auto;
 }
 
-.stats-items-item-stats {
+.stats-items-item-stats-title {
+  align-items: center;
   display: flex;
-  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: auto;
   width: 100%;
 }
 
 .stats-items-item-stats-header {
-  align-items: center;
   display: flex;
-  gap: 0.25rem;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-.stats-items-item-stats-header-details-button {
-  margin-left: auto;
+.stats-items-item-stats-line {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr 4fr;
+  width: 100%;
+}
+
+.stats-items-item-stats-weight {
+  align-items: flex-start;
 }
 </style>

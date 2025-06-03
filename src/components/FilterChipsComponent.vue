@@ -320,6 +320,7 @@ function switchSortOrder(): void {
         </Tooltip>
         <Tooltip
           v-if="isCompactMode || isTouchScreen"
+          :disabled-on-mobile="true"
           :tooltip="sortButtonTooltip"
           class="filter-chip-text"
         >
@@ -384,6 +385,7 @@ function switchSortOrder(): void {
       <!-- Merchants chip -->
       <Chip class="filter-chip">
         <Tooltip
+          :disabled-on-mobile="true"
           :full-size="true"
           :tooltip="merchantsTooltip"
           style="height: 100%;"
@@ -418,6 +420,7 @@ function switchSortOrder(): void {
         <!-- Mobile -->
         <Tooltip
           v-if="isCompactMode || isTouchScreen"
+          :disabled-on-mobile="true"
           :tooltip="filterTooltip"
           class="filter-chip-content filter-chip-text-mobile"
           @click="showFilterAndSortSidebar"

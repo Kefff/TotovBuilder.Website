@@ -196,7 +196,7 @@ async function setWeightAsync(): Promise<void> {
             :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
             :price="selectedItemPrice.unitPrice"
             :show-merchant-icon="false"
-            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+            :tooltip-suffix="`(${$t('caption.perUnit')})`"
           />
         </div>
       </div>
@@ -241,7 +241,7 @@ async function setWeightAsync(): Promise<void> {
           v-if="showUnitWeight"
           class="selected-item-item-card-per-unit card-line"
         >
-          <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+          <Tooltip :tooltip="`${$t('caption.weight')} (${$t('caption.perUnit')})`">
             <div class="card-value selected-item-item-card-weight">
               <font-awesome-icon
                 icon="weight-hanging"

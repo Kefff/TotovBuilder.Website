@@ -86,7 +86,7 @@ function displayItemStats(item: IItem): void {
           :missing="missing"
           :price="unitPrice"
           :show-merchant-icon="false"
-          :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+          :tooltip-suffix="`(${$t('caption.perUnit')})`"
         />
       </div>
     </div>
