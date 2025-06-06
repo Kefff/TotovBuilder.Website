@@ -172,27 +172,23 @@ function showDetails(): void {
           <span>{{ item.name }}</span>
         </div>
         <Tooltip
-          v-if="modSlotsCount > 0"
-          :tooltip="$t('caption.modSlotsCount', { modSlotsCount })"
-        >
-          <div class="item-card-mods">
-            <font-awesome-icon icon="puzzle-piece" />
-            <div class="item-card-mods-count">
-              {{ modSlotsCount }}
-            </div>
-          </div>
-        </Tooltip>
-        <Tooltip
           :apply-hover-style="false"
           :disabled-on-mobile="true"
-          :tooltip="$t('caption.showDetails')"
+          :tooltip="modSlotsCount > 0 ? $t('caption.showDetailsWithModSlotsCount', { modSlotsCount }) : $t('caption.showDetails')"
         >
           <Button
             class="p-button-sm"
             outlined
             @click="showDetails()"
           >
-            <font-awesome-icon icon="clipboard-list" />
+            <div class="item-card-details-button-content">
+              <font-awesome-icon icon="clipboard-list" />
+              <span v-if="modSlotsCount > 0">{{ modSlotsCount }}</span>
+              <font-awesome-icon
+                v-if="modSlotsCount > 0"
+                icon="puzzle-piece"
+              />
+            </div>
           </Button>
         </Tooltip>
       </div>
@@ -290,6 +286,11 @@ function showDetails(): void {
   height: v-bind(height);
 }
 
+.item-card-details-button-content {
+  display: flex;
+  gap: 0.25rem
+}
+
 .item-card-header {
   align-items: center;
   display: flex;
@@ -298,27 +299,6 @@ function showDetails(): void {
   gap: 0.5rem;
   height: 3.75rem;
   white-space: preserve;
-}
-
-.item-card-mods {
-  align-items: center;
-  display: flex;
-  position: relative;
-  width: 1.25rem;
-}
-
-.item-card-mods-count {
-  align-items: center;
-  background-color: var(--primary-color);
-  border-radius: 9px;
-  color: var(--text-color);
-  display: flex;
-  font-size: 0.8rem;
-  height: 1rem;
-  justify-content: center;
-  position: absolute;
-  transform: translate(0.5rem, 0.5rem);
-  width: 1rem;
 }
 
 .item-card-price {
