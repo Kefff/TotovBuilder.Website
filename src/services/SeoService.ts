@@ -105,7 +105,8 @@ export class SeoService {
       twitterDescription: this._description,
       twitterImage: computed(() => this._image.value), // For some reason, without a computed it is not reactive
       twitterImageAlt: this._imageAlt.value,
-      twitterTitle: this._title
+      twitterTitle: this._title,
+      twitterSite: '@TotovBuilder'
     })
   }
 
