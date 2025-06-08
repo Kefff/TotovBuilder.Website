@@ -5,7 +5,9 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 
-defineProps<{ parameters: undefined }>()
+defineModel<undefined>('parameters')
+
+const props = defineProps<{ identifier: number }>()
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _notificationService = Services.get(NotificationService)
@@ -35,7 +37,7 @@ function clearNotifications(id?: string): void {
   notifications.value = _notificationService.getNotifications()
 
   if (notifications.value.length === 0) {
-    _globalSidebarService.close('NotificationsSidebar')
+    _globalSidebarService.close(props.identifier)
   }
 }
 

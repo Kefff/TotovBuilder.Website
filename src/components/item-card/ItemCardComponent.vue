@@ -287,6 +287,7 @@ function showDetails(): void {
 }
 
 .item-card-details-button-content {
+  align-items: center;
   display: flex;
   gap: 0.25rem
 }

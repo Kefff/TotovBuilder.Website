@@ -6,6 +6,8 @@ import ItemsList from '../ItemsListComponent.vue'
 
 defineModel<ItemSelectionSidebarParameters>('parameters', { required: true })
 
+const props = defineProps<{ identifier: number }>()
+
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 /**
@@ -14,7 +16,7 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
  * Updates the selected items and closes the sidebar.
  */
 function onSelectedItemsChanged(): void {
-  _globalSidebarService.close('ItemSelectionSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 </script>
 

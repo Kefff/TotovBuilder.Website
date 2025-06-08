@@ -6,9 +6,11 @@ import StringUtils from '../../utils/StringUtils'
 import PriceDetailItem from '../PriceDetailItemComponent.vue'
 import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
 
-const props = defineProps<{ parameters: ShoppingListSidebarParameters }>()
+const modelParameters = defineModel<ShoppingListSidebarParameters>('parameters', { required: true })
 
-const shoppingListItems = computed(() => props.parameters.shoppingList.filter(shl => shl.ignorePrice === IgnoredUnitPrice.notIgnored || shl.ignorePrice === IgnoredUnitPrice.manuallyIgnored))
+defineProps<{ identifier: number }>()
+
+const shoppingListItems = computed(() => modelParameters.value.shoppingList.filter(shl => shl.ignorePrice === IgnoredUnitPrice.notIgnored || shl.ignorePrice === IgnoredUnitPrice.manuallyIgnored))
 </script>
 
 

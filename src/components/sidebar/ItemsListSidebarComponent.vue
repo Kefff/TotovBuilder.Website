@@ -15,6 +15,8 @@ import Tooltip from '../TooltipComponent.vue'
 
 const modelParameters = defineModel<ItemsListSidebarParameters>('parameters', { required: true })
 
+const props = defineProps<{ identifier: number }>()
+
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const availableCategories = computed(() => {
@@ -114,7 +116,7 @@ function getSortOrderIcon(sortOrder: SortingOrder): string {
 function onFilterKeyDown(event: KeyboardEvent): void {
   if (event.key === 'Enter') {
     filter.value = filterInternal.value
-    _globalSidebarService.close('ItemsListSidebar')
+    _globalSidebarService.close(props.identifier)
   }
 }
 
@@ -123,7 +125,7 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  */
 function reset(): void {
   modelParameters.value = new ItemFilterAndSortingData(ItemSortingFunctions)
-  _globalSidebarService.close('ItemsListSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 </script>
 

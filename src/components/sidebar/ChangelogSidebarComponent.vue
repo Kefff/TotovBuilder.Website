@@ -7,7 +7,9 @@ import { VersionService } from '../../services/VersionService'
 import Services from '../../services/repository/Services'
 import Loading from '../LoadingComponent.vue'
 
-defineProps<{ parameters: undefined }>()
+defineModel<undefined>('parameters')
+
+const props = defineProps<{ identifier: number }>()
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
@@ -28,7 +30,7 @@ async function loadChangelogAsync(): Promise<void> {
   if (fetchedChangelogs.length > 0) {
     changelogs.value = fetchedChangelogs
   } else {
-    _globalSidebarService.close('ChangelogSidebar')
+    _globalSidebarService.close(props.identifier)
   }
 }
 </script>

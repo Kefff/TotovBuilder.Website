@@ -6,7 +6,9 @@ import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import Services from '../../services/repository/Services'
 import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
 
-const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
+const modelParameters = defineModel<GeneralOptionsSidebarParameters>('parameters')
+
+defineProps<{ identifier: number }>()
 
 const _generalOptionsService = Services.get(GeneralOptionsService)
 
@@ -14,9 +16,9 @@ const allowCookies = ref(true)
 const exportWarning = ref(true)
 const outdatedSharableUrlWarning = ref(true)
 
-const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
-const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
-const additionalOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
+const additionalDisplayOptions = computed(() => modelParameters.value?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
+const additionalGeneralOptions = computed(() => modelParameters.value?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
+const additionalOptionGroups = computed(() => modelParameters.value?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
 
 onMounted(() => {
   allowCookies.value = _generalOptionsService.getAllowCookiesOption()

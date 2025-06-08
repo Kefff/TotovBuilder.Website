@@ -24,15 +24,17 @@ import Tooltip from '../TooltipComponent.vue'
 
 type SpecializedComponent = typeof AmmunitionStats | typeof ArmorModStats | typeof ArmorStats | typeof BackpackStats | typeof ContainerStats | typeof EyewearStats | typeof GrenadeStats | typeof HeadwearStats | typeof ItemStats | typeof MagazineStats | typeof MeleeWeaponStats | typeof ModStats | typeof RangedWeaponModStats | typeof RangedWeaponStats | typeof VestStats | undefined
 
-const props = defineProps<{ parameters: StatsSidebarParameters }>()
+const modelParameters = defineModel<StatsSidebarParameters>('parameters', { required: true })
 
-const specializedComponent = computed(() => getSpecializedComponent(props.parameters.categoryId))
+defineProps<{ identifier: number }>()
+
+const specializedComponent = computed(() => getSpecializedComponent(modelParameters.value.categoryId))
 
 /**
  * Copies the name of the item to clipboard.
  */
 function copyName(): void {
-  WebBrowserUtils.copyToClipboardAsync(props.parameters.name)
+  WebBrowserUtils.copyToClipboardAsync(modelParameters.value.name)
 }
 
 /**

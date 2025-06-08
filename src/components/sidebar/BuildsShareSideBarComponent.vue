@@ -18,7 +18,9 @@ import LanguageSelector from '../LanguageSelectorComponent.vue'
 import Loading from '../LoadingComponent.vue'
 import Toolbar from '../ToolbarComponent.vue'
 
-const props = defineProps<{ parameters: BuildsShareSideBarParameters }>()
+const modelParameters = defineModel<BuildsShareSideBarParameters>('parameters', { required: true })
+
+defineProps<{ identifier: number }>()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
@@ -126,7 +128,7 @@ function copyText(): void {
  * Gets the builds to share.
  */
 function getBuildsToShare(): IBuild[] {
-  builds.value = props.parameters.getBuildsToShareFunction!()
+  builds.value = modelParameters.value.getBuildsToShareFunction!()
 
   return builds.value
 }
@@ -157,8 +159,8 @@ async function getTextAsync(): Promise<void> {
 function initialize(): void {
   isLoading.value = true
 
-  if (props.parameters.buildToShare != null) {
-    buildsToShare.value = [props.parameters.buildToShare]
+  if (modelParameters.value.buildToShare != null) {
+    buildsToShare.value = [modelParameters.value.buildToShare]
     getTextAsync()
   }
 

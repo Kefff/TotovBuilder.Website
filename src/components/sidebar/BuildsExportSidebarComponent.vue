@@ -14,6 +14,8 @@ import Toolbar from '../ToolbarComponent.vue'
 
 const modelParameters = defineModel<BuildsExportSidebarParameters>('parameters', { required: true })
 
+const props = defineProps<{ identifier: number }>()
+
 const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -66,7 +68,7 @@ async function exportBuildsAsync(): Promise<void> {
   }
 
   await _exportService.exportAsync(buildsToExport)
-  _globalSidebarService.close('BuildsExportSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 
 /**

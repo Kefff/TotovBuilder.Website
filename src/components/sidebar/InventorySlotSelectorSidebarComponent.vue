@@ -9,6 +9,8 @@ import InventorySlotSelector from '../InventorySlotSelectorComponent.vue'
 
 const modelParameters = defineModel<InventorySlotSelectorSidebarParameters>('parameters', { required: true })
 
+const props = defineProps<{ identifier: number }>()
+
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const height = computed(() => `${round(selectorHeight.value * scale.value) + 2}px`) // +2 otherwise the bottom border is not visible
@@ -38,7 +40,7 @@ onMounted(() => {
  * Updates the selected inventory slot and closes the sidebar.
  */
 function onSelectedInventorySlotChanged(): void {
-  _globalSidebarService.close('InventorySlotSelectorSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 
 </script>

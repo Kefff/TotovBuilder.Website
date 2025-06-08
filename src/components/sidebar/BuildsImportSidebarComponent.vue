@@ -13,6 +13,8 @@ import Toolbar from '../ToolbarComponent.vue'
 
 defineModel<undefined>('parameters')
 
+const props = defineProps<{ identifier: number }>()
+
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -66,7 +68,7 @@ function displayFileSelectionPopup(): void {
 async function importBuildsAsync(): Promise<void> {
   const buildsToImport = builds.value.filter(ab => selectedBuilds.value.some(sb => sb.id === ab.id))
   await _importService.importAsync(buildsToImport)
-  _globalSidebarService.close('BuildsImportSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 
 /**

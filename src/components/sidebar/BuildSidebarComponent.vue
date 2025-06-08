@@ -9,7 +9,9 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildShareButtons from '../BuildShareButtonsComponent.vue'
 
-const props = defineProps<{ parameters: BuildSidebarParameters }>()
+const modelParameters = defineModel<BuildSidebarParameters>('parameters', { required: true })
+
+const props = defineProps<{ identifier: number }>()
 
 const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
@@ -26,7 +28,7 @@ onMounted(() => {
     Services.get(GlobalSidebarService).display({
       displayedComponentType: 'BuildsShareSideBar',
       displayedComponentParameters: {
-        buildToShare: props.parameters
+        buildToShare: modelParameters.value
       }
     })
   }
@@ -43,18 +45,18 @@ function cancelDeletion(): void {
  * Confirms the build deletion.
  */
 function confirmDeletion(): void {
-  _buildService.delete(props.parameters.id)
+  _buildService.delete(modelParameters.value.id)
 
   isDeleting.value = false
-  _globalSidebarService.close('BuildSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 
 /**
  * Creates a copy of the build.
  */
 function copyBuild(): void {
-  _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
-  _globalSidebarService.close('BuildSidebar')
+  _router.push({ name: 'CopyBuild', params: { id: modelParameters.value.id } })
+  _globalSidebarService.close(props.identifier)
 }
 
 /**
@@ -70,7 +72,7 @@ function deleteBuild(): void {
 function displayBuildsShareSideBar(): void {
   _globalSidebarService.display({
     displayedComponentParameters: {
-      buildToShare: props.parameters
+      buildToShare: modelParameters.value
     },
     displayedComponentType: 'BuildsShareSideBar'
   })
@@ -80,8 +82,8 @@ function displayBuildsShareSideBar(): void {
  * Export the build to a file.
  */
 function exportBuild(): void {
-  _exportService.exportAsync([props.parameters])
-  _globalSidebarService.close('BuildSidebar')
+  _exportService.exportAsync([modelParameters.value])
+  _globalSidebarService.close(props.identifier)
 }
 </script>
 

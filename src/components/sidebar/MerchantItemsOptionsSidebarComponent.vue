@@ -6,7 +6,9 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import MerchantFilter from '../MerchantFilterComponent.vue'
 
-defineProps<{ parameters: undefined }>()
+defineModel<undefined>('parameters')
+
+const props = defineProps<{ identifier: number }>()
 
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -19,7 +21,7 @@ const globalFilter = ref<IGlobalFilter>({
 const hasChanged = ref(false)
 
 onMounted(() => {
-  _globalSidebarService.registerOnCloseAction('MerchantItemsOptionsSidebar', save)
+  _globalSidebarService.setOnCloseAction(props.identifier, save)
   globalFilter.value = _globalFilterService.get()
 })
 

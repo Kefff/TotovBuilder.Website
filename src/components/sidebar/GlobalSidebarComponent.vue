@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
-import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions, ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
+import { IGlobalSidebar } from '../../models/utils/IGlobalSidebar'
+import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import Loading from '../LoadingComponent.vue'
+
+const props = defineProps<{ sidebar: IGlobalSidebar }>()
 
 const BuildsExportSidebar = defineAsyncComponent({
   loader: () => import('./BuildsExportSidebarComponent.vue'),
@@ -83,41 +86,30 @@ type DisplayedComponent = typeof BuildsExportSidebar
   | typeof ToolbarSidebar
   | undefined
 
-const props = defineProps<{
-  identifier: number
-}>()
-
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 let _displayedComponent: DisplayedComponent | undefined
 
-const visible = computed({
-  get: () => visibleInternal.value,
-  set: (value: boolean) => {
-    visibleInternal.value = value
-
-    if (!visibleInternal.value) {
-      onGlobalSidebarClose(options.value.displayedComponentType)
-    }
-  }
-})
-
 const icon = ref<string>()
-const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
-const title = ref<string>()
+const initialized = ref(false)
+const parametersInternal = ref<GlobalSidebarDisplayedComponentParameters>()
 const subtitle = ref<string>()
-const visibleInternal = ref(false)
+const title = ref<string>()
+const visible = ref(true)
 
 provide('isInSidebar', true)
 
 onMounted(() => {
-  _globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
-  _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  _globalSidebarService.emitter.on(GlobalSidebarService.closingGlobalSidebarEvent, onClosing)
+
+  parametersInternal.value = props.sidebar.options.displayedComponentParameters
+  setDisplayedComponent(props.sidebar.options.displayedComponentType)
+
+  initialized.value = true
 })
 
 onUnmounted(() => {
-  _globalSidebarService.emitter.off(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
-  _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  _globalSidebarService.emitter.off(GlobalSidebarService.closingGlobalSidebarEvent, onClosing)
 })
 
 /**
@@ -134,29 +126,12 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
 /**
  * Reacts to the global sidebar being closed.
  *
- * Executes the close action if defined and closes the global sidebar.
- * @param displayedComponentType- Type of component displayed in the global sidebar to close.
+ * Executes the close action.
+ * @param identifier - Identifier of the sidebar being closed.
  */
-function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent): void {
-  if (displayedComponentType === options.value.displayedComponentType) {
-    _globalSidebarService.executeOnCloseActionsAsync(displayedComponentType, options.value.displayedComponentParameters as GlobalSidebarDisplayedComponentParameters)
-    visibleInternal.value = false
-    _displayedComponent = undefined // Unmounting the displayed component
-  }
-}
-
-/**
- * Reacts to the global sidebar being opened.
- *
- * Sets the component to display and opens the global sidebar.
- * @param openingOptions - Opening options.
- * @param identifier - Identifier of the sidebar to open.
- */
-function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, identifier: number): void {
-  if (identifier === props.identifier) {
-    visible.value = true
-    options.value = openingOptions
-    setDisplayedComponent(options.value.displayedComponentType)
+function onClosing(identifier: number): void {
+  if (identifier === props.sidebar.identifier) {
+    _globalSidebarService.executeOnCloseActionsAsync(props.sidebar.identifier, parametersInternal.value)
   }
 }
 
@@ -174,13 +149,13 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       break
     case 'BuildsShareSideBar':
       icon.value = 'share-alt'
-      subtitle.value = getBuildsShareSideBarSubtitle(options.value.displayedComponentParameters as BuildsShareSideBarParameters)
+      subtitle.value = getBuildsShareSideBarSubtitle(props.sidebar.options.displayedComponentParameters as BuildsShareSideBarParameters)
       title.value = 'caption.share'
       _displayedComponent = BuildsShareSideBar
       break
     case 'BuildSidebar':
       icon.value = 'ellipsis-h'
-      subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
+      subtitle.value = (props.sidebar.options.displayedComponentParameters as BuildSidebarParameters).name
       title.value = 'caption.actions'
       _displayedComponent = BuildSidebar
       break
@@ -231,7 +206,7 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       break
     case 'ShoppingListSidebar':
       icon.value = 'shopping-cart'
-      subtitle.value = (options.value.displayedComponentParameters as ShoppingListSidebarParameters).buildName
+      subtitle.value = (props.sidebar.options.displayedComponentParameters as ShoppingListSidebarParameters).buildName
       title.value = 'caption.shoppingList'
       _displayedComponent = ShoppingListSidebar
       break
@@ -267,6 +242,7 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
     :modal="true"
     position="left"
     style="width: auto;"
+    @update:visible="_globalSidebarService.close(sidebar.identifier)"
   >
     <template #header>
       <div class="global-sidebar-header">
@@ -296,8 +272,9 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
     <div class="global-sidebar-content">
       <component
         :is="_displayedComponent"
-        v-if="_displayedComponent != null"
-        v-model:parameters="options.displayedComponentParameters as GlobalSidebarDisplayedComponentParameters"
+        v-if="initialized"
+        v-model:parameters="parametersInternal"
+        :identifier="sidebar.identifier"
       />
     </div>
   </sidebar>

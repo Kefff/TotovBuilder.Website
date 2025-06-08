@@ -17,8 +17,8 @@ import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
-const GlobalSidebar = defineAsyncComponent({
-  loader: () => import('./sidebar/GlobalSidebarComponent.vue'),
+const GlobalSidebars = defineAsyncComponent({
+  loader: () => import('./sidebar/GlobalSidebarsComponent.vue'),
   loadingComponent: Loading
 })
 
@@ -270,9 +270,7 @@ function setLanguage(): void {
   </div>
 
   <!-- Global sidebars -->
-  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[0]" />
-  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[1]" />
-  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[2]" />
+  <GlobalSidebars />
 
   <!-- Loading error -->
   <LoadingError />

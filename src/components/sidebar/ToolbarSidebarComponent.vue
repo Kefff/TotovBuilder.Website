@@ -6,6 +6,8 @@ import Services from '../../services/repository/Services'
 
 const modelParameters = defineModel<ToolbarSidebarParameters>('parameters', { required: true })
 
+const props = defineProps<{ identifier: number }>()
+
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const leftButtons = computed(() => modelParameters.value.filter(b => (b.position?.() ?? 'left') === 'left' && (b.isVisible?.() ?? true)))
@@ -16,7 +18,7 @@ const rightButtons = computed(() => modelParameters.value.filter(b => (b.positio
  */
 function executeAction(action: () => void): void {
   action()
-  _globalSidebarService.close('ToolbarSidebar')
+  _globalSidebarService.close(props.identifier)
 }
 </script>
 

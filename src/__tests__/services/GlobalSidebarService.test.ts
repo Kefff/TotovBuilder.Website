@@ -104,9 +104,9 @@ describe('GlobalSideBarService', () => {
       const service = new GlobalSidebarService()
 
       // Act
-      service.registerOnCloseAction('GeneralOptionsSidebar', action1)
-      service.registerOnCloseAction('GeneralOptionsSidebar', action2)
-      service.registerOnCloseAction('ChangelogSidebar', action3)
+      service.setOnCloseAction('GeneralOptionsSidebar', action1)
+      service.setOnCloseAction('GeneralOptionsSidebar', action2)
+      service.setOnCloseAction('ChangelogSidebar', action3)
 
       await service.executeOnCloseActionsAsync('GeneralOptionsSidebar')
       await service.executeOnCloseActionsAsync('GeneralOptionsSidebar')
