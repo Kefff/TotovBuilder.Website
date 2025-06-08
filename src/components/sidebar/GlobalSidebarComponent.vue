@@ -131,7 +131,11 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
  */
 function onClosing(identifier: number): void {
   if (identifier === props.sidebar.identifier) {
-    _globalSidebarService.executeOnCloseActionsAsync(props.sidebar.identifier, parametersInternal.value)
+    visible.value = false
+    setTimeout(() => {
+      // Waiting for the closing animation of the sidebar to play before really closing it
+      _globalSidebarService.executeOnCloseActionsAsync(props.sidebar.identifier, parametersInternal.value)
+    }, 500)
   }
 }
 
@@ -238,8 +242,8 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
 
 <template>
   <Sidebar
-    v-model:visible="visible"
     :modal="true"
+    :visible="visible"
     position="left"
     style="width: auto;"
     @update:visible="_globalSidebarService.close(sidebar.identifier)"

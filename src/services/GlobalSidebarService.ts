@@ -77,11 +77,8 @@ export class GlobalSidebarService {
       await onCloseAction(updatedParameters)
     }
 
-    // Removing after a timeout to allow the sidebar closing animation to be played
-    setTimeout(() => {
-      delete this.displayedSidebars[identifier]
-      this.emitter.emit(GlobalSidebarService.closedGlobalSidebarEvent)
-    }, 500)
+    delete this.displayedSidebars[identifier]
+    this.emitter.emit(GlobalSidebarService.closedGlobalSidebarEvent)
   }
 
   /**
