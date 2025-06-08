@@ -64,7 +64,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.link,
     position: 0,
-    tooltip: vueI18n.t('caption.shareByMail'),
+    tooltip: vueI18n.t('caption.shareByLink'),
     onClick: (urlToShare: string) => WebBrowserUtils.copyToClipboardAsync(urlToShare)
   }
 

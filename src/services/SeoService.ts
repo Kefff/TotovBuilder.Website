@@ -115,7 +115,7 @@ export class SeoService {
    */
   public updateSeoMetadata(seoMetadata?: ISeoMetadata): void {
     this._description.value = seoMetadata?.description ?? vueI18n.t('caption.metaDescription')
-    this._image.value = seoMetadata?.image ?? `${window.location.origin}/images/seo-card.png`
+    this._image.value = seoMetadata?.image ?? `${window.location.origin}/images/seo-card.jpg`
     this._imageAlt.value = seoMetadata?.imageAlt != null ? `${seoMetadata?.imageAlt} - ${vueI18n.t('caption.totovBuilder')}` : vueI18n.t('caption.metaTitle')
     this._title.value = seoMetadata?.title != null ? `${seoMetadata?.title} - ${vueI18n.t('caption.totovBuilder')}` : vueI18n.t('caption.metaTitle')
     this._url.value = seoMetadata?.url ?? `${window.location.origin}${window.location.pathname}`
