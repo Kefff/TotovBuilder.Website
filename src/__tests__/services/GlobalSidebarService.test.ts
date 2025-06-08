@@ -1,7 +1,7 @@
 import { instance, mock } from 'ts-mockito'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { Router } from 'vue-router'
-import { GlobalSidebarComponent, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 
 describe('GlobalSideBarService', () => {
@@ -16,40 +16,41 @@ describe('GlobalSideBarService', () => {
   })
 
   describe('close', () => {
-    it('should emit the close global sidebar event', () => {
+    it('should emit the closing global sidebar event', () => {
       // Arrange
-      let globalSidebarToCloseType: GlobalSidebarComponent | undefined = undefined
+      let closingSidebarIdentifier: number = -1
       const service = new GlobalSidebarService()
 
-      service.emitter.once(GlobalSidebarService.closeGlobalSidebarEvent, (type: GlobalSidebarComponent) => globalSidebarToCloseType = type)
+      service.emitter.once(GlobalSidebarService.closingGlobalSidebarEvent, (identifier: number) => closingSidebarIdentifier = identifier)
 
       // Act
-      service.close('BuildsListSidebar')
+      service.close(10)
 
       // Assert
-      expect(globalSidebarToCloseType).toBe('BuildsListSidebar')
+      expect(closingSidebarIdentifier).toBe(10)
     })
   })
 
   describe('display', () => {
     it('should emit the open global sidebar event', () => {
       // Arrange
+      let emitted = false
+
       const options: IGlobalSidebarOptions = {
         displayedComponentType: 'GeneralOptionsSidebar'
       }
-      let globalSidebarToOpenOptions: IGlobalSidebarOptions | undefined = undefined
       const service = new GlobalSidebarService()
 
-      service.emitter.once(GlobalSidebarService.openGlobalSidebarEvent, (options: IGlobalSidebarOptions) => globalSidebarToOpenOptions = options)
+      service.emitter.once(GlobalSidebarService.openedGlobalSidebarEvent, () => emitted = true)
 
       // Act
       service.display(options)
 
       // Assert
-      expect(globalSidebarToOpenOptions).toStrictEqual(options)
+      expect(emitted).toBe(true)
     })
 
-    it('should register a close action', async () => {
+    it('should set a close action', async () => {
       // Arrange
       let executed = false
       const service = new GlobalSidebarService()
@@ -61,33 +62,15 @@ describe('GlobalSideBarService', () => {
           executed = true
         }
       })
-      await service.executeOnCloseActionsAsync('GeneralOptionsSidebar')
+      await service.executeOnCloseActionsAsync(0)
 
       // Assert
       expect(executed).toBe(true)
     })
-
-    it('should do nothing when the maximum level is already reached', async () => {
-      // Arrange
-      const service = new GlobalSidebarService()
-
-      // Act
-      service.display({ displayedComponentType: 'BuildsShareSideBar' })
-      service.display({ displayedComponentType: 'BuildSidebar' })
-      service.display({ displayedComponentType: 'BuildsExportSidebar' })
-      service.display({ displayedComponentType: 'BuildsListSidebar' })
-      await service.executeOnCloseActionsAsync('BuildsShareSideBar')
-      await service.executeOnCloseActionsAsync('BuildSidebar')
-      await service.executeOnCloseActionsAsync('BuildsExportSidebar')
-
-      // Assert
-      const isDisplayed = service.isDisplayed()
-      expect(isDisplayed).toBe(false)
-    })
   })
 
   describe('executeOnCloseActionsAsync', () => {
-    it('should execute closing actions when closing the global sidebar and unregister actions', async () => {
+    it('should execute closing actions when closing the global sidebar and remove the sidebar', async () => {
       // Arrange
       let action1ExecutionCount = 0
       let action2ExecutionCount = 0
@@ -101,15 +84,25 @@ describe('GlobalSideBarService', () => {
         })
       }
       const action3 = (): void => { action3ExecutionCount++ }
+
       const service = new GlobalSidebarService()
+      service.display({
+        displayedComponentType: 'GeneralOptionsSidebar'
+      })
+      service.display({
+        displayedComponentType: 'GeneralOptionsSidebar'
+      })
+      service.display({
+        displayedComponentType: 'GeneralOptionsSidebar'
+      })
 
       // Act
-      service.setOnCloseAction('GeneralOptionsSidebar', action1)
-      service.setOnCloseAction('GeneralOptionsSidebar', action2)
-      service.setOnCloseAction('ChangelogSidebar', action3)
+      service.setOnCloseAction(0, action1)
+      service.setOnCloseAction(1, action2)
+      service.setOnCloseAction(2, action3)
 
-      await service.executeOnCloseActionsAsync('GeneralOptionsSidebar')
-      await service.executeOnCloseActionsAsync('GeneralOptionsSidebar')
+      await service.executeOnCloseActionsAsync(0)
+      await service.executeOnCloseActionsAsync(1)
 
       // Assert
       expect(action1ExecutionCount).toBe(1)
@@ -137,18 +130,35 @@ describe('GlobalSideBarService', () => {
       expect(result).toBe(true)
 
       // Act
-      await service.executeOnCloseActionsAsync('BuildsListSidebar')
+      await service.executeOnCloseActionsAsync(0)
       result = service.isDisplayed()
 
       // Assert
       expect(result).toBe(true)
 
       // Act
-      await service.executeOnCloseActionsAsync('ChangelogSidebar')
+      await service.executeOnCloseActionsAsync(1)
       result = service.isDisplayed()
 
       // Assert
       expect(result).toBe(false)
+    })
+  })
+
+  describe('setOnCloseAction', () => {
+    it('should do nothing when the sidebar corresponding to the identifier is not found', () => {
+      // Arrange
+      const service = new GlobalSidebarService()
+
+      service.display({
+        displayedComponentType: 'BuildsListSidebar'
+      })
+
+      // Act
+      service.setOnCloseAction(1, () => { })
+
+      // Assert
+      expect(service.displayedSidebars[0].options.onCloseAction).toBeUndefined()
     })
   })
 })
