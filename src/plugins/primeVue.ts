@@ -1,6 +1,7 @@
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
 import 'primevue/resources/primevue.min.css'
+import VirtualScroller from 'primevue/virtualscroller'
 import { App, defineAsyncComponent } from 'vue'
 import '../css/theme.css'
 
@@ -25,5 +26,5 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('TabPanel', defineAsyncComponent(() => import('primevue/tabpanel')))
   app.component('TabView', defineAsyncComponent(() => import('primevue/tabview')))
   app.component('TextArea', defineAsyncComponent(() => import('primevue/textarea')))
-  app.component('VirtualScroller', defineAsyncComponent(() => import('primevue/virtualscroller')))
+  app.component('VirtualScroller', VirtualScroller) // Cannot be dynamically imported because it is already imported by other Primevue components
 }

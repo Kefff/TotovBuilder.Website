@@ -62,8 +62,8 @@ describe('parseReducedItem', () => {
           'StomachLowerBack',
           'StomachLeftSide',
           'StomachRightSide',
-          'HeadThroat',
-          'HeadNeck',
+          'ThoraxThroat',
+          'ThoraxNeck',
           'LeftArmShoulder',
           'RightArmShoulder',
           'StomachGroin'
@@ -179,8 +179,8 @@ describe('parseReducedItem', () => {
           'StomachLowerBack',
           'StomachLeftSide',
           'StomachRightSide',
-          'HeadThroat',
-          'HeadNeck',
+          'ThoraxThroat',
+          'ThoraxNeck',
           'LeftArmShoulder',
           'RightArmShoulder',
           'StomachGroin'
@@ -315,8 +315,8 @@ describe('parseReducedItem', () => {
           'StomachLowerBack',
           'StomachLeftSide',
           'StomachRightSide',
-          'HeadThroat',
-          'HeadNeck',
+          'ThoraxThroat',
+          'ThoraxNeck',
           'LeftArmShoulder',
           'RightArmShoulder',
           'StomachGroin'
@@ -432,8 +432,8 @@ describe('parseReducedItem', () => {
           'StomachLowerBack',
           'StomachLeftSide',
           'StomachRightSide',
-          'HeadThroat',
-          'HeadNeck',
+          'ThoraxThroat',
+          'ThoraxNeck',
           'LeftArmShoulder',
           'RightArmShoulder',
           'StomachGroin'

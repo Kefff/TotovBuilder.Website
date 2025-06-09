@@ -39,7 +39,7 @@ describe('SortingService', () => {
       [ItemCategoryId.container, ContainerSortingFunctions],
       [ItemCategoryId.currency, ItemSortingFunctions],
       [ItemCategoryId.eyewear, EyewearSortingFunctions],
-      [ItemCategoryId.faceCover, ItemSortingFunctions],
+      [ItemCategoryId.faceCover, HeadwearSortingFunctions],
       [ItemCategoryId.grenade, GrenadeSortingFunctions],
       [ItemCategoryId.headphones, ItemSortingFunctions],
       [ItemCategoryId.headwear, HeadwearSortingFunctions],

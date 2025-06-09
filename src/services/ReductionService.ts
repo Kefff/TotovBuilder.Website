@@ -154,6 +154,7 @@ export class ReductionService {
       case itemPropertiesService.isGrenade(item):
         item = this.parseReducedGrenade(reducedItem, item)
         break
+      case itemPropertiesService.isFaceCover(item):
       case itemPropertiesService.isHeadwear(item):
         item = this.parseReducedHeadwear(reducedItem, item)
         break

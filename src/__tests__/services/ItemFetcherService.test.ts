@@ -31,7 +31,7 @@ describe('fetchItemsAsync', () => {
 
     // Assert
     expect(items).not.toBeUndefined()
-    expect(items!.length).toBe(3804)
+    expect(items!.length).toBe(4174)
 
     for (const itemMock of ItemMocks) {
       const fetchedItem = items!.find(i => i.id === itemMock.id)

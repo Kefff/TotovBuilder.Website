@@ -90,7 +90,8 @@ function setSpecializedComponent(itemCategoryId?: ItemCategoryId): void {
   else if (itemPropertiesService.isGrenade(itemCategoryId)) {
     specializedComponent.value = 'GrenadeItemCard'
   }
-  else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
+  else if (itemPropertiesService.isHeadwear(itemCategoryId)
+    || itemPropertiesService.isFaceCover(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 

@@ -233,6 +233,7 @@ export class InventorySlotPropertiesService {
 
     if (inventorySlot.typeId !== InventorySlotTypeId.backpack
       && inventorySlot.typeId !== InventorySlotTypeId.bodyArmor
+      && inventorySlot.typeId !== InventorySlotTypeId.faceCover
       && inventorySlot.typeId !== InventorySlotTypeId.headwear
       && inventorySlot.typeId !== InventorySlotTypeId.tacticalRig) {
       return inventorySlotWearableModifiers

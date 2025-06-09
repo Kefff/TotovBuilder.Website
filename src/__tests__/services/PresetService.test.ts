@@ -17,7 +17,7 @@ import { ItemService } from '../../services/ItemService'
 import { LogService } from '../../services/LogService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
-import { ak12bt, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, bansheeDefault, iskra, m9a3Cap, m9a3Default, m9a3Magazine, m9a3Rs, m9a3Slide, m9a3Thr, rpk16Default, rpk16Drum, srd9 } from '../__data__/itemMocks'
+import { ak12bt, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, bansheeDefault, iskra, m9a3Default, m9a3Magazine, m9a3Prot, m9a3Rs, m9a3Slide, m9a3Thr, rpk16Default, rpk16Drum, srd9 } from '../__data__/itemMocks'
 import { PresetMocks, rpk16DefaultPreset } from '../__data__/presetMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
 import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
@@ -246,7 +246,7 @@ describe('PresetService', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem
-      const path = `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}/mod:mod_barrel/item:${m9a3Thr.id}/mod:mod_muzzle/item:${m9a3Cap.id}`
+      const path = `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}/mod:mod_barrel/item:${m9a3Thr.id}/mod:mod_muzzle/item:${m9a3Prot.id}`
 
       // Act
       const result = await service.getPresetModSlotContainingItem(item.itemId, path)

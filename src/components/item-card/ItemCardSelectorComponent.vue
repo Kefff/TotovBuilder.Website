@@ -68,7 +68,8 @@ function getSpecializedComponent(itemCategoryId: ItemCategoryId): SpecializedCom
   else if (itemPropertiesService.isGrenade(itemCategoryId)) {
     return GrenadeItemCard
   }
-  else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
+  else if (itemPropertiesService.isHeadwear(itemCategoryId)
+    || itemPropertiesService.isFaceCover(itemCategoryId)) {
     return HeadwearItemCard
   }
   else if (itemPropertiesService.isMagazine(itemCategoryId)) {

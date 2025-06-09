@@ -725,12 +725,12 @@ describe('BuildPropertiesService', () => {
 
   describe('getStatsAsString', () => {
     it.each([
-      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-9.5%**)  
-🛡️ Armor class **4**   🏃 Speed **-6%**   🔄 Turning speed **-9%**  
-💵 Price **525,754₽**   ⚓ Weight **24.153 kg**  `],
-      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)
-Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
-Poids 24,153 kg`],
+      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-11.5%**)  
+🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**  
+💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  `],
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-11,5%)
+Classe d'armure 4   Vitesse -7%   Vitesse de rotation -12%
+Poids 26,153 kg`],
       [build2, true, false, 'fr', BuildsToTextType.markdown, `↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
 ⚓ Poids **9,236 kg**  `],
@@ -763,8 +763,8 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
     })
 
     it.each([
-      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-9.5%**)    🛡️ Armor class **4**   🏃 Speed **-6%**   🔄 Turning speed **-9%**    💵 Price **525,754₽**   ⚓ Weight **24.153 kg**  '],
-      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)    Classe d\'armure 4   Vitesse -6%   Vitesse de rotation -9%    Poids 24,153 kg'],
+      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-11.5%**)    🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**    💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  '],
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-11,5%)    Classe d\'armure 4   Vitesse -7%   Vitesse de rotation -12%    Poids 26,153 kg'],
       [build2, true, false, 'fr', BuildsToTextType.markdown, '↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)    🛡️ Classe d\'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**    ⚓ Poids **9,236 kg**  '],
       [build2, false, true, 'en', BuildsToTextType.simpleText, 'Vertical recoil 362   Horizontal recoil 249   Ergonomics 52 (-3%)    Armor class 4   Speed -3%   Turning speed -1%    Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg']
     ])('should get the stats of a build as a single line', async (build: IBuild, includeEmojis: boolean, includePrices: boolean, language: string, type: BuildsToTextType, expected: string) => {
@@ -1228,11 +1228,11 @@ Ref Non   Skier 1   La Toubib 3
       // Assert
       expect(result).toBe(`# Build 1
 
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
-🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
-⚓ Poids **24,153 kg**  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-11,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
+⚓ Poids **26,153 kg**  
 
 [*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**  
  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
@@ -1254,7 +1254,7 @@ Ref Non   Skier 1   La Toubib 3
 
 [*Lunettes*] **ESS Crossbow tactical glasses**  
 
-[*Masque*] **Cold Fear infrared balaclava**  
+[*Masque*] **Atomic Defense CQCM up armored ballistic mask (Black)**  
 
 *Créé avec [Totov Builder](http://localhost:3000)*`)
     })
@@ -1369,7 +1369,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
         })
 
       // Assert
-      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)
+      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)
 [Build 2](http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A)`)
     })
 
@@ -1403,9 +1403,9 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       // Assert
       expect(result).toBe(`# Build 1
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
-🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
-💵 Prix **366 019₽**   ⚓ Poids **24,153 kg**  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-11,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
+💵 Prix **361 226₽**   ⚓ Poids **26,153 kg**  
 
 [*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
@@ -1427,7 +1427,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
 [*Lunettes*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
 
-[*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
+[*Masque*] **Atomic Defense CQCM up armored ballistic mask (Black)**   💵 Pas de marchand  
 
 
 
@@ -1869,9 +1869,9 @@ Créé avec Totov Builder`)
       // Assert
       expect(result).toBe(`Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
-🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
-⚓ Poids 24,153 kg
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-11,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
+⚓ Poids 26,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default
  [Chargeur] RPK-16 5.45x39 95-round drum magazine
@@ -1893,10 +1893,10 @@ Créé avec Totov Builder`)
 
 [Lunettes] ESS Crossbow tactical glasses
 
-[Masque] Cold Fear infrared balaclava
+[Masque] Atomic Defense CQCM up armored ballistic mask (Black)
 
 Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
 
 Créé avec Totov Builder`)
     })
@@ -2015,7 +2015,7 @@ Créé avec Totov Builder`)
 
       // Assert
       expect(result).toBe(`Build 1
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
 
 
 
@@ -2053,9 +2053,9 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       // Assert
       expect(result).toBe(`Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
-🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
-💵 Prix 366 019₽   ⚓ Poids 24,153 kg
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-11,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
+💵 Prix 361 226₽   ⚓ Poids 26,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
  [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
@@ -2077,7 +2077,7 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
 
 [Lunettes] ESS Crossbow tactical glasses   💵 Ragman 2 3 885₽
 
-[Masque] Cold Fear infrared balaclava   💵 Ragman 2 4 793₽
+[Masque] Atomic Defense CQCM up armored ballistic mask (Black)   💵 Pas de marchand
 
 
 
@@ -2123,11 +2123,11 @@ Créé avec Totov Builder`)
 
 const expectedMarkdownString1En = `# Build 1
 
-*[Interactive version with full statistics](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+*[Interactive version with full statistics](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
 
-↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-9.5%**)  
-🛡️ Armor class **4**   🏃 Speed **-6%**   🔄 Turning speed **-9%**  
-💵 Price **366,019₽**   ⚓ Weight **24.153 kg**  
+↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-11.5%**)  
+🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**  
+💵 Price **361,226₽**   ⚓ Weight **26.153 kg**  
 
 [*On sling*] **RPK-16 5.45x39 light machine gun Default**   💵 Flea market **43,345₽**  
  [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*barter*) **24,218₽**  
@@ -2149,7 +2149,7 @@ const expectedMarkdownString1En = `# Build 1
 
 [*Eyewear*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3,885₽**  
 
-[*Face cover*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4,793₽**  
+[*Face cover*] **Atomic Defense CQCM up armored ballistic mask (Black)**   💵 No merchant  
 
 
 
@@ -2162,11 +2162,11 @@ Ref 4️⃣   Skier 4️⃣   Therapist 4️⃣
 
 const expectedMarkdownString1Fr = `# Build 1
 
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
-🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
-💵 Prix **366 019₽**   ⚓ Poids **24,153 kg**  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-11,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
+💵 Prix **361 226₽**   ⚓ Poids **26,153 kg**  
 
 [*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
@@ -2188,7 +2188,7 @@ const expectedMarkdownString1Fr = `# Build 1
 
 [*Lunettes*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
 
-[*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
+[*Masque*] **Atomic Defense CQCM up armored ballistic mask (Black)**   💵 Pas de marchand  
 
 
 
@@ -2265,7 +2265,7 @@ const expectedMarkdownString4 = `# Build with backpack only and every currency
 
 [*Sac à dos*] **Oakley Mechanism heavy duty backpack (Black)**   💵 Ragman 2 **67 446₽**  
  **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
- **AR-15 B5 Systems Precision stock**   💵 Peacekeeper 4 **157$** (= **22 385₽**)  
+ **AR-15 B5 Systems Collapsible Precision Stock**   💵 Peacekeeper 4 **157$** (= **22 385₽**)  
 
 
 
@@ -2315,9 +2315,9 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 const expectedString1En = `Build 1
 
-↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 34 (-9.5%)
-🛡️ Armor class 4   🏃 Speed -6%   🔄 Turning speed -9%
-💵 Price 366,019₽   ⚓ Weight 24.153 kg
+↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 34 (-11.5%)
+🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%
+💵 Price 361,226₽   ⚓ Weight 26.153 kg
 
 [On sling] RPK-16 5.45x39 light machine gun Default   💵 Flea market 43,345₽
  [Magazine] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (barter) 24,218₽
@@ -2339,10 +2339,10 @@ const expectedString1En = `Build 1
 
 [Eyewear] ESS Crossbow tactical glasses   💵 Ragman 2 3,885₽
 
-[Face cover] Cold Fear infrared balaclava   💵 Ragman 2 4,793₽
+[Face cover] Atomic Defense CQCM up armored ballistic mask (Black)   💵 No merchant
 
 Interactive version with full statistics
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
 
 
 
@@ -2355,9 +2355,9 @@ Created with Totov Builder`
 
 const expectedString1Fr = `Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
-🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
-💵 Prix 366 019₽   ⚓ Poids 24,153 kg
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-11,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
+💵 Prix 361 226₽   ⚓ Poids 26,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
  [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
@@ -2379,10 +2379,10 @@ const expectedString1Fr = `Build 1
 
 [Lunettes] ESS Crossbow tactical glasses   💵 Ragman 2 3 885₽
 
-[Masque] Cold Fear infrared balaclava   💵 Ragman 2 4 793₽
+[Masque] Atomic Defense CQCM up armored ballistic mask (Black)   💵 Pas de marchand
 
 Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
 
 
 
@@ -2459,7 +2459,7 @@ const expectedString4 = `Build with backpack only and every currency
 
 [Sac à dos] Oakley Mechanism heavy duty backpack (Black)   💵 Ragman 2 67 446₽
  MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
- AR-15 B5 Systems Precision stock   💵 Peacekeeper 4 157$ (= 22 385₽)
+ AR-15 B5 Systems Collapsible Precision Stock   💵 Peacekeeper 4 157$ (= 22 385₽)
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A

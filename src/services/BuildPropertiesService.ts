@@ -377,7 +377,6 @@ export class BuildPropertiesService {
       inventorySlotSummaries.push(inventorySlotSummary)
     }
 
-
     summary.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
     summary.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
 

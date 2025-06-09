@@ -16,8 +16,8 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cf, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plate6b33Back, plate6b33Front, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
-import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, armor6b13FlDefaultPrices, bansheePrices, berkutPrices, cfPrices, crossbowPrices, ewrPrices, h2o2Prices, iskraPrices, lshZ2dtmFsPrices, lshZ2dtmPrices, m9a3DefaultPrices, monocletePePrices, morphinePrices, passPrices, plexiglassPrices, razorPrices, rgd5Prices, rpk16DefaultPrices, rpk16DrumPrices, salewaPrices, srd9Prices, vaselinePrices, waterPrices, x400Prices } from '../__data__/priceMocks'
+import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cqcm, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plate6b33Back, plate6b33Front, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
+import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, armor6b13FlDefaultPrices, bansheePrices, berkutPrices, cqcmPrices, crossbowPrices, ewrPrices, h2o2Prices, iskraPrices, lshZ2dtmFsPrices, lshZ2dtmPrices, m9a3DefaultPrices, monocletePePrices, morphinePrices, passPrices, plexiglassPrices, razorPrices, rgd5Prices, rpk16DefaultPrices, rpk16DrumPrices, salewaPrices, srd9Prices, vaselinePrices, waterPrices, x400Prices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -197,7 +197,7 @@ describe('getSummaryAsync', () => {
 
   describe('Ergonomics', () => {
     it.each([
-      [build1, 34.39],
+      [build1, 33.63],
       [build2, 52.379999999999995],
       [
         {
@@ -298,8 +298,8 @@ describe('getSummaryAsync', () => {
       [
         build1,
         {
-          missingPrice: false,
-          priceInMainCurrency: 366019,
+          missingPrice: true,
+          priceInMainCurrency: 361226,
           priceByCurrency: [
             {
               barterItems: [],
@@ -308,8 +308,8 @@ describe('getSummaryAsync', () => {
               merchant: '',
               merchantLevel: 0,
               quest: undefined,
-              value: 366019,
-              valueInMainCurrency: 366019
+              value: 361226,
+              valueInMainCurrency: 361226
             }
           ]
         } as IInventoryPrice
@@ -1121,30 +1121,30 @@ describe('getSummaryAsync', () => {
             ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'faceCover',
             item: {
-              ...cf,
-              prices: cfPrices
+              ...cqcm,
+              prices: cqcmPrices
             },
-            missingPrice: false,
+            missingPrice: true,
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: cf.id,
-              merchant: 'ragman',
-              merchantLevel: 2,
+              itemId: cqcm.id,
+              merchant: '',
+              merchantLevel: 0,
               quest: undefined,
-              value: 4793,
-              valueInMainCurrency: 4793
+              value: 0,
+              valueInMainCurrency: 0
             },
             quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: cf.id,
-              merchant: 'ragman',
-              merchantLevel: 2,
+              itemId: cqcm.id,
+              merchant: '',
+              merchantLevel: 0,
               quest: undefined,
-              value: 4793,
-              valueInMainCurrency: 4793
+              value: 0,
+              valueInMainCurrency: 0
             }
           }
         ] as IShoppingListItem[]
@@ -1571,7 +1571,7 @@ describe('getSummaryAsync', () => {
     it.each([
       [
         build1,
-        24.153
+        26.153
       ],
       [
         build2,
@@ -1627,9 +1627,9 @@ describe('getSummaryAsync', () => {
       [
         build1,
         {
-          ergonomicsModifierPercentage: -0.09500000000000001,
-          movementSpeedModifierPercentage: -0.060000000000000005,
-          turningSpeedModifierPercentage: -0.09
+          ergonomicsModifierPercentage: -0.11500000000000002,
+          movementSpeedModifierPercentage: -0.07,
+          turningSpeedModifierPercentage: -0.12
         } as IWearableModifiers
       ],
       [

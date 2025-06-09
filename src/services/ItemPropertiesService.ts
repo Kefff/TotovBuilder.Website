@@ -33,7 +33,11 @@ export class ItemPropertiesService {
    * @returns `true` if the item can have an armor value; otherwise `false`.
    */
   public canHaveArmor(item: IItem): boolean {
-    return this.isArmor(item) || this.isArmorMod(item) || this.isHeadwear(item) || this.isVest(item)
+    return this.isArmor(item)
+      || this.isArmorMod(item)
+      || this.isFaceCover(item)
+      || this.isHeadwear(item)
+      || this.isVest(item)
   }
 
   /**
@@ -128,6 +132,17 @@ export class ItemPropertiesService {
     const categoryId = this.getCategoryId(value)
 
     return categoryId === ItemCategoryId.eyewear
+  }
+
+  /**
+   * Indicates whether an item is a face cover.
+   * @param value - Item or category ID.
+   * @returns `true` if the item is a face cover; otherwise `false`.
+   */
+  public isFaceCover(value: IItem | ItemCategoryId): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === ItemCategoryId.faceCover
   }
 
   /**
@@ -240,7 +255,12 @@ export class ItemPropertiesService {
    * @returns `true` if the item is wearable; otherwise `false`.
    */
   public isWearable(value: IItem | ItemCategoryId): boolean {
-    return this.isArmor(value) || this.isArmorMod(value) || this.isBackpack(value) || this.isHeadwear(value) || this.isVest(value)
+    return this.isArmor(value)
+      || this.isArmorMod(value)
+      || this.isBackpack(value)
+      || this.isFaceCover(value)
+      || this.isHeadwear(value)
+      || this.isVest(value)
   }
 
   /**

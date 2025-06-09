@@ -24,7 +24,6 @@ export const ItemSortingFunctions: IItemSortingFunctionList = {
   itemCategoryIds: [
     ItemCategoryId.armband,
     ItemCategoryId.currency,
-    ItemCategoryId.faceCover,
     ItemCategoryId.headphones,
     ItemCategoryId.other,
     ItemCategoryId.special
@@ -247,7 +246,10 @@ export const HeadwearSortingFunctions: IItemSortingFunctionList = {
       icon: undefined
     }
   },
-  itemCategoryIds: [ItemCategoryId.headwear]
+  itemCategoryIds: [
+    ItemCategoryId.faceCover,
+    ItemCategoryId.headwear
+  ]
 }
 
 const ricochetChances: { [ricocherChance: string]: number } = {

@@ -1,7 +1,7 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
-import { ak12PistolGrip, ak12Stock, alpha, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cf, crossbow, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, morphine, plate6b33Back, plate6b33Front, razor, rgd5, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, srd9, vaseline, water, x400 } from './itemMocks'
+import { ak12PistolGrip, ak12Stock, alpha, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cqcm, crossbow, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, morphine, plate6b33Back, plate6b33Front, razor, rgd5, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, srd9, vaseline, water, x400 } from './itemMocks'
 
 export const build1: IBuild = {
   id: 'build_1',
@@ -302,7 +302,7 @@ export const build1: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: cf.id,
+          itemId: cqcm.id,
           modSlots: [],
           quantity: 1
         }
@@ -760,7 +760,7 @@ export const reducedBuild1: Record<string, unknown> = {
     {
       'i': [
         {
-          'i': cf.id
+          'i': cqcm.id
         }
       ],
       't': 'faceCover'
