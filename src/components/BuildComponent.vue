@@ -544,6 +544,16 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
 }
 
 /**
+ * Reacts to the name of the build being changed.
+ *
+ * Updates the name of the build.
+ */
+function onNameChanged(value: string | undefined): void {
+  build.value.name = value ?? ''
+  hasChanges.value = build.value.name !== _originalBuild.name
+}
+
+/**
  * Reacts to the tab or browser being closed.
  *
  * Displays a confirmation message to be able to cancel the closing when the build is in edit mode.
@@ -749,7 +759,7 @@ function updateSeoMetadata(): void {
             :value="build.name"
             caption-mode="placeholder"
             class="build-name"
-            @update:value="$event => build.name = $event!"
+            @update:value="onNameChanged"
           />
           <Tooltip
             v-if="!isLoading && !summary.exported && !isNewBuild"
@@ -789,7 +799,7 @@ function updateSeoMetadata(): void {
                 :value="build.name"
                 caption-mode="placeholder"
                 class="build-name"
-                @update:value="$event => build.name = $event!"
+                @update:value="onNameChanged"
               />
               <Tooltip
                 v-if="!summary.exported && !isNewBuild"
