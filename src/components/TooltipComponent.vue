@@ -34,13 +34,13 @@ const shown = ref(false)
 
 onMounted(() => {
   if (isTouchScreen.value) {
-    _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+    _globalSidebarService.emitter.on(GlobalSidebarService.openedGlobalSidebarEvent, onGlobalSidebarOpen)
   }
 })
 
 onUnmounted(() => {
   if (isTouchScreen.value) {
-    _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+    _globalSidebarService.emitter.off(GlobalSidebarService.openedGlobalSidebarEvent, onGlobalSidebarOpen)
   }
 })
 
