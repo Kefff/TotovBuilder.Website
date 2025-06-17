@@ -32,7 +32,6 @@ const props = defineProps<{
   includeModsAndContent: boolean
   inventoryItem: IInventoryItem,
   inventoryItemInSameSlotInPreset: IInventoryItem | undefined
-  isBaseItem: boolean,
   selectedItem: IItem,
   showPrice: boolean,
   showWeight: boolean
@@ -178,7 +177,6 @@ async function setWearableModifiersAsync(): Promise<void> {
     :include-mods-and-content="includeModsAndContent"
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"
-    :is-base-item="isBaseItem"
     :show-price="showPrice"
     :show-weight="showWeight"
   >
@@ -220,7 +218,6 @@ async function setWearableModifiersAsync(): Promise<void> {
       v-else-if="specializedComponent === 'HeadwearItemCard'"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
@@ -243,7 +240,6 @@ async function setWearableModifiersAsync(): Promise<void> {
     <RangedWeaponItemCard
       v-else-if="specializedComponent === 'RangedWeaponItemCard'"
       :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
       :item="selectedItem"
       :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
     />
@@ -251,7 +247,6 @@ async function setWearableModifiersAsync(): Promise<void> {
       v-else-if="specializedComponent === 'VestItemCard'"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
       :item="selectedItem"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />

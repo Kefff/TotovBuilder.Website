@@ -19,7 +19,6 @@ const props = withDefaults(
     comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
-    isBaseItem?: boolean,
     armor: IArmor,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
@@ -28,7 +27,6 @@ const props = withDefaults(
     comparisonItem: undefined,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
-    isBaseItem: false,
     wearableModifiersOverride: undefined
   })
 
@@ -67,9 +65,8 @@ const tooltipSuffix = computed(() => {
 
 <template>
   <Tooltip
-    v-if="!isBaseItem
-      && (durability !== 0
-        || ((comparisonArmorDurability ?? 0) !== 0))"
+    v-if="durability !== 0
+      || ((comparisonArmorDurability ?? 0) !== 0)"
     :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.durability') + tooltipSuffix"
   >
@@ -90,9 +87,8 @@ const tooltipSuffix = computed(() => {
     />
   </Tooltip>
   <Tooltip
-    v-if="!isBaseItem
-      && (armorClass !== 0
-        || ((comparisonArmorArmorClass ?? 0) !== 0))"
+    v-if="armorClass !== 0
+      || ((comparisonArmorArmorClass ?? 0) !== 0)"
     :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
     :tooltip="$t('caption.armorClass') + tooltipSuffix"
   >

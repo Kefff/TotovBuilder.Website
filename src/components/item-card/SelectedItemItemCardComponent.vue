@@ -22,7 +22,6 @@ const props = defineProps<{
   includeModsAndContent: boolean
   inventoryItem: IInventoryItem,
   inventoryItemInSameSlotInPreset: IInventoryItem | undefined,
-  isBaseItem: boolean,
   showPrice: boolean,
   showWeight: boolean
 }>()
@@ -149,12 +148,11 @@ async function setWeightAsync(): Promise<void> {
         v-if="((selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset
           && selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.notLootable)
           || !isCompactMode)
-          && ((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency)
-            || showPrice)"
+          && (includeModsAndContent || showPrice)"
         class="selected-item-item-card-prices card-line"
       >
         <div
-          v-if="includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency"
+          v-if="includeModsAndContent"
           class="selected-item-item-card-with-mods"
         >
           <InventoryPrice
@@ -207,7 +205,7 @@ async function setWeightAsync(): Promise<void> {
         class="selected-item-item-card-weights card-line"
       >
         <div
-          v-if="includeModsAndContent && selectedItemWeight.weightWithContent !== selectedItemWeight.unitWeight"
+          v-if="includeModsAndContent"
           class="selected-item-item-card-with-mods"
         >
           <Tooltip

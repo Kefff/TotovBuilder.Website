@@ -20,14 +20,12 @@ const props = withDefaults(
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
     item: IItem,
-    isBaseItem?: boolean,
     rangedWeaponsModifiersOverride?: IRangedWeaponModifiers
   }>(),
   {
     comparisonItem: undefined,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
-    isBaseItem: false,
     rangedWeaponsModifiersOverride: undefined
   })
 
@@ -130,10 +128,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       />
     </Tooltip>
   </div>
-  <div
-    v-if="!isBaseItem"
-    class="card-line card-line4"
-  >
+  <div class="card-line card-line4">
     <Tooltip
       :tooltip="$t('caption.fireRate')"
       :class="StatsUtils.getSortedPropertyColorClass('fireRate', filterAndSortingData)"

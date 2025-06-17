@@ -18,7 +18,6 @@ const props = withDefaults(
     comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
-    isBaseItem?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
@@ -26,7 +25,6 @@ const props = withDefaults(
     armorModifiersOverride: undefined,
     comparisonItem: undefined,
     filterAndSortingData: undefined,
-    isBaseItem: false,
     includeModsAndContent: false,
     wearableModifiersOverride: undefined
   })
@@ -60,11 +58,10 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       :comparison-item="comparisonItem"
       :filter-and-sorting-data="filterAndSortingData"
       :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
       :wearable-modifiers-override="wearableModifiersOverride"
     />
     <Tooltip
-      v-if="!isBaseItem && hasRicochetChance"
+      v-if="hasRicochetChance"
       :tooltip="$t('caption.ricochetChance')"
       :class="[
         props.includeModsAndContent ? 'headwear-item-card-bold' : undefined,

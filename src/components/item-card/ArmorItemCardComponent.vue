@@ -54,6 +54,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       :armor="armor"
       :comparison-item="comparisonItem"
       :filter-and-sorting-data="filterAndSortingData"
+      :include-mods-and-content="includeModsAndContent"
       :wearable-modifiers-override="wearableModifiersOverride"
     />
   </div>

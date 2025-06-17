@@ -15,7 +15,6 @@ const props = withDefaults(
     comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     includeModsAndContent?: boolean,
-    isBaseItem?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
@@ -24,7 +23,6 @@ const props = withDefaults(
     comparisonItem: undefined,
     filterAndSortingData: undefined,
     includeModsAndContent: false,
-    isBaseItem: false,
     wearableModifiersOverride: undefined
   })
 

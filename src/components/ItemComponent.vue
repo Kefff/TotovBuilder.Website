@@ -59,7 +59,6 @@ const _presetService = Services.get(PresetService)
 
 const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
 const contentCount = computed(() => modelInventoryItem.value?.content.length ?? 0)
-const hasOnlyBaseItem = computed(() => itemIsModdable.value && (props.inventoryItem?.modSlots ?? []).every(ms => ms.item == null))
 const includeModsAndContentInSummary = computed(() =>
   (itemIsModdable.value
     && baseItem.value != null
@@ -549,7 +548,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :include-mods-and-content="includeModsAndContentInSummary"
           :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
           :inventory-item="modelInventoryItem"
-          :is-base-item="isBaseItem"
           :selected-item="item"
           :show-price="showPrice"
           :show-weight="showWeight"
@@ -570,7 +568,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         v-model:selected-tab="selectedTab"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer && !isBaseItem"
-        :can-have-mods="itemIsModdable && !isBaseItem && (!hasOnlyBaseItem || (isEditing ?? false))"
+        :can-have-mods="itemIsModdable && !isBaseItem"
         :can-ignore-price="canIgnorePrice"
         :contains-base-item="baseItem != null"
         :content-count="contentCount"
@@ -583,8 +581,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
       <div v-if="!isBaseItem && !itemChanging">
         <div
           v-if="itemIsModdable
-            && baseItem != null
-            && (!hasOnlyBaseItem || isEditing)"
+            && baseItem != null"
           v-show="selectedTab === SelectableTab.mods"
           class="item-content-and-mods-base-item"
         >
@@ -602,11 +599,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               {{ $t('caption.baseItem') }}
             </div>
             <ItemComponent
+              v-model:inventory-item="baseItem"
               :get-accepted-items-function="getAcceptedItemsForBaseItem"
               :can-be-looted="showBaseItemPrice"
-              :inventory-item="baseItem"
               :is-base-item="true"
               :path="`${path}/${PathUtils.baseItemPrefix}/${PathUtils.itemPrefix}${baseItem.itemId}`"
+              @update:inventory-item="$event => onIgnorePriceChanged($event!.ignorePrice)"
             />
           </div>
         </div>

@@ -172,8 +172,10 @@ function toggleInventoryPriceDetails(event: Event): void {
 
 .inventory-price-missing-price-icon {
   color: var(--error-color);
-  width: 2rem;
+  display: flex;
+  justify-content: center;
   text-align: center;
+  width: 2rem;
 }
 
 .inventory-price-list {
