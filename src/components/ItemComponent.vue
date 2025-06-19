@@ -586,8 +586,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           class="item-content-and-mods-base-item"
         >
           <ItemHierarchyIndicator
-            :inventory-items="[baseItem]"
-            :index="0"
+            :is-first="true"
+            :is-last="modsCount === 0 && !(isEditing ?? false)"
+            :is-visible="true"
             mode="baseItem"
           />
           <div

@@ -1,55 +1,32 @@
 <script setup lang="ts">
-import { computed, inject, Ref } from 'vue'
-import { IInventoryItem } from '../models/build/IInventoryItem'
+import { computed } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = defineProps<{
-  inventoryItems: (IInventoryItem | undefined)[],
-  index: number
+  isFirst: boolean,
+  isLast: boolean,
+  isVisible: boolean,
   mode: 'addContent' | 'baseItem' | 'content' | 'magazineContent' | 'mods',
 }>()
 
 const _bottomTopOffset = '12px'
 const _middleHeight = '1.5625rem'
 
-const isEditing = inject<Ref<boolean>>('isEditing')
-
 const bottomHeight = computed(() => `calc(100% - ${upperHeight.value} - ${_middleHeight} + ${_bottomTopOffset})`)
 const bottomTop = computed(() => `calc(${upperHeight.value} + ${_middleHeight} - ${_bottomTopOffset})`)
 const isCompactMode = computed(() => isSmartphonePortrait.value || isTabletPortrait.value)
-const displayBottomPart = computed(() => {
-  const result = props.index !== lastHierarchyInventoryItemIndex.value
-    || props.mode === 'baseItem'
-    || (props.mode === 'content' && isEditing?.value)
-
-  return result
-})
 const indicatorWidth = computed(() => isCompactMode.value ? '0.75rem' : '1.75rem')
-const isVisible = computed(() => props.inventoryItems[props.index] != null || isEditing?.value)
-const lastHierarchyInventoryItemIndex = computed(() => {
-  let lastIndex = 0
-
-  for (let i = 0; i < props.inventoryItems.length; i++) {
-    if ((!isEditing?.value && props.inventoryItems[i] != null)
-      || (isEditing?.value && i === props.inventoryItems.length - 1)
-    ) {
-      lastIndex = i
-    }
-  }
-
-  return lastIndex
-})
 const upperHeight = computed(() => {
   if (props.mode === 'baseItem'
-    || (props.mode === 'mods' && props.index === 0)
+    || (props.mode === 'mods' && props.isFirst)
   ) {
     return '2.5rem'
   } else if (props.mode === 'mods') {
     return '3.5rem'
-  } else if (props.mode === 'addContent'
-    || (props.index === 0
-      && (props.mode === 'content'
-        || props.mode === 'magazineContent'))) {
+  } else if (
+    props.isFirst
+    && (props.mode === 'content'
+      || props.mode === 'magazineContent')) {
     return '1rem'
   } else {
     return '2.25rem'
@@ -76,7 +53,7 @@ const { isSmartphonePortrait, isTabletPortrait } = WebBrowserUtils.getScreenSize
     <div class="item-hierarchy-indicator-upper" />
     <div class="item-hierarchy-indicator-middle" />
     <div
-      v-show="displayBottomPart"
+      v-show="!isLast"
       class="item-hierarchy-indicator-bottom"
     />
   </div>

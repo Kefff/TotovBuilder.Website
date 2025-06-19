@@ -31,6 +31,7 @@ const itemPathPrefix = PathUtils.itemPrefix
 const itemToAdd = ref<IInventoryItem>()
 
 const canAddItem = computed(() => !isMagazine.value || modelInventoryItems.value.length === 0)
+const lastInventoryItemIndex = computed(() => modelInventoryItems.value.findLastIndex(ii => ii != null))
 const isMagazine = computed(() => _itemPropertiesService.isMagazine(props.containerItem))
 const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
@@ -126,9 +127,10 @@ function onMerchantFilterChanged(): void {
       class="item-content-content-item"
     >
       <ItemHierarchyIndicator
-        :inventory-items="inventoryItems"
-        :index="index"
-        :mode="props.containerItem.categoryId === ItemCategoryId.magazine ? 'magazineContent' : 'content'"
+        :is-first="index === 0"
+        :is-last="containerItem.categoryId === ItemCategoryId.magazine || (index === lastInventoryItemIndex && !(isEditing ?? false))"
+        :is-visible="modelInventoryItems[index] != null || (isEditing ?? false)"
+        :mode="containerItem.categoryId === ItemCategoryId.magazine ? 'magazineContent' : 'content'"
       />
       <Item
         :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
@@ -145,8 +147,9 @@ function onMerchantFilterChanged(): void {
       class="item-content-content-item"
     >
       <ItemHierarchyIndicator
-        :inventory-items="[itemToAdd]"
-        :index="0"
+        :is-first="modelInventoryItems.length === 0"
+        :is-last="isEditing ?? false"
+        :is-visible="true"
         mode="addContent"
       />
       <Item
@@ -155,7 +158,7 @@ function onMerchantFilterChanged(): void {
         :get-accepted-items-function="getAcceptedItemsAsync"
         :max-stackable-amount="maximumQuantity"
         :path="`${path}/new`"
-        @update:inventory-item="onItemAdded($event)"
+        @update:inventory-item="onItemAdded($event!)"
       />
     </div>
   </div>

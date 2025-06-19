@@ -20,16 +20,7 @@ const isEditing = inject<Ref<boolean>>('isEditing')
 const isInitializing = ref(true)
 const modSlots = ref<IModSlot[]>(props.moddableItem.modSlots)
 
-const inventoryItems = computed(() => {
-  const inventoryItems = []
-
-  for (const modSlot of modSlots.value) {
-    const inventoryItem = modelInventoryModSlots.value.find(ims => ims.modSlotName === modSlot.name)?.item
-    inventoryItems.push(inventoryItem)
-  }
-
-  return inventoryItems
-})
+const lastModSlotWithItemIndex = computed(() => modelInventoryModSlots.value.findLastIndex(ims => ims.item != null))
 
 onMounted(() => initialize())
 
@@ -99,12 +90,13 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
       class="item-mods-mod"
     >
       <ItemHierarchyIndicator
-        :inventory-items="inventoryItems"
-        :index="index"
+        :is-first="index === 0"
+        :is-last="(isEditing ?? false) ? index === modSlots.length - 1 : index === lastModSlotWithItemIndex"
+        :is-visible="modelInventoryModSlots[index]?.item != null || (isEditing ?? false)"
         mode="mods"
       />
       <ModSlot
-        :inventory-item="inventoryItems[index]"
+        :inventory-item="modelInventoryModSlots[index]?.item"
         :mod-slot="modSlot"
         :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
         @update:inventory-item="onItemChanged(modSlot.name, $event)"
