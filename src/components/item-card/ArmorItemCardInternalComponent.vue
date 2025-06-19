@@ -67,7 +67,7 @@ const tooltipSuffix = computed(() => {
   <Tooltip
     v-if="durability !== 0
       || ((comparisonArmorDurability ?? 0) !== 0)"
-    :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
+    :class="{ 'armor-item-card-bold': includeModsAndContent }"
     :tooltip="$t('caption.durability') + tooltipSuffix"
   >
     <div
@@ -89,7 +89,7 @@ const tooltipSuffix = computed(() => {
   <Tooltip
     v-if="armorClass !== 0
       || ((comparisonArmorArmorClass ?? 0) !== 0)"
-    :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
+    :class="{ 'armor-item-card-bold': includeModsAndContent }"
     :tooltip="$t('caption.armorClass') + tooltipSuffix"
   >
     <div

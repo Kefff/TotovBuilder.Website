@@ -54,7 +54,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
   <Tooltip
     v-if="ergonomicsModifierPercentage !== 0
       || (comparisonWearableErgonomicsModifierPercentage ?? 0) !== 0"
-    :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
+    :class="{ 'wearable-item-card-bold': includeModsAndContent }"
     :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
   >
     <div
@@ -80,7 +80,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
   <Tooltip
     v-if="movementSpeedModifierPercentage !== 0
       || (comparisonWearableMovementSpeedModifierPercentage ?? 0) !== 0"
-    :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
+    :class="{ 'wearable-item-card-bold': includeModsAndContent }"
     :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
   >
     <div
@@ -106,7 +106,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
   <Tooltip
     v-if="turningSpeedModifierPercentage !== 0
       || (comparisonWearableTurningSpeedModifierPercentage ?? 0) !== 0"
-    :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
+    :class="{ 'wearable-item-card-bold': includeModsAndContent }"
     :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
   >
     <div
@@ -141,7 +141,7 @@ const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOve
 
 
 <style scoped>
-.wearable-summary-bold {
+.wearable-item-card-bold {
   font-style: italic;
   font-weight: bolder;
 }

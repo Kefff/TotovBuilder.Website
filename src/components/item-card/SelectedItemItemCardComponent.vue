@@ -161,15 +161,17 @@ async function setWeightAsync(): Promise<void> {
             :is-build="false"
           />
         </div>
-        <div class="selected-item-item-card-price">
+        <div
+          v-if="showPrice"
+          class="selected-item-item-card-price"
+        >
           <Price
-            v-if="showPrice"
             :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
             :missing="showSelectedItemMissingPrice"
             :price="selectedItemPrice.price"
           />
           <Tooltip
-            v-if="showPrice && isEditing && canBeLooted && canIgnorePrice"
+            v-if="isEditing && canBeLooted && canIgnorePrice"
             :apply-hover-style="false"
             :disabled-on-mobile="true"
             :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
@@ -221,11 +223,11 @@ async function setWeightAsync(): Promise<void> {
             </div>
           </Tooltip>
         </div>
-        <div class="selected-item-item-card-weight">
-          <Tooltip
-            v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
-            :tooltip="$t('caption.weight')"
-          >
+        <div
+          v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
+          class="selected-item-item-card-weight"
+        >
+          <Tooltip :tooltip="$t('caption.weight')">
             <div class="card-value selected-item-item-card-weight">
               <font-awesome-icon
                 icon="weight-hanging"

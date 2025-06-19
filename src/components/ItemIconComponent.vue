@@ -96,7 +96,8 @@ const iconUrl = computed(() => {
   position: absolute;
   right: 3px;
   text-align: end;
-  text-shadow: 1px 1px 0 black,
+  text-shadow:
+    1px 1px 0 black,
     -1px 1px 0 black,
     1px -1px 0 black,
     -1px -1px 0 black;
@@ -109,7 +110,8 @@ const iconUrl = computed(() => {
   position: absolute;
   right: 3px;
   text-align: end;
-  text-shadow: 1px 1px 0 black,
+  text-shadow:
+    1px 1px 0 black,
     -1px 1px 0 black,
     1px -1px 0 black,
     -1px -1px 0 black;

@@ -66,7 +66,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     }"
   >
     <Tooltip
-      :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
+      :class="{ 'ranged-weapon-item-card-bold': includeModsAndContent }"
       :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <div
@@ -87,7 +87,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       />
     </Tooltip>
     <Tooltip
-      :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
+      :class="{ 'ranged-weapon-item-card-bold': includeModsAndContent }"
       :tooltip="$t('caption.horizontalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <div
@@ -108,7 +108,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       />
     </Tooltip>
     <Tooltip
-      :class="{ 'ranged-weapon-item-card-bold': props.includeModsAndContent }"
+      :class="{ 'ranged-weapon-item-card-bold': includeModsAndContent }"
       :tooltip="$t('caption.ergonomics') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <div
@@ -131,7 +131,10 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
   <div class="card-line card-line4">
     <Tooltip
       :tooltip="$t('caption.fireRate')"
-      :class="StatsUtils.getSortedPropertyColorClass('fireRate', filterAndSortingData)"
+      :class="[
+        includeModsAndContent ? 'ranged-weapon-item-card-bold' : undefined,
+        StatsUtils.getSortedPropertyColorClass('fireRate', filterAndSortingData)
+      ]"
     >
       <CustomIcon
         :icon="Images.fireRate"
@@ -151,7 +154,10 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     <Tooltip
       :tooltip="$t('caption.caliber')"
       class="ranged-weapon-item-card-long"
-      :class="StatsUtils.getSortedPropertyColorClass('caliber', filterAndSortingData)"
+      :class="[
+        includeModsAndContent ? 'ranged-weapon-item-card-bold' : undefined,
+        StatsUtils.getSortedPropertyColorClass('caliber', filterAndSortingData)
+      ]"
     >
       <CustomIcon
         :icon="Images.caliber"

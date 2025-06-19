@@ -64,7 +64,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       v-if="hasRicochetChance"
       :tooltip="$t('caption.ricochetChance')"
       :class="[
-        props.includeModsAndContent ? 'headwear-item-card-bold' : undefined,
+        includeModsAndContent ? 'headwear-item-card-bold' : undefined,
         StatsUtils.getSortedPropertyColorClass('ricochetChance', filterAndSortingData)
       ]"
     >
