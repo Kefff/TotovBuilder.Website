@@ -38,10 +38,6 @@ const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
   priceByCurrency: selectedItemPrice.value.pricesWithContent,
   priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
 }))
-const showSelectedItemMissingPrice = computed(() =>
-  hasMissingPrice.value
-  && !props.includeModsAndContent
-  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We do not show the missing price icon on items that contain an item with a missing price
 const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
 const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
 
@@ -167,7 +163,7 @@ async function setWeightAsync(): Promise<void> {
         >
           <Price
             :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-            :missing="showSelectedItemMissingPrice"
+            :missing="hasMissingPrice"
             :price="selectedItemPrice.price"
           />
           <Tooltip

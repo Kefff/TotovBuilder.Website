@@ -69,7 +69,10 @@ function toggleInventoryPriceDetails(event: Event): void {
 
 <template>
   <div class="inventory-price">
-    <Tooltip :tooltip="tooltip">
+    <Tooltip
+      v-if="!inventoryPrice.missingPrice"
+      :tooltip="tooltip"
+    >
       <div
         class="inventory-price-list"
         :class="canShowDetails ? ' inventory-price-with-details' : ''"
@@ -91,7 +94,7 @@ function toggleInventoryPriceDetails(event: Event): void {
       </div>
     </Tooltip>
     <Tooltip
-      v-if="inventoryPrice.missingPrice"
+      v-else
       class="inventory-price-missing-price-icon"
       :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
     >

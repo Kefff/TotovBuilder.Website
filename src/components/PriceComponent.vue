@@ -229,13 +229,9 @@ function togglePriceDetails(event: Event): void {
           <span>{{ displayedPrice }}</span>
         </div>
         <div
-          v-else-if="!missing && ignorePriceStatus === IgnoredUnitPrice.notIgnored"
-          class="price-missing-icon icon-before-text"
-          style="width: unset;"
+          v-if="canShowIcon"
+          class="price-icons"
         >
-          <font-awesome-icon icon="exclamation-triangle" />
-        </div>
-        <div v-if="canShowIcon">
           <div
             v-if="ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored"
             class="price-ignored-icon"
@@ -249,7 +245,7 @@ function togglePriceDetails(event: Event): void {
             <font-awesome-icon icon="exclamation-triangle" />
           </div>
           <MerchantIcon
-            v-else-if="ignorePriceStatus === IgnoredUnitPrice.notIgnored"
+            v-if="price.merchant != '' && ignorePriceStatus === IgnoredUnitPrice.notIgnored"
             :is-barter="isBarter"
             :merchant="price.merchant"
             :merchant-level="price.merchantLevel"
@@ -381,6 +377,12 @@ function togglePriceDetails(event: Event): void {
   align-items: center;
   display: flex;
   justify-content: end;
+}
+
+.price-icons {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
 }
 
 .price-ignored-icon {
