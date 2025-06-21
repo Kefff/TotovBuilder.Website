@@ -47,7 +47,7 @@ const specializedComponent = ref<string>()
 
 onMounted(() => setSpecializedComponent(props.selectedItem.categoryId))
 
-watch(() => props.inventoryItem.itemId, () => setSpecializedComponent(props.selectedItem.categoryId))
+watch(() => props.inventoryItem, () => setSpecializedComponent(props.selectedItem.categoryId))
 
 /**
  * Sets the type of specialized options header component to display.
