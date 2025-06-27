@@ -67,5 +67,41 @@ const grenade = computed(() => props.item as IGrenade)
         {{ grenade.fragmentsAmount }}
       </div>
     </div>
+    <div
+      v-if="grenade.impact"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="meteor"
+          class="icon-before-text"
+        />
+        <span class="stats-value">{{ $t('caption.impact') }}</span>
+      </div>
+    </div>
+    <div
+      v-if="grenade.blinding"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="dizzy"
+          class="icon-before-text"
+        />
+        <span class="stats-value">{{ $t('caption.blinding') }}</span>
+      </div>
+    </div>
+    <div
+      v-if="grenade.smoke"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="cloud"
+          class="icon-before-text"
+        />
+        <span class="stats-value">{{ $t('caption.smoke') }}</span>
+      </div>
+    </div>
   </div>
 </template>

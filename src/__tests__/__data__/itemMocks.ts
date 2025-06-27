@@ -2704,6 +2704,7 @@ export const razor: IItem = {
 }
 
 export const rgd5: IGrenade = {
+  blinding: false,
   categoryId: ItemCategoryId.grenade,
   conflictingItemIds: [],
   explosionDelay: 3.5,
@@ -2711,6 +2712,7 @@ export const rgd5: IGrenade = {
   iconLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-icon.webp',
   id: '5448be9a4bdc2dfd2f8b456a',
   imageLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-image.webp',
+  impact: false,
   marketLink: 'https://tarkov.dev/item/rgd-5-hand-grenade',
   maximumExplosionRange: 7,
   maxStackableAmount: 1,
@@ -2719,7 +2721,7 @@ export const rgd5: IGrenade = {
   presetWeight: undefined,
   prices: [],
   shortName: 'RGD-5',
-  type: 'Grenade',
+  smoke: false,
   weight: 0.31,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RGD-5_hand_grenade'
 }

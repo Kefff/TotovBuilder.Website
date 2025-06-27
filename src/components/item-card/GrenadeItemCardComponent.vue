@@ -114,5 +114,56 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         :current-value="grenade.fragmentsAmount"
       />
     </Tooltip>
+    <div
+      v-if="grenade.blinding
+        || grenade.impact
+        || grenade.smoke"
+      class="grenade-item-card-attributes"
+    >
+      <Tooltip
+        v-if="grenade.impact"
+        :tooltip="$t('caption.impact')"
+      >
+        <font-awesome-icon
+          icon="meteor"
+          :class="`icon-before-text`"
+        />
+      </Tooltip>
+      <Tooltip
+        v-if="grenade.blinding"
+        :tooltip="$t('caption.blinding')"
+      >
+        <font-awesome-icon
+          icon="dizzy"
+          :class="`icon-before-text`"
+        />
+      </Tooltip>
+      <Tooltip
+        v-if="grenade.smoke"
+        :tooltip="$t('caption.smoke')"
+      >
+        <font-awesome-icon
+          icon="cloud"
+          :class="`icon-before-text`"
+        />
+      </Tooltip>
+    </div>
   </div>
 </template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.grenade-item-card-attributes {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+</style>

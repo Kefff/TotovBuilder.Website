@@ -443,19 +443,23 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedGrenade(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IGrenade {
+    const blinding = reducedItem['b'] != null
     const explosionDelay = reducedItem['d'] as number
     const fragmentsAmount = reducedItem['f'] as number ?? 0
+    const impact = reducedItem['ip'] != null
     const maximumExplosionRange = reducedItem['ma'] as number ?? 0
     const minimumExplosionRange = reducedItem['mi'] as number ?? 0
-    const type = reducedItem['t'] as string
+    const smoke = reducedItem['sm'] != null
 
     return {
       ...baseItemProperties,
+      blinding,
       explosionDelay,
       fragmentsAmount,
+      impact,
       maximumExplosionRange,
       minimumExplosionRange,
-      type
+      smoke
     }
   }
 

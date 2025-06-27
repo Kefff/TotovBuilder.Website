@@ -48,6 +48,8 @@ function initialize(): void {
     // When an item in a build is not found, we assume it is moddable in order to be able
     // to display its possible mods.
     // We create a fake list of mod slots for it.
+    modSlots.value = []
+
     for (const inventoryModSlot of modelInventoryModSlots.value) {
       modSlots.value.push({
         compatibleItemIds: [inventoryModSlot.item?.itemId ?? ''],
