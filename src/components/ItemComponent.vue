@@ -525,7 +525,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             class="item-header-button"
           >
             <Tooltip
-              v-if="item != null"
+              v-if="item != null && item.categoryId !== 'notFound'"
               :apply-hover-style="false"
               :disabled-on-mobile="true"
               :tooltip="$t('caption.showDetails')"
