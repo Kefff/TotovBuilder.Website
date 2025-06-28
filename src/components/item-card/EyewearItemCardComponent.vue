@@ -74,5 +74,29 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         :is-percentage="true"
       />
     </Tooltip>
+    <Tooltip
+      v-if="eyewear.ergonomicsModifierPercentage !== 0
+        || (comparisonEyewear?.ergonomicsModifierPercentage ?? 0 !== 0)"
+      :tooltip="$t('caption.ergonomicsModifierPercentage')"
+    >
+      <div
+        class="card-value"
+        :class="StatsUtils.getSortedPropertyColorClass('ergonomicsModifierPercentage', filterAndSortingData)"
+      >
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(eyewear.ergonomicsModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, eyewear.ergonomicsModifierPercentage) }}
+        </span>
+      </div>
+      <ValueComparison
+        v-if="comparisonEyewear != null"
+        :compare-to-value="comparisonEyewear?.ergonomicsModifierPercentage"
+        :current-value="eyewear.ergonomicsModifierPercentage"
+        :is-percentage="true"
+      />
+    </Tooltip>
   </div>
 </template>

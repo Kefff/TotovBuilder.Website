@@ -258,6 +258,7 @@ export class ItemPropertiesService {
     return this.isArmor(value)
       || this.isArmorMod(value)
       || this.isBackpack(value)
+      || this.isEyewear(value)
       || this.isFaceCover(value)
       || this.isHeadwear(value)
       || this.isVest(value)

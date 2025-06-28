@@ -725,10 +725,10 @@ describe('BuildPropertiesService', () => {
 
   describe('getStatsAsString', () => {
     it.each([
-      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-11.5%**)  
+      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-17.5%**)  
 🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**  
 💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  `],
-      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-11,5%)
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 31 (-17,5%)
 Classe d'armure 4   Vitesse -7%   Vitesse de rotation -12%
 Poids 26,153 kg`],
       [build2, true, false, 'fr', BuildsToTextType.markdown, `↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
@@ -763,8 +763,8 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
     })
 
     it.each([
-      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-11.5%**)    🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**    💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  '],
-      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-11,5%)    Classe d\'armure 4   Vitesse -7%   Vitesse de rotation -12%    Poids 26,153 kg'],
+      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-17.5%**)    🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**    💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  '],
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 31 (-17,5%)    Classe d\'armure 4   Vitesse -7%   Vitesse de rotation -12%    Poids 26,153 kg'],
       [build2, true, false, 'fr', BuildsToTextType.markdown, '↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)    🛡️ Classe d\'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**    ⚓ Poids **9,236 kg**  '],
       [build2, false, true, 'en', BuildsToTextType.simpleText, 'Vertical recoil 362   Horizontal recoil 249   Ergonomics 52 (-3%)    Armor class 4   Speed -3%   Turning speed -1%    Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg']
     ])('should get the stats of a build as a single line', async (build: IBuild, includeEmojis: boolean, includePrices: boolean, language: string, type: BuildsToTextType, expected: string) => {
@@ -1230,7 +1230,7 @@ Ref Non   Skier 1   La Toubib 3
 
 *[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-11,5%**)  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-17,5%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
 ⚓ Poids **26,153 kg**  
 
@@ -1403,7 +1403,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       // Assert
       expect(result).toBe(`# Build 1
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-11,5%**)  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-17,5%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
 💵 Prix **361 226₽**   ⚓ Poids **26,153 kg**  
 
@@ -1869,7 +1869,7 @@ Créé avec Totov Builder`)
       // Assert
       expect(result).toBe(`Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-11,5%)
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-17,5%)
 🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
 ⚓ Poids 26,153 kg
 
@@ -2053,7 +2053,7 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       // Assert
       expect(result).toBe(`Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-11,5%)
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-17,5%)
 🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
 💵 Prix 361 226₽   ⚓ Poids 26,153 kg
 
@@ -2125,7 +2125,7 @@ const expectedMarkdownString1En = `# Build 1
 
 *[Interactive version with full statistics](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
 
-↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **34** (**-11.5%**)  
+↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-17.5%**)  
 🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**  
 💵 Price **361,226₽**   ⚓ Weight **26.153 kg**  
 
@@ -2164,7 +2164,7 @@ const expectedMarkdownString1Fr = `# Build 1
 
 *[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-11,5%**)  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-17,5%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
 💵 Prix **361 226₽**   ⚓ Poids **26,153 kg**  
 
@@ -2315,7 +2315,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 const expectedString1En = `Build 1
 
-↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 34 (-11.5%)
+↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 31 (-17.5%)
 🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%
 💵 Price 361,226₽   ⚓ Weight 26.153 kg
 
@@ -2355,7 +2355,7 @@ Created with Totov Builder`
 
 const expectedString1Fr = `Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-11,5%)
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-17,5%)
 🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
 💵 Prix 361 226₽   ⚓ Poids 26,153 kg
 

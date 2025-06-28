@@ -921,7 +921,7 @@ export const crossbow: IEyewear = {
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 0,
-  ergonomicsModifierPercentage: 0,
+  ergonomicsModifierPercentage: -0.06,
   iconLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-icon.webp',
   id: '5d5fca1ea4b93635fd598c07',
   imageLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-image.webp',

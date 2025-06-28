@@ -757,7 +757,7 @@ describe('ItemPropertiesService', () => {
       [ItemCategoryId.backpack, true],
       [ItemCategoryId.container, false],
       [ItemCategoryId.currency, false],
-      [ItemCategoryId.eyewear, false],
+      [ItemCategoryId.eyewear, true],
       [ItemCategoryId.faceCover, true],
       [ItemCategoryId.grenade, false],
       [ItemCategoryId.headphones, false],

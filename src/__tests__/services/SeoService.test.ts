@@ -22,7 +22,7 @@ describe('SeoService', () => {
       const result = service.getBuildSeoDescription(buildSummary)
 
       // Assert
-      expect(result).toBe('↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 34 (-11.5%)    🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%    💵 Price 361,226₽   ⚓ Weight 26.153 kg')
+      expect(result).toBe('↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 31 (-17.5%)    🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%    💵 Price 361,226₽   ⚓ Weight 26.153 kg')
     })
   })
 
@@ -51,7 +51,7 @@ describe('SeoService', () => {
 
       // Assert
       expect(result).toStrictEqual({
-        description: '↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 34 (-11.5%)    🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%    💵 Price 361,226₽   ⚓ Weight 26.153 kg',
+        description: '↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 31 (-17.5%)    🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%    💵 Price 361,226₽   ⚓ Weight 26.153 kg',
         image: 'https://assets.tarkov.dev/5c0d1ec986f77439512a1a72-image.webp',
         imageAlt: buildHasName ? 'Build 1' : 'New build',
         title: buildHasName ? 'Build 1' : 'New build',
