@@ -7,9 +7,8 @@ import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IModdable } from '../models/item/IModdable'
 import { ItemSelectionSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
-import { SelectableTab } from '../models/utils/UI/SelectableTab'
-import { CompatibilityRequestType } from '../services/compatibility/CompatibilityRequestType'
-import { CompatibilityService } from '../services/compatibility/CompatibilityService'
+import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
+import { SelectableTab } from '../models/utils/SelectableTab'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemComponentService } from '../services/ItemComponentService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
@@ -29,6 +28,7 @@ import SelectedItemFunctionalities from './SelectedItemFunctionalitiesComponent.
 import Tooltip from './TooltipComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
+const modelItemSelectionRestrictions = defineModel<ItemSelectionRestrictionList>('itemSelectionRestrictions')
 
 const props = withDefaults(
   defineProps<{
@@ -50,7 +50,6 @@ const props = withDefaults(
     maxStackableAmount: undefined
   })
 
-const _compatibilityService = Services.get(CompatibilityService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemComponentService = Services.get(ItemComponentService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
@@ -114,14 +113,14 @@ function getAcceptedItemsForBaseItem(): Promise<IItem[]> {
  * Initializes the item based on the inventory item passed to the component.
  */
 async function initializeItemAsync(): Promise<void> {
-  if (props.inventoryItem == null) {
-    quantity.value = 0
-    item.value = undefined
-
+  if (item.value?.id === modelInventoryItem.value?.itemId) {
     return
   }
 
-  if (item.value?.id === modelInventoryItem.value?.itemId) {
+  if (props.inventoryItem == null) {
+    quantity.value = 1
+    item.value = undefined
+
     return
   }
 
@@ -174,33 +173,31 @@ function onIgnorePriceChanged(newIgnorePrice: boolean): void {
  *
  * Updates the inventory item based on the selected item.
  */
-async function onItemChangedAsync(): Promise<void> {
+function onItemChanged(): void {
   if (item.value?.id === modelInventoryItem.value?.itemId) {
     return
   }
 
-  if (item.value == null) {
-    quantity.value = 0
-    modelInventoryItem.value = undefined
-
-    return
-  }
-
   itemChanging.value = true
-  presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
 
-  let compatibilityResult = true
+  if (item.value == null) {
+    modelInventoryItem.value = undefined
+  } else {
+    presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+    const newContent = _itemComponentService.getReplacingItemContent(modelInventoryItem.value, item.value)
+    const newModSlots = _itemComponentService.getReplacingModSlots(modelInventoryItem.value, item.value)
 
-  // Checking the compatibility of the selected item depending where the item is being added
-  if (_itemPropertiesService.isArmor(item.value)) {
-    compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.armor, item.value.id, props.path)
-  } else if (_itemPropertiesService.isVest(item.value)) {
-    compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.tacticalRig, item.value.id, props.path)
-  } else if (_itemPropertiesService.isModdable(item.value)) {
-    compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.mod, item.value.id, props.path)
+    modelInventoryItem.value = {
+      content: newContent,
+      ignorePrice: modelInventoryItem.value?.ignorePrice ?? false,
+      itemId: item.value.id,
+      modSlots: newModSlots,
+      quantity: maxSelectableQuantity.value
+    }
+    setBaseItem(item.value)
   }
 
-  updateInventoryItem(item.value, compatibilityResult)
+  itemChanging.value = false
 }
 
 /**
@@ -268,7 +265,7 @@ function onSelectionInputClick(): void {
 
       if (item.value?.id !== selectedItem?.id) {
         item.value = selectedItem
-        onItemChangedAsync()
+        onItemChanged()
       }
     }
   })
@@ -278,11 +275,11 @@ function onSelectionInputClick(): void {
  * Removes the selected item.
  * @param event - Click event.
  */
-async function removeItemAsync(event: MouseEvent): Promise<void> {
+function removeItem(event: MouseEvent): void {
   event.stopPropagation()
 
   item.value = undefined
-  await onItemChangedAsync()
+  onItemChanged()
 }
 
 /**
@@ -370,34 +367,6 @@ function showDetails(): void {
     displayedComponentType: 'StatsSidebar',
     displayedComponentParameters: item.value
   })
-}
-
-/**
- * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.
- * @param newItem - New selected item.
- * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
- */
-function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean): void {
-  if (!compatibilityCheckResult) {
-    initializeItemAsync() // Putting back the previous selected item when the new item is incomptatible
-  } else {
-    quantity.value = maxSelectableQuantity.value
-    const ignorePrice = modelInventoryItem.value?.ignorePrice ?? false
-    const newContent = _itemComponentService.getReplacingItemContent(modelInventoryItem.value, newItem)
-    const newModSlots = _itemComponentService.getReplacingModSlots(modelInventoryItem.value, newItem)
-
-    modelInventoryItem.value = {
-      content: newContent,
-      ignorePrice,
-      itemId: newItem.id,
-      modSlots: newModSlots,
-      quantity: quantity.value
-    }
-
-    setBaseItem(newItem)
-  }
-
-  itemChanging.value = false
 }
 </script>
 
@@ -514,7 +483,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                 class="p-button-sm"
                 outlined
                 severity="danger"
-                @click="removeItemAsync"
+                @click="removeItem"
               >
                 <font-awesome-icon icon="times" />
               </Button>
@@ -601,6 +570,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             </div>
             <ItemComponent
               v-model:inventory-item="baseItem"
+              v-model:item-selection-restrictions="modelItemSelectionRestrictions"
               :get-accepted-items-function="getAcceptedItemsForBaseItem"
               :can-be-looted="showBaseItemPrice"
               :is-base-item="true"
@@ -612,6 +582,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         <ItemMods
           v-if="itemIsModdable"
           v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
+          v-model:item-selection-restrictions="modelItemSelectionRestrictions"
           :inventory-mod-slots="modelInventoryItem.modSlots"
           :moddable-item="(item as IModdable)"
           :path="path"

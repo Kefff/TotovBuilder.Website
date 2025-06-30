@@ -16,16 +16,28 @@ export class PathUtils {
   public static newBuild = 'new-build'
 
   /**
-   * Checks if the path is a path to an armor in an armor inventory slot.
+   * Checks if the path is a path to an inventory slot item.
    * @param path - Path.
-   * @returns `true` when the path is a path to an armor in an armor inventory slot; otherwise `false`.
+   * @returns `true` when the path is a path to an item in an inventory slot; otherwise `false`.
    */
-  public static checkIsArmorInventorySlotPath(path: string): boolean {
-    const isArmorPath = path.includes(`${PathUtils.inventorySlotPrefix}${InventorySlotTypeId.bodyArmor}`)
+  public static checkIsInventorySlotItem(path: string, inventorySlotType?: InventorySlotTypeId): boolean {
     const contentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
+
+    if (contentSlotIndex >= 0) {
+      return false
+    }
+
     const modSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
 
-    return isArmorPath && contentSlotIndex < 0 && modSlotIndex < 0
+    if (modSlotIndex >= 0) {
+      return false
+    }
+
+    if (inventorySlotType != null && !path.includes(`${PathUtils.inventorySlotPrefix}${inventorySlotType}`)) {
+      return false
+    }
+
+    return true
   }
 
   /**
@@ -38,19 +50,6 @@ export class PathUtils {
     const lastContentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
 
     return lastModSlotIndex >= 0 && lastModSlotIndex > lastContentSlotIndex
-  }
-
-  /**
-   * Checks if the path is a path to a vest in a vest inventory slot.
-   * @param path - Path.
-   * @returns `true` when the path is a path to a vest in a vest inventory slot; otherwise `false`.
-   */
-  public static checkIsVestInventorySlotPath(path: string): boolean {
-    const isVestPath = path.includes(`${PathUtils.inventorySlotPrefix}${InventorySlotTypeId.tacticalRig}`)
-    const contentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
-    const modSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
-
-    return isVestPath && contentSlotIndex < 0 && modSlotIndex < 0
   }
 
   /**

@@ -4,7 +4,6 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IConflictingItem } from '../models/configuration/IConflictingItem'
-import { IVest } from '../models/item/IVest'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -22,122 +21,13 @@ import { BuildService } from './BuildService'
 import { GlobalFilterService } from './GlobalFilterService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
-import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
-import { NotificationService, NotificationType } from './NotificationService'
 import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing properties of a build.
  */
 export class BuildPropertiesService {
-  /**
-   * Checks if a build contains an armored vest preventing the usage of an armor.
-   * Displays a warning notification when it is the case.
-   * @param build - Build.
-   * @param path - Path to the armor being added.
-   */
-  public async canAddArmorAsync(build: IBuild, path: string): Promise<boolean> {
-    const isArmorPath = PathUtils.checkIsArmorInventorySlotPath(path)
-
-    if (!isArmorPath) {
-      // When the armor is added in the content of another item we do not need to check it
-      return true
-    }
-
-    const itemService = Services.get(ItemService)
-    const vestSlot = build.inventorySlots.find((is) => is.typeId === InventorySlotTypeId.tacticalRig)!
-
-    if (vestSlot.items[0] == null) {
-      return true
-    }
-
-    const item = await itemService.getItemAsync(vestSlot.items[0].itemId)
-    const vest = item as IVest
-
-    if (vest.armorClass > 0 || vest.armoredAreas.length > 0) {
-      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddBodyArmor'))
-
-      return false
-    }
-
-    return true
-  }
-
-  /**
-   * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
-   * Displays a warnng notification when it is the case.
-   * @param build - Build.
-   * @param modId - ID of the mod to be added.
-   * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
-   */
-  public async canAddModAsync(build: IBuild, modId: string, path: string): Promise<boolean> {
-    const isModSlotPath = PathUtils.checkIsModSlotPath(path)
-
-    if (!isModSlotPath) {
-      // When the mod is added in the content of another item we do not need to check it
-      return true
-    }
-
-    const itemService = Services.get(ItemService)
-    const mod = await itemService.getItemAsync(modId)
-
-    const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
-    const inventoryItem = PathUtils.getInventoryItemFromPath(build, firstItemPath)
-    const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
-    const conflicts = await this.getConflictingItemsAsync(inventoryItem, changedModSlotPath)
-
-    for (const conflict of conflicts) {
-      if (conflict.path.startsWith(path) // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
-        || (conflict.conflictingItemId !== modId // If the mod conflicts with itself, we ignore the conflict
-          && !mod.conflictingItemIds.includes(conflict.itemId)) // Checking the conflicting items of the mod being added
-      ) {
-        continue
-      }
-
-      const conflictingItem = await itemService.getItemAsync(conflict.itemId)
-      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
-
-      return false
-    }
-
-    return true
-  }
-
-  /**
-   * Checks if a build contains an armor preventing the usage of an armored vest.
-   * Displays a warning notification when it is the case.
-   * @param build - Build.
-   * @param path - Path to the vest being added.
-   */
-  public async canAddVestAsync(build: IBuild, vestId: string, path: string): Promise<boolean> {
-    const isVestPath = PathUtils.checkIsVestInventorySlotPath(path)
-
-    if (!isVestPath) {
-      // When the vest is added in the content of another item we do not need to check it
-      return true
-    }
-
-    const itemService = Services.get(ItemService)
-    const item = await itemService.getItemAsync(vestId)
-    const vest = item as IVest
-
-    if (!Services.get(ItemPropertiesService).isVest(item)
-      || (vest.armorClass === 0 && vest.armoredAreas.length === 0)) {
-      return true
-    }
-
-    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === InventorySlotTypeId.bodyArmor)
-
-    if (bodyArmorInventorySlot?.items[0] != null) {
-      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddTacticalRig'))
-
-      return false
-    }
-
-    return true
-  }
-
   /**
  * Checks whether a build summary matches a filter.
  * @param buildSummaryToCheck - Build summary that must be checked against the filter.

@@ -3,13 +3,15 @@ import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
+import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InventorySlot from './InventorySlotComponent.vue'
 import InventorySlotSelector from './InventorySlotSelectorComponent.vue'
 
-const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
 const modelCurrentInventorySlot = defineModel<InventorySlotTypeId>('currentInventorySlot', { required: true })
+const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
+const modelItemSelectionRestrictions = defineModel<ItemSelectionRestrictionList>('itemSelectionRestrictions', { required: true })
 
 defineProps<{
   inventorySlotsShoppingListItems: IShoppingListItem[],
@@ -161,6 +163,7 @@ function scrollToTop(): void {
           v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
           :key="inventorySlot.typeId"
           v-model:inventory-slot="inventorySlotGroups[currentPageIndex][index]"
+          v-model:item-selection-restrictions="modelItemSelectionRestrictions"
           :can-go-to-next="currentPageIndex < inventorySlotGroups.length - 1"
           :can-go-to-previous="currentPageIndex > 0"
           :next-inventory-slot-type="inventorySlotGroups[currentPageIndex + 1]?.[0].typeId"

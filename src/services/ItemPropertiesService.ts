@@ -157,6 +157,17 @@ export class ItemPropertiesService {
   }
 
   /**
+   * Indicates whether an item is headphones.
+   * @param value - Item or category ID.
+   * @returns `true` if the item is headphones; otherwise `false`.
+   */
+  public isHeadphones(value: IItem | ItemCategoryId): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === ItemCategoryId.headphones
+  }
+
+  /**
    * Indicates whether an item is headwear.
    * @param value - Item or category ID.
    * @returns `true` if the item is headwear; otherwise `false`.

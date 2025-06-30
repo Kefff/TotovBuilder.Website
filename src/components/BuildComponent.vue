@@ -6,13 +6,11 @@ import { IBuild } from '../models/build/IBuild'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { InventorySlotSelectorSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
+import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
-import { CompatibilityRequest } from '../services/compatibility/CompatibilityRequest'
-import { CompatibilityRequestType } from '../services/compatibility/CompatibilityRequestType'
-import { CompatibilityService } from '../services/compatibility/CompatibilityService'
 import { BuildComponentService } from '../services/components/BuildComponentService'
 import { ExportService } from '../services/ExportService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
@@ -37,7 +35,6 @@ const router = useRouter()
 
 const _buildComponentService = Services.get(BuildComponentService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
-const _compatibilityService = Services.get(CompatibilityService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
@@ -206,6 +203,7 @@ const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
 const hasChanges = ref(false)
 const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
+const itemSelectionRestrictions = ref<ItemSelectionRestrictionList>()
 const isBuildSummaryStickied = ref(false)
 const isCompactBuildSummaryPinned = ref(false)
 const isEditing = ref(false)
@@ -247,14 +245,12 @@ provide('isEditing', isEditing)
 provide('isNewBuild', isNewBuild)
 
 onMounted(() => {
-  _compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
-  _compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
-  _compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
   addNavigationGuards()
 
   isEditing.value = isNewBuild.value
   hasChanges.value = isNewBuild.value
+  itemSelectionRestrictions.value = new ItemSelectionRestrictionList()
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitializedAsync)
@@ -264,9 +260,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  _compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
-  _compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
-  _compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
   removeNavigationGuards()
 })
@@ -484,16 +477,6 @@ function goToBuilds(): void {
 }
 
 /**
- * Reacts to an armor compatibility check request.
- *
- * Checks whether an armor can be added to the build or not.
- * @param request - Compatibility request.
- */
-function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddArmorAsync(build.value, request.path))
-}
-
-/**
  * Reacts to an inventory item being changed.
  *
  * Signals to the build one of its inventory slots has changed.
@@ -595,26 +578,6 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
  */
 function onMerchantFilterChanged(): void {
   setSummaryAsync()
-}
-
-/**
- * Reacts to a mod compatibility check request.
- *
- * Checks if a mod can be added to the selected item.
- * @param request - Compatibility request that must be resolved.
- */
-function onModCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddModAsync(build.value, request.itemId, request.path))
-}
-
-/**
- * Reacts to a tactical rig compatibility check request.
- *
- * Checks whether a tactical rig can be added to the build or not.
- * @param request - Compatibility request.
- */
-function onTacticalRigCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddVestAsync(build.value, request.itemId, request.path))
 }
 
 /**
@@ -879,6 +842,7 @@ function updateSeoMetadata(): void {
       <InventorySlots
         v-model:current-inventory-slot="currentInventorySlot"
         v-model:inventory-slots="build.inventorySlots"
+        v-model:item-selection-restrictions="itemSelectionRestrictions!"
         :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
         :path="path"
         @update:inventory-slots="onInventorySlotChanged"

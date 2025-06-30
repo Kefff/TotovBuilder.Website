@@ -5,6 +5,7 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IItem } from '../models/item/IItem'
+import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { InventorySlotPropertiesService } from '../services/InventorySlotPropertiesService'
 import { ItemService } from '../services/ItemService'
@@ -16,6 +17,7 @@ import Item from './ItemComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
+const modelItemSelectionRestrictions = defineModel<ItemSelectionRestrictionList>('itemSelectionRestrictions', { required: true })
 
 const props = defineProps<{
   canGoToNext: boolean,
@@ -168,6 +170,7 @@ function onSwipeEnd(direction: UseSwipeDirection): void {
           <Item
             v-for="(inventoryItem, index) of modelInventorySlot.items"
             :key="`${path}_${index}`"
+            v-model:item-selection-restrictions="modelItemSelectionRestrictions"
             :can-be-looted="inventorySlotType.canBeLooted"
             :get-accepted-items-function="getAcceptedItemsAsync"
             :inventory-item="modelInventorySlot.items[index]"

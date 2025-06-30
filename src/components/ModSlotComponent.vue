@@ -3,6 +3,7 @@ import { Ref, computed, inject, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IItem } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
+import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemService } from '../services/ItemService'
@@ -12,6 +13,7 @@ import Item from './ItemComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
+const modelItemSelectionRestrictions = defineModel<ItemSelectionRestrictionList>('itemSelectionRestrictions')
 
 const props = defineProps<{
   modSlot: IModSlot,
@@ -83,6 +85,7 @@ function onMerchantFilterChanged(): void {
     </div>
     <Item
       v-model:inventory-item="modelInventoryItem"
+      v-model:item-selection-restrictions="modelItemSelectionRestrictions"
       :get-accepted-items-function="getAcceptedItemsAsync"
       :max-stackable-amount="modSlot.maxStackableAmount"
       :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"

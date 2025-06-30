@@ -420,6 +420,47 @@ describe('ItemPropertiesService', () => {
     )
   })
 
+  describe('isHeadphones', () => {
+    it.each([
+      [ItemCategoryId.ammunition, false],
+      [ItemCategoryId.armband, false],
+      [ItemCategoryId.armor, false],
+      [ItemCategoryId.armorMod, false],
+      [ItemCategoryId.backpack, false],
+      [ItemCategoryId.container, false],
+      [ItemCategoryId.currency, false],
+      [ItemCategoryId.eyewear, false],
+      [ItemCategoryId.faceCover, false],
+      [ItemCategoryId.grenade, false],
+      [ItemCategoryId.headphones, true],
+      [ItemCategoryId.headwear, false],
+      [ItemCategoryId.magazine, false],
+      [ItemCategoryId.mainWeapon, false],
+      [ItemCategoryId.meleeWeapon, false],
+      [ItemCategoryId.mod, false],
+      [ItemCategoryId.other, false],
+      [ItemCategoryId.rangedWeaponMod, false],
+      [ItemCategoryId.secondaryWeapon, false],
+      [ItemCategoryId.securedContainer, false],
+      [ItemCategoryId.special, false],
+      [ItemCategoryId.vest, false]
+    ])(
+      'should determine if an item is headphones',
+      (categoryId: ItemCategoryId, expected: boolean) => {
+        // Arrange
+        const itemPropertiesService = new ItemPropertiesService()
+
+        // Act
+        const result1 = itemPropertiesService.isHeadphones(categoryId)
+        const result2 = itemPropertiesService.isHeadphones({ categoryId, id: '12345' } as IItem)
+
+        // Assert
+        expect(result1).toBe(expected)
+        expect(result2).toBe(expected)
+      }
+    )
+  })
+
   describe('isHeadwear', () => {
     it.each([
       [ItemCategoryId.ammunition, false],

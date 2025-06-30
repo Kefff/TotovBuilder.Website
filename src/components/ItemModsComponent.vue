@@ -5,11 +5,13 @@ import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { ItemCategoryId } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
 import { IModdable } from '../models/item/IModdable'
+import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
 import { PathUtils } from '../utils/PathUtils'
 import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 import ModSlot from './ModSlotComponent.vue'
 
 const modelInventoryModSlots = defineModel<IInventoryModSlot[]>('inventoryModSlots', { required: true })
+const modelItemSelectionRestrictions = defineModel<ItemSelectionRestrictionList>('itemSelectionRestrictions')
 
 const props = defineProps<{
   moddableItem: IModdable,
@@ -108,6 +110,7 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
         mode="mods"
       />
       <ModSlot
+        v-model:item-selection-restrictions="modelItemSelectionRestrictions"
         :inventory-item="inventoryItems[index]"
         :mod-slot="modSlot"
         :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
