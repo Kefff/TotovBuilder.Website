@@ -43,7 +43,9 @@ const _seoService = Services.get(SeoService)
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
 let _isCompactSummaryExpanding = false
+let _itemSelectionRestrictions: ItemSelectionRestrictionList | undefined
 let _originalBuild: IBuild
+let _originalItemSelectionRestrictions: ItemSelectionRestrictionList
 let _unregisterSaveBeforeLeaveNavigationGuardFunction: (() => void) | undefined = undefined
 const _toolbarButtons: IToolbarButton[] = [
   {
@@ -129,7 +131,7 @@ const _toolbarButtons: IToolbarButton[] = [
     style: () => 'discreet'
   },
   {
-    action: cancelEdit,
+    action: cancelEditAsync,
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.cancel'),
     icon: () => 'undo',
@@ -176,7 +178,7 @@ const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.s
 const isInvalid = computed(() => build.value.name === '')
 const isNewBuild = computed(() => build.value.id === '')
 const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
-const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
+const path = computed(() => PathUtils.getBuildPath(build.value.id, isNewBuild.value))
 const toolbarContainer = computed(() => buildToolbar.value?.container)
 
 const build = ref<IBuild>({
@@ -203,7 +205,6 @@ const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
 const hasChanges = ref(false)
 const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
-const itemSelectionRestrictions = ref<ItemSelectionRestrictionList>()
 const isBuildSummaryStickied = ref(false)
 const isCompactBuildSummaryPinned = ref(false)
 const isEditing = ref(false)
@@ -243,6 +244,7 @@ useEventListener(document, 'keydown', onKeyDownAsync)
 
 provide('isEditing', isEditing)
 provide('isNewBuild', isNewBuild)
+provide('itemSelectionRestrictions', _itemSelectionRestrictions)
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -250,7 +252,6 @@ onMounted(() => {
 
   isEditing.value = isNewBuild.value
   hasChanges.value = isNewBuild.value
-  itemSelectionRestrictions.value = new ItemSelectionRestrictionList()
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitializedAsync)
@@ -312,7 +313,7 @@ function addNavigationGuards(): void {
 /**
  * Cancels modifications and stops edit mode.
  */
-function cancelEdit(): void {
+async function cancelEditAsync(): Promise<void> {
   isEditing.value = false
   hasChanges.value = false
 
@@ -321,6 +322,9 @@ function cancelEdit(): void {
   } else {
     build.value = _originalBuild
     setSummaryAsync()
+
+    _itemSelectionRestrictions = _originalItemSelectionRestrictions
+    _itemSelectionRestrictions = await ItemSelectionRestrictionList.createAsync(path.value, build.value)
   }
 }
 
@@ -481,9 +485,10 @@ function goToBuilds(): void {
  *
  * Signals to the build one of its inventory slots has changed.
  */
-function onInventorySlotChanged(): void {
+async function onInventorySlotChangedAsync(): Promise<void> {
   hasChanges.value = true
   setSummaryAsync()
+  _itemSelectionRestrictions = await ItemSelectionRestrictionList.createAsync(path.value, build.value)
 }
 
 /**
@@ -507,6 +512,7 @@ async function onItemServiceInitializedAsync(): Promise<void> {
   }
 
   setSummaryAsync()
+  _itemSelectionRestrictions = await ItemSelectionRestrictionList.createAsync(path.value, build.value)
 
   nextTick(() => isLoading.value = false)
 }
@@ -657,6 +663,8 @@ function startEdit(): void {
   if (originalBuildResult != null) {
     _originalBuild = originalBuildResult
   }
+
+  _originalItemSelectionRestrictions = _itemSelectionRestrictions!
 }
 
 /**
@@ -842,10 +850,9 @@ function updateSeoMetadata(): void {
       <InventorySlots
         v-model:current-inventory-slot="currentInventorySlot"
         v-model:inventory-slots="build.inventorySlots"
-        v-model:item-selection-restrictions="itemSelectionRestrictions!"
         :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
         :path="path"
-        @update:inventory-slots="onInventorySlotChanged"
+        @update:inventory-slots="onInventorySlotChangedAsync"
       >
         <template
           v-if="!isLoading && !isEditing && isEmpty"

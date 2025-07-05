@@ -7,8 +7,7 @@ import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IModdable } from '../models/item/IModdable'
 import { ItemSelectionSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
-import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
-import { SelectableTab } from '../models/utils/SelectableTab'
+import { SelectableTab } from '../models/utils/UI/SelectableTab'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemComponentService } from '../services/ItemComponentService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
@@ -28,7 +27,6 @@ import SelectedItemFunctionalities from './SelectedItemFunctionalitiesComponent.
 import Tooltip from './TooltipComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
-const modelItemSelectionRestrictions = defineModel<ItemSelectionRestrictionList>('itemSelectionRestrictions')
 
 const props = withDefaults(
   defineProps<{
@@ -186,7 +184,6 @@ function onItemChanged(): void {
     presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
     const newContent = _itemComponentService.getReplacingItemContent(modelInventoryItem.value, item.value)
     const newModSlots = _itemComponentService.getReplacingModSlots(modelInventoryItem.value, item.value)
-
     modelInventoryItem.value = {
       content: newContent,
       ignorePrice: modelInventoryItem.value?.ignorePrice ?? false,
@@ -570,11 +567,10 @@ function showDetails(): void {
             </div>
             <ItemComponent
               v-model:inventory-item="baseItem"
-              v-model:item-selection-restrictions="modelItemSelectionRestrictions"
               :get-accepted-items-function="getAcceptedItemsForBaseItem"
               :can-be-looted="showBaseItemPrice"
               :is-base-item="true"
-              :path="`${path}/${PathUtils.baseItemPrefix}/${PathUtils.itemPrefix}${baseItem.itemId}`"
+              :path="PathUtils.getBaseItemPath(path, baseItem.itemId)"
               @update:inventory-item="$event => onIgnorePriceChanged($event!.ignorePrice)"
             />
           </div>
@@ -582,7 +578,6 @@ function showDetails(): void {
         <ItemMods
           v-if="itemIsModdable"
           v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
-          v-model:item-selection-restrictions="modelItemSelectionRestrictions"
           :inventory-mod-slots="modelInventoryItem.modSlots"
           :moddable-item="(item as IModdable)"
           :path="path"

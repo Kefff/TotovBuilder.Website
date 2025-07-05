@@ -1,7 +1,4 @@
-import { IBuild } from '../models/build/IBuild'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
-import vueI18n from '../plugins/vueI18n'
 
 /**
  * Represents an utility class for managing build paths.
@@ -33,6 +30,12 @@ export class PathUtils {
       return false
     }
 
+    const baseItemSlotIndex = path.lastIndexOf(PathUtils.baseItemPrefix)
+
+    if (baseItemSlotIndex >= 0) {
+      return false
+    }
+
     if (inventorySlotType != null && !path.includes(`${PathUtils.inventorySlotPrefix}${inventorySlotType}`)) {
       return false
     }
@@ -53,16 +56,119 @@ export class PathUtils {
   }
 
   /**
-   * Gets and inventory item of a build from a path.
-   * @param build - Build.
-   * @param path - Path.
-   * @returns Inventory item.
+   * Gets the path of a base item.
+   * @param itemPath - Path of the item the base item belongs to.
+   * @param baseItemId - ID of the base item.
+   * @returns Path of the base item.
    */
-  public static getInventoryItemFromPath(build: IBuild, path: string): IInventoryItem {
-    const inventorySlotItem = this.getInventorySlotItem(build, path)
-    const inventoryItem = this.getInventoryItem(inventorySlotItem, path, 3)
+  public static getBaseItemPath(itemPath: string, baseItemId: string): string {
+    const path = `${itemPath}/${PathUtils.baseItemPrefix}/${PathUtils.itemPrefix}${baseItemId}`
 
-    return inventoryItem
+    return path
+  }
+
+  /**
+   * Gets the path of a build.
+   * @param builId - Build.
+   * @param isNewBuild - Indicates whether the build is a new build.
+   * @returns Path of the build.
+   */
+  public static getBuildPath(builId: string, isNewBuild: boolean): string {
+    const path = PathUtils.buildPrefix + (isNewBuild ? PathUtils.newBuild : builId)
+
+    return path
+  }
+
+  /**
+   * Gets the path of an item in the content of another item.
+   * @param itemPath - Path of the container item.
+   * @param contentIndex - Index of the contained item.
+   * @param contentLength - Length of the content of the container item.
+   * @param containedItemId - Contained item ID.
+   * @returns Path of the contained item.
+   */
+  public static getContainedItemPath(itemPath: string, contentIndex: number, contentLength: number, containedItemId: string): string {
+    const path = `${itemPath}/${PathUtils.contentPrefix}${contentIndex}_${contentLength}/${PathUtils.itemPrefix}${containedItemId}`
+
+    return path
+  }
+
+  /**
+   * Gets the path of an item in an inventory slot.
+   * @param inventorySlotPath - Inventory slot path.
+   * @param itemIndex - Index of the item in the inventory slot.
+   * @param itemId - ID of the item.
+   * @returns Path of the item in the inventory slot.
+   */
+  public static getInventorySlotItemPath(inventorySlotPath: string, itemIndex: number, itemId: string | undefined): string {
+    const path = this.getItemPath(`${inventorySlotPath}_${itemIndex}`, itemId)
+
+    return path
+  }
+
+  /**
+   * Gets the path of an inventory slot.
+   * @param builPath - Path of the build.
+   * @param inventorySlotTypeId - Inventory slot type.
+   * @returns Path of the inventory slot.
+   */
+  public static getInventorySlotPath(builPath: string, inventorySlotTypeId: InventorySlotTypeId): string {
+    const path = `${builPath}/${PathUtils.inventorySlotPrefix}${inventorySlotTypeId}`
+
+    return path
+  }
+
+  /**
+   * Gets the path of a item.
+   * @param previousPath - Previous path.
+   * @param itemId - Item ID.
+   * @returns Path of the item.
+   */
+  public static getItemPath(previousPath: string, itemId: string | undefined): string {
+    const path = `${previousPath}/${PathUtils.itemPrefix}${itemId ?? 'empty'}`
+
+    return path
+  }
+
+  /**
+   * Gets the ID of the item being modded in a path.
+   * This can either be the item of the inventory slot or an item in the content of another item.
+   * @param path - Path.
+   * @returns ID of the item being modded or `undefined` if there are none.
+   */
+  public static getModdedItemIdFromPath(path: string): string | undefined {
+    const pathArray = path.split('/')
+    let lastItemId: string | undefined = undefined
+
+    for (let i = pathArray.length - 1; i >= 0; i--) {
+      const pathPart = pathArray[i]
+
+      if (pathPart.startsWith(this.itemPrefix)) {
+        if (i < pathArray.length - 1) {
+          // We ignore the last item of the path
+          lastItemId = pathPart.replace(this.itemPrefix, '')
+        }
+      } else if (pathPart.startsWith(this.modSlotPrefix)) {
+        continue
+      } else if (pathPart.startsWith(this.contentPrefix) || pathPart.startsWith(this.inventorySlotPrefix)) {
+        return lastItemId
+      } else {
+        break
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Gets the path of a mod slot.
+   * @param itemPath - Path of the item the mod slot belongs to.
+   * @param modSlotName - Name of the mod slot.
+   */
+  public static getModSlotPath(itemPath: string, modSlotName: string): string {
+    const path = `${itemPath}/${PathUtils.modSlotPrefix}${modSlotName}`
+
+    return path
   }
 
   /**
@@ -81,102 +187,5 @@ export class PathUtils {
     }
 
     return itemOccurences - 1
-  }
-
-  /**
-   * Gets the mod slot names present in a path.
-   * @param path - Path.
-   */
-  public static getPathModSlotNames(path: string): string[] {
-    const modSlotNames: string[] = []
-    const regex = new RegExp(/mod:([a-z0-9_]+)\/?/g)
-    const matches = path.matchAll(regex)
-
-    if (matches != null) {
-      for (const match of matches) {
-        modSlotNames.push(match[1])
-      }
-    }
-
-    return modSlotNames
-  }
-
-  /**
-   * Gets an inventory item by recursively searching into an inventory item while going through a path.
-   * @param currentInventoryItem - Current inventory item.
-   * @param path - Path.
-   * @param currentPathArrayIndex - Index of the current element of the path.
-   * @returns Inventory item.
-   */
-  private static getInventoryItem(currentInventoryItem: IInventoryItem, path: string, currentPathArrayIndex: number): IInventoryItem {
-    const pathArray = path.split('/')
-
-    if (pathArray.length === currentPathArrayIndex) {
-      return currentInventoryItem
-    }
-
-    if (pathArray[currentPathArrayIndex].startsWith(PathUtils.modSlotPrefix)) {
-      const modSlot = currentInventoryItem.modSlots.find(ms => ms.modSlotName === pathArray[currentPathArrayIndex].replace(PathUtils.modSlotPrefix, ''))
-
-      currentPathArrayIndex++
-      const expectedItemId = pathArray[currentPathArrayIndex]?.replace(PathUtils.itemPrefix, '')
-
-      if (modSlot?.item == null || modSlot.item.itemId !== expectedItemId) {
-        throw new Error(vueI18n.t('message.cannotFindModSlotItemInPath', { path, itemId: expectedItemId }))
-      }
-
-      currentInventoryItem = modSlot.item
-    } else if (pathArray[currentPathArrayIndex].startsWith(PathUtils.contentPrefix)) {
-      let contentIndexString = pathArray[currentPathArrayIndex].replace(PathUtils.contentPrefix, '')
-      contentIndexString = contentIndexString.slice(0, contentIndexString.indexOf('_'))
-      const contentIndex = Number(contentIndexString)
-
-      currentPathArrayIndex++
-      const expectedItemId = pathArray[currentPathArrayIndex]?.replace(PathUtils.itemPrefix, '')
-
-      if (isNaN(contentIndex) || currentInventoryItem.content[contentIndex].itemId !== expectedItemId) {
-        throw new Error(vueI18n.t('message.cannotFindContentItemInPath', { path, itemId: expectedItemId }))
-      }
-
-      currentInventoryItem = currentInventoryItem.content[Number(contentIndex)]
-    } else {
-      throw new Error(vueI18n.t('message.invalidPath', { path }))
-    }
-
-    currentPathArrayIndex++
-    const inventoryItem = this.getInventoryItem(currentInventoryItem, path, currentPathArrayIndex)
-
-    return inventoryItem
-  }
-
-  /**
-   * Gets the inventory item of a slot of a build from on a path.
-   * @param build - Build.
-   * @param path - Path.
-   * @returns Inventory item.
-   */
-  private static getInventorySlotItem(build: IBuild, path: string): IInventoryItem {
-    const pathArray = path.split('/')
-    const inventorySlotInfo = pathArray.find(p => p.startsWith(this.inventorySlotPrefix))
-
-    if (inventorySlotInfo == null) {
-      throw new Error(vueI18n.t('message.cannotFindInventorySlotInPath', { path }))
-    }
-
-    const inventorySlotAndIndex = inventorySlotInfo.replace(this.inventorySlotPrefix, '').split('_')
-    const inventorySlot = build.inventorySlots.find(is => is.typeId === inventorySlotAndIndex[0])
-
-    if (inventorySlot == null) {
-      throw new Error(vueI18n.t('message.cannotFindInventorySlot', { inventorySlotTypeId: inventorySlotAndIndex[0] }))
-    }
-
-    const inventoryItemIndex = Number(inventorySlotAndIndex[1])
-    const inventoryItem = inventorySlot.items[inventoryItemIndex]
-
-    if (inventoryItem == null) {
-      throw new Error(vueI18n.t('message.cannotFindInventoryItemInInventorySlot', { inventorySlotTypeId: inventorySlotAndIndex[0], index: inventoryItemIndex }))
-    }
-
-    return inventoryItem
   }
 }

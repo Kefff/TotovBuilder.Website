@@ -1,9 +1,7 @@
 /* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IBuild } from '../models/build/IBuild'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -13,7 +11,6 @@ import { IRecoil } from '../models/utils/IRecoil'
 import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
-import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import StringUtils from '../utils/StringUtils'
@@ -419,52 +416,6 @@ ${sharableUrl}`
       armorClass: 0,
       durability: 0
     }
-  }
-
-  /**
-   * Gets the list conflicting items for an item and each of its mods.
-   * Items that do not have any conflicting items still are added in the list (with an undefined conflictingItemId) to be able to be tested against the added item conflicting items list.
-   * @param inventoryItem - Item.
-   * @param modSlotPath - "Path" to the mod slot the inventory item is in.
-   * @returns Conflicting items.
-   */
-  private async getConflictingItemsAsync(
-    inventoryItem: IInventoryItem,
-    modSlotPath: string
-  ): Promise<IConflictingItem[]> {
-    const itemService = Services.get(ItemService)
-
-    const conflictingItems: IConflictingItem[] = []
-    const item = await itemService.getItemAsync(inventoryItem.itemId)
-
-    if (item.conflictingItemIds.length > 0) {
-      for (const conflictingItemId of item.conflictingItemIds) {
-        conflictingItems.push({
-          itemId: item.id,
-          path: modSlotPath,
-          conflictingItemId
-        })
-      }
-    } else {
-      conflictingItems.push({
-        itemId: item.id,
-        path: modSlotPath,
-        conflictingItemId: undefined
-      })
-    }
-
-    for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item != null) {
-        const modConflictingItemIds = await this.getConflictingItemsAsync(
-          modSlot.item,
-          modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
-        )
-
-        conflictingItems.push(...modConflictingItemIds)
-      }
-    }
-
-    return conflictingItems
   }
 
   /**

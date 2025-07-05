@@ -27,7 +27,6 @@ let _acceptedItemsNeedsUpdated = true
 const acceptedItems = ref<IItem[]>([])
 const categoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
-const itemPathPrefix = PathUtils.itemPrefix
 const itemToAdd = ref<IInventoryItem>()
 
 const canAddItem = computed(() => !isMagazine.value || modelInventoryItems.value.length === 0)
@@ -138,7 +137,7 @@ function onMerchantFilterChanged(): void {
         :get-accepted-items-function="getAcceptedItemsAsync"
         :inventory-item="modelInventoryItems[index]"
         :max-stackable-amount="maximumQuantity"
-        :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+        :path="PathUtils.getContainedItemPath(path, index, modelInventoryItems.length, containedItem.itemId)"
         @update:inventory-item="onItemChanged(index, $event)"
       />
     </div>
