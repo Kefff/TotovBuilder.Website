@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { IBuildItemWithPath } from '../models/build/IBuildItemWithPath'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
@@ -23,17 +24,21 @@ const modelFilterAndSortingData = defineModel<ItemFilterAndSortingData>('filterA
 const props = withDefaults(
   defineProps<{
     autoScrollToFirstElement?: boolean,
+    buildItemsWithPath?: IBuildItemWithPath[],
     elementToStickTo?: HTMLElement | null,
     getItemsFunction: () => Promise<IItem[]>,
     infiniteScrolling?: boolean,
     maxElementsPerLine?: number,
+    path?: string,
     selectionOptions?: IListSelectionOptions
   }>(),
   {
     autoScrollToFirstElement: true,
+    buildItemsWithPath: undefined,
     elementToStickTo: undefined,
     infiniteScrolling: false,
     maxElementsPerLine: 5,
+    path: undefined,
     selectionOptions: () => <IListSelectionOptions>{
       canUnselect: true,
       isEnabled: false,
@@ -293,10 +298,12 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       >
         <template #element="{ element }">
           <ItemCard
+            :build-items-with-path="props.buildItemsWithPath"
             :comparison-item="comparisonItem"
             :filter-and-sorting-data="filterAndSortingData"
             :item="<IItem>element"
             :is-selected="checkIsSelected(<IItem>element)"
+            :path="props.path"
             :selection-options="selectionOptions"
             @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
           />

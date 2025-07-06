@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { IBuildItemWithPath } from '../../models/build/IBuildItemWithPath'
 import { IItem } from '../../models/item/IItem'
 import { IModdable } from '../../models/item/IModdable'
 import { IPrice } from '../../models/item/IPrice'
@@ -10,6 +11,7 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
+import { CompatibilityUtils } from '../../utils/CompatibilityUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import ItemIcon from '../ItemIconComponent.vue'
@@ -22,14 +24,18 @@ const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
 const props = withDefaults(
   defineProps<{
+    buildItemsWithPath?: IBuildItemWithPath[],
     comparisonItem?: IItem,
     filterAndSortingData?: ItemFilterAndSortingData,
     item: IItem,
+    path?: string,
     selectionOptions: IListSelectionOptions
   }>(),
   {
+    buildItemsWithPath: undefined,
     comparisonItem: undefined,
-    filterAndSortingData: undefined
+    filterAndSortingData: undefined,
+    path: undefined
   })
 
 const _globalFilterService = Services.get(GlobalFilterService)
@@ -53,7 +59,15 @@ const height = computed(() => {
 const itemIsModdable = computed(() => _itemPropertiesService.isModdable(props.item))
 const modSlotsCount = computed(() => itemIsModdable.value ? (props.item as IModdable).modSlots.length : 0)
 const priceColSpan = computed(() => isSmartphonePortrait.value ? 'span 3' : 'span 2')
-const weightColSpan = computed(() => isSmartphonePortrait.value ? 'span 1' : 'span 2')
+const restrictionReason = computed(() => {
+  let rr: string | undefined = undefined
+
+  if (props.buildItemsWithPath != null && props.path != null) {
+    rr = CompatibilityUtils.checkCompatibility(props.buildItemsWithPath, props.path, props.item)
+  }
+
+  return rr
+})
 const selectionButtonCaptionInternal = computed(() => {
   if (props.selectionOptions.selectionButtonCaption != null) {
     return props.selectionOptions.selectionButtonCaption
@@ -77,6 +91,7 @@ const showStatsComparison = computed(() =>
   && props.comparisonItem != null
   && props.comparisonItem.id !== props.item.id)
 const weight = computed(() => props.item.presetWeight ?? props.item.weight)
+const weightColSpan = computed(() => isSmartphonePortrait.value ? 'span 1' : 'span 2')
 
 const comparisonItemUnitPriceInMainCurrency = ref<number>(0)
 const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()

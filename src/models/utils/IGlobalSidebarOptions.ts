@@ -1,4 +1,5 @@
 import { IBuild } from '../build/IBuild'
+import { IBuildItemWithPath } from '../build/IBuildItemWithPath'
 import { InventorySlotTypeId } from '../build/InventorySlotTypes'
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
@@ -123,6 +124,11 @@ export type InventorySlotSelectorSidebarParameters = {
  */
 export type ItemSelectionSidebarParameters = {
   /**
+   * List of all items in the build with their path.
+   */
+  buildItemsWithPath?: IBuildItemWithPath[]
+
+  /**
    * Data for filtering and sorting the items the user can select.
    */
   filterAndSortingData: ItemFilterAndSortingData | undefined,
@@ -131,6 +137,11 @@ export type ItemSelectionSidebarParameters = {
    * Function for getting the items the user can select.
    */
   getSelectableItemsFunction: () => Promise<IItem[]>,
+
+  /**
+   * Path of the inventory slot where the item is being added.
+   */
+  path?: string
 
   /**
    * Items that appear as selected when the sidebar is displayed.

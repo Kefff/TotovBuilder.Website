@@ -34,12 +34,14 @@ function onSelectedItemsChanged(): void {
     <ItemsList
       v-model:filter-and-sorting-data="parameters.filterAndSortingData"
       v-model:selected-items="parameters.selectedItems"
+      :build-items-with-path="parameters.buildItemsWithPath"
       :can-unselect="false"
       :get-items-function="parameters.getSelectableItemsFunction"
       :has-selection="true"
       :infinite-scrolling="true"
       :max-elements-per-line="1"
       :mono-selection="true"
+      :path="parameters.path"
       :selection-options="{
         canUnselect: false,
         isEnabled: true,

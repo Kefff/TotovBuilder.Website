@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
+import { IBuildItemWithPath } from '../models/build/IBuildItemWithPath'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IContainer } from '../models/item/IContainer'
@@ -73,6 +74,7 @@ const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.va
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
 
 const baseItem = ref<IInventoryItem | undefined>()
+const buildItemsWithPath = inject<Ref<IBuildItemWithPath[]>>('buildItemsWithPath')
 const isEditing = inject<Ref<boolean>>('isEditing')
 const { isTabletLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const item = ref<IItem | undefined>()
@@ -251,8 +253,10 @@ function onSelectionInputClick(): void {
   _globalSidebarService.display({
     displayedComponentType: 'ItemSelectionSidebar',
     displayedComponentParameters: {
+      buildItemsWithPath: buildItemsWithPath?.value,
       filterAndSortingData,
       getSelectableItemsFunction: props.getAcceptedItemsFunction,
+      path: props.path,
       selectedItems: item.value != null ? [item.value] : []
     },
     onCloseAction: (updatedParameters) => {

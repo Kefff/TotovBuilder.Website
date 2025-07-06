@@ -1,4 +1,9 @@
+import { IBuild } from '../models/build/IBuild'
+import { IBuildItemWithPath } from '../models/build/IBuildItemWithPath'
+import { IInventoryItem } from '../models/build/IInventoryItem'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
+import { ItemService } from '../services/ItemService'
+import Services from '../services/repository/Services'
 
 /**
  * Represents an utility class for managing build paths.
@@ -53,6 +58,30 @@ export class PathUtils {
     const lastContentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
 
     return lastModSlotIndex >= 0 && lastModSlotIndex > lastContentSlotIndex
+  }
+
+  /**
+   * Gets all the paths of a build.
+   * @param build - Build.
+   * @returns Paths of all the items in the build.
+   */
+  public static async getBuildItemsWithPathsAsync(build: IBuild): Promise<IBuildItemWithPath[]> {
+    const paths: IBuildItemWithPath[] = []
+    const buildPath = this.getBuildPath(build.id, build.lastUpdated == null)
+
+    for (const inventorySlot of build.inventorySlots) {
+      const inventorySlotPath = this.getInventorySlotPath(buildPath, inventorySlot.typeId)
+
+      for (let i = 0; i < inventorySlot.items.length; i++) {
+        const item = inventorySlot.items[i]
+
+        if (item != null) {
+          await this.getItemPathsAsync(paths, inventorySlotPath, item)
+        }
+      }
+    }
+
+    return paths
   }
 
   /**
@@ -187,5 +216,35 @@ export class PathUtils {
     }
 
     return itemOccurences - 1
+  }
+
+  /**
+   * Gets the paths of an item and its mods and content.
+   * @param paths - List of paths.
+   * @param previousPath - Previous path.
+   * @param inventoryItem - Item.
+   */
+  private static async getItemPathsAsync(paths: IBuildItemWithPath[], previousPath: string, inventoryItem: IInventoryItem): Promise<void> {
+    const itemPath = PathUtils.getItemPath(previousPath, inventoryItem.itemId)
+    const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
+    paths.push({ path: itemPath, item })
+
+    for (const modSlot of inventoryItem.modSlots) {
+      if (modSlot.item == null) {
+        continue
+      }
+
+      const modSlotPath = PathUtils.getModSlotPath(itemPath, modSlot.modSlotName)
+      const modSlotItemPath = PathUtils.getItemPath(modSlotPath, modSlot.item.itemId)
+      const mod = await Services.get(ItemService).getItemAsync(modSlot.item.itemId)
+      paths.push({ path: modSlotItemPath, item: mod })
+    }
+
+    for (let i = 0; i < inventoryItem.content.length; i++) {
+      const containedInventoryItem = inventoryItem.content[i]
+      const containedItemPath = this.getContainedItemPath(itemPath, i, inventoryItem.content.length, containedInventoryItem.itemId)
+      const containedItem = await Services.get(ItemService).getItemAsync(containedInventoryItem.itemId)
+      paths.push({ path: containedItemPath, item: containedItem })
+    }
   }
 }

@@ -3,10 +3,10 @@ import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
+import { IBuildItemWithPath } from '../models/build/IBuildItemWithPath'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { InventorySlotSelectorSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
-import { ItemSelectionRestrictionList } from '../models/utils/ItemSelectionRestrictionList'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -43,9 +43,8 @@ const _seoService = Services.get(SeoService)
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
 let _isCompactSummaryExpanding = false
-let _itemSelectionRestrictions: ItemSelectionRestrictionList | undefined
 let _originalBuild: IBuild
-let _originalItemSelectionRestrictions: ItemSelectionRestrictionList
+let _originalBuildItemsWithPath: IBuildItemWithPath[] = []
 let _unregisterSaveBeforeLeaveNavigationGuardFunction: (() => void) | undefined = undefined
 const _toolbarButtons: IToolbarButton[] = [
   {
@@ -131,7 +130,7 @@ const _toolbarButtons: IToolbarButton[] = [
     style: () => 'discreet'
   },
   {
-    action: cancelEditAsync,
+    action: cancelEdit,
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.cancel'),
     icon: () => 'undo',
@@ -189,6 +188,7 @@ const build = ref<IBuild>({
   lastWebsiteVersion: undefined,
   name: ''
 })
+const buildItemsWithPath = ref<IBuildItemWithPath[]>([])
 const buildToolbar = useTemplateRef('buildToolbar')
 const compactBuildSummary = useTemplateRef('compactBuildSummary')
 const compactBuildSummaryHeight = ref<string>()
@@ -242,9 +242,9 @@ const summary = ref<IBuildSummary>({
 
 useEventListener(document, 'keydown', onKeyDownAsync)
 
+provide('buildItemsWithPath', buildItemsWithPath)
 provide('isEditing', isEditing)
 provide('isNewBuild', isNewBuild)
-provide('itemSelectionRestrictions', _itemSelectionRestrictions)
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -313,7 +313,7 @@ function addNavigationGuards(): void {
 /**
  * Cancels modifications and stops edit mode.
  */
-async function cancelEditAsync(): Promise<void> {
+function cancelEdit(): void {
   isEditing.value = false
   hasChanges.value = false
 
@@ -322,9 +322,7 @@ async function cancelEditAsync(): Promise<void> {
   } else {
     build.value = _originalBuild
     setSummaryAsync()
-
-    _itemSelectionRestrictions = _originalItemSelectionRestrictions
-    _itemSelectionRestrictions = await ItemSelectionRestrictionList.createAsync(path.value, build.value)
+    buildItemsWithPath.value = _originalBuildItemsWithPath
   }
 }
 
@@ -488,7 +486,7 @@ function goToBuilds(): void {
 async function onInventorySlotChangedAsync(): Promise<void> {
   hasChanges.value = true
   setSummaryAsync()
-  _itemSelectionRestrictions = await ItemSelectionRestrictionList.createAsync(path.value, build.value)
+  buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
 }
 
 /**
@@ -512,7 +510,7 @@ async function onItemServiceInitializedAsync(): Promise<void> {
   }
 
   setSummaryAsync()
-  _itemSelectionRestrictions = await ItemSelectionRestrictionList.createAsync(path.value, build.value)
+  buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
 
   nextTick(() => isLoading.value = false)
 }
@@ -664,7 +662,7 @@ function startEdit(): void {
     _originalBuild = originalBuildResult
   }
 
-  _originalItemSelectionRestrictions = _itemSelectionRestrictions!
+  _originalBuildItemsWithPath = buildItemsWithPath.value
 }
 
 /**
