@@ -41,6 +41,7 @@
     "baseItem": "Objet de base",
     "blinding": "Aveuglante",
     "blindnessProtectionPercentage": "Protection contre l'aveuglement",
+    "blocksHeadphones": "Ne peut pas être équipé avec un dispositif audio",
     "buildLastChangesNotExported": "Les changements du {lastUpdated} n'ont pas été sauvegardés dans un fichier.\nIls peuvent être perdus si vous effacez les données du navigateur.\nDernière sauvegarde dans un fichier le {lastExported}.",
     "buildList": "Liste des équipements",
     "buildNotExported": "Equipement non sauvegardé dans un fichier. Il pourra être perdu si vous effacez les données du navigateur.",

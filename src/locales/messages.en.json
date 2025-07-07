@@ -42,6 +42,7 @@
     "baseItem": "Base item",
     "blinding": "Blinding",
     "blindnessProtectionPercentage": "Blindness protection",
+    "blocksHeadphones": "Cannot be equiped with headphones",
     "buildLastChangesNotExported": "Changes from the {lastUpdated} have not been saved to a file.\nThey can be lost if you clear your browser data.\nLast file save on {lastExported}.",
     "buildList": "Build list",
     "buildNotExported": "Build not saved to a file. It can be lost if you clear your browser data.",

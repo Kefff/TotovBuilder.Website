@@ -178,7 +178,10 @@ function showDetails(): void {
 <template>
   <Card
     class="card item-card"
-    :class="{ 'card-selected': modelIsSelected }"
+    :class="{
+      'card-selected': modelIsSelected,
+      'card-disabled': restrictionReason != null
+    }"
   >
     <template #title>
       <div class="item-card-header">
@@ -268,7 +271,7 @@ function showDetails(): void {
           :item="item"
         />
         <div
-          v-if="selectionOptions.isEnabled"
+          v-if="selectionOptions.isEnabled && restrictionReason == null"
           class="card-buttons"
         >
           <Button
@@ -281,6 +284,16 @@ function showDetails(): void {
             />
             <span>{{ $t(selectionButtonCaptionInternal) }}</span>
           </Button>
+        </div>
+        <div
+          v-else-if="restrictionReason != null"
+          class="card-buttons"
+        >
+          <font-awesome-icon
+            icon="ban"
+            class="icon-before-text item-card-conflict-reason-icon"
+          />
+          <span>{{ restrictionReason }}</span>
         </div>
       </div>
     </template>
@@ -299,6 +312,11 @@ function showDetails(): void {
 <style scoped>
 .item-card {
   height: v-bind(height);
+}
+
+.item-card-conflict-reason-icon {
+  align-self: center;
+  color: var(--danger-color)
 }
 
 .item-card-details-button-content {

@@ -75,6 +75,15 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
       </CustomIcon>
     </Tooltip>
+    <Tooltip
+      v-if="headwear.blocksHeadphones"
+      :tooltip="$t('caption.blocksHeadphones')"
+    >
+      <font-awesome-icon
+        icon="volume-mute"
+        :class="`icon-before-text`"
+      />
+    </Tooltip>
   </div>
 </template>
 

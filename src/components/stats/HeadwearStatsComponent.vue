@@ -37,5 +37,17 @@ const headwear = computed(() => props.item as IHeadwear)
         {{ $t('caption.ricochetChance' + headwear.ricochetChance) }}
       </div>
     </div>
+    <div
+      v-if="headwear.blocksHeadphones"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="volume-mute"
+          class="icon-before-text"
+        />
+        <span class="stats-value-negative">{{ $t('caption.blocksHeadphones') }}</span>
+      </div>
+    </div>
   </ArmorStats>
 </template>

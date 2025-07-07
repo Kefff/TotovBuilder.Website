@@ -35,6 +35,11 @@
   width: 100%;
 }
 
+.card-disabled {
+  background-color: var(--danger-color6) !important;
+  border-color: var(--danger-color6) !important;
+}
+
 .card-line {
   align-items: center;
   column-gap: 0.5rem;
