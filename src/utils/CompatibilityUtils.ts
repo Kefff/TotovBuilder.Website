@@ -44,7 +44,7 @@ export class CompatibilityUtils {
         }
       }
     } else if (PathUtils.checkIsModSlotPath(itemToAddPath)) {
-      const moddedItemId = PathUtils.getModdedItemIdFromPath(itemToAddPath)
+      const moddedItemPath = PathUtils.getModdedItemPathFromPath(itemToAddPath)
 
       for (const buildItemPath of buildItemPaths) {
         const isBuildItemModSlotPath = PathUtils.checkIsModSlotPath(buildItemPath.path)
@@ -53,9 +53,9 @@ export class CompatibilityUtils {
           continue
         }
 
-        const buildItemModdedItemId = PathUtils.getModdedItemIdFromPath(buildItemPath.path)
+        const buildItemModdedItemPath = PathUtils.getModdedItemPathFromPath(buildItemPath.path)
 
-        if (moddedItemId !== buildItemModdedItemId) {
+        if (moddedItemPath !== buildItemModdedItemPath) {
           continue
         }
 

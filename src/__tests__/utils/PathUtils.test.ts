@@ -5,12 +5,13 @@ import { PathUtils } from '../../utils/PathUtils'
 describe('PathUtils', () => {
   describe('checkIsInventorySlotItem', () => {
     it.each([
+      ['build:12345/slot:backpack_0/item:65765f39526e320fbe0357b1/content:10_10/new', undefined, false],
       ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1', InventorySlotTypeId.bodyArmor, true],
-      ['build:12345/slot:tacticalRig_0/item:639343fce101f4caa40a4ef3', InventorySlotTypeId.tacticalRig, true],
       ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1', InventorySlotTypeId.headwear, false],
-      ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633', undefined, true],
+      ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1/content:1_10/item:5672c92d4bdc2d180f8b4567', undefined, false],
       ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1/mod:mod_front_plate/item:656fa8d700d62bcd2e024084', undefined, false],
-      ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1/content:1_10/item:5672c92d4bdc2d180f8b4567', undefined, false]
+      ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633', undefined, true],
+      ['build:12345/slot:tacticalRig_0/item:639343fce101f4caa40a4ef3', InventorySlotTypeId.tacticalRig, true]
     ])('should check whether a path is an inventory item path', (path: string, inventorySlotType: InventorySlotTypeId | undefined, expected: boolean) => {
       // Act
       const isArmorPath = PathUtils.checkIsInventorySlotItem(path, inventorySlotType)

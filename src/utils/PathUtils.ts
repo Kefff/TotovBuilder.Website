@@ -76,7 +76,7 @@ export class PathUtils {
         const item = inventorySlot.items[i]
 
         if (item != null) {
-          await this.getItemPathsAsync(paths, inventorySlotPath, item)
+          await this.getItemPathsAsync(paths, `${inventorySlotPath}_${i}`, item)
         }
       }
     }
@@ -131,7 +131,7 @@ export class PathUtils {
    * @returns Path of the content.
    */
   public static getContentPath(itemPath: string, contentIndex: number, contentLength: number): string {
-    const path = `${itemPath}/${PathUtils.contentPrefix}${contentIndex}_${contentLength}`
+    const path = `${itemPath}/${PathUtils.contentPrefix}${contentIndex}_${contentLength - 1}`
 
     return path
   }
@@ -174,14 +174,14 @@ export class PathUtils {
   }
 
   /**
-   * Gets the ID of the item being modded in a path.
+   * Gets the path of the item being modded in a path.
    * This can either be the item of the inventory slot or an item in the content of another item.
    * @param path - Path.
-   * @returns ID of the item being modded or `undefined` if there are none.
+   * @returns Path of the item being modded or `undefined` if there are none.
    */
-  public static getModdedItemIdFromPath(path: string): string | undefined {
+  public static getModdedItemPathFromPath(path: string): string | undefined {
     const pathArray = path.split('/')
-    let lastItemId: string | undefined = undefined
+    let lastItemIndex: number = 0
 
     for (let i = pathArray.length - 1; i >= 0; i--) {
       const pathPart = pathArray[i]
@@ -189,12 +189,14 @@ export class PathUtils {
       if (pathPart.startsWith(this.itemPrefix)) {
         if (i < pathArray.length - 1) {
           // We ignore the last item of the path
-          lastItemId = pathPart.replace(this.itemPrefix, '')
+          lastItemIndex = i
         }
       } else if (pathPart.startsWith(this.modSlotPrefix)) {
         continue
       } else if (pathPart.startsWith(this.contentPrefix) || pathPart.startsWith(this.inventorySlotPrefix)) {
-        return lastItemId
+        const moddedItemPath = pathArray.slice(0, lastItemIndex + 1).join('/')
+
+        return moddedItemPath
       } else {
         break
       }

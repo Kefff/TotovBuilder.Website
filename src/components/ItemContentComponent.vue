@@ -122,7 +122,7 @@ function onMerchantFilterChanged(): void {
   <div v-if="modelInventoryItems.length > 0 || isEditing">
     <div
       v-for="(containedItem, index) of modelInventoryItems"
-      :key="`${path}/${index}_${modelInventoryItems.length}`"
+      :key="`${PathUtils.getContentPath(path, index, modelInventoryItems.length)}`"
       class="item-content-content-item"
     >
       <ItemHierarchyIndicator
@@ -156,7 +156,7 @@ function onMerchantFilterChanged(): void {
         :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
         :get-accepted-items-function="getAcceptedItemsAsync"
         :max-stackable-amount="maximumQuantity"
-        :path="`${path}/new`"
+        :path="PathUtils.getContainedItemPath(path, modelInventoryItems.length - 1, modelInventoryItems.length, 'new')"
         @update:inventory-item="onItemAdded($event!)"
       />
     </div>
