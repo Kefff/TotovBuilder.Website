@@ -110,14 +110,28 @@ export class PathUtils {
 
   /**
    * Gets the path of an item in the content of another item.
-   * @param itemPath - Path of the container item.
+   * @param containerItemPath - Path of the container item.
    * @param contentIndex - Index of the contained item.
    * @param contentLength - Length of the content of the container item.
    * @param containedItemId - Contained item ID.
    * @returns Path of the contained item.
    */
-  public static getContainedItemPath(itemPath: string, contentIndex: number, contentLength: number, containedItemId: string): string {
-    const path = `${itemPath}/${PathUtils.contentPrefix}${contentIndex}_${contentLength}/${PathUtils.itemPrefix}${containedItemId}`
+  public static getContainedItemPath(containerItemPath: string, contentIndex: number, contentLength: number, containedItemId: string): string {
+    const contentPath = this.getContentPath(containerItemPath, contentIndex, contentLength)
+    const path = `${contentPath}/${PathUtils.itemPrefix}${containedItemId}`
+
+    return path
+  }
+
+  /**
+   * Gets the path of a content of an item.
+   * @param itemPath - Path of the container item.
+   * @param contentIndex - Index of the content.
+   * @param contentLength - Length of the content of the container item.
+   * @returns Path of the content.
+   */
+  public static getContentPath(itemPath: string, contentIndex: number, contentLength: number): string {
+    const path = `${itemPath}/${PathUtils.contentPrefix}${contentIndex}_${contentLength}`
 
     return path
   }
@@ -235,16 +249,13 @@ export class PathUtils {
       }
 
       const modSlotPath = PathUtils.getModSlotPath(itemPath, modSlot.modSlotName)
-      const modSlotItemPath = PathUtils.getItemPath(modSlotPath, modSlot.item.itemId)
-      const mod = await Services.get(ItemService).getItemAsync(modSlot.item.itemId)
-      paths.push({ path: modSlotItemPath, item: mod })
+      await this.getItemPathsAsync(paths, modSlotPath, modSlot.item)
     }
 
     for (let i = 0; i < inventoryItem.content.length; i++) {
-      const containedInventoryItem = inventoryItem.content[i]
-      const containedItemPath = this.getContainedItemPath(itemPath, i, inventoryItem.content.length, containedInventoryItem.itemId)
-      const containedItem = await Services.get(ItemService).getItemAsync(containedInventoryItem.itemId)
-      paths.push({ path: containedItemPath, item: containedItem })
+      const contentPath = PathUtils.getContentPath(itemPath, i, inventoryItem.content.length)
+      const containedItem = inventoryItem.content[i]
+      await this.getItemPathsAsync(paths, contentPath, containedItem)
     }
   }
 }

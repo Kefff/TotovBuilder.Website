@@ -70,20 +70,15 @@ export class CompatibilityUtils {
 
   /**
    * Checks whether two items are conflicting whith each other.
-   * @param item1 - First item.
-   * @param item2 - Second item.
+   * @param itemInBuild - Item in the build.
+   * @param itemToAdd - Item to add in the build.
    * @returns Reason of the restriction if the item is restricted; otherwise `undefined`.
    */
-  private static checkConflict(item1: IItem, item2: IItem): string | undefined {
-    let conflictReason: string | undefined = undefined
-
-    if (item1.conflictingItemIds.includes(item2.id)) {
-      conflictReason = vuei18n.t('message.cannotAddConflictingItem', { conflictingItemName: item1.name })
-    } else if (item2.conflictingItemIds.includes(item1.id)) {
-      conflictReason = vuei18n.t('message.cannotAddConflictingItem', { conflictingItemName: item2.name })
+  private static checkConflict(itemInBuild: IItem, itemToAdd: IItem): string | undefined {
+    if (itemInBuild.conflictingItemIds.includes(itemToAdd.id)
+      || itemToAdd.conflictingItemIds.includes(itemInBuild.id)) {
+      return vuei18n.t('message.cannotAddConflictingItem', { conflictingItemName: itemInBuild.name })
     }
-
-    return conflictReason
   }
 
   /**
