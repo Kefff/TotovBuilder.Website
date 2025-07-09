@@ -156,7 +156,7 @@ function onMerchantFilterChanged(): void {
         :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
         :get-accepted-items-function="getAcceptedItemsAsync"
         :max-stackable-amount="maximumQuantity"
-        :path="PathUtils.getContainedItemPath(path, modelInventoryItems.length - 1, modelInventoryItems.length, 'new')"
+        :path="PathUtils.getContainedItemPath(path, modelInventoryItems.length, modelInventoryItems.length + 1, 'new')"
         @update:inventory-item="onItemAdded($event!)"
       />
     </div>

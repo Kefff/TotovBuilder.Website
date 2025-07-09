@@ -181,7 +181,7 @@ export class PathUtils {
    */
   public static getModdedItemPathFromPath(path: string): string | undefined {
     const pathArray = path.split('/')
-    let lastItemIndex: number = 0
+    let lastItemIndex: number = -1
 
     for (let i = pathArray.length - 1; i >= 0; i--) {
       const pathPart = pathArray[i]
@@ -196,7 +196,7 @@ export class PathUtils {
       } else if (pathPart.startsWith(this.contentPrefix) || pathPart.startsWith(this.inventorySlotPrefix)) {
         const moddedItemPath = pathArray.slice(0, lastItemIndex + 1).join('/')
 
-        return moddedItemPath
+        return moddedItemPath.length > 0 ? moddedItemPath : undefined
       } else {
         break
       }
@@ -217,24 +217,6 @@ export class PathUtils {
   }
 
   /**
-   * Gets the level of imbrication of the path of an item.
-   * @param path - Path of an item.
-   * @returns Level of imbrication.
-   */
-  public static getPathLevel(path: string): number {
-    const itemPrefixString = `/${PathUtils.itemPrefix}`
-    let itemOccurences = 0
-    let index = path.indexOf(itemPrefixString)
-
-    while (index !== -1) {
-      itemOccurences++
-      index = path.indexOf(itemPrefixString, index + itemPrefixString.length)
-    }
-
-    return itemOccurences - 1
-  }
-
-  /**
    * Gets the paths of an item and its mods and content.
    * @param paths - List of paths.
    * @param previousPath - Previous path.
@@ -243,7 +225,7 @@ export class PathUtils {
   private static async getItemPathsAsync(paths: IBuildItemWithPath[], previousPath: string, inventoryItem: IInventoryItem): Promise<void> {
     const itemPath = PathUtils.getItemPath(previousPath, inventoryItem.itemId)
     const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
-    paths.push({ path: itemPath, item })
+    paths.push({ item, path: itemPath })
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
