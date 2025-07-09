@@ -321,8 +321,20 @@ function cancelEdit(): void {
     goToBuilds()
   } else if (_originalBuild != null) {
     build.value = _originalBuild
-    setSummaryAsync()
     buildItemsWithPath.value = _originalBuildItemsWithPath
+    setSummaryAsync()
+    changeCurrentInventorySlotIfEmpty()
+  }
+}
+
+/**
+ * Changes the current inventory slot to the first that contains an item when the current inventory slot is empty.
+ */
+function changeCurrentInventorySlotIfEmpty(): void {
+  let inventorySlot = build.value.inventorySlots.find(is => is.typeId === currentInventorySlot.value)
+
+  if (!inventorySlot?.items.some(i => i != undefined)) {
+    currentInventorySlot.value = build.value.inventorySlots.find(is => is.items.some(i => i != null))?.typeId ?? InventorySlotTypeId.onSling
   }
 }
 
@@ -601,21 +613,17 @@ function removeNavigationGuards(): void {
 
 /**
  * Saves the build.
- * @param changeCurrentInventorySlotIfEmpty - Indicates whether the current inventory slot should
- * be changed to the first that contains an item when the current inventory slot is emmpty after saving.
+ * @param mustChangeCurrentInventorySlotIfEmpty - Indicates whether the current inventory slot should
+ * be changed to the first that contains an item when the current inventory slot is empty after saving.
  */
-async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Promise<void> {
+async function saveAsync(mustChangeCurrentInventorySlotIfEmpty: boolean = true): Promise<void> {
   isLoading.value = true
   isEditing.value = false
   hasChanges.value = false
   await _buildComponentService.saveBuildAsync(router, build.value)
 
-  if (changeCurrentInventorySlotIfEmpty) {
-    let inventorySlot = build.value.inventorySlots.find(is => is.typeId === currentInventorySlot.value)
-
-    if (!inventorySlot?.items.some(i => i != undefined)) {
-      currentInventorySlot.value = build.value.inventorySlots.find(is => is.items.some(i => i != null))?.typeId ?? InventorySlotTypeId.onSling
-    }
+  if (mustChangeCurrentInventorySlotIfEmpty) {
+    changeCurrentInventorySlotIfEmpty()
   }
 
   nextTick(() => isLoading.value = false)
