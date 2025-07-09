@@ -43,7 +43,7 @@ const _seoService = Services.get(SeoService)
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
 let _isCompactSummaryExpanding = false
-let _originalBuild: IBuild
+let _originalBuild: IBuild | undefined = undefined
 let _originalBuildItemsWithPath: IBuildItemWithPath[] = []
 let _unregisterSaveBeforeLeaveNavigationGuardFunction: (() => void) | undefined = undefined
 const _toolbarButtons: IToolbarButton[] = [
@@ -319,7 +319,7 @@ function cancelEdit(): void {
 
   if (isNewBuild.value) {
     goToBuilds()
-  } else {
+  } else if (_originalBuild != null) {
     build.value = _originalBuild
     setSummaryAsync()
     buildItemsWithPath.value = _originalBuildItemsWithPath
@@ -537,7 +537,7 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
  */
 function onNameChanged(value: string | undefined): void {
   build.value.name = value ?? ''
-  hasChanges.value = build.value.name !== _originalBuild.name
+  hasChanges.value = build.value.name !== _originalBuild?.name
 }
 
 /**
