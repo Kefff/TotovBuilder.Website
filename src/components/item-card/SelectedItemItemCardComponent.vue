@@ -38,7 +38,7 @@ const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
   priceByCurrency: selectedItemPrice.value.pricesWithContent,
   priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
 }))
-const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
+const showUnitPrice = computed(() => selectedItemPrice.value.price.value !== selectedItemPrice.value.unitPrice.value)
 const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
 
 const isEditing = inject<Ref<boolean>>('isEditing')
