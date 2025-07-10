@@ -124,7 +124,7 @@ export class BuildPropertiesService {
     const hasErgonomics = buildSummary.ergonomics !== 0
     const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
     const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-    const hasPrice = options.includePrices && buildSummary.price.priceInMainCurrency !== 0
+    const hasPrice = options.includePrices && buildSummary.price.priceByCurrency.length > 0
     const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
     const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
     const hasWeight = buildSummary.weight !== 0

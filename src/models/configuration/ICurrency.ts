@@ -5,7 +5,7 @@ export interface ICurrency {
   /**
    * Icon name.
    */
-  iconName: string
+  iconName?: string
 
   /**
    * ID of the item representing the currency.
@@ -30,7 +30,7 @@ export interface ICurrency {
   /**
    * Symbol.
    */
-  symbol: string
+  symbol?: string
 
   /**
    * Value in main currency.

@@ -23,7 +23,9 @@ const props = withDefaults(
 
 let _mainCurrency: ICurrency | undefined
 
-const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
+const canShowDetails = computed(() =>
+  props.inventoryPrice.priceInMainCurrency > 0
+  && props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
 const mainCurrency = computed(() => {
   if (_mainCurrency == null) {
     _mainCurrency = Services.get(ItemService).getMainCurrency()
@@ -70,7 +72,7 @@ function toggleInventoryPriceDetails(event: Event): void {
 <template>
   <div class="inventory-price">
     <Tooltip
-      v-if="inventoryPrice.priceInMainCurrency > 0"
+      v-if="inventoryPrice.priceByCurrency.length > 0"
       :tooltip="tooltip"
     >
       <div
@@ -182,6 +184,7 @@ function toggleInventoryPriceDetails(event: Event): void {
 }
 
 .inventory-price-list {
+  align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: end;

@@ -45,14 +45,16 @@ const _itemService = Services.get(ItemService)
 
 const _mainCurrency = _itemService.getMainCurrency()
 
-const canShowDetails = computed(() => props.showDetails
+const canShowDetails = computed(() =>
+  props.showDetails
   && (props.price.merchant !== ''
     || showPriceInMainCurrency.value
     || props.price.quest != null
     || isBarter.value
     || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
     || props.missing))
-const canShowIcon = computed(() => props.showMerchantIcon
+const canShowIcon = computed(() =>
+  props.showMerchantIcon
   && (props.price.merchant !== ''
     || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
     || props.missing))
@@ -82,8 +84,14 @@ const priceTooltip = computed(() => {
 
   return tooltip
 })
-const showPrice = computed(() => initialized.value && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
-const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== _mainCurrency.name)
+const showPrice = computed(() =>
+  initialized.value
+  && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
+    || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
+const showPriceInMainCurrency = computed(() =>
+  props.price.valueInMainCurrency > 0
+  && !isBarter.value
+  && currency.value.name !== _mainCurrency.name)
 
 const barterItemPrices = ref<IInventoryItemPrice[]>([])
 const barterItems = ref<IItem[]>([])
@@ -219,13 +227,20 @@ function togglePriceDetails(event: Event): void {
         :class="canShowDetails ? 'price-value-and-icon-with-details' : ''"
       >
         <div
-          v-if="price.valueInMainCurrency > 0"
+          v-if="price.value > 0"
           class="price-value"
         >
           <font-awesome-icon
+            v-if="displayedCurrency.iconName != null"
             :icon="displayedCurrency.iconName"
-            :class="'currency-' + displayedCurrency.name"
+            :class="`currency-${displayedCurrency.name}`"
           />
+          <span
+            v-else
+            :class="`currency-${displayedCurrency.name}`"
+          >
+            {{ currency.symbol }}
+          </span>
           <span>{{ displayedPrice }}</span>
         </div>
         <div

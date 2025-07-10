@@ -243,7 +243,7 @@ export class InventoryItemService {
       unitPriceIgnoreStatus
     }
 
-    if (price.valueInMainCurrency > 0) {
+    if (price.value > 0) {
       if (price.currencyName !== 'barter') {
         inventoryPrice.pricesWithContent.push({
           barterItems: [],

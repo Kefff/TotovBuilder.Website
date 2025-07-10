@@ -190,7 +190,7 @@ function displayStats(item: IItem): void {
       </div>
       <div class="card-lines">
         <div
-          v-if="buildSummary.price.priceInMainCurrency > 0
+          v-if="buildSummary.price.priceByCurrency.length > 0
             || buildSummary.weight !== 0"
           class="card-line card-line3"
         >
@@ -212,7 +212,7 @@ function displayStats(item: IItem): void {
             </div>
           </Tooltip>
           <div
-            v-if="buildSummary.price.priceInMainCurrency > 0"
+            v-if="buildSummary.price.priceByCurrency.length > 0"
             class="build-card-price"
             :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
