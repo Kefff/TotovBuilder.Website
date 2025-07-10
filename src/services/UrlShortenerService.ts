@@ -17,6 +17,7 @@ export class UrlShortenerService {
 
     const data = new URLSearchParams()
     data.append('url', url)
+    data.append('block-bots', 'false')
 
     const response = await fetchService.fetchAsync({
       body: data,

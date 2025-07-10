@@ -96,6 +96,8 @@ export class SeoService {
       ogDescription: this._description,
       ogImageAlt: this._imageAlt.value,
       ogImageUrl: computed(() => this._image.value), // For some reason, without a computed it is not reactive
+      ogImageHeight: 630,
+      ogImageWidth: 1200,
       ogSiteName: vueI18n.t('caption.totovBuilder'),
       ogTitle: this._title,
       ogType: 'website',
