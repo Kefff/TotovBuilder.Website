@@ -244,13 +244,16 @@ function showDetails(): void {
             />
           </Tooltip>
           <div
-            v-if="(itemUnitPrice != null && itemUnitPrice.value > 0) || itemUnitPrice?.currencyName === 'barter'"
+            v-if="(itemUnitPrice != null
+              && (itemUnitPrice.valueInMainCurrency > 0
+                || itemUnitPrice.value > 0))
+              || itemUnitPrice?.currencyName === 'barter'"
             class="item-card-price"
             :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
             <Price :price="itemUnitPrice" />
             <ValueComparison
-              v-if="showStatsComparison && itemUnitPrice.value > 0"
+              v-if="showStatsComparison && (itemUnitPrice.valueInMainCurrency > 0 || itemUnitPrice.value > 0)"
               :compare-to-value="comparisonItemUnitPriceInMainCurrency"
               :current-value="itemUnitPrice.valueInMainCurrency"
               :invert="true"

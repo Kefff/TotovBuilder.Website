@@ -3,17 +3,11 @@
   "currencies": [
     {
       "iconName": "balance-scale",
+      "itemId": "",
       "mainCurrency": false,
       "name": "barter",
-      "sortOrder": 0
-    },
-    {
-      "iconName": "dollar-sign",
-      "itemId": "5696686a4bdc2da3298b456a",
-      "mainCurrency": false,
-      "name": "USD",
-      "sortOrder": 3,
-      "symbol": "$"
+      "sortOrder": 0,
+      "symbol": ""
     },
     {
       "iconName": "euro-sign",
@@ -22,6 +16,14 @@
       "name": "EUR",
       "sortOrder": 2,
       "symbol": "\u20AC"
+    },
+    {
+      "iconName": "dollar-sign",
+      "itemId": "5696686a4bdc2da3298b456a",
+      "mainCurrency": false,
+      "name": "USD",
+      "sortOrder": 3,
+      "symbol": "$"
     },
     {
       "itemId": "5d235b4d86f7742e017bc88a",

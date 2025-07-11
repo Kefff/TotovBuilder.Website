@@ -93,7 +93,7 @@ describe('fetchPricesAsync', () => {
 
     // Assert
     expect(prices).not.toBeUndefined()
-    expect(prices!.length).toBe(5196)
+    expect(prices!.length).toBe(5197)
 
     for (const priceMock of PriceMocks) {
       const fetchedPrice = prices!.find(p =>

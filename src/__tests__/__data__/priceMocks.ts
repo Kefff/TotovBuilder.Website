@@ -1,5 +1,18 @@
 import { IPrice } from '../../models/item/IPrice'
-import { ak12PistolGrip, ak12Stock, ak12bt, alkali, alpha, ammo1270Magnum, ammo545us, ammo9mmGT, aquamari, armbandBlue, armor6b13Fl, armor6b13FlDefault, banshee, bansheeDefault, bayonet6Kh5, berkut, capacitors, cf, crossbow, cultLocust, ekp802dt, erBayonet, esLamp, eur, ewr, filter, h2o2, halfMask, iskra, k1s, k1sVisor, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Prot, m9a3Rs, m9a3Slide, m9a3Thr, magazine6l20, mechanism, monocletePe, morphine, ms2000, mts25512, mts25512755mmRib, mts25512Default, mts25512choke, mts25512cyl, nf30mm, opSksDefault, opSksDt, paca, paid, pass, plate6b33Back, plate6b33Front, plexiglass, precision, pso1, razor, rgd5, rooster, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, rub, salewa, scavVest, slickers, specterDr, srd9, syringe, usd, vaseline, vhs, vita, wParts, water, x400 } from './itemMocks'
+import { acs, ak12PistolGrip, ak12Stock, ak12bt, alkali, alpha, ammo1270Magnum, ammo545us, ammo9mmGT, aquamari, armbandBlue, armor6b13Fl, armor6b13FlDefault, banshee, bansheeDefault, bayonet6Kh5, berkut, capacitors, cf, crossbow, cultLocust, ekp802dt, erBayonet, esLamp, eur, ewr, filter, h2o2, halfMask, iskra, k1s, k1sVisor, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Prot, m9a3Rs, m9a3Slide, m9a3Thr, magazine6l20, mechanism, monocletePe, morphine, ms2000, mts25512, mts25512755mmRib, mts25512Default, mts25512choke, mts25512cyl, nf30mm, opSksDefault, opSksDt, paca, paid, pass, plate6b33Back, plate6b33Front, plexiglass, precision, pso1, razor, rgd5, rooster, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, rub, salewa, scavVest, slickers, specterDr, srd9, syringe, usd, vaseline, vhs, vita, wParts, water, x400 } from './itemMocks'
+
+export const acsPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'GPCOIN',
+    itemId: acs.id,
+    merchant: 'ref',
+    merchantLevel: 2,
+    quest: undefined,
+    value: 6,
+    valueInMainCurrency: 0
+  }
+]
 
 export const ak12btPrices: IPrice[] = [
   {
@@ -1871,6 +1884,7 @@ export const x400Prices: IPrice[] = [
 
 
 export const PriceMocks: IPrice[] = [
+  ...acsPrices,
   ...ak12btPrices,
   ...ak12PistolGripPrices,
   ...ak12StockPrices,

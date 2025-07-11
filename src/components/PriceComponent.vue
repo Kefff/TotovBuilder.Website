@@ -227,7 +227,7 @@ function togglePriceDetails(event: Event): void {
         :class="canShowDetails ? 'price-value-and-icon-with-details' : ''"
       >
         <div
-          v-if="price.value > 0"
+          v-if="price.valueInMainCurrency > 0 || price.value > 0"
           class="price-value"
         >
           <font-awesome-icon

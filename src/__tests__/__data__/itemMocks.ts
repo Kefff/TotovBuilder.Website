@@ -14,6 +14,38 @@ import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IVest } from '../../models/item/IVest'
 
+export const acs: IHeadwear = {
+  armorClass: 0,
+  armoredAreas: [],
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
+  blocksHeadphones: false,
+  categoryId: ItemCategoryId.faceCover,
+  conflictingItemIds: [],
+  deafening: 'None',
+  defaultPresetId: undefined,
+  durability: 0,
+  ergonomicsModifierPercentage: 0,
+  iconLink: 'https://assets.tarkov.dev/67f90180f07898267b0a4ed7-icon.webp',
+  id: '67f90180f07898267b0a4ed7',
+  imageLink: 'https://assets.tarkov.dev/67f90180f07898267b0a4ed7-image.webp',
+  marketLink: 'https://tarkov.dev/item/arena-cup-series-balaclava',
+  material: '',
+  maxStackableAmount: 1,
+  modSlots: [],
+  movementSpeedModifierPercentage: 0,
+  name: 'Arena Cup Series balaclava',
+  presetArmorModifiers: undefined,
+  presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  ricochetChance: '',
+  shortName: 'ACS',
+  turningSpeedModifierPercentage: 0,
+  weight: 0.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Arena_Cup_Series_balaclava'
+}
+
 export const ak12bt: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
@@ -3777,6 +3809,7 @@ export const x400: IRangedWeaponMod = {
 
 
 export const ItemMocks: IItem[] = [
+  acs,
   ak12bt,
   ak12PistolGrip,
   ak12Stock,

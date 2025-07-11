@@ -243,7 +243,8 @@ export class InventoryItemService {
       unitPriceIgnoreStatus
     }
 
-    if (price.value > 0) {
+    if (price.valueInMainCurrency > 0 || price.value > 0) {
+      // Barters have no value while items with price currency that has no price (GP coin for example) have no value in main currency
       if (price.currencyName !== 'barter') {
         inventoryPrice.pricesWithContent.push({
           barterItems: [],
