@@ -55,7 +55,7 @@ export class GlobalFilterService {
    * Returned prices are as follows :
    * - the standard matching price with the lowest value in main currency
    * - all matching barters because we do not know at this stage their value in main currency
-   * - prices with a currency that has no value only when there are no matching standard prices nor barters
+   * - arbritrarily, first price with a currency that has no value only when there are no matching standard prices nor barters
    * @param item - Item.
    * @returns Price.
    */
@@ -65,13 +65,19 @@ export class GlobalFilterService {
 
     let standardPriceWithLowestValueInMainCurrency: IPrice | undefined = undefined
     const barters: IPrice[] = []
-    const pricesWithCurrencyWithNoValue: IPrice[] = []
+    let firstPriceWithCurrencyWithNoValueWithLowestValue: IPrice | undefined = undefined
 
     for (const matchingPrice of matchingPrices) {
       if (matchingPrice.currencyName === 'barter') {
         barters.push(matchingPrice)
       } else if (matchingPrice.valueInMainCurrency === 0) {
-        pricesWithCurrencyWithNoValue.push(matchingPrice)
+        // If there are multiple prices with different currencies without a value, we arbitriraly take into account the first currency found
+        // and try to find the price with this currency and the lowest value
+        if (firstPriceWithCurrencyWithNoValueWithLowestValue == null
+          || (firstPriceWithCurrencyWithNoValueWithLowestValue.currencyName === matchingPrice.currencyName
+            && matchingPrice.value < firstPriceWithCurrencyWithNoValueWithLowestValue.value)) {
+          firstPriceWithCurrencyWithNoValueWithLowestValue = matchingPrice
+        }
       } else if (standardPriceWithLowestValueInMainCurrency == null
         || matchingPrice.valueInMainCurrency < standardPriceWithLowestValueInMainCurrency.valueInMainCurrency) {
         standardPriceWithLowestValueInMainCurrency = matchingPrice
@@ -81,10 +87,12 @@ export class GlobalFilterService {
     if (standardPriceWithLowestValueInMainCurrency != null) {
       return [standardPriceWithLowestValueInMainCurrency, ...barters]
     } else if (barters.length > 0) {
-      barters
+      return barters
     }
 
-    return pricesWithCurrencyWithNoValue
+    return firstPriceWithCurrencyWithNoValueWithLowestValue != null
+      ? [firstPriceWithCurrencyWithNoValueWithLowestValue]
+      : []
   }
 
   /**

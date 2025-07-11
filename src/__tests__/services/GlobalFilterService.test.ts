@@ -207,70 +207,230 @@ describe('GlobalFilterService', () => {
       [
         [
           {
-            currencyName: '',
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
             merchant: 'flea-market',
             merchantLevel: 0,
+            quest: undefined,
+            value: 2,
+            valueInMainCurrency: 2
+          },
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 1,
+            valueInMainCurrency: 1
+          },
+          {
+            barterItems: [
+              {
+                itemId: '12345',
+                quantity: 2
+              }
+            ],
+            currencyName: 'barter',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 2,
             quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
           {
-            currencyName: '',
-            merchant: 'prapor',
-            merchantLevel: 4,
+            barterItems: [
+              {
+                itemId: '67890',
+                quantity: 1
+              }
+            ],
+            currencyName: 'barter',
+            itemId: '',
+            merchant: 'therapist',
+            merchantLevel: 3,
             quest: undefined,
             value: 0,
             valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'GPCOIN',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 1,
+            valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'GPCOIN',
+            itemId: '',
+            merchant: 'therapist',
+            merchantLevel: 3,
+            quest: undefined,
+            value: 2,
+            valueInMainCurrency: 0
           }
-        ] as IPrice[],
+        ],
         [
           {
-            currencyName: '',
-            merchant: 'flea-market',
-            merchantLevel: 0,
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 1,
+            valueInMainCurrency: 1
+          },
+          {
+            barterItems: [
+              {
+                itemId: '12345',
+                quantity: 2
+              }
+            ],
+            currencyName: 'barter',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 2,
             quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
           {
-            currencyName: '',
-            merchant: 'prapor',
-            merchantLevel: 4,
+            barterItems: [
+              {
+                itemId: '67890',
+                quantity: 1
+              }
+            ],
+            currencyName: 'barter',
+            itemId: '',
+            merchant: 'therapist',
+            merchantLevel: 3,
             quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           }
-        ] as IPrice[]
+        ]
       ],
       [
         [
           {
-            currencyName: '',
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
             merchant: 'prapor',
             merchantLevel: 4,
             quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
+            value: 2,
+            valueInMainCurrency: 2
           },
           {
-            currencyName: '',
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
             merchant: 'therapist',
             merchantLevel: 4,
             quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
+            value: 1,
+            valueInMainCurrency: 1
           }
-        ] as IPrice[],
+        ],
         [
           {
-            currencyName: '',
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
             merchant: 'prapor',
             merchantLevel: 4,
             quest: undefined,
-            value: 0,
+            value: 2,
+            valueInMainCurrency: 2
+          }
+        ]
+      ],
+      [
+        [
+          {
+            barterItems: [],
+            currencyName: 'GPCOIN',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 3,
+            valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'GPCOIN',
+            itemId: '',
+            merchant: 'mechanic',
+            merchantLevel: 2,
+            quest: undefined,
+            value: 1,
+            valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'GPCOIN',
+            itemId: '',
+            merchant: 'therapist',
+            merchantLevel: 3,
+            quest: undefined,
+            value: 2,
+            valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'TOTOCOIN',
+            itemId: '',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 3,
+            valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'TOTOCOIN',
+            itemId: '',
+            merchant: 'mechanic',
+            merchantLevel: 2,
+            quest: undefined,
+            value: 1,
+            valueInMainCurrency: 0
+          },
+          {
+            barterItems: [],
+            currencyName: 'TOTOCOIN',
+            itemId: '',
+            merchant: 'therapist',
+            merchantLevel: 3,
+            quest: undefined,
+            value: 2,
             valueInMainCurrency: 0
           }
-        ] as IPrice[]
+        ],
+        [
+          {
+            barterItems: [],
+            currencyName: 'GPCOIN',
+            itemId: '',
+            merchant: 'therapist',
+            merchantLevel: 3,
+            quest: undefined,
+            value: 2,
+            valueInMainCurrency: 0
+          }
+        ]
       ]
     ])('should indicate that an item has matching prices', (prices: IPrice[], expected: IPrice[]) => {
       // Arrange
