@@ -52,14 +52,39 @@ export class GlobalFilterService {
 
   /**
    * Gets the the prices of an item that corresponds to the merchant filters.
+   * Returned prices are as follows :
+   * - the standard matching price with the lowest value in main currency
+   * - all matching barters because we do not know at this stage their value in main currency
+   * - prices with a currency that has no value only when there are no matching standard prices nor barters
    * @param item - Item.
    * @returns Price.
    */
   public getMatchingPrices(item: IItem): IPrice[] {
     this.initialize()
-    const result = item.prices.filter(p => this.isPriceMatchingFilter(this.filter.merchantFilters, p))
+    const matchingPrices = item.prices.filter(p => this.isPriceMatchingFilter(this.filter.merchantFilters, p))
 
-    return result
+    let standardPriceWithLowestValueInMainCurrency: IPrice | undefined = undefined
+    const barters: IPrice[] = []
+    const pricesWithCurrencyWithNoValue: IPrice[] = []
+
+    for (const matchingPrice of matchingPrices) {
+      if (matchingPrice.currencyName === 'barter') {
+        barters.push(matchingPrice)
+      } else if (matchingPrice.valueInMainCurrency === 0) {
+        pricesWithCurrencyWithNoValue.push(matchingPrice)
+      } else if (standardPriceWithLowestValueInMainCurrency == null
+        || matchingPrice.valueInMainCurrency < standardPriceWithLowestValueInMainCurrency.valueInMainCurrency) {
+        standardPriceWithLowestValueInMainCurrency = matchingPrice
+      }
+    }
+
+    if (standardPriceWithLowestValueInMainCurrency != null) {
+      return [standardPriceWithLowestValueInMainCurrency, ...barters]
+    } else if (barters.length > 0) {
+      barters
+    }
+
+    return pricesWithCurrencyWithNoValue
   }
 
   /**
