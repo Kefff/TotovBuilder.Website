@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Allow: /build$
 Disallow: /build/
 Sitemap: https://www.totovbuilder.com/sitemap.xml
