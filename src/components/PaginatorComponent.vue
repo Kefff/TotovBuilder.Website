@@ -80,11 +80,17 @@ const { isSwiping } = WebBrowserUtils.getSwipe({
 })
 const previousPageIndex = ref(-1)
 
-watch(() => props.elements, () => scrollToElement(props.scrollToIndex))
+watch(groupedElements, adjustPageAndScrollToElement)
 
-onMounted(() => {
+onMounted(() => adjustPageAndScrollToElement)
+
+/**
+ * Adjust th current page when the current page index exceeds the last page index and scrolls to the element corresponding to props.scrollToIndex.
+ */
+function adjustPageAndScrollToElement(): void {
   if (modelCurrentPage.value > lastPageIndex.value) {
-    // Can happend when deleting the last build from the last page.
+    // Can happen when being position on a page that exists no more after the number of elements changes
+    // (when deleting elements or making a filter more restrictive).
     // Returning immediatly because the page will change and already trigger a scroll to top
     modelCurrentPage.value = lastPageIndex.value
 
@@ -92,7 +98,7 @@ onMounted(() => {
   }
 
   scrollToElement(props.scrollToIndex)
-})
+}
 
 /**
  * Reacts to the paginator current page being changed.

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VirtualScroller, { VirtualScrollerLazyEvent } from 'primevue/virtualscroller'
+import VirtualScroller from 'primevue/virtualscroller'
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 const props = withDefaults(
@@ -44,53 +44,24 @@ const maxHeight = computed(() => {
 const minHeight = computed(() => `${props.elementHeight}px`)
 
 const displayedElementGroups = ref<unknown[][]>([])
-const isInitialized = ref(false)
-const isLoading = ref(false)
+const isLoading = ref(true)
 const virtualScroller = useTemplateRef<VirtualScroller>('virtualScroller')
 
-watch(() => props.elements, () => initializeDisplayedElements())
-
 onMounted(() => initializeDisplayedElements())
+
+watch(() => props.elements, () => initializeDisplayedElements())
 
 /**
  * Initializes the list of displayed elements.
  */
 function initializeDisplayedElements(): void {
-  isInitialized.value = false
+  isLoading.value = true
   displayedElementGroups.value = Array.from({ length: groupedElements.value.length })
 
-  nextTick(() => { // Required to force a reset of displayedElementGroups.value, otherwise the items to display may not load
-    isInitialized.value = true
+  nextTick(() => {
+    isLoading.value = false
     scrollToElement(props.scrollToIndex)
   })
-}
-
-/**
- * Reacts to a lazy load event of the virtual scroller.
- *
- * Adds to the list of displayed items the items corresponding to the lazy loading event.
- */
-function onLazyLoad(event: VirtualScrollerLazyEvent): void {
-  let first = event.first
-  let last = event.last
-
-  if (event.last > groupedElements.value.length) {
-    last = groupedElements.value.length - 1
-  }
-
-  isLoading.value = true
-
-  const nextLines = groupedElements.value.slice(first, last + 1)
-  const take = last - first
-  let newDisplayedElementGroups = [...displayedElementGroups.value]
-
-  for (let i = 0; i < take; i++) {
-    newDisplayedElementGroups[first + i] = nextLines[i]
-  }
-
-  displayedElementGroups.value = newDisplayedElementGroups
-
-  nextTick(() => isLoading.value = false)
 }
 
 /**
@@ -124,15 +95,12 @@ function scrollToElement(elementIndex?: number): void {
 
 <template>
   <VirtualScroller
-    v-if="isInitialized"
     ref="virtualScroller"
     :item-size="elementHeight"
-    :items="displayedElementGroups"
-    :lazy="true"
-    :loading="isLoading"
+    :items="groupedElements"
     :show-loader="true"
+    :loading="isLoading"
     class="infinite-scroller"
-    @lazy-load="onLazyLoad"
   >
     <template #item="{ item }">
       <div class="infinite-scroller-line">
@@ -166,6 +134,7 @@ function scrollToElement(elementIndex?: number): void {
 
 .infinite-scroller-line {
   display: grid;
+  gap: 1rem;
   grid-template-columns: v-bind(gridTemplateColumns);
   height: v-bind(lineHeight);
   margin-top: 0.5rem;

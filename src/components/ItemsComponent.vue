@@ -58,7 +58,7 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const filterAndSortingData = ref(new ItemFilterAndSortingData(ItemSortingFunctions))
+const filterAndSortingData = ref<ItemFilterAndSortingData>()
 const isLoading = ref(true)
 const itemsToolbar = useTemplateRef('itemsToolbar')
 
@@ -136,6 +136,10 @@ function goToBuildList(): void {
  * Saves filter and sorting data.
  */
 function onFilterAndSortingDataChanged(): void {
+  if (filterAndSortingData.value == null) {
+    return
+  }
+
   if (filterAndSortingData.value.categoryId == null) {
     sessionStorage.removeItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey)
   } else {
@@ -196,7 +200,8 @@ function onItemSelected(selectedItems: IItem[]): void {
       </template>
     </Toolbar>
     <ItemsList
-      v-model:filter-and-sorting-data="filterAndSortingData as ItemFilterAndSortingData"
+      v-if="filterAndSortingData != null"
+      v-model:filter-and-sorting-data="filterAndSortingData"
       :element-to-stick-to="toolbarContainer"
       :get-items-function="getItemsAsync"
       :has-selection="false"

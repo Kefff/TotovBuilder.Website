@@ -124,7 +124,10 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  modelParameters.value = new ItemFilterAndSortingData(ItemSortingFunctions)
+  const filter = new ItemFilterAndSortingData(ItemSortingFunctions)
+  filter.property = 'name'
+  filter.order = SortingOrder.asc
+  modelParameters.value = filter
   _globalSidebarService.close(props.identifier)
 }
 </script>

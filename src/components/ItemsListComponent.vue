@@ -53,6 +53,8 @@ const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
+let _itemsWaitingToBeFilteredAndSorted: IItem[] | undefined = undefined
+
 const comparisonItem = computed(() =>
   !props.selectionOptions.isMultiSelection && props.selectionOptions.showStatsComparison
     ? modelSelectedItems.value[0]
@@ -85,7 +87,15 @@ const elementsitemsPerLine = computed(() => {
 
   return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
-const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
+const firstSelectedItemIndex = computed(() => {
+  let i: number | undefined = filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id)
+
+  if (i < 0) {
+    i = undefined
+  }
+
+  return i
+})
 const linesPerPage = computed(() => {
   let lines = 4
 
@@ -97,8 +107,8 @@ const linesPerPage = computed(() => {
 })
 
 const filteredAnSortedItems = ref<IItem[]>([])
-const isInitialed = ref(false)
-const isLoading = ref(true)
+const isInitializing = ref(true)
+const isLoading = ref(false)
 const {
   isSmartphonePortrait,
   isTabletPortraitOrSmaller,
@@ -113,11 +123,9 @@ onMounted(() => {
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, () => {
       filterAndSortItemsAsync(true)
-      isInitialed.value = true
     })
   } else {
     filterAndSortItemsAsync(true)
-    isInitialed.value = true
   }
 })
 
@@ -126,7 +134,9 @@ onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEve
 watch(
   () => modelFilterAndSortingData.value,
   (value: ItemFilterAndSortingData, oldValue: ItemFilterAndSortingData) => {
-    filterAndSortItemsAsync(value.categoryId != oldValue.categoryId || value.filter !== oldValue.filter)
+    if (!isInitializing.value) {
+      filterAndSortItemsAsync(value.categoryId != oldValue.categoryId || value.filter !== oldValue.filter)
+    }
   })
 
 /**
@@ -146,32 +156,49 @@ function checkIsSelected(item: IItem): boolean {
  */
 async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<void> {
   isLoading.value = true
-  let itemsToFilterAndSort
 
   if (itemsListNeedsUpdate) {
-    itemsToFilterAndSort = await props.getItemsFunction()
+    _itemsWaitingToBeFilteredAndSorted = await props.getItemsFunction()
 
     const fasd = new ItemFilterAndSortingData(modelFilterAndSortingData.value.sortingFunctions, modelFilterAndSortingData.value)
-    fasd.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
+    fasd.availableItemCategories = getAvailableItemCategoryIdsFromItems(_itemsWaitingToBeFilteredAndSorted)
 
-    filteredAnSortedItems.value = itemsToFilterAndSort
+    // Updating modelFilterAndSortingData an returning here will trigger the watcher on modelFilterAndSortingData.
+    // This will execute this method again, but this time it will not update the items list and instead apply filter and sorting.
+    // However, when initializing, we need to get items, filter and sort them immediatly
+    // The watcher on modelFilterAndSortingData is disabled at this time.
     modelFilterAndSortingData.value = fasd
 
-    // Updating the filter and sorting data will call again filterAndSortItemsAsync.
-    // The second time it is called, itemsListNeedsUpdate will be false and items will only be filtered and sorted
+    if (!isInitializing.value) {
+      return
+    }
+  }
+
+  let itemsToFilterAndSort: IItem[]
+
+  if (_itemsWaitingToBeFilteredAndSorted != null) {
+    itemsToFilterAndSort = [..._itemsWaitingToBeFilteredAndSorted]
+    _itemsWaitingToBeFilteredAndSorted = undefined
   } else {
     itemsToFilterAndSort = [...filteredAnSortedItems.value]
-    itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
-    itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
-    filteredAnSortedItems.value = itemsToFilterAndSort
-
-    nextTick(() => isLoading.value = false)
   }
+
+  itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
+  itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
+  filteredAnSortedItems.value = itemsToFilterAndSort
+
+  nextTick(() => {
+    if (isInitializing.value) {
+      isInitializing.value = false
+    }
+
+    isLoading.value = false
+  })
 }
 
 /**
  * Filters build summaries.
- * @param itemsToFilter - Build summaries to filter.
+ * @param itemsToFilter - Items to filter.
  */
 async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
   if (modelFilterAndSortingData.value.categoryId == null
@@ -272,13 +299,14 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 <template>
   <div class="items-list-container">
     <div
-      v-if="!isInitialed || isLoading"
+      v-if="isInitializing || isLoading"
       class="items-list-loading"
     >
       <Loading />
     </div>
     <div
-      v-if="isInitialed"
+      v-if="!isInitializing"
+      v-show="!isLoading"
       class="items-list"
     >
       <FilterChips

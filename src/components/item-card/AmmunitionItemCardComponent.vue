@@ -243,7 +243,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     <Tooltip :tooltip="$t('caption.velocity')">
       <div
         class="card-value"
-        :class="StatsUtils.getSortedPropertyColorClass('accuracyModifierPercentage', filterAndSortingData)"
+        :class="StatsUtils.getSortedPropertyColorClass('velocity', filterAndSortingData)"
       >
         <font-awesome-icon
           icon="wind"

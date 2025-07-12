@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener, watchDebounced } from '@vueuse/core'
+import { useDebounceFn, useEventListener } from '@vueuse/core'
 import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { FilterAndSortingDataType } from '../models/utils/FilterAndSortingData'
@@ -154,18 +154,16 @@ const filterInternal = ref(modelFilterAndSortingData.value.filter)
 const globalFilter = ref<IGlobalFilter>()
 const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
-
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
+
+const applyQuickFilterDenounce = useDebounceFn(() => {
+  // Applies the filter only 500ms after the last letter is typed
+  applyQuickFilter()
+}, 500)
 
 watch(
   () => modelFilterAndSortingData.value.filter,
   () => filterInternal.value = modelFilterAndSortingData.value.filter)
-
-watchDebounced(
-  // Applies the filter only 500ms after the last letter is typed
-  filterInternal,
-  () => applyQuickFilter(),
-  { debounce: 500 })
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, getGlobalFilter)
@@ -223,6 +221,17 @@ function copyFilterAndSortingData(): BuildFilterAndSortingData | ItemFilterAndSo
  */
 function getGlobalFilter(): void {
   globalFilter.value = _globalFilterService.get()
+}
+
+/**
+ * Reacts to a the filter being updated.
+ *
+ * Applies the quick filter if the filter is not updated during the next 500ms.
+ * @param value - Value.
+ */
+function onFilterUpdate(value: string | undefined): void {
+  filterInternal.value = value
+  applyQuickFilterDenounce()
 }
 
 /**
@@ -469,10 +478,11 @@ function switchSortOrder(): void {
               @click="$event => $event.stopPropagation()"
             >
               <InputTextField
-                v-model:value="filterInternal"
+                :value="filterInternal"
                 :caption="$t('caption.filter')"
                 caption-mode="placeholder"
                 :autofocus="!isTouchScreen"
+                @update:value="onFilterUpdate"
               />
             </div>
           </div>
