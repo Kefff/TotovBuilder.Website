@@ -42,8 +42,8 @@ export const ItemSortingFunctions: IItemSortingFunctionList = {
       icon: 'font'
     },
     price: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: async (i) => await getPriceAsync(i as IItem),
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: async (i) => await getPriceAsStringAsync(i as IItem),
       customIcon: undefined,
       icon: 'ruble-sign'
     },
@@ -383,11 +383,14 @@ export const VestSortingFunctions: IItemSortingFunctionList = {
 }
 
 /**
- * Gets the price of an item to compare.
+ * Gets the price of an item to compare as a string.
+ * Items without price ou with missing barters appear first.
+ * Then items with a currency that has no value. Theses prices are groupe by currency.
+ * Then items with a standard price.
  * @param item - Item.
- * @returns Price.
+ * @returns Price as a formatted string.
  */
-async function getPriceAsync(item: IItem): Promise<number> {
+async function getPriceAsStringAsync(item: IItem): Promise<string> {
   const inventoryItemService = Services.get(InventoryItemService)
   const price = await inventoryItemService.getPriceAsync({
     content: [],
@@ -397,5 +400,22 @@ async function getPriceAsync(item: IItem): Promise<number> {
     quantity: 1
   })
 
-  return price.unitPrice.valueInMainCurrency
+  const paddingLength = 9 // We consider no price will exceed 999 999 999
+  let priceAsString = ''
+
+  if (price.unitPrice.merchant === '') {
+    // Items without prices
+    priceAsString = `!!!${priceAsString.padStart(paddingLength, ' ')}`
+  } else if (price.unitPrice.value === 0 && price.unitPrice.valueInMainCurrency === 0) {
+    // Items with missing barter prices
+    priceAsString = `###${priceAsString.padStart(paddingLength, ' ')}`
+  } else if (price.unitPrice.valueInMainCurrency === 0) {
+    // Items with a price in a currency that has no value (ignoring the possible decimal part)
+    priceAsString = `${price.unitPrice.currencyName.slice(0, 2).toUpperCase()}${Math.trunc(price.unitPrice.value).toString().padStart(paddingLength, ' ')}`
+  } else {
+    // Items with a standard price (ignoring the possible decimal part)
+    priceAsString = `___${Math.trunc(price.unitPrice.valueInMainCurrency).toString().padStart(paddingLength, ' ')}`
+  }
+
+  return priceAsString
 }
