@@ -81,7 +81,7 @@ const buildsPerLine = computed(() => {
 })
 
 const filteredAndSortedBuildSummaries = ref<IBuildSummary[]>([])
-const isInitialized = ref(false)
+const isInitializing = ref(true)
 const isLoading = ref(true)
 const {
   isSmartphoneLandscapeOrSmaller,
@@ -107,11 +107,9 @@ onMounted(() => {
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, () => {
       filterAndSortBuildsAsync(true)
-      isInitialized.value = true
     })
   } else {
     filterAndSortBuildsAsync(true)
-    isInitialized.value = true
   }
 })
 
@@ -135,7 +133,11 @@ watch(modelAllSelected, (value) => {
 
 watch(
   modelFilterAndSortingData,
-  (value: BuildFilterAndSortingData, oldValue: BuildFilterAndSortingData) => filterAndSortBuildsAsync(value.filter !== oldValue.filter))
+  (value: BuildFilterAndSortingData, oldValue: BuildFilterAndSortingData) => {
+    if (!isInitializing.value) {
+      filterAndSortBuildsAsync(value.filter !== oldValue.filter)
+    }
+  })
 
 /**
  * Indicates whether a build is selected.
@@ -194,7 +196,13 @@ async function filterAndSortBuildsAsync(buildsListNeedsUpdate: boolean): Promise
     nextTick(() => _watchAllSelected = true) // To avoid the watcher to be triggered and deselect everything
   }
 
-  nextTick(() => isLoading.value = false)
+  nextTick(() => {
+    if (isInitializing.value) {
+      isInitializing.value = false
+    }
+
+    isLoading.value = false
+  })
 }
 
 /**
@@ -305,13 +313,13 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 <template>
   <div class="builds-list-container">
     <div
-      v-if="isLoading || !isInitialized"
+      v-if="isInitializing || isLoading"
       class="builds-list-loading"
     >
       <Loading />
     </div>
     <div
-      v-if="isInitialized"
+      v-if="!isInitializing"
       class="builds-list"
     >
       <FilterChips

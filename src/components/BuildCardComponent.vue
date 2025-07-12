@@ -308,6 +308,7 @@ function displayStats(item: IItem): void {
               <font-awesome-icon
                 icon="award"
                 class="icon-before-text"
+                :class="`armor-penetration${buildSummary.armorModifiers.armorClass}`"
               />
               <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass) }}</span>
             </div>
