@@ -12,10 +12,10 @@ export interface IHeadwear extends IArmor {
   /**
    * Severity of the hearing impairment caused by the helmet.
    */
-  deafening: string
+  deafening?: string
 
   /**
    * Chance of ricochet.
    */
-  ricochetChance: string
+  ricochetChance?: string
 }

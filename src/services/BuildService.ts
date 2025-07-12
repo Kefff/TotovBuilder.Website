@@ -177,7 +177,7 @@ export class BuildService {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i) // Key could potentially be null if a build is deleted while looping, but it is hardly testable
 
-      if (key !== null && key.startsWith(buildKeyPrefix)) {
+      if (key != null && key.startsWith(buildKeyPrefix)) {
         const id = key.slice(buildKeyPrefix.length)
         const build = this.get(id)
 

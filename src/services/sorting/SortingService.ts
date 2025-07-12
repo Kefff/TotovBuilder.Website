@@ -112,7 +112,7 @@ export function compareByElementName(element1: object, element2: object): number
 * @returns Comparison value.
 */
 export function compareByNumber(element1: object, element1Value: string | number, element2: object, element2Value: string | number): number {
-  let comparisonValue = (element1Value as number ?? 0) - (element2Value as number ?? 0)
+  let comparisonValue = (element1Value as number) - (element2Value as number)
 
   if (comparisonValue === 0) {
     comparisonValue = compareByElementName(element1, element2)

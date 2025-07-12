@@ -117,8 +117,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     >
       <Tooltip :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })">
         <div
-          style="font-size: 0.875rem; display: flex; align-items: center; gap: 0.125rem"
-          class="card-value"
+          class="card-value ammunition-item-card-penetrated-armor-level"
           :class="StatsUtils.getSortedPropertyColorClass('penetratedArmorLevel', filterAndSortingData)"
         >
           <font-awesome-icon
@@ -267,7 +266,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       >
         <font-awesome-icon
           icon="deaf"
-          :class="`icon-before-text`"
+          class="icon-before-text"
         />
       </Tooltip>
       <Tooltip
@@ -276,7 +275,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       >
         <font-awesome-icon
           icon="eye"
-          :class="`icon-before-text`"
+          class="icon-before-text"
         />
       </Tooltip>
       <Tooltip
@@ -285,7 +284,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       >
         <font-awesome-icon
           icon="dizzy"
-          :class="`icon-before-text`"
+          class="icon-before-text"
         />
       </Tooltip>
     </div>
@@ -335,6 +334,12 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
   position: relative;
   right: 5px;
   top: 3px;
+}
+
+.ammunition-item-card-penetrated-armor-level {
+  align-items: center;
+  display: flex;
+  gap: 0.125rem
 }
 
 .ammunition-item-card-penetration-power {

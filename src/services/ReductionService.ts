@@ -473,8 +473,8 @@ export class ReductionService {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
 
     const blocksHeadphones = reducedItem['h'] != null
-    const deafening = reducedItem['de'] as string ?? 'None'
-    const ricochetChance = reducedItem['r'] as string ?? ''
+    const deafening = reducedItem['de'] as string
+    const ricochetChance = reducedItem['r'] as string
 
     return {
       ...baseItemProperties,

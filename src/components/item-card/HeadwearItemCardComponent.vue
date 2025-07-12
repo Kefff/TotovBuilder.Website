@@ -29,7 +29,6 @@ const props = withDefaults(
     wearableModifiersOverride: undefined
   })
 
-const hasRicochetChance = computed(() => headwear.value.ricochetChance !== '')
 const headwear = computed(() => props.item as IHeadwear)
 
 const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
@@ -61,7 +60,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
       :wearable-modifiers-override="wearableModifiersOverride"
     />
     <Tooltip
-      v-if="hasRicochetChance"
+      v-if="headwear.ricochetChance != null"
       :tooltip="$t('caption.ricochetChance')"
       :class="[
         includeModsAndContent ? 'headwear-item-card-bold' : undefined,
@@ -72,8 +71,23 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
         :icon="Images.ricochet"
         position="before"
       >
-        <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
+        <span :class="`headwear-item-card-ricochet-chance-${headwear.ricochetChance.toLowerCase()}`">
+          {{ $t(`caption.${headwear.ricochetChance.toLowerCase()}`) }}
+        </span>
       </CustomIcon>
+    </Tooltip>
+    <Tooltip
+      v-if="headwear.deafening != null"
+      :tooltip="$t('caption.deafening')"
+      :class="includeModsAndContent ? 'headwear-item-card-bold' : undefined"
+    >
+      <font-awesome-icon
+        icon="deaf"
+        class="icon-before-text"
+      />
+      <span :class="`headwear-item-card-deafening-${headwear.deafening.toLowerCase()}`">
+        {{ $t(`caption.${headwear.deafening.toLowerCase()}`) }}
+      </span>
     </Tooltip>
     <Tooltip
       v-if="headwear.blocksHeadphones"
@@ -81,7 +95,7 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
     >
       <font-awesome-icon
         icon="volume-mute"
-        :class="`icon-before-text`"
+        class="icon-before-text headwear-item-card-deafening-blocks-headphones"
       />
     </Tooltip>
   </div>
@@ -97,6 +111,34 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
 
 
 <style scoped>
+.headwear-item-card-deafening-blocks-headphones {
+  color: var(--danger-color);
+}
+
+.headwear-item-card-deafening-high {
+  color: var(--danger-color);
+}
+
+.headwear-item-card-deafening-medium {
+  color: var(--warning-color);
+}
+
+.headwear-item-card-deafening-low {
+  color: rgb(255, 225, 100);
+}
+
+.headwear-item-card-ricochet-chance-high {
+  color: var(--success-color);
+}
+
+.headwear-item-card-ricochet-chance-medium {
+  color: rgb(255, 225, 100);
+}
+
+.headwear-item-card-ricochet-chance-low {
+  color: var(--danger-color);
+}
+
 .headwear-item-card-bold {
   font-style: italic;
   font-weight: bolder;

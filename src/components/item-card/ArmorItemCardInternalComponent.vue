@@ -99,6 +99,7 @@ const tooltipSuffix = computed(() => {
       <font-awesome-icon
         icon="award"
         class="icon-before-text"
+        :class="`armor-penetration${armorClass}`"
       />
       <span>{{ armorClass }}</span>
     </div>

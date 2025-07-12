@@ -38,8 +38,8 @@ describe('comparisonFunction', () => {
       1
     ],
     [
-      { categoryId: ItemCategoryId.headwear, ricochetChance: '', name: 'a' } as IHeadwear,
-      { categoryId: ItemCategoryId.headwear, ricochetChance: '', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, name: 'a' } as IHeadwear,
       0
     ]
   ])('should compare by ricochet chance and name', async (headwear1: IHeadwear, headwear2: IHeadwear, expected: number) => {

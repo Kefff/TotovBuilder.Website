@@ -65,7 +65,12 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
         <span>{{ $t('caption.armorClass') }} :</span>
       </div>
       <div class="stats-value">
-        {{ armorClass }}
+        <font-awesome-icon
+          icon="award"
+          class="icon-before-text"
+          :class="`armor-penetration${armorClass}`"
+        />
+        <span>{{ armorClass }}</span>
       </div>
     </div>
     <div class="stats-entry">

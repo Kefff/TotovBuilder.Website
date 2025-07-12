@@ -241,7 +241,7 @@ export const HeadwearSortingFunctions: IItemSortingFunctionList = {
     ...ArmorSortingFunctions.functions,
     ricochetChance: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: (i) => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance]),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance ?? 'None']),
       customIcon: Images['ricochet'],
       icon: undefined
     }
