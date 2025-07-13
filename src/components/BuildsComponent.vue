@@ -237,7 +237,7 @@ function getBuilds(): IBuild[] {
   hasBuilds.value = builds.length > 0
 
   if (!hasBuilds.value) {
-    _router.push({ name: 'Welcome' })
+    goToHome()
 
     return []
   }
