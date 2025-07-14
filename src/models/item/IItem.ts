@@ -30,6 +30,11 @@ export interface IItem {
   imageLink: string
 
   /**
+   * Indicates whether the item is part of the current preset.
+   */
+  isPartOfPreset?: boolean
+
+  /**
    * Link to the item market page.
    */
   marketLink: string

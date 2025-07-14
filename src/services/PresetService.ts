@@ -49,12 +49,11 @@ export class PresetService {
   }
 
   /**
-   * Gets the preset mod slot the inventory item is a part of.
-   * @param itemId - Item ID.
+   * Gets the ID of the item of a preset is placed at the position corresponding to a path.
    * @param path - Mod slot path indicating the inventory object position within a parent item.
-   * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
+   * @returns ID of the item in a preset at the position matching the path if a preset is present in the path; otherwise `undefined`.
    */
-  public getPresetModSlotContainingItem(itemId: string, path: string): IInventoryModSlot | undefined {
+  public getPresetItemIdFromPath(path: string): IInventoryItem | undefined {
     const pathArray = path.split('/')
     const firstModIndex = pathArray.findIndex(p => p.startsWith(PathUtils.modSlotPrefix))
 
@@ -79,11 +78,7 @@ export class PresetService {
     const isModSlot = PathUtils.checkIsModSlotPath(path)
 
     if (isModSlot) {
-      if (presetModSlot.item?.itemId === itemId) {
-        return presetModSlot
-      }
-
-      return undefined
+      return presetModSlot.item
     }
 
     let pathContentElement = ''
@@ -99,11 +94,7 @@ export class PresetService {
     const contentIndexString = pathContentElement.slice(0, pathContentElement.indexOf('_'))
     const contentIndex = Number(contentIndexString)
 
-    if (presetModSlot.item?.content[contentIndex]?.itemId === itemId) {
-      return presetModSlot
-    }
-
-    return undefined
+    return presetModSlot.item?.content[contentIndex]
   }
 
   /**

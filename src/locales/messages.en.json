@@ -310,6 +310,7 @@
     "options": "Options",
     "order": "Order",
     "outdatedSharableUrlWarning": "Notification when a shared build is modified",
+    "partOfPreset": "Part of the preset",
     "penetratedArmorLevel": "Penetrated armor",
     "penetrationPower": "Penetration power",
     "perUnit": "per unit",

@@ -55,7 +55,7 @@ const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
 const _presetService = Services.get(PresetService)
 
-const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
+const canIgnorePrice = computed(() => inventoryItemInSameSlotInPreset.value !== item.value)
 const contentCount = computed(() => modelInventoryItem.value?.content.length ?? 0)
 const includeModsAndContentInSummary = computed(() =>
   (itemIsModdable.value
@@ -82,7 +82,7 @@ const itemChanging = ref(false)
 const itemIsContainer = ref(false)
 const itemIsModdable = ref(false)
 const lastSelectionFilterAndSortingData = ref<ItemFilterAndSortingData>()
-const presetModSlotContainingItem = ref<IInventoryModSlot>()
+const inventoryItemInSameSlotInPreset = ref<IInventoryItem>()
 const quantity = ref(props.inventoryItem?.quantity ?? 1)
 const selectedTab = ref(SelectableTab.hidden)
 const showBaseItemPrice = ref(false)
@@ -126,7 +126,7 @@ async function initializeItemAsync(): Promise<void> {
 
   item.value = await _itemService.getItemAsync(props.inventoryItem.itemId)
   quantity.value = props.inventoryItem.quantity
-  presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+  inventoryItemInSameSlotInPreset.value = _presetService.getPresetItemIdFromPath(props.path)
   setBaseItem(item.value)
 }
 
@@ -183,7 +183,7 @@ function onItemChanged(): void {
   if (item.value == null) {
     modelInventoryItem.value = undefined
   } else {
-    presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+    inventoryItemInSameSlotInPreset.value = _presetService.getPresetItemIdFromPath(props.path)
     const newContent = _itemComponentService.getReplacingItemContent(modelInventoryItem.value, item.value)
     const newModSlots = _itemComponentService.getReplacingModSlots(modelInventoryItem.value, item.value)
     modelInventoryItem.value = {
@@ -255,9 +255,14 @@ function onSelectionInputClick(): void {
     displayedComponentParameters: {
       buildItemsWithPath: buildItemsWithPath?.value,
       filterAndSortingData,
-      getSelectableItemsFunction: props.getAcceptedItemsFunction,
+      getSelectableItemsFunction: getAcceptedItemsAsync,
       path: props.path,
-      selectedItems: item.value != null ? [item.value] : []
+      selectedItems: item.value != null
+        ? [{
+          ...item.value,
+          isPartOfPreset: item.value.id == inventoryItemInSameSlotInPreset.value?.itemId
+        }]
+        : []
     },
     onCloseAction: (updatedParameters) => {
       const up = updatedParameters as ItemSelectionSidebarParameters
@@ -270,6 +275,28 @@ function onSelectionInputClick(): void {
       }
     }
   })
+}
+
+/**
+ * Gets the items that are selected in the item selection sidebar.
+ */
+async function getAcceptedItemsAsync(): Promise<IItem[]> {
+  const acceptedItems = await props.getAcceptedItemsFunction()
+
+  if (inventoryItemInSameSlotInPreset.value != null) {
+    let presetItem = await _itemService.getItemAsync(inventoryItemInSameSlotInPreset.value.itemId)
+    presetItem = { ...presetItem, isPartOfPreset: true }
+
+    const presetItemIndex = acceptedItems.findIndex(ai => ai.id === presetItem.id)
+
+    if (presetItemIndex >= 0) {
+      acceptedItems[presetItemIndex] = presetItem
+    } else {
+      acceptedItems.push(presetItem)
+    }
+  }
+
+  return acceptedItems
 }
 
 /**
@@ -516,7 +543,7 @@ function showDetails(): void {
           :can-ignore-price="canIgnorePrice"
           :ignore-price="modelInventoryItem.ignorePrice"
           :include-mods-and-content="includeModsAndContentInSummary"
-          :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+          :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
           :inventory-item="modelInventoryItem"
           :selected-item="item"
           :show-price="showPrice"

@@ -1,7 +1,6 @@
 import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IArmor } from '../../models/item/IArmor'
 import { IArmorMod } from '../../models/item/IArmorMod'
 import { IHeadwear } from '../../models/item/IHeadwear'
@@ -17,7 +16,7 @@ import { ItemService } from '../../services/ItemService'
 import { LogService } from '../../services/LogService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
-import { ak12bt, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, bansheeDefault, iskra, m9a3Default, m9a3Magazine, m9a3Prot, m9a3Rs, m9a3Slide, m9a3Thr, rpk16Default, rpk16Drum, srd9 } from '../__data__/itemMocks'
+import { ak12bt, ammo9mmGT, armor6b13FlDefault, bansheeDefault, iskra, m9a3Default, m9a3Magazine, m9a3Rs, m9a3Slide, rpk16Default } from '../__data__/itemMocks'
 import { PresetMocks, rpk16DefaultPreset } from '../__data__/presetMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
 import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
@@ -98,62 +97,31 @@ describe('PresetService', () => {
     })
   })
 
-  describe('getPresetModSlotContainingItem', () => {
+  describe('getPresetItemIdFromPath', () => {
     it.each([
       [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: m9a3Rs.id,
-          modSlots: [],
-          quantity: 1
-        } as IInventoryItem,
         `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}/mod:mod_reciever/item:${m9a3Slide.id}/mod:mod_sight_rear/item:${m9a3Rs.id}`,
         {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: m9a3Rs.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'mod_sight_rear'
-        } as IInventoryModSlot
-      ],
-      [
-        {
+          itemId: m9a3Rs.id,
           content: [],
           ignorePrice: false,
-          itemId: '',
           modSlots: [],
           quantity: 1
-        } as IInventoryItem,
+        } as IInventoryItem
+      ],
+      [
         `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}/mod:invalid/item:${m9a3Slide.id}/mod:mod_sight_rear/item:`,
         undefined
       ],
       [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: m9a3Rs.id,
-          modSlots: [],
-          quantity: 1
-        } as IInventoryItem,
         `build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:${m9a3Slide.id}/mod:mod_sight_rear/item:${m9a3Rs.id}`,
         undefined
       ],
       [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: m9a3Rs.id,
-          modSlots: [],
-          quantity: 1
-        } as IInventoryItem,
         `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}`,
         undefined
       ]
-    ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, path: string, expected: IInventoryModSlot | undefined) => {
+    ])('should get the ID the item in a preset at the same position as a path', async (path: string, expected: IInventoryItem | undefined) => {
       // Arrange
       useItemServiceMock()
       useItemFetcherServiceMock()
@@ -162,13 +130,13 @@ describe('PresetService', () => {
       await service.fetchPresetsAsync()
 
       // Act
-      const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+      const result = service.getPresetItemIdFromPath(path)
 
       // Assert
       expect(result).toStrictEqual(expected)
     })
 
-    it('should get the preset mod slot that contains an item in its content', async () => {
+    it('should get the ID the item in a preset at the same position as a path when the preset has a content', async () => {
       // Arrange
       useItemServiceMock()
       useItemFetcherServiceMock(
@@ -206,53 +174,16 @@ describe('PresetService', () => {
       await service.fetchPresetsAsync()
 
       // Act
-      const result = await service.getPresetModSlotContainingItem(
-        ammo9mmGT.id,
-        `build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:holster/item:${m9a3Default.id}/mod:mod_magazine/item:${m9a3Magazine.id}/content:0_1/item:${ammo9mmGT.id}`)
+      const result = service.getPresetItemIdFromPath(`build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:holster/item:${m9a3Default.id}/mod:mod_magazine/item:${m9a3Magazine.id}/content:0_1/item:${ammo9mmGT.id}`)
 
       // Assert
       expect(result).toStrictEqual({
-        item: {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: ammo9mmGT.id,
-              modSlots: [],
-              quantity: 17
-            }
-          ],
-          ignorePrice: false,
-          itemId: m9a3Magazine.id,
-          modSlots: [],
-          quantity: 1
-        },
-        modSlotName: 'mod_magazine'
-      } as IInventoryModSlot)
-    })
-
-    it('should return undefined when the item is different from the preset modslot item', async () => {
-      // Arrange
-      useItemServiceMock()
-      useItemFetcherServiceMock()
-
-      const service = new PresetService()
-      await service.fetchPresetsAsync()
-
-      const item = {
         content: [],
         ignorePrice: false,
-        itemId: srd9.id,
+        itemId: ammo9mmGT.id,
         modSlots: [],
-        quantity: 1
-      } as IInventoryItem
-      const path = `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}/mod:mod_barrel/item:${m9a3Thr.id}/mod:mod_muzzle/item:${m9a3Prot.id}`
-
-      // Act
-      const result = await service.getPresetModSlotContainingItem(item.itemId, path)
-
-      // Assert
-      expect(result).toBeUndefined()
+        quantity: 17
+      })
     })
 
     it('should return undefined when the preset does not contain the mod slot containing the item', async () => {
@@ -262,18 +193,10 @@ describe('PresetService', () => {
 
       const service = new PresetService()
       await service.fetchPresetsAsync()
-
-      const item = {
-        content: [],
-        ignorePrice: false,
-        itemId: m9a3Rs.id,
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem
       const path = `build:1234-4568-9011/slot:holster_0/item:${m9a3Default.id}/mod:mod_reciever/item:${m9a3Slide.id}/mod:mod_pistol_grip`
 
       // Act
-      const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+      const result = service.getPresetItemIdFromPath(path)
 
       // Assert
       expect(result).toBeUndefined()
@@ -306,69 +229,8 @@ describe('PresetService', () => {
       const service = new PresetService()
       await service.fetchPresetsAsync()
 
-      const item = {
-        content: [],
-        ignorePrice: false,
-        itemId: ammo9mmGT.id,
-        modSlots: [],
-        quantity: 20
-      } as IInventoryItem
-
       // Act
-      const result = await service.getPresetModSlotContainingItem(item.itemId, path)
-
-      // Assert
-      expect(result).toBeUndefined()
-    })
-
-    it('should return undefined when the item is different from the content of the item in the preset modslot', async () => {
-      // Arrange
-      useItemServiceMock()
-      useItemFetcherServiceMock(
-        undefined,
-        [
-          {
-            content: [],
-            itemId: rpk16Default.id,
-            ignorePrice: false,
-            modSlots: [
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: ammo545us.id,
-                      modSlots: [],
-                      quantity: 95
-                    }
-                  ],
-                  itemId: rpk16Drum.id,
-                  ignorePrice: false,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              }
-            ],
-            quantity: 1
-          }
-        ])
-
-      const service = new PresetService()
-      await service.fetchPresetsAsync()
-
-      const item: IInventoryItem = {
-        content: [],
-        ignorePrice: false,
-        itemId: ammo545bp.id,
-        modSlots: [],
-        quantity: 95
-      }
-      const path = `build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:${rpk16Default.id}/mod:mod_magazine/item:${rpk16Drum.id}/content:0_1/item:${ammo545us.id}`
-
-      // Act
-      const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+      const result = service.getPresetItemIdFromPath(path)
 
       // Assert
       expect(result).toBeUndefined()

@@ -124,12 +124,12 @@ export class InventoryItemService {
   /**
    * Gets the price of an inventory item including or not its content and mods.
    * @param inventoryItem - Inventory item.
-   * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
+   * @param inventoryItemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPriceAsync(inventoryItem: IInventoryItem, itemInSameSlotInPreset?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<IInventoryItemPrice> {
+  public async getPriceAsync(inventoryItem: IInventoryItem, inventoryItemInSameSlotInPreset?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<IInventoryItemPrice> {
     const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
 
@@ -151,7 +151,7 @@ export class InventoryItemService {
 
     if (!canBeLooted) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
-    } else if (itemInSameSlotInPreset?.itemId === inventoryItem.itemId && itemInSameSlotInPreset?.quantity === inventoryItem.quantity) {
+    } else if (inventoryItemInSameSlotInPreset?.itemId === inventoryItem.itemId && inventoryItemInSameSlotInPreset?.quantity === inventoryItem.quantity) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
     } else if (inventoryItem.ignorePrice) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
@@ -282,7 +282,7 @@ export class InventoryItemService {
       }
     }
 
-    let preset = itemInSameSlotInPreset
+    let preset = inventoryItemInSameSlotInPreset
 
     if (preset == null) {
       preset = Services.get(PresetService).getPreset(inventoryItem.itemId)

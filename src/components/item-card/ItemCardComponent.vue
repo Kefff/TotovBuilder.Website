@@ -114,7 +114,7 @@ watch(() => props.comparisonItem?.id, () => getComparisonItemPriceAsync())
  * Gets the price of an item.
  */
 async function getComparisonItemPriceAsync(): Promise<void> {
-  if (!showStatsComparison.value) {
+  if (!showStatsComparison.value || props.comparisonItem?.isPartOfPreset) {
     comparisonItemUnitPriceInMainCurrency.value = 0
 
     return
@@ -141,7 +141,15 @@ async function getItemPriceAsync(): Promise<void> {
     modSlots: [],
     quantity: 1
   })
-  itemUnitPrice.value = itemPrice.unitPrice
+
+  if (props.item.isPartOfPreset) {
+    itemUnitPrice.value = {
+      ...itemPrice.unitPrice,
+      valueInMainCurrency: 0 // Deliberately only setting the value in main currency to 0 for the price comparison to be displayed
+    }
+  } else {
+    itemUnitPrice.value = itemPrice.unitPrice
+  }
 
   getComparisonItemPriceAsync()
 }
@@ -244,16 +252,23 @@ function showDetails(): void {
             />
           </Tooltip>
           <div
-            v-if="(itemUnitPrice != null
-              && (itemUnitPrice.valueInMainCurrency > 0
-                || itemUnitPrice.value > 0))
-              || itemUnitPrice?.currencyName === 'barter'"
+            v-if="itemUnitPrice != null"
             class="item-card-price"
             :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
-            <Price :price="itemUnitPrice" />
+            <div v-if="item.isPartOfPreset">
+              {{ $t('caption.partOfPreset', { preset: 'Tutu' }) }}
+            </div>
+            <Price
+              v-else-if="itemUnitPrice?.currencyName === 'barter'
+                || itemUnitPrice.valueInMainCurrency > 0
+                || itemUnitPrice.value > 0"
+              :price="itemUnitPrice"
+            />
             <ValueComparison
-              v-if="showStatsComparison && (itemUnitPrice.valueInMainCurrency > 0 || itemUnitPrice.value > 0)"
+              v-if="showStatsComparison
+                && (item.isPartOfPreset
+                  || (itemUnitPrice.valueInMainCurrency > 0 || itemUnitPrice.value > 0))"
               :compare-to-value="comparisonItemUnitPriceInMainCurrency"
               :current-value="itemUnitPrice.valueInMainCurrency"
               :invert="true"
