@@ -124,7 +124,7 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  const filter = new ItemFilterAndSortingData(ItemSortingFunctions)
+  const filter = new ItemFilterAndSortingData(ItemSortingFunctions, modelParameters.value)
   filter.property = 'name'
   filter.order = SortingOrder.asc
   modelParameters.value = filter
