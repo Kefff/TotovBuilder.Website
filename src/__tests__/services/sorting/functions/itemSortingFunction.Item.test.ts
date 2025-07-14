@@ -64,8 +64,8 @@ describe('comparisonFunction', () => {
     const inventoryItemService = mock<InventoryItemService>()
     when(inventoryItemService.getPriceAsync(anything())).thenCall((inventoryItem: IInventoryItem) => {
       return inventoryItem.itemId === item1.id
-        ? { unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice
-        : { unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice
+        ? { unitPrice: item1.prices[0] ?? { currencyName: 'RUB', valueInMainCurrency: 0 } } as IInventoryItemPrice
+        : { unitPrice: item2.prices[0] ?? { currencyName: 'RUB', valueInMainCurrency: 0 } } as IInventoryItemPrice
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
