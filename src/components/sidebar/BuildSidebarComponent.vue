@@ -55,7 +55,11 @@ function confirmDeletion(): void {
  * Creates a copy of the build.
  */
 function copyBuild(): void {
-  _router.push({ name: 'CopyBuild', params: { id: modelParameters.value.id } })
+  _globalSidebarService.setOnCloseAction(
+    props.identifier,
+    () => {
+      _router.push({ name: 'CopyBuild', params: { id: modelParameters.value.id } })
+    })
   _globalSidebarService.close(props.identifier)
 }
 

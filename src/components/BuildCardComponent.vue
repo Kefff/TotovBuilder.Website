@@ -224,9 +224,9 @@ function displayStats(item: IItem): void {
         </div>
         <div
           v-if="buildSummary.recoil.verticalRecoil !== 0
-            && buildSummary.recoil.horizontalRecoil !== 0
-            && (buildSummary.ergonomics !== 0
-              || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0)"
+            || buildSummary.recoil.horizontalRecoil !== 0
+            || buildSummary.ergonomics !== 0
+            || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
           class="card-line card-line3"
         >
           <Tooltip
@@ -293,8 +293,8 @@ function displayStats(item: IItem): void {
         </div>
         <div
           v-if="buildSummary.armorModifiers.armorClass > 0
-            && buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-            && buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
+            || buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+            || buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
           class="card-line card-line3"
         >
           <Tooltip
