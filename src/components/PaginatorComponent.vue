@@ -8,6 +8,7 @@ const modelCurrentPage = defineModel<number>('currentPage', { default: 0 })
 const props = withDefaults(
   defineProps<{
     autoScrollToFirstElementOfPage?: boolean,
+    canSwipe?: boolean,
     elementsPerLine?: number,
     getKeyFunction: (element: unknown) => string,
     elements: unknown[],
@@ -16,6 +17,7 @@ const props = withDefaults(
   }>(),
   {
     autoScrollToFirstElementOfPage: true,
+    canSwipe: true,
     elementsPerLine: 1,
     linesPerPage: 1,
     scrollToIndex: undefined
@@ -54,6 +56,7 @@ const groupedElements = computed<unknown[][]>(() => {
 })
 const hasMultiplePages = computed(() => props.elements.length > (props.elementsPerLine * props.linesPerPage))
 const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
+const isSwipingEnabled = computed(() => props.canSwipe)
 const pageLinksCount = computed(() => isCompactMode.value ? 3 : 5)
 const lastPageIndex = computed(() => {
   if (groupedElements.value.length < props.linesPerPage) {
@@ -75,6 +78,7 @@ const { isSwiping } = WebBrowserUtils.getSwipe({
   action: onSwipeEnd,
   canSwipeLeft: canSwipeLeft,
   canSwipeRight: canSwipeRight,
+  isEnabled: isSwipingEnabled,
   target: paginator,
   targetLeftPosition: leftPosition
 })

@@ -111,7 +111,7 @@ const toolbarContainer = computed(() => buildsToolbar.value?.container)
 
 const buildsToolbar = useTemplateRef('buildsToolbar')
 const currentPage = ref(0)
-const filterAndSortingData = ref(new BuildFilterAndSortingData())
+const filterAndSortingData = ref<BuildFilterAndSortingData>()
 const isLoading = ref(true)
 const hasBuilds = ref(false)
 
@@ -304,6 +304,10 @@ function onBuildSelected(selectedBuilds: IBuild[] | undefined): void {
  * Saves filter and sorting data.
  */
 function onFilterAndSortingDataChanged(): void {
+  if (filterAndSortingData.value == null) {
+    return
+  }
+
   currentPage.value = 0
 
   if (filterAndSortingData.value.filter == null) {
@@ -371,7 +375,7 @@ function openNewBuild(): void {
     </Toolbar>
     <BuildsList
       v-model:current-page="currentPage"
-      v-model:filter-and-sorting-data="filterAndSortingData as BuildFilterAndSortingData"
+      v-model:filter-and-sorting-data="filterAndSortingData"
       :element-to-stick-to="toolbarContainer"
       :get-builds-function="getBuilds"
       :selection-options="{

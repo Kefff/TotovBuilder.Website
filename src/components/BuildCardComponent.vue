@@ -15,6 +15,7 @@ import ItemIcon from './ItemIconComponent.vue'
 import ShoppingListMerchantsList from './ShoppingListMerchantsListComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
+const modelCanSwipe = defineModel<boolean>('canSwipe', { required: false })
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
 const props = withDefaults(
@@ -156,7 +157,11 @@ function displayStats(item: IItem): void {
       </div>
     </template>
     <template #content>
-      <div class="build-card-items-container">
+      <div
+        class="build-card-items-container"
+        @touchstart="() => modelCanSwipe = false"
+        @touchend="() => modelCanSwipe = true"
+      >
         <div
           class="build-card-items-left-scroll-indicator"
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.left ? 'display: initial' : 'display: none'"
@@ -342,7 +347,10 @@ function displayStats(item: IItem): void {
             </div>
           </Tooltip>
         </div>
-        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
+        <ShoppingListMerchantsList
+          v-model:can-swipe="modelCanSwipe"
+          :shopping-list="buildSummary.shoppingList"
+        />
       </div>
       <div
         v-if="!modelIsSelected

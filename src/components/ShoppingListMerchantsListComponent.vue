@@ -8,6 +8,8 @@ import Services from '../services/repository/Services'
 import MerchantIcon from './MerchantIconComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
+const modelCanSwipe = defineModel<boolean>('canSwipe', { required: false })
+
 const props = defineProps<{ shoppingList: IShoppingListItem[] }>()
 
 const _buildPropertiesService = Services.get(BuildPropertiesService)
@@ -43,6 +45,8 @@ function setRequiredMerchants(): void {
   <div
     v-if="merchants.length > 0"
     class="shopping-list-merchants-list-container"
+    @touchstart="() => modelCanSwipe = false"
+    @touchend="() => modelCanSwipe = true"
   >
     <div
       class="shopping-list-merchants-list-left-scroll-indicator"

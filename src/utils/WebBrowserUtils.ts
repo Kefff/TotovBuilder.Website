@@ -136,14 +136,12 @@ export default class WebBrowserUtils {
   /* v8 ignore start */ // Justification : required web browser interaction
   public static getSwipe(options: SwipeOptions): { isSwiping: Ref<boolean> } {
     const isScrollLocked = useScrollLock(document.getElementById('app'))
+    let hasSwiped = false
     const { direction, isSwiping, lengthX } = useSwipe(
       options.target,
       {
-        onSwipe: () => this.onSwipe(options, direction.value, lengthX.value, isScrollLocked),
-        onSwipeEnd: (e: TouchEvent, d: UseSwipeDirection) => {
-          this.onSwipeEnd(options, d, lengthX.value)
-          isScrollLocked.value = false
-        },
+        onSwipe: () => hasSwiped = this.onSwipe(options, direction.value, lengthX.value, isScrollLocked),
+        onSwipeEnd: (e: TouchEvent, d: UseSwipeDirection) => this.onSwipeEnd(hasSwiped, options, d, lengthX.value, isScrollLocked),
         threshold: options.threshold ?? 50
       })
 
@@ -169,15 +167,17 @@ export default class WebBrowserUtils {
    * @param direction - Swipe direction.
    * @param lengthX - Swipe length.
    * @param isScrollLocked - Defines whether the application scroll is locked. Set to true while swipping left or right.
+   * @returns `true` when swiping has occured; otherwise `false`.
    */
   /* v8 ignore start */ // Justification : required web browser interaction
   private static onSwipe(
     options: SwipeOptions,
     direction: UseSwipeDirection,
     lengthX: number,
-    isScrollLocked: Ref<boolean>): void {
-    if (direction !== 'left' && direction !== 'right') {
-      return
+    isScrollLocked: Ref<boolean>): boolean {
+    if (!(options.isEnabled?.value ?? true)
+      || (direction !== 'left' && direction !== 'right')) {
+      return false
     }
 
     isScrollLocked.value = true
@@ -202,6 +202,8 @@ export default class WebBrowserUtils {
     }
 
     options.targetLeftPosition.value = `${left}px`
+
+    return true
   }
   /* v8 ignore stop */
 
@@ -212,9 +214,19 @@ export default class WebBrowserUtils {
    * @param options - Swipe options.
    * @param direction - Swipe direction.
    * @param lengthX - Swipe length.
+   * @param isScrollLocked - Defines whether the application scroll is locked. Set to true while swipping left or right.
    */
   /* v8 ignore start */ // Justification : required web browser interaction
-  private static onSwipeEnd(options: SwipeOptions, direction: UseSwipeDirection, lengthX: number): void {
+  private static onSwipeEnd(
+    hasSwiped: boolean,
+    options: SwipeOptions,
+    direction: UseSwipeDirection,
+    lengthX: number,
+    isScrollLocked: Ref<boolean>): void {
+    if (!hasSwiped) {
+      return
+    }
+
     const actionTriggerLength = options.actionTriggerLength ?? this._swipeDefaultActionTriggerLength
     const threshold = options.threshold ?? this._swipeDefaultThresholdLength
     let canTriggerAction
@@ -235,6 +247,7 @@ export default class WebBrowserUtils {
     }
 
     options.targetLeftPosition.value = '0'
+    isScrollLocked.value = false
   }
   /* v8 ignore stop */
 }
@@ -297,6 +310,11 @@ type SwipeOptions = {
    * Indicates whether the user can swipe to the right.
    */
   canSwipeRight?: ComputedRef<boolean>
+
+  /**
+   * Indicates whether swiping is enabled.
+   */
+  isEnabled?: ComputedRef<boolean>
 
   /**
    * Element being swipped.

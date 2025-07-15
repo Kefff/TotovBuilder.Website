@@ -80,6 +80,7 @@ const buildsPerLine = computed(() => {
   return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
 })
 
+const canSwipe = ref(true)
 const filteredAndSortedBuildSummaries = ref<IBuildSummary[]>([])
 const isInitializing = ref(true)
 const isLoading = ref(true)
@@ -339,6 +340,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
       >
         <template #element="{ element }">
           <BuildCard
+            v-model:can-swipe="canSwipe"
             :build-summary="element as IBuildSummary"
             :filter-and-sorting-data="modelFilterAndSortingData"
             :is-selected="checkIsSelected(element as IBuildSummary)"
@@ -355,6 +357,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         v-show="!isLoading"
         v-model:current-page="modelCurrentPage"
         :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
+        :can-swipe="canSwipe"
         :elements-per-line="buildsPerLine"
         :elements="filteredAndSortedBuildSummaries"
         :get-key-function="b => (b as IBuildSummary).id"
@@ -362,6 +365,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
       >
         <template #element="{ element }">
           <BuildCard
+            v-model:can-swipe="canSwipe"
             :build-summary="element as IBuildSummary"
             :filter-and-sorting-data="modelFilterAndSortingData"
             :is-selected="checkIsSelected(element as IBuildSummary)"
