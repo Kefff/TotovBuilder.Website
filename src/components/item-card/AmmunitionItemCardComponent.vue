@@ -35,6 +35,9 @@ const comparisonAmmunition = computed(() =>
     && props.comparisonItem?.id !== props.item.id
     ? props.comparisonItem as IAmmunition
     : undefined)
+const comparisonAmmunitionTotalFleshDamage = computed(() => comparisonAmmunition.value != null
+  ? comparisonAmmunition.value.fleshDamage * comparisonAmmunition.value.projectiles
+  : 0)
 const totalFleshDamage = computed(() => ammunition.value.fleshDamage * ammunition.value.projectiles)
 const tooltip = computed(() =>
   `${vueI18n.t('caption.fleshDamage')}${ammunition.value.projectiles > 1
@@ -78,24 +81,20 @@ const { isSmartphonePortrait } = WebBrowserUtils.getScreenSize()
             />
           </div>
           <span>{{ ammunition.fleshDamage }}</span>
-          <div>
-            <div>
-              <span v-if="ammunition.projectiles > 1">
-                {{ ammunition.projectiles }}
-              </span>
-              <span
-                v-if="ammunition.projectiles > 1"
-                class="ammunition-item-card-multiply"
-              >
-                x
-              </span>
-            </div>
-            <ValueComparison
-              v-if="comparisonAmmunition != null"
-              :compare-to-value="comparisonAmmunition?.fleshDamage"
-              :current-value="ammunition.fleshDamage"
-            />
-          </div>
+          <span
+            v-if="ammunition.projectiles > 1"
+            class="ammunition-item-card-multiply"
+          >
+            x
+          </span>
+          <span v-if="ammunition.projectiles > 1">
+            {{ ammunition.projectiles }}
+          </span>
+          <ValueComparison
+            v-if="comparisonAmmunition != null"
+            :compare-to-value="comparisonAmmunitionTotalFleshDamage"
+            :current-value="totalFleshDamage"
+          />
         </div>
       </Tooltip>
       <div
