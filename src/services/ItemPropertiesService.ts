@@ -23,8 +23,13 @@ export class ItemPropertiesService {
    * @returns `true` if the item can contain items; otherwise `false`.
    */
   public canContain(item: IItem): boolean {
+
     return (this.isBackpack(item) || this.isContainer(item) || this.isMagazine(item) || this.isVest(item))
       && (item as IContainer).capacity > 0
+    // Cylinder magazines have no capacity because they have mod slots where ammunition can be placed.
+    // This prevents the "Content" tab from appearing.
+    // We place ammunition in the mod slots instead of the content because some ammunition cannot be stacked
+    // to the amount of the "camora_" modslots (grenades for grenade launcher cannot be stacked)
   }
 
   /**

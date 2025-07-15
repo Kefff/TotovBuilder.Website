@@ -99,7 +99,10 @@ watch(
   () => item.value?.id,
   () => setSelectedTab())
 
-onMounted(() => initializeItemAsync())
+onMounted(() => {
+  inventoryItemInSameSlotInPreset.value = _presetService.getPresetItemIdFromPath(props.path)
+  initializeItemAsync()
+})
 
 /**
  * Gets the accepted items for the base item selection side bar.
@@ -126,7 +129,6 @@ async function initializeItemAsync(): Promise<void> {
 
   item.value = await _itemService.getItemAsync(props.inventoryItem.itemId)
   quantity.value = props.inventoryItem.quantity
-  inventoryItemInSameSlotInPreset.value = _presetService.getPresetItemIdFromPath(props.path)
   setBaseItem(item.value)
 }
 
@@ -183,7 +185,6 @@ function onItemChanged(): void {
   if (item.value == null) {
     modelInventoryItem.value = undefined
   } else {
-    inventoryItemInSameSlotInPreset.value = _presetService.getPresetItemIdFromPath(props.path)
     const newContent = _itemComponentService.getReplacingItemContent(modelInventoryItem.value, item.value)
     const newModSlots = _itemComponentService.getReplacingModSlots(modelInventoryItem.value, item.value)
     modelInventoryItem.value = {
