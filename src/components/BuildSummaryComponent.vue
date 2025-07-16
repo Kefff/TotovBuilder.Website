@@ -114,6 +114,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
           <font-awesome-icon
             icon="award"
             class="icon-before-text"
+            :class="`armor-penetration${summary.armorModifiers.armorClass}`"
           />
           <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
         </div>

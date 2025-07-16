@@ -581,7 +581,7 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
 *[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA)*
 
 ✋ Ergonomie **-2%**  
-  
+🔄 Vitesse de rotation **-2%**  
 💵 Prix **20 701₽** et **95€** (= **35 806₽**)   ⚓ Poids **2,360 kg**  
 
 [*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
@@ -1254,7 +1254,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       expect(result).toBe(`Build 1
 
 ✋ Ergonomie -2%
-
+🔄 Vitesse de rotation -2%
 💵 Prix 20 701₽ et 95€ (= 35 806₽)   ⚓ Poids 2,360 kg
 
 [Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽

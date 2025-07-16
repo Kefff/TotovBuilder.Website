@@ -170,7 +170,7 @@ export class BuildPropertiesService {
         statsAsString += `${StringUtils.getTextStatEmoji(options, '🏃')}${this.translate('caption.speed', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
       }
 
-      if (hasMovementSpeedModifierPercentage) {
+      if (hasTurningSpeedModifierPercentage) {
         if (hasArmor || hasMovementSpeedModifierPercentage) {
           statsAsString += '   '
         }
