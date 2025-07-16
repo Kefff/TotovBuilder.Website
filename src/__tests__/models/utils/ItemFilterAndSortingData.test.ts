@@ -59,10 +59,10 @@ describe('ItemFilterAndSortingData', () => {
 
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-      sessionStorage.setItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey, SortingOrder.asc.toString())
-      sessionStorage.setItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey, 'price')
-      sessionStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, SortingOrder.desc.toString())
-      sessionStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, 'fleshDamage')
+      localStorage.setItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey, SortingOrder.asc.toString())
+      localStorage.setItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey, 'price')
+      localStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, SortingOrder.desc.toString())
+      localStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, 'fleshDamage')
 
       const itemFilterAndSortingData = new ItemFilterAndSortingData(AmmunitionSortingFunctions)
 
@@ -93,8 +93,8 @@ describe('ItemFilterAndSortingData', () => {
       useWebsiteConfigurationServiceMock()
 
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-      sessionStorage.setItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey, SortingOrder.desc.toString())
-      sessionStorage.setItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey, 'price')
+      localStorage.setItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey, SortingOrder.desc.toString())
+      localStorage.setItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey, 'price')
 
       // Act
       const itemFilterAndSortingData = new ItemFilterAndSortingData(ItemSortingFunctions)
@@ -119,10 +119,10 @@ describe('ItemFilterAndSortingData', () => {
       itemFilterAndSortingDataToCopy.filter = '9x19'
       itemFilterAndSortingDataToCopy.order = SortingOrder.desc
 
-      sessionStorage.setItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey, SortingOrder.asc.toString())
-      sessionStorage.setItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey, 'price')
-      sessionStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, SortingOrder.asc.toString())
-      sessionStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, 'penetrationPower')
+      localStorage.setItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey, SortingOrder.asc.toString())
+      localStorage.setItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey, 'price')
+      localStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, SortingOrder.asc.toString())
+      localStorage.setItem(`${ItemCategoryId.ammunition}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, 'penetrationPower')
 
       // Act
 
@@ -188,11 +188,11 @@ describe('ItemFilterAndSortingData', () => {
 
       // Assert
       if (hasCategoryId || itemFilterAndSortingData.availableItemCategories.length === 1) {
-        expect(Number(sessionStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`))).toBe(SortingOrder.desc)
-        expect(sessionStorage.getItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey)).toBeNull()
+        expect(Number(localStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`))).toBe(SortingOrder.desc)
+        expect(localStorage.getItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey)).toBeNull()
       } else {
-        expect(sessionStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`)).toBeNull()
-        expect(Number(sessionStorage.getItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey))).toBe(SortingOrder.desc)
+        expect(localStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortOrderStorageKeySuffix}`)).toBeNull()
+        expect(Number(localStorage.getItem(websiteConfigurationService.configuration.itemsSortOrderStorageKey))).toBe(SortingOrder.desc)
       }
     })
   })
@@ -226,11 +226,11 @@ describe('ItemFilterAndSortingData', () => {
 
       // Assert
       if (hasCategoryId || itemFilterAndSortingData.availableItemCategories.length === 1) {
-        expect(sessionStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`)).toBe('price')
-        expect(sessionStorage.getItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey)).toBeNull()
+        expect(localStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`)).toBe('price')
+        expect(localStorage.getItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey)).toBeNull()
       } else {
-        expect(sessionStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`)).toBeNull()
-        expect(sessionStorage.getItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey)).toBe('price')
+        expect(localStorage.getItem(`${ItemCategoryId.rangedWeaponMod}${websiteConfigurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`)).toBeNull()
+        expect(localStorage.getItem(websiteConfigurationService.configuration.itemsSortPropertyStorageKey)).toBe('price')
       }
     })
   })

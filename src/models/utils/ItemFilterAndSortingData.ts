@@ -73,9 +73,9 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
     const configurationService = Services.get(WebsiteConfigurationService)
 
     if (this.categoryId != null) {
-      sessionStorage.setItem(`${this.categoryId}${configurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, this.order.toString())
+      localStorage.setItem(`${this.categoryId}${configurationService.configuration.itemCategorySortOrderStorageKeySuffix}`, this.order.toString())
     } else {
-      sessionStorage.setItem(configurationService.configuration.itemsSortOrderStorageKey, this.order.toString())
+      localStorage.setItem(configurationService.configuration.itemsSortOrderStorageKey, this.order.toString())
     }
   }
 
@@ -86,9 +86,9 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
     const configurationService = Services.get(WebsiteConfigurationService)
 
     if (this.categoryId != null) {
-      sessionStorage.setItem(`${this.categoryId}${configurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, this.property)
+      localStorage.setItem(`${this.categoryId}${configurationService.configuration.itemCategorySortPropertyStorageKeySuffix}`, this.property)
     } else {
-      sessionStorage.setItem(configurationService.configuration.itemsSortPropertyStorageKey, this.property)
+      localStorage.setItem(configurationService.configuration.itemsSortPropertyStorageKey, this.property)
     }
   }
 
@@ -108,8 +108,8 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
       propertyStorageKey = configurationService.configuration.itemsSortPropertyStorageKey
     }
 
-    const order = sessionStorage.getItem(orderStorageKey)
-    const property = sessionStorage.getItem(propertyStorageKey)
+    const order = localStorage.getItem(orderStorageKey)
+    const property = localStorage.getItem(propertyStorageKey)
 
     if (property != null) {
       this.property = property
