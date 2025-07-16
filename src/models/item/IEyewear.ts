@@ -1,11 +1,6 @@
-import { IItem } from './IItem'
+import { IArmor } from './IArmor'
 
 /**
  * Provides the functionalities of eyewear.
  */
-export interface IEyewear extends IItem {
-  /**
-   * Blindness protection percentage.
-   */
-  blindnessProtectionPercentage: number
-}
+export interface IEyewear extends IArmor { }

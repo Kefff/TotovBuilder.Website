@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
@@ -9,26 +12,25 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { alkali, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, berkut, cf, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
-import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, armor6b13FlDefaultPrices, bansheePrices, berkutPrices, cfPrices, crossbowPrices, ewrPrices, h2o2Prices, iskraPrices, lshZ2dtmFsPrices, lshZ2dtmPrices, m9a3DefaultPrices, monocletePePrices, morphinePrices, passPrices, plexiglassPrices, razorPrices, rgd5Prices, rpk16DefaultPrices, rpk16DrumPrices, salewaPrices, srd9Prices, vaselinePrices, waterPrices, x400Prices } from '../__data__/priceMocks'
+import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cqcm, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plate6b33Back, plate6b33Front, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
+import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, armor6b13FlDefaultPrices, bansheePrices, berkutPrices, cqcmPrices, crossbowPrices, ewrPrices, h2o2Prices, iskraPrices, lshZ2dtmFsPrices, lshZ2dtmPrices, m9a3DefaultPrices, monocletePePrices, morphinePrices, passPrices, plexiglassPrices, razorPrices, rgd5Prices, rpk16DefaultPrices, rpk16DrumPrices, salewaPrices, srd9Prices, vaselinePrices, waterPrices, x400Prices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getSummary()', () => {
+describe('getSummaryAsync', () => {
   describe('Armor modifiers', () => {
     it.each([
       [
         build1,
         {
-          armorClass: 4,
-          durability: 50
+          armorClass: plate6b33Front.armorClass,
+          durability: armor6b13FlDefault.durability + plate6b33Front.durability + plate6b33Back.durability
         } as IArmorModifiers
       ],
       [
@@ -46,7 +48,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             }
           ],
           lastExported: undefined,
@@ -54,15 +56,15 @@ describe('getSummary()', () => {
           lastWebsiteVersion: undefined
         },
         {
-          armorClass: 2,
-          durability: 0
+          armorClass: paca.armorClass,
+          durability: paca.durability
         } as IArmorModifiers
       ],
       [
         build2,
         {
-          armorClass: 4,
-          durability: 40
+          armorClass: monocletePe.armorClass,
+          durability: banshee.durability + monocletePe.durability + monocletePe.durability
         } as IArmorModifiers
       ],
       [
@@ -72,11 +74,11 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [undefined],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -95,7 +97,7 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [
@@ -107,7 +109,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -126,11 +128,11 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [undefined],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -151,13 +153,12 @@ describe('getSummary()', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.armorModifiers).toStrictEqual(expected)
@@ -172,13 +173,12 @@ describe('getSummary()', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary({
+      const summary = await service.getSummaryAsync({
         id: 'build1',
         name: 'Build 1',
         inventorySlots: [],
@@ -197,14 +197,14 @@ describe('getSummary()', () => {
 
   describe('Ergonomics', () => {
     it.each([
-      [build1, 34.39],
+      [build1, 31.349999999999998],
       [build2, 52.379999999999995],
       [
         {
           id: 'build3',
           inventorySlots: [
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [
                 {
                   content: [],
@@ -232,7 +232,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -240,7 +239,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.ergonomics).toBe(expected)
@@ -254,15 +253,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -283,12 +282,11 @@ describe('getSummary()', () => {
       useItemServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(ItemPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(InventorySlotPropertiesService)
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.ergonomics).toBe(0)
@@ -300,8 +298,8 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          missingPrice: false,
-          priceInMainCurrency: 366019,
+          missingPrice: true,
+          priceInMainCurrency: 361226,
           priceByCurrency: [
             {
               barterItems: [],
@@ -310,8 +308,8 @@ describe('getSummary()', () => {
               merchant: '',
               merchantLevel: 0,
               quest: undefined,
-              value: 366019,
-              valueInMainCurrency: 366019
+              value: 361226,
+              valueInMainCurrency: 361226
             }
           ]
         } as IInventoryPrice
@@ -320,8 +318,18 @@ describe('getSummary()', () => {
         build2,
         {
           missingPrice: false,
-          priceInMainCurrency: 247747,
+          priceInMainCurrency: 251397,
           priceByCurrency: [
+            {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 187902,
+              valueInMainCurrency: 187902
+            },
             {
               barterItems: [],
               currencyName: 'USD',
@@ -331,16 +339,6 @@ describe('getSummary()', () => {
               quest: undefined,
               value: 444,
               valueInMainCurrency: 63495
-            },
-            {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 184252,
-              valueInMainCurrency: 184252
             }
           ]
         } as IInventoryPrice
@@ -370,14 +368,13 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
 
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.price).toStrictEqual(expected)
@@ -392,7 +389,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 
@@ -419,7 +415,7 @@ describe('getSummary()', () => {
                 quantity: 1
               }
             ],
-            typeId: 'backpack'
+            typeId: InventorySlotTypeId.backpack
           }
         ],
         lastExported: undefined,
@@ -429,7 +425,7 @@ describe('getSummary()', () => {
       }
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.price).toStrictEqual({
@@ -456,15 +452,15 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          horizontalRecoil: 226.44,
-          verticalRecoil: 76.16
+          horizontalRecoil: 216.24,
+          verticalRecoil: 65.96000000000001
         } as IRecoil
       ],
       [
         build2,
         {
-          horizontalRecoil: 254.8,
-          verticalRecoil: 367.64
+          horizontalRecoil: 249.34,
+          verticalRecoil: 362.18
         } as IRecoil
       ],
       [
@@ -473,15 +469,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -501,14 +497,13 @@ describe('getSummary()', () => {
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(PresetService)
 
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.recoil).toStrictEqual(expected)
@@ -522,7 +517,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
       Services.configure(PresetService)
@@ -530,7 +524,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(
+      const summary = await service.getSummaryAsync(
         {
           id: 'build1',
           inventorySlots: [
@@ -544,7 +538,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'onSling'
+              typeId: InventorySlotTypeId.onSling
             }
           ],
           lastExported: undefined,
@@ -568,11 +562,13 @@ describe('getSummary()', () => {
         build1,
         [
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'onSling',
             item: {
               ...rpk16Default,
               prices: rpk16DefaultPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -583,6 +579,7 @@ describe('getSummary()', () => {
               value: 43345,
               valueInMainCurrency: 43345
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -595,13 +592,20 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...rpk16Drum,
               prices: rpk16DrumPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: alkali.id,
+                  quantity: 2
+                }
+              ],
               currencyName: 'barter',
               itemId: rpk16Drum.id,
               merchant: 'prapor',
@@ -610,8 +614,14 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: alkali.id,
+                  quantity: 2
+                }
+              ],
               currencyName: 'barter',
               itemId: rpk16Drum.id,
               merchant: 'prapor',
@@ -622,11 +632,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...alkali,
               prices: alkaliPrices
             },
-            quantity: 2,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -637,6 +649,7 @@ describe('getSummary()', () => {
               value: 24218,
               valueInMainCurrency: 24218
             },
+            quantity: 2,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -649,11 +662,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...ammo545us,
               prices: ammo545usPrices
             },
-            quantity: 155,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -661,9 +676,10 @@ describe('getSummary()', () => {
               merchant: 'prapor',
               merchantLevel: 1,
               quest: undefined,
-              value: 14880,
-              valueInMainCurrency: 14880
+              value: 9120,
+              valueInMainCurrency: 9120
             },
+            quantity: 95,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -676,11 +692,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'bodyArmor',
             item: {
               ...armor6b13FlDefault,
               prices: armor6b13FlDefaultPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -695,6 +713,7 @@ describe('getSummary()', () => {
               value: 64269,
               valueInMainCurrency: 64269
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -711,11 +730,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'headwear',
             item: {
               ...lshZ2dtm,
               prices: lshZ2dtmPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -726,6 +747,7 @@ describe('getSummary()', () => {
               value: 63493,
               valueInMainCurrency: 63493
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -738,13 +760,20 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...lshZ2dtmFs,
               prices: lshZ2dtmFsPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: plexiglass.id,
+                  quantity: 3
+                }
+              ],
               currencyName: 'barter',
               itemId: lshZ2dtmFs.id,
               merchant: 'ragman',
@@ -753,8 +782,14 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: plexiglass.id,
+                  quantity: 3
+                }
+              ],
               currencyName: 'barter',
               itemId: lshZ2dtmFs.id,
               merchant: 'ragman',
@@ -765,11 +800,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...plexiglass,
               prices: plexiglassPrices
             },
-            quantity: 3,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -780,6 +817,7 @@ describe('getSummary()', () => {
               value: 29805,
               valueInMainCurrency: 29805
             },
+            quantity: 3,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -792,92 +830,13 @@ describe('getSummary()', () => {
             }
           },
           {
-            item: {
-              ...morphine,
-              prices: morphinePrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: morphine.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 17421,
-              valueInMainCurrency: 17421
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: morphine.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 17421,
-              valueInMainCurrency: 17421
-            }
-          },
-          {
-            item: {
-              ...vaseline,
-              prices: vaselinePrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: vaseline.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 27714,
-              valueInMainCurrency: 27714
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: vaseline.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 27714,
-              valueInMainCurrency: 27714
-            }
-          },
-          {
-            item: {
-              ...rgd5,
-              prices: rgd5Prices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: rgd5.id,
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 11822,
-              valueInMainCurrency: 11822
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: rgd5.id,
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 11822,
-              valueInMainCurrency: 11822
-            }
-          },
-          {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'backpack',
             item: {
               ...berkut,
               prices: berkutPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -888,6 +847,7 @@ describe('getSummary()', () => {
               value: 24509,
               valueInMainCurrency: 24509
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -900,11 +860,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...iskra,
               prices: iskraPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -919,6 +881,7 @@ describe('getSummary()', () => {
               value: 24392,
               valueInMainCurrency: 24392
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -935,13 +898,20 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...water,
               prices: waterPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: h2o2.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: water.id,
               merchant: 'therapist',
@@ -950,8 +920,14 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: h2o2.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: water.id,
               merchant: 'therapist',
@@ -962,11 +938,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...h2o2,
               prices: h2o2Prices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -977,6 +955,7 @@ describe('getSummary()', () => {
               value: 11473,
               valueInMainCurrency: 11473
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -989,38 +968,133 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'pockets',
             item: {
-              ...cf,
-              prices: cfPrices
+              ...morphine,
+              prices: morphinePrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: cf.id,
-              merchant: 'ragman',
-              merchantLevel: 2,
+              itemId: morphine.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
               quest: undefined,
-              value: 4793,
-              valueInMainCurrency: 4793
+              value: 17421,
+              valueInMainCurrency: 17421
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: cf.id,
-              merchant: 'ragman',
-              merchantLevel: 2,
+              itemId: morphine.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
               quest: undefined,
-              value: 4793,
-              valueInMainCurrency: 4793
+              value: 17421,
+              valueInMainCurrency: 17421
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'pockets',
+            item: {
+              ...vaseline,
+              prices: vaselinePrices
+            },
+            missingPrice: false,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: vaseline.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 27714,
+              valueInMainCurrency: 27714
+            },
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: vaseline.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 27714,
+              valueInMainCurrency: 27714
+            }
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'pockets',
+            item: {
+              ...rgd5,
+              prices: rgd5Prices
+            },
+            missingPrice: false,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rgd5.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 11822,
+              valueInMainCurrency: 11822
+            },
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rgd5.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 11822,
+              valueInMainCurrency: 11822
+            }
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'pockets',
+            item: {
+              ...ammo545us,
+              prices: ammo545usPrices
+            },
+            missingPrice: false,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: ammo545us.id,
+              merchant: 'prapor',
+              merchantLevel: 1,
+              quest: undefined,
+              value: 5760,
+              valueInMainCurrency: 5760
+            },
+            quantity: 60,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: ammo545us.id,
+              merchant: 'prapor',
+              merchantLevel: 1,
+              quest: undefined,
+              value: 96,
+              valueInMainCurrency: 96
+            }
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'eyewear',
             item: {
               ...crossbow,
               prices: crossbowPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1031,6 +1105,7 @@ describe('getSummary()', () => {
               value: 3885,
               valueInMainCurrency: 3885
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1040,6 +1115,36 @@ describe('getSummary()', () => {
               quest: undefined,
               value: 3885,
               valueInMainCurrency: 3885
+            }
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'faceCover',
+            item: {
+              ...cqcm,
+              prices: cqcmPrices
+            },
+            missingPrice: true,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: cqcm.id,
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 0,
+              valueInMainCurrency: 0
+            },
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: cqcm.id,
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 0,
+              valueInMainCurrency: 0
             }
           }
         ] as IShoppingListItem[]
@@ -1048,11 +1153,13 @@ describe('getSummary()', () => {
         build2,
         [
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'holster',
             item: {
               ...m9a3Default,
               prices: [...m9a3DefaultPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'USD',
@@ -1063,6 +1170,7 @@ describe('getSummary()', () => {
               value: 107,
               valueInMainCurrency: 15337
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1075,11 +1183,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...srd9,
               prices: [...srd9Prices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'USD',
@@ -1090,6 +1200,7 @@ describe('getSummary()', () => {
               value: 242,
               valueInMainCurrency: 34606
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1102,11 +1213,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...ammo9mmGT,
               prices: [...ammo9mmGTPrices]
             },
-            quantity: 17,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1114,9 +1227,10 @@ describe('getSummary()', () => {
               merchant: 'mechanic',
               merchantLevel: 1,
               quest: undefined,
-              value: 1241,
-              valueInMainCurrency: 1241
+              value: 4891,
+              valueInMainCurrency: 4891
             },
+            quantity: 67,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1129,11 +1243,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...x400,
               prices: [...x400Prices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'USD',
@@ -1144,6 +1260,7 @@ describe('getSummary()', () => {
               value: 95,
               valueInMainCurrency: 13552
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1156,11 +1273,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'tacticalRig',
             item: {
               ...banshee,
               prices: [...bansheePrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1171,6 +1290,7 @@ describe('getSummary()', () => {
               value: 33950,
               valueInMainCurrency: 33950
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1183,13 +1303,20 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...monocletePe,
               prices: [...monocletePePrices]
             },
-            quantity: 2,
+            missingPrice: false,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: pass.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: monocletePe.id,
               merchant: 'peacekeeper',
@@ -1198,8 +1325,14 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 2,
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: pass.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: monocletePe.id,
               merchant: 'peacekeeper',
@@ -1210,11 +1343,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...pass,
               prices: [...passPrices]
             },
-            quantity: 2,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1225,6 +1360,7 @@ describe('getSummary()', () => {
               value: 63006,
               valueInMainCurrency: 63006
             },
+            quantity: 2,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1237,13 +1373,20 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...salewa,
               prices: [...salewaPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: ewr.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: salewa.id,
               merchant: 'therapist',
@@ -1252,8 +1395,14 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: ewr.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: salewa.id,
               merchant: 'therapist',
@@ -1264,11 +1413,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: undefined,
             item: {
               ...ewr,
               prices: [...ewrPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1279,6 +1430,7 @@ describe('getSummary()', () => {
               value: 21923,
               valueInMainCurrency: 21923
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1291,11 +1443,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'earpiece',
             item: {
               ...razor,
               prices: [...razorPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1306,6 +1460,7 @@ describe('getSummary()', () => {
               value: 64132,
               valueInMainCurrency: 64132
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1316,6 +1471,20 @@ describe('getSummary()', () => {
               value: 64132,
               valueInMainCurrency: 64132
             }
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notLootable,
+            inventorySlotId: 'pouch',
+            item: alpha,
+            missingPrice: false,
+            quantity: 1
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notLootable,
+            inventorySlotId: 'scabbard',
+            item: bayonet6Kh5,
+            missingPrice: false,
+            quantity: 1
           }
         ] as IShoppingListItem[]
       ],
@@ -1340,21 +1509,20 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
 
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
-        expect(summary.shoppingList).toStrictEqual(expected)
+        expect(summary.shoppingList).toEqual(expected)
       }
     )
 
-    it('should ignore inventory slots with an invalid type', async () => {
+    it('should throw when an inventory slots has an invalid type', async () => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -1362,23 +1530,22 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary({
+      const act = (): Promise<IBuildSummary> => service.getSummaryAsync({
         name: 'Build',
         id: 'build',
         inventorySlots: [
           {
-            typeId: 'invalid',
+            typeId: 'invalid' as InventorySlotTypeId,
             items: []
           },
           {
-            typeId: 'backpack',
+            typeId: InventorySlotTypeId.backpack,
             items: [
               {
                 content: [],
@@ -1396,32 +1563,7 @@ describe('getSummary()', () => {
       })
 
       // Assert
-      expect(summary.shoppingList).toStrictEqual([
-        {
-          item: berkut,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: berkut.id,
-            merchant: 'ragman',
-            merchantLevel: 2,
-            quest: undefined,
-            value: 24509,
-            valueInMainCurrency: 24509
-          },
-          quantity: 1,
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: berkut.id,
-            merchant: 'ragman',
-            merchantLevel: 2,
-            quest: undefined,
-            value: 24509,
-            valueInMainCurrency: 24509
-          }
-        }
-      ] as IShoppingListItem[])
+      await expect(act).rejects.toThrowError('Inventory slot type "invalid" not found.')
     })
   })
 
@@ -1429,11 +1571,11 @@ describe('getSummary()', () => {
     it.each([
       [
         build1,
-        24.153
+        26.153
       ],
       [
         build2,
-        8.936000000000002
+        9.235999999999999
       ],
       [
         {
@@ -1441,15 +1583,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -1465,7 +1607,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -1473,7 +1614,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.weight).toBe(expected)
@@ -1486,17 +1627,17 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          ergonomicsPercentageModifier: -0.09500000000000001,
-          movementSpeedPercentageModifier: -0.060000000000000005,
-          turningSpeedPercentageModifier: -0.09
+          ergonomicsModifierPercentage: -0.17500000000000002,
+          movementSpeedModifierPercentage: -0.07,
+          turningSpeedModifierPercentage: -0.12
         } as IWearableModifiers
       ],
       [
         build2,
         {
-          ergonomicsPercentageModifier: -0.03,
-          movementSpeedPercentageModifier: -0.03,
-          turningSpeedPercentageModifier: -0.01
+          ergonomicsModifierPercentage: -0.03,
+          movementSpeedModifierPercentage: -0.03,
+          turningSpeedModifierPercentage: -0.01
         } as IWearableModifiers
       ],
       [
@@ -1509,9 +1650,9 @@ describe('getSummary()', () => {
           name: 'Empty build'
         } as IBuild,
         {
-          ergonomicsPercentageModifier: 0,
-          movementSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifier: 0
+          ergonomicsModifierPercentage: 0,
+          movementSpeedModifierPercentage: 0,
+          turningSpeedModifierPercentage: 0
         } as IWearableModifiers
       ]
     ])(
@@ -1523,7 +1664,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -1531,7 +1671,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.wearableModifiers).toStrictEqual(expected)

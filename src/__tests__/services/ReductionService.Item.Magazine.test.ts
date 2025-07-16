@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -40,21 +41,22 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         capacity: 7,
-        categoryId: 'magazine',
-        checkSpeedPercentageModifier: -0.2,
+        categoryId: ItemCategoryId.magazine,
+        checkSpeedModifierPercentage: -0.2,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: -1,
         iconLink: 'https://assets.tarkov.dev/5e81c4ca763d9f754677befa-icon.jpg',
         id: '5e81c4ca763d9f754677befa',
         imageLink: 'https://assets.tarkov.dev/5e81c4ca763d9f754677befa-image.jpg',
-        loadSpeedPercentageModifier: -0.25,
+        loadSpeedModifierPercentage: -0.25,
         malfunctionPercentage: 0.04,
         marketLink: 'https://tarkov.dev/item/m1911a1-45-acp-7-round-magazine',
         maxStackableAmount: 1,
         modSlots: [],
         name: 'M1911A1 .45 ACP 7-round magazine',
         presetErgonomicsModifier: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: '1911',
         weight: 0.16,
@@ -161,15 +163,15 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         capacity: 0,
-        categoryId: 'magazine',
-        checkSpeedPercentageModifier: 0,
+        categoryId: ItemCategoryId.magazine,
+        checkSpeedModifierPercentage: 0,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: -10,
         iconLink: 'https://assets.tarkov.dev/627bce33f21bc425b06ab967-icon.webp',
         id: '627bce33f21bc425b06ab967',
         imageLink: 'https://assets.tarkov.dev/627bce33f21bc425b06ab967-image.webp',
-        loadSpeedPercentageModifier: 0,
+        loadSpeedModifierPercentage: 0,
         malfunctionPercentage: 0,
         marketLink: 'https://tarkov.dev/item/m32a1-40mm-cylinder',
         maxStackableAmount: 1,
@@ -255,6 +257,7 @@ describe('parseReducedItem', () => {
         ],
         name: 'M32A1 40mm cylinder',
         presetErgonomicsModifier: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'MSGL',
         weight: 0.8,

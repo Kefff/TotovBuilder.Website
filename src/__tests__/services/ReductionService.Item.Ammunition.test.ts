@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IAmmunition } from '../../models/item/IAmmunition'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -25,28 +26,29 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/unknown'
       },
       {
-        accuracyPercentageModifier: 0,
+        accuracyModifierPercentage: 0,
         armorDamagePercentage: 0,
-        armorPenetrations: [0, 0, 0, 0, 0, 0],
         blinding: true,
         caliber: 'unknown',
-        categoryId: 'ammunition',
+        categoryId: ItemCategoryId.ammunition,
         conflictingItemIds: [],
-        durabilityBurnPercentageModifier: 0,
+        durabilityBurnModifierPercentage: 0,
         fleshDamage: 0,
-        fragmentationChancePercentage: 0,
-        heavyBleedingPercentageChance: 0,
+        fragmentationChance: 0,
+        heavyBleedingChance: 0,
         iconLink: 'https://assets.tarkov.dev/unknown-icon.webp',
         id: 'unknown',
         imageLink: 'https://assets.tarkov.dev/unknown-image.webp',
-        lightBleedingPercentageChance: 0,
+        lightBleedingChance: 0,
         marketLink: 'https://tarkov.dev/item/unknown',
         maxStackableAmount: 60,
         name: 'Unknown',
+        penetratedArmorLevel: 0,
         penetrationPower: 0,
+        presetWeight: undefined,
         prices: [],
         projectiles: 2,
-        recoilPercentageModifier: 0,
+        recoilModifier: 0,
         shortName: 'U',
         subsonic: false,
         tracer: false,
@@ -58,20 +60,13 @@ describe('parseReducedItem', () => {
     [
       {
         'ad': 0.33,
-        'ap': [
-          6,
-          5,
-          1,
-          0,
-          0,
-          0
-        ],
+        'pa': 1,
         'ca': 'Caliber545x39',
         'd': -0.2,
-        'f': 63,
+        'f': 65,
         'fr': 0.1,
         'pp': 17,
-        'r': -0.15,
+        'r': -15,
         'su': 1,
         'v': 303,
         'c': 'ammunition',
@@ -91,20 +86,13 @@ describe('parseReducedItem', () => {
       {
         'ac': -0.05,
         'ad': 0.33,
-        'ap': [
-          6,
-          3,
-          1,
-          0,
-          0,
-          0
-        ],
+        'pa': 1,
         'ca': 'Caliber9x19PARA',
         'd': 0.15,
         'f': 58,
         'fr': 0.15,
         'pp': 14,
-        'r': -0.06,
+        'r': -6,
         't': 1,
         'v': 365,
         'c': 'ammunition',

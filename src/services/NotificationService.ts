@@ -1,14 +1,24 @@
 import { Guid } from 'guid-typescript'
-import { INotification } from '../models/utils/INotification'
 import { TinyEmitter } from 'tiny-emitter'
-import Services from './repository/Services'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { INotification } from '../models/utils/INotification'
 import { INotificationButton } from '../models/utils/INotificationButton'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing notification messages.
  */
 export class NotificationService {
+  /**
+   * Name of the event signaling that a new notification has been added to the collection.
+   */
+  public addedEventName = 'added'
+
+  /**
+   * Name of the event signaling that a notification has been cleared from the collection.
+   */
+  public clearedEventName = 'cleared'
+
   /**
    * Event emitter used to signal changes in the notification lists.
    */
@@ -18,11 +28,6 @@ export class NotificationService {
    * Amount of new notifications.
    */
   public newNotificationCount = 0
-
-  /**
-   * Name of the event signaling that a new notification has been added to the collection.
-   */
-  public addedEventName = 'added'
 
   /**
    * Collection of notifications.
@@ -38,6 +43,7 @@ export class NotificationService {
 
     if (index >= 0) {
       this.notifications.splice(index, 1)
+      this.emitter.emit(this.clearedEventName)
     }
   }
 
@@ -46,6 +52,8 @@ export class NotificationService {
    */
   public clearNotifications(): void {
     this.notifications = []
+
+    this.emitter.emit(this.clearedEventName)
   }
 
   /**
@@ -67,13 +75,17 @@ export class NotificationService {
    * @param buttons - Buttons to display.
    * When at least button exists, the default close button is hidden.
    * Clicking a button closes the notification.
+   * @param closable - Indicates whether the close button should be shown.
+   * @param showNotificationStorageKey - Storage key of a value indicating whether the notification should be shown.
+   * Used to display a "Do not show again" checkbox.
    */
   public notify(
     type: NotificationType,
     message: string,
     toastDuration: number | undefined = undefined,
     buttons: INotificationButton[] | undefined = undefined,
-    closable: boolean | undefined = undefined): void {
+    closable: boolean | undefined = undefined,
+    showNotificationStorageKey: string | undefined = undefined): void {
     if (toastDuration == null) {
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
@@ -110,6 +122,7 @@ export class NotificationService {
     const notification: INotification = {
       buttons: buttons ?? [],
       closable: closable ?? (buttons?.length ?? 0) === 0,
+      showNotificationStorageKey,
       date: new Date(),
       id: Guid.create().toString(),
       message,

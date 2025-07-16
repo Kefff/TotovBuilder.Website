@@ -1,26 +1,29 @@
+/* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import { IInventorySlotType } from '../models/build/IInventorySlotType'
+import InventorySlotTypes, { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
+import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result from '../utils/Result'
+import StringUtils from '../utils/StringUtils'
 import { InventoryItemService } from './InventoryItemService'
-import { InventorySlotService } from './InventorySlotService'
 import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing properties of an inventory slot.
  */
 export class InventorySlotPropertiesService {
-
   /**
    * Gets an inventory slot summary.
    * @param inventorySlot - Inventory slot.
    * @returns Inventory slot summary.
    */
-  public async getSummary(inventorySlot: IInventorySlot): Promise<IInventorySlotSummary> {
+  public async getSummaryAsync(inventorySlot: IInventorySlot): Promise<IInventorySlotSummary> {
     const summary: IInventorySlotSummary = {
       armorModifiers: {
         armorClass: 0,
@@ -40,65 +43,93 @@ export class InventorySlotPropertiesService {
         acceptedItemCategories: [],
         canBeLooted: false,
         displayOrder: 0,
-        id: '',
+        id: InventorySlotTypeId.armband,
         itemSlotsAmount: 0
       },
       wearableModifiers: {
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       },
       weight: 0
     }
 
-    const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-
-    if (!typeResult.success) {
-      return summary
-    }
-
-    summary.type = typeResult.value
-    summary.armorModifiers = await this.getArmorModifiers(inventorySlot)
-    summary.ergonomics = await this.getErgonomics(inventorySlot)
-
-    const priceResult = await this.getPrice(inventorySlot, summary.type.canBeLooted)
-
-    if (priceResult.success) {
-      summary.price = priceResult.value
-    }
-
-    summary.recoil = await this.getRecoil(inventorySlot)
-    summary.wearableModifiers = await this.getWearableModifiers(inventorySlot)
-    summary.weight = await this.getWeight(inventorySlot)
+    summary.type = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
+    summary.armorModifiers = await this.getArmorModifiersAsync(inventorySlot)
+    summary.ergonomics = await this.getErgonomicsAsync(inventorySlot)
+    summary.price = await this.getPriceAsync(inventorySlot, summary.type.canBeLooted)
+    summary.recoil = await this.getRecoilAsync(inventorySlot)
+    summary.wearableModifiers = await this.getWearableModifiersAsync(inventorySlot)
+    summary.weight = await this.getWeightAsync(inventorySlot)
 
     return summary
+  }
+
+  /**
+   * Gets an inventory slot type.
+   * @param id - ID of the slot type.
+   * @returns Inventory slot type.
+   * @throws When the inventory stop type is not found.
+   */
+  public getType(id: InventorySlotTypeId): IInventorySlotType {
+    const slotType = InventorySlotTypes.find((ist) => ist.id === id)
+
+    if (slotType == null) {
+      throw new Error(vueI18n.t('message.inventorySlotTypeNotFound', { id }))
+    }
+
+    return slotType
+  }
+
+  /**
+   * Converts an inventory slot to a text.
+   * @param inventorySlot - Inventory slot to convert.
+   * @param options - Options.
+   */
+  public async toTextAsync(inventorySlot: IInventorySlot, options: IBuildsToTextOptions): Promise<string> {
+    const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
+
+    let inventorySlotAsString = ''
+    const inventorySlotType = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
+    const inventoryItemService = Services.get(InventoryItemService)
+
+    for (const inventoryItem of inventorySlot.items) {
+      if (inventoryItem == null) {
+        continue
+      }
+
+      const itemAsString = await inventoryItemService.toTextAsync(inventoryItem, options, undefined, undefined, inventorySlotType.canBeLooted)
+
+      if (itemAsString !== '') {
+        if (inventorySlotAsString.length > 0) {
+          inventorySlotAsString += '\n'
+        }
+
+        inventorySlotAsString += `[${italicToken}${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), options.language)}${italicToken}] ${itemAsString}`
+      }
+    }
+
+    return inventorySlotAsString
   }
 
   /**
    * Gets the armor modifiers of an armor or vest inventory slot.
    * @param inventorySlot - Inventory slot.
    */
-  private async getArmorModifiers(inventorySlot: IInventorySlot): Promise<IArmorModifiers> {
+  private async getArmorModifiersAsync(inventorySlot: IInventorySlot): Promise<IArmorModifiers> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'bodyArmor'
-        && inventorySlot.typeId !== 'headwear'
-        && inventorySlot.typeId !== 'tacticalRig')) {
+      || (inventorySlot.typeId !== InventorySlotTypeId.bodyArmor
+        && inventorySlot.typeId !== InventorySlotTypeId.headwear
+        && inventorySlot.typeId !== InventorySlotTypeId.tacticalRig)) {
       return {
         armorClass: 0,
         durability: 0
       }
     }
 
-    const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(inventorySlot.items[0])
+    const inventoryItemArmorModifiers = await Services.get(InventoryItemService).getArmorModifiersAsync(inventorySlot.items[0])
 
-    if (!armorModifiersResult.success) {
-      return {
-        armorClass: 0,
-        durability: 0
-      }
-    }
-
-    return armorModifiersResult.value
+    return inventoryItemArmorModifiers
   }
 
   /**
@@ -106,19 +137,17 @@ export class InventorySlotPropertiesService {
    * @param inventorySlot - Inventory slot.
    * @returns Ergonomics or undefined if the slot doesn't contain a ranged weapon.
    */
-  private async getErgonomics(inventorySlot: IInventorySlot): Promise<number> {
+  private async getErgonomicsAsync(inventorySlot: IInventorySlot): Promise<number> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'holster' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'onSling')) {
+      || (inventorySlot.typeId !== InventorySlotTypeId.holster
+        && inventorySlot.typeId !== InventorySlotTypeId.onBack
+        && inventorySlot.typeId !== InventorySlotTypeId.onSling)) {
       return 0
     }
 
-    const ergonomicsResult = await Services.get(InventoryItemService).getErgonomics(inventorySlot.items[0])
+    const inventoryItemErgonomics = await Services.get(InventoryItemService).getErgonomicsAsync(inventorySlot.items[0])
 
-    if (!ergonomicsResult.success) {
-      return 0
-    }
-
-    return ergonomicsResult.value.ergonomicsWithMods
+    return inventoryItemErgonomics.ergonomicsWithMods
   }
 
   /**
@@ -127,10 +156,9 @@ export class InventorySlotPropertiesService {
    * @param canBeLooted - Indicates whether items contained in the inventory slot can be looted or not.
    * @returns Price.
    */
-  private async getPrice(inventorySlot: IInventorySlot, canBeLooted: boolean): Promise<Result<IInventoryPrice>> {
+  private async getPriceAsync(inventorySlot: IInventorySlot, canBeLooted: boolean): Promise<IInventoryPrice> {
     const inventoryItemService = Services.get(InventoryItemService)
-
-    const inventoryPrice: IInventoryPrice = {
+    const inventorySlotPrice: IInventoryPrice = {
       missingPrice: false,
       priceByCurrency: [],
       priceInMainCurrency: 0
@@ -141,36 +169,29 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const priceResult = await inventoryItemService.getPrice(inventoryItem, undefined, canBeLooted)
+      const inventoryItemPrice = await inventoryItemService.getPriceAsync(inventoryItem, undefined, canBeLooted)
+      inventorySlotPrice.missingPrice = inventoryItemPrice.missingPrice
 
-      if (!priceResult.success) {
-        return Result.failFrom(priceResult)
-      }
-
-      for (const inventoryItemPriceWithContent of priceResult.value.pricesWithContent) {
-        const currencyIndex = inventoryPrice.priceByCurrency.findIndex(p => p.currencyName === inventoryItemPriceWithContent.currencyName)
+      for (const inventoryItemPriceWithContent of inventoryItemPrice.pricesWithContent) {
+        const currencyIndex = inventorySlotPrice.priceByCurrency.findIndex(p => p.currencyName === inventoryItemPriceWithContent.currencyName)
 
         if (currencyIndex < 0) {
-          inventoryPrice.priceByCurrency.push(inventoryItemPriceWithContent)
+          inventorySlotPrice.priceByCurrency.push(inventoryItemPriceWithContent)
         } else {
-          inventoryPrice.priceByCurrency[currencyIndex].value += inventoryItemPriceWithContent.value
-          inventoryPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
+          inventorySlotPrice.priceByCurrency[currencyIndex].value += inventoryItemPriceWithContent.value
+          inventorySlotPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
-      }
-
-      if (priceResult.value.missingPrice) {
-        inventoryPrice.missingPrice = true
+        inventorySlotPrice.priceInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
       }
     }
 
-    if (inventoryPrice.priceByCurrency.length > 1) {
+    if (inventorySlotPrice.priceByCurrency.length > 1) {
       // Sorting currencies in the price detailed by currency
-      inventoryPrice.priceByCurrency = PriceUtils.sortByCurrency(inventoryPrice.priceByCurrency)
+      inventorySlotPrice.priceByCurrency = PriceUtils.sortByCurrency(inventorySlotPrice.priceByCurrency)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventorySlotPrice
   }
 
   /**
@@ -178,27 +199,22 @@ export class InventorySlotPropertiesService {
    * @param inventorySlot - Inventory slot.
    * @returns Recoil or undefined if the slot doesn't contain a ranged weapon.
    */
-  private async getRecoil(inventorySlot: IInventorySlot): Promise<IRecoil> {
+  private async getRecoilAsync(inventorySlot: IInventorySlot): Promise<IRecoil> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'holster' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'onSling')) {
+      || (inventorySlot.typeId !== InventorySlotTypeId.holster
+        && inventorySlot.typeId !== InventorySlotTypeId.onBack
+        && inventorySlot.typeId !== InventorySlotTypeId.onSling)) {
       return {
         horizontalRecoil: 0,
         verticalRecoil: 0
       }
     }
 
-    const recoilResult = await Services.get(InventoryItemService).getRecoil(inventorySlot.items[0])
-
-    if (!recoilResult.success) {
-      return {
-        horizontalRecoil: 0,
-        verticalRecoil: 0
-      }
-    }
+    const inventoryItemRecoil = await Services.get(InventoryItemService).getRecoilAsync(inventorySlot.items[0])
 
     return {
-      horizontalRecoil: recoilResult.value.horizontalRecoilWithMods,
-      verticalRecoil: recoilResult.value.verticalRecoilWithMods
+      horizontalRecoil: inventoryItemRecoil.horizontalRecoilWithMods,
+      verticalRecoil: inventoryItemRecoil.verticalRecoilWithMods
     }
   }
 
@@ -207,40 +223,35 @@ export class InventorySlotPropertiesService {
    * @param inventorySlot - Inventory slot.
    * @returns Wearable modifiers.
    */
-  private async getWearableModifiers(inventorySlot: IInventorySlot): Promise<IWearableModifiers> {
-    const wearableModifiers: IWearableModifiers = {
-      ergonomicsPercentageModifier: 0,
-      movementSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifier: 0
-    }
-
-    if (inventorySlot.typeId !== 'backpack'
-      && inventorySlot.typeId !== 'bodyArmor'
-      && inventorySlot.typeId !== 'headwear'
-      && inventorySlot.typeId !== 'tacticalRig') {
-      return wearableModifiers
-    }
-
+  private async getWearableModifiersAsync(inventorySlot: IInventorySlot): Promise<IWearableModifiers> {
     const inventoryItemService = Services.get(InventoryItemService)
+    const inventorySlotWearableModifiers: IWearableModifiers = {
+      ergonomicsModifierPercentage: 0,
+      movementSpeedModifierPercentage: 0,
+      turningSpeedModifierPercentage: 0
+    }
 
+    if (inventorySlot.typeId !== InventorySlotTypeId.backpack
+      && inventorySlot.typeId !== InventorySlotTypeId.bodyArmor
+      && inventorySlot.typeId !== InventorySlotTypeId.eyewear
+      && inventorySlot.typeId !== InventorySlotTypeId.faceCover
+      && inventorySlot.typeId !== InventorySlotTypeId.headwear
+      && inventorySlot.typeId !== InventorySlotTypeId.tacticalRig) {
+      return inventorySlotWearableModifiers
+    }
 
     for (const inventoryItem of inventorySlot.items) {
       if (inventoryItem == null) {
         continue
       }
 
-      const wearableeModifiersResult = await inventoryItemService.getWearableModifiers(inventoryItem)
-
-      if (!wearableeModifiersResult.success) {
-        continue
-      }
-
-      wearableModifiers.ergonomicsPercentageModifier += wearableeModifiersResult.value.ergonomicsPercentageModifierWithMods
-      wearableModifiers.movementSpeedPercentageModifier += wearableeModifiersResult.value.movementSpeedPercentageModifierWithMods
-      wearableModifiers.turningSpeedPercentageModifier += wearableeModifiersResult.value.turningSpeedPercentageModifierWithMods
+      const inventoryItemWearableModifiers = await inventoryItemService.getWearableModifiersAsync(inventoryItem)
+      inventorySlotWearableModifiers.ergonomicsModifierPercentage += inventoryItemWearableModifiers.ergonomicsModifierPercentage
+      inventorySlotWearableModifiers.movementSpeedModifierPercentage += inventoryItemWearableModifiers.movementSpeedModifierPercentage
+      inventorySlotWearableModifiers.turningSpeedModifierPercentage += inventoryItemWearableModifiers.turningSpeedModifierPercentage
     }
 
-    return wearableModifiers
+    return inventorySlotWearableModifiers
   }
 
   /**
@@ -248,24 +259,30 @@ export class InventorySlotPropertiesService {
    * @param inventorySlot - Inventory slot.
    * @returns Weight.
    */
-  private async getWeight(inventorySlot: IInventorySlot): Promise<number> {
+  private async getWeightAsync(inventorySlot: IInventorySlot): Promise<number> {
     const inventoryItemService = Services.get(InventoryItemService)
-    let weight = 0
+    let inventorySlotWeight = 0
 
     for (const inventoryItem of inventorySlot.items) {
       if (inventoryItem == null) {
         continue
       }
 
-      const weightResult = await inventoryItemService.getWeight(inventoryItem)
-
-      if (!weightResult.success) {
-        continue
-      }
-
-      weight += weightResult.value.weightWithContent
+      const inventoryItemWeight = await inventoryItemService.getWeightAsync(inventoryItem)
+      inventorySlotWeight += inventoryItemWeight.weightWithContent
     }
 
-    return weight
+    return inventorySlotWeight
+  }
+
+  /**
+   * Translates a caption.
+   * @param caption - Caption.
+   * @param language - Language.
+   * @returns Translated caption.
+   */
+  private translate(caption: string, language: string): string {
+    // @ts-expect-error - For some reason, this signature of vueI18n.t() is not recognized while it really exists
+    return vueI18n.t(caption, 1, { 'locale': language })
   }
 }

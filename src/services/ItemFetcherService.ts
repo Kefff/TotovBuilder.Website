@@ -1,111 +1,128 @@
-import Result, { FailureType } from '../utils/Result'
-import vueI18n from '../plugins/vueI18n'
-import { FetchService } from './FetchService'
-import Services from './repository/Services'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
 import { ReductionService } from './ReductionService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for fetching items.
  */
 export class ItemFetcherService {
   /**
-   * Fetches all item categories.
-   * @returns Item categories.
+   * Indicates whether the application is in debug mode.
    */
-  public async fetchItemCategories(): Promise<Result<string[]>> {
-    const fetchService = Services.get(FetchService)
-    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItemCategories
-    const itemCategoriesResult = await fetchService.get<string[]>(endpoint)
-
-    if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', vueI18n.t('message.itemCategoriesNotFetched'))
-    }
-
-    Services.get(LogService).logInformation('message.itemCategoriesFetched')
-
-    return itemCategoriesResult
+  private get isDebug(): boolean {
+    return import.meta.env.VITE_DEBUG === 'true'
   }
 
   /**
    * Fetches all items.
    * @returns Items.
    */
-  public async fetchItems(): Promise<Result<IItem[]>> {
+  public async fetchItemsAsync(): Promise<IItem[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
-    const reducedItemsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!reducedItemsResult.success || reducedItemsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', vueI18n.t('message.itemsNotFetched'))
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingItems', { date: new Date().toISOString() })
+    }
+
+    const reducedItems = await fetchService.fetchWithRetryAsync<Record<string, unknown>[]>({ endpoint })
+
+    if (reducedItems == null || reducedItems.length === 0) {
+      Services.get(LogService).logException('message.itemsNotFetched')
+
+      return undefined
     }
 
     const items: IItem[] = []
     const reductionService = Services.get(ReductionService)
 
-    for (const reducedItem of reducedItemsResult.value) {
+    for (const reducedItem of reducedItems) {
       const item = reductionService.parseReducedItem(reducedItem)
       items.push(item)
     }
 
-    Services.get(LogService).logInformation('message.itemsFetched')
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.itemsFetched', { date: new Date().toISOString() })
+    }
 
-    return Result.ok(items)
+    return items
   }
 
   /**
    * Fetches all prices.
    * @returns Prices.
    */
-  public async fetchPrices(): Promise<Result<IPrice[]>> {
+  public async fetchPricesAsync(): Promise<IPrice[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
-    const reducedPricesResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!reducedPricesResult.success || reducedPricesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', vueI18n.t('message.pricesNotFetched'))
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingPrices', { date: new Date().toISOString() })
+    }
+
+    const reducedPrices = await fetchService.fetchWithRetryAsync<Record<string, unknown>[]>({ endpoint })
+
+    if (reducedPrices == null || reducedPrices.length === 0) {
+      Services.get(LogService).logException('message.pricesNotFetched')
+
+      return undefined
     }
 
     const prices: IPrice[] = []
     const reductionService = Services.get(ReductionService)
 
-    for (const reducedPrice of reducedPricesResult.value) {
+    for (const reducedPrice of reducedPrices) {
       const price = reductionService.parseReducedPrice(reducedPrice)
       prices.push(price)
     }
 
-    Services.get(LogService).logInformation('message.pricesFetched')
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.pricesFetched', { date: new Date().toISOString() })
+    }
 
-    return Result.ok(prices)
+    return prices
   }
 
   /**
    * Fetches all presets.
    * @returns Presets.
    */
-  public async fetchPresets(): Promise<Result<IInventoryItem[]>> {
+  public async fetchPresetsAsync(): Promise<IInventoryItem[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPresets
-    const reducedPresetsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!reducedPresetsResult.success || reducedPresetsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', vueI18n.t('message.presetsNotFetched'))
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingPresets', { date: new Date().toISOString() })
+    }
+
+    const reducedPresets = await fetchService.fetchWithRetryAsync<Record<string, unknown>[]>({ endpoint })
+
+    if (reducedPresets == null || reducedPresets.length === 0) {
+      Services.get(LogService).logException('message.presetsNotFetched')
+
+      return undefined
     }
 
     const presets: IInventoryItem[] = []
     const reductionService = Services.get(ReductionService)
 
-    for (const reducedPreset of reducedPresetsResult.value) {
-      const preset = reductionService.parseReducedInventoryItem(reducedPreset).value
-      presets.push(preset)
+    for (const reducedPreset of reducedPresets) {
+      const preset = reductionService.parseReducedInventoryItem(reducedPreset)
+
+      if (preset != null) {
+        presets.push(preset)
+      }
     }
 
-    Services.get(LogService).logInformation('message.presetsFetched')
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.presetsFetched', { date: new Date().toISOString() })
+    }
 
-    return Result.ok(presets)
+    return presets
   }
 }

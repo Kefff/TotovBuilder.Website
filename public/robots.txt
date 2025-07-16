@@ -1,11 +1,5 @@
 User-agent: *
-Disallow: /
-
-Allow: /$
-Allow: /en$
-Allow: /fr$
-Allow: /favicon.ico
-Allow: /sitemap.xml
-Allow: /robots.txt
-
+Allow: /
+Disallow: /build/
+Disallow: /copy/
 Sitemap: https://www.totovbuilder.com/sitemap.xml

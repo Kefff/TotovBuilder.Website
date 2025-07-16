@@ -1,68 +1,80 @@
 import { anyString, anything, instance, mock, when } from 'ts-mockito'
-import ItemCategoriesMock from '../../../public/data/item-categories.json'
+import TarkovValuesMock from '../../../public/data/tarkov-values.json'
 import { ICurrency } from '../../models/configuration/ICurrency'
-import { IItem } from '../../models/item/IItem'
+import { ITarkovValues } from '../../models/configuration/ITarkovValues'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
+import vueI18n from '../../plugins/vueI18n'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
-import Result, { FailureType } from '../../utils/Result'
 import { ItemMocks, rub } from '../__data__/itemMocks'
 import { PriceMocks } from '../__data__/priceMocks'
 
 export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
   const itemServiceMock = mock<ItemService>()
-  when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
-  when(itemServiceMock.getItemCategories()).thenResolve(ItemCategoriesMock)
-  when(itemServiceMock.getItems(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
-  when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenCall((ids: string[]) => getItemsOfCategories(ids, customItemList))
+  when(itemServiceMock.getCurrency(anyString())).thenCall(currencyName => getCurrency(currencyName))
+  when(itemServiceMock.getItemAsync(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
+  when(itemServiceMock.getItemsAsync(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
+  when(itemServiceMock.getItemsOfCategoriesAsync(anything(), anything())).thenCall((categoryIds: ItemCategoryId[]) => getItemsOfCategories(categoryIds, customItemList))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
 
   Services.configure(ItemService, undefined, instance(itemServiceMock))
 }
 
-function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem>> {
-  const item = (customItemList ?? ItemMocks).find(i => i.id === id) as IItem
+function getCurrency(currencyName: string): ICurrency {
+  const currency = (TarkovValuesMock as ITarkovValues).currencies.find(c => c.name === currencyName)
 
-  if (item != null) {
-    item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === id)
-
-    return Promise.resolve(Result.ok(item))
+  if (currency == null) {
+    throw new Error(vueI18n.t('message.currencyNotFound', { currency: name }))
   }
 
-  return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getItem()', `Item "${id}" not found.`))
+  return currency
 }
 
-async function getItems(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
+function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<IItem> {
+  let item = (customItemList ?? ItemMocks).find(i => i.id === id) as IItem
+
+  if (item == null) {
+    item = ItemService.getNotFoundItem(id)
+  } else {
+    item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === id)
+  }
+
+  return Promise.resolve(item)
+}
+
+function getItems(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<IItem[]> {
   const items = (customItemsList ?? ItemMocks).filter(i => ids.some(id => i.id === id))
 
   for (const item of items) {
     item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === item.id)
   }
 
-  return Promise.resolve(Result.ok<IItem[]>(items))
+  return Promise.resolve(items)
 }
 
-async function getItemsOfCategories(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
-  const items = (customItemsList ?? ItemMocks).filter(i => ids.some(id => i.categoryId === id))
+function getItemsOfCategories(categoryIds: ItemCategoryId[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<IItem[]> {
+  const items = (customItemsList ?? ItemMocks).filter(i => categoryIds.some(categoryId => i.categoryId === categoryId))
 
   for (const item of items) {
     item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === item.id)
   }
 
-  return Promise.resolve(Result.ok<IItem[]>(items))
+  return Promise.resolve(items)
 }
 
-function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {
-  if (hasMainCurrency) {
-    return Promise.resolve(Result.ok({
-      iconName: 'ruble-sign',
-      itemId: rub.id,
-      mainCurrency: true,
-      name: rub.shortName,
-      sortOrder: 3,
-      value: 1
-    }))
-  } else {
-    return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getMainCurrency()', 'Main currency not found.'))
+function getMainCurrency(hasMainCurrency: boolean): ICurrency {
+  if (!hasMainCurrency) {
+    throw new Error(vueI18n.t('message.mainCurrencyNotFound'))
+  }
+
+  return {
+    iconName: 'ruble-sign',
+    itemId: rub.id,
+    mainCurrency: true,
+    name: rub.shortName,
+    sortOrder: 3,
+    symbol: '₽',
+    value: 1
   }
 }

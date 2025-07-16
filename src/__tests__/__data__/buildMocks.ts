@@ -1,6 +1,7 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { ak12PistolGrip, ak12Stock, alpha, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cf, crossbow, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, morphine, plate6b33Back, plate6b33Front, razor, rgd5, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, srd9, vaseline, water, x400 } from './itemMocks'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
+import { ak12PistolGrip, ak12Stock, alpha, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cqcm, crossbow, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, morphine, plate6b33Back, plate6b33Front, razor, rgd5, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, srd9, vaseline, water, x400 } from './itemMocks'
 
 export const build1: IBuild = {
   id: 'build_1',
@@ -150,15 +151,15 @@ export const build1: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'onSling'
+      typeId: InventorySlotTypeId.onSling
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
+      typeId: InventorySlotTypeId.onBack
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'holster'
+      typeId: InventorySlotTypeId.holster
     },
     {
       items: [
@@ -191,11 +192,11 @@ export const build1: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'bodyArmor'
+      typeId: InventorySlotTypeId.bodyArmor
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'tacticalRig'
+      typeId: InventorySlotTypeId.tacticalRig
     },
     {
       items: [
@@ -218,11 +219,38 @@ export const build1: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'headwear'
+      typeId: InventorySlotTypeId.headwear
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'earpiece'
+      typeId: InventorySlotTypeId.earpiece
+    },
+    {
+      items: [
+        {
+          content: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: iskra.id,
+              modSlots: [],
+              quantity: 1
+            },
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: water.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          ignorePrice: false,
+          itemId: berkut.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: InventorySlotTypeId.backpack
     },
     {
       items: [
@@ -255,54 +283,7 @@ export const build1: IBuild = {
           quantity: 60
         }
       ],
-      typeId: 'pockets'
-    },
-    {
-      items: [
-        {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: iskra.id,
-              modSlots: [],
-              quantity: 1
-            },
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: water.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          ignorePrice: false,
-          itemId: berkut.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'backpack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: cf.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'faceCover'
+      typeId: InventorySlotTypeId.pockets
     },
     {
       items: [
@@ -314,15 +295,35 @@ export const build1: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'eyewear'
+      typeId: InventorySlotTypeId.eyewear
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: cqcm.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: InventorySlotTypeId.faceCover
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'armband'
+      typeId: InventorySlotTypeId.pouch
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: InventorySlotTypeId.scabbard
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: InventorySlotTypeId.armband
     },
     {
       items: Array<IInventoryItem>(3),
-      typeId: 'special'
+      typeId: InventorySlotTypeId.special
     }
   ],
   lastExported: new Date(2024, 2, 17),
@@ -336,11 +337,11 @@ export const build2: IBuild = {
   inventorySlots: [
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onSling'
+      typeId: InventorySlotTypeId.onSling
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
+      typeId: InventorySlotTypeId.onBack
     },
     {
       items: [
@@ -443,11 +444,11 @@ export const build2: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'holster'
+      typeId: InventorySlotTypeId.holster
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'bodyArmor'
+      typeId: InventorySlotTypeId.bodyArmor
     },
     {
       items: [
@@ -459,6 +460,13 @@ export const build2: IBuild = {
               itemId: salewa.id,
               modSlots: [],
               quantity: 1
+            },
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo9mmGT.id,
+              modSlots: [],
+              quantity: 35
             }
           ],
           ignorePrice: false,
@@ -488,11 +496,11 @@ export const build2: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'tacticalRig'
+      typeId: InventorySlotTypeId.tacticalRig
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'headwear'
+      typeId: InventorySlotTypeId.headwear
     },
     {
       items: [
@@ -504,27 +512,43 @@ export const build2: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'earpiece'
-    },
-    {
-      items: Array<IInventoryItem>(4),
-      typeId: 'pockets'
+      typeId: InventorySlotTypeId.earpiece
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
+      typeId: InventorySlotTypeId.backpack
+    },
+    {
+      items: Array<IInventoryItem>(4),
+      typeId: InventorySlotTypeId.pockets
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: InventorySlotTypeId.eyewear
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: InventorySlotTypeId.faceCover
     },
     {
       items: [
         {
-          content: [],
+          content: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo9mmGT.id,
+              modSlots: [],
+              quantity: 15
+            }
+          ],
           ignorePrice: false,
           itemId: alpha.id,
           modSlots: [],
           quantity: 1
         }
       ],
-      typeId: 'pouch'
+      typeId: InventorySlotTypeId.pouch
     },
     {
       items: [
@@ -536,23 +560,15 @@ export const build2: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'scabbard'
+      typeId: InventorySlotTypeId.scabbard
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'armband'
+      typeId: InventorySlotTypeId.armband
     },
     {
       items: Array<IInventoryItem>(3),
-      typeId: 'special'
+      typeId: InventorySlotTypeId.special
     }
   ],
   lastExported: undefined,
@@ -702,6 +718,22 @@ export const reducedBuild1: Record<string, unknown> = {
     {
       'i': [
         {
+          'c': [
+            {
+              'i': iskra.id
+            },
+            {
+              'i': water.id
+            }
+          ],
+          'i': berkut.id
+        }
+      ],
+      't': 'backpack'
+    },
+    {
+      'i': [
+        {
           'i': morphine.id
         },
         {
@@ -720,34 +752,18 @@ export const reducedBuild1: Record<string, unknown> = {
     {
       'i': [
         {
-          'c': [
-            {
-              'i': iskra.id
-            },
-            {
-              'i': water.id
-            }
-          ],
-          'i': berkut.id
-        }
-      ],
-      't': 'backpack'
-    },
-    {
-      'i': [
-        {
-          'i': cf.id
-        }
-      ],
-      't': 'faceCover'
-    },
-    {
-      'i': [
-        {
           'i': crossbow.id
         }
       ],
       't': 'eyewear'
+    },
+    {
+      'i': [
+        {
+          'i': cqcm.id
+        }
+      ],
+      't': 'faceCover'
     }
   ]
 }
@@ -829,6 +845,10 @@ export const reducedBuild2: Record<string, unknown> = {
           'c': [
             {
               'i': salewa.id
+            },
+            {
+              'i': ammo9mmGT.id,
+              'q': 35
             }
           ],
           'i': banshee.id,
@@ -861,6 +881,12 @@ export const reducedBuild2: Record<string, unknown> = {
     {
       'i': [
         {
+          'c': [
+            {
+              'i': ammo9mmGT.id,
+              'q': 15
+            }
+          ],
           'i': alpha.id
         }
       ],

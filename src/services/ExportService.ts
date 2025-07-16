@@ -1,48 +1,55 @@
+import { TinyEmitter } from 'tiny-emitter'
 import { IBuild } from '../models/build/IBuild'
-import FileSaver from 'file-saver'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
-import Services from './repository/Services'
 import { BuildService } from './BuildService'
+import { FileService } from './FileService'
+import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for exporting builds.
  */
 export class ExportService {
   /**
+   * Name of the event fired when builds have been exported.
+   */
+  public static buildsExportedEvent = 'buildsExported'
+
+  /**
+   * Event emitter used to indicate an export has succeeded.
+   */
+  public emitter = new TinyEmitter()
+
+  /**
    * Exports a list of builds.
+   * Displays a notification indicating whether export has succeeded.
    * @param builds - Builds.
    */
-  public async export(builds: IBuild[]): Promise<Result> {
+  public async exportAsync(builds: IBuild[]): Promise<void> {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-    try {
-      const json = JSON.stringify(builds)
-      const blob = new Blob([json], { type: 'text/json;charset=utf-8' })
-      const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
-      const fileName =
-        websiteConfigurationService.configuration.exportFileNamePrefix
-        + ' - ' + exportedBuildsName + ' - '
-        + new Date().toLocaleString()
-        + websiteConfigurationService.configuration.exportFileExtension
-      FileSaver.saveAs(blob, fileName)
-    }
-    catch {
-      return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.buildsExportError'))
+    const json = JSON.stringify(builds)
+    const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
+    const fileName =
+      websiteConfigurationService.configuration.exportFileNamePrefix
+      + ' - ' + exportedBuildsName + ' - '
+      + new Date().toLocaleString()
+      + websiteConfigurationService.configuration.exportFileExtension
+    const fileSaved = Services.get(FileService).writeFile(fileName, json)
+
+    if (!fileSaved) {
+      return
     }
 
     const buildService = Services.get(BuildService)
 
     for (const build of builds) {
       build.lastExported = new Date()
-      const updateResult = await buildService.update(build.id, build)
-
-      if (!updateResult.success) {
-        return updateResult
-      }
+      await buildService.updateAsync(build)
     }
 
-    return Result.ok()
+    this.emitter.emit(ExportService.buildsExportedEvent)
+    Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))
   }
 }

@@ -1,4 +1,4 @@
-import { TinyEmitter } from 'tiny-emitter'
+/* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
@@ -11,15 +11,18 @@ import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IErgonomics } from '../models/utils/IErgonomics'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
-import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
+import { IRecoilModifierPercentage } from '../models/utils/IRecoilModifierPercentage'
+import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import { IWeight } from '../models/utils/IWeight'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result from '../utils/Result'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import StringUtils from '../utils/StringUtils'
 import { GlobalFilterService } from './GlobalFilterService'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
@@ -31,76 +34,54 @@ import Services from './repository/Services'
  */
 export class InventoryItemService {
   /**
-   * Item change event.
-   */
-  public static inventoryItemChangeEvent = 'inventoryItemChanged'
-
-  /**
-   * Quantity change event.
-   */
-  public static inventoryItemQuantityChangeEvent = 'inventoryItemQuantityChanged'
-
-  /**
-   * Event emitter used to signal compatibility check requests.
-   */
-  public emitter = new TinyEmitter()
-
-  /**
    * Gets the armor class of an inventory item.
-   * When the inventory item has a front plate slot, it return the armor class and durability of the contained armor plate.
-   * Other whise it returns the armor class and durability of the armor or vest.
+   * When the inventory item has a front plate slot, it return the armor class of the contained armor plate.
+   * Otherwise it returns the armor class of the armor or vest.
+   * When the inventory item has armor plates, it returns the sum of the item and armor plates durability.
    * @param inventoryItem - Inventory item.
-   * @returns Front plate armor class.
+   * @returns Armor modifiers.
    */
-  public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<Result<IArmorModifiers>> {
+  public async getArmorModifiersAsync(inventoryItem: IInventoryItem): Promise<IArmorModifiers> {
     const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
     const itemPropertiesService = Services.get(ItemPropertiesService)
 
-    if (!itemPropertiesService.isArmor(itemResult.value)
-      && !itemPropertiesService.isHeadwear(itemResult.value)
-      && !itemPropertiesService.isVest(itemResult.value)) {
-      return Result.ok({
+    const item = await itemService.getItemAsync(inventoryItem.itemId)
+
+    if (!itemPropertiesService.canHaveArmor(item)) {
+      return {
         armorClass: 0,
         durability: 0
-      })
+      }
     }
 
-    const frontPlateModSlot = inventoryItem.modSlots.find(m => m.modSlotName === 'front_plate')
+    const armor = item as IArmor
+    let armorClass = armor.armorClass
+    let durability = armor.durability
+    const armorPlateModSlots = inventoryItem.modSlots.filter(m => m.modSlotName.endsWith('_plate'))
 
-    if (frontPlateModSlot != null) {
-      if (frontPlateModSlot.item == null) {
-        return Result.ok({
-          armorClass: 0,
-          durability: 0
-        })
+    for (const armorPlateModSlot of armorPlateModSlots) {
+      if (armorPlateModSlot.item == null) {
+        continue
       }
 
-      const frontPlateResult = await itemService.getItem(frontPlateModSlot.item.itemId)
+      const armorPlate = await itemService.getItemAsync(armorPlateModSlot.item.itemId) as IArmorMod
+      const isArmorMod = itemPropertiesService.isArmorMod(armorPlate)
 
-      if (!frontPlateResult.success) {
-        return Result.failFrom(frontPlateResult)
+      if (!isArmorMod) {
+        continue
       }
 
-      const frontPlate = frontPlateResult.value as IArmorMod
+      if (armorPlateModSlot.modSlotName === 'front_plate') {
+        armorClass = armorPlate.armorClass
+      }
 
-      return Result.ok({
-        armorClass: frontPlate.armorClass,
-        durability: frontPlate.durability
-      })
+      durability += armorPlate.durability
     }
 
-    const armor = itemResult.value as IArmor
-
-    return Result.ok({
-      armorClass: armor.armorClass,
-      durability: armor.durability
-    })
+    return {
+      armorClass,
+      durability
+    }
   }
 
   /**
@@ -108,20 +89,16 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Ergonomics.
    */
-  public async getErgonomics(inventoryItem: IInventoryItem): Promise<Result<IErgonomics>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
+  public async getErgonomicsAsync(inventoryItem: IInventoryItem): Promise<IErgonomics> {
     const itemPropertiesService = Services.get(ItemPropertiesService)
-    let ergonomics = 0
 
-    if (itemPropertiesService.isRangedWeapon(itemResult.value)) {
-      ergonomics = (itemResult.value as IRangedWeapon).ergonomics
-    } else if (itemPropertiesService.isModdable(itemResult.value)) {
-      ergonomics = (itemResult.value as IMod).ergonomicsModifier
+    let ergonomics = 0
+    const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
+
+    if (itemPropertiesService.isRangedWeapon(item)) {
+      ergonomics = (item as IRangedWeapon).ergonomics
+    } else if (itemPropertiesService.isModdable(item)) {
+      ergonomics = (item as IMod).ergonomicsModifier
     }
 
     let ergonomicsWithMods = ergonomics
@@ -131,42 +108,38 @@ export class InventoryItemService {
         continue
       }
 
-      const modErgonomicsResult = await this.getErgonomics(modSlot.item)
+      const modErgonomics = await this.getErgonomicsAsync(modSlot.item)
 
-      if (!modErgonomicsResult.success) {
-        return Result.failFrom(modErgonomicsResult)
+      if (modErgonomics != null) {
+        ergonomicsWithMods += modErgonomics.ergonomicsWithMods
       }
-
-      ergonomicsWithMods += modErgonomicsResult.value.ergonomicsWithMods
     }
 
-    return Result.ok({
+    return {
       ergonomics: ergonomics,
       ergonomicsWithMods: ergonomicsWithMods
-    })
+    }
   }
 
   /**
    * Gets the price of an inventory item including or not its content and mods.
    * @param inventoryItem - Inventory item.
-   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
+   * @param inventoryItemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryItemPrice>> {
+  public async getPriceAsync(inventoryItem: IInventoryItem, inventoryItemInSameSlotInPreset?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<IInventoryItemPrice> {
     const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
+    const item = await itemService.getItemAsync(inventoryItem.itemId)
+    const mainCurrency = itemService.getMainCurrency()
 
     let unitPrice: IPrice = {
       barterItems: [],
-      currencyName: 'RUB',
-      itemId: '',
+      currencyName: mainCurrency.name,
+      itemId: item.id,
       merchant: '',
       merchantLevel: 0,
       quest: undefined,
@@ -178,9 +151,7 @@ export class InventoryItemService {
 
     if (!canBeLooted) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
-    } else if (presetModSlotItem?.itemId === inventoryItem.itemId) {
-      unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
-    } else if (presetModSlotItem?.content.some(c => c.itemId === inventoryItem.itemId && c.quantity === inventoryItem.quantity)) {
+    } else if (inventoryItemInSameSlotInPreset?.itemId === inventoryItem.itemId && inventoryItemInSameSlotInPreset?.quantity === inventoryItem.quantity) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
     } else if (inventoryItem.ignorePrice) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
@@ -189,7 +160,7 @@ export class InventoryItemService {
     let hasUnitPrice = false
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const matchingPrices = useMerchantFilter ? globalFilterService.getMatchingPrices(itemResult.value) : itemResult.value.prices
+      const matchingPrices = useMerchantFilter ? globalFilterService.getMatchingPrices(item) : item.prices
 
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
@@ -198,25 +169,25 @@ export class InventoryItemService {
 
         if (matchingPrice.currencyName === 'barter') {
           for (const barterItem of matchingPrice.barterItems) {
-            const barterItemPriceResult = await this.getPrice({
-              content: [],
-              ignorePrice: false,
-              itemId: barterItem.itemId,
-              modSlots: [],
-              quantity: barterItem.quantity
-            }, undefined, true, useMerchantFilter)
+            const barterItemPrice = await this.getPriceAsync(
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: barterItem.itemId,
+                modSlots: [],
+                quantity: barterItem.quantity
+              },
+              undefined,
+              true,
+              useMerchantFilter)
 
-            if (!barterItemPriceResult.success) {
-              return Result.failFrom(barterItemPriceResult)
-            }
-
-            if (barterItemPriceResult.value.missingPrice) {
+            if (barterItemPrice.missingPrice) {
               missingBarterItemPrice = true
               continue
             }
 
-            matchingPriceBarterItemPrices.push(barterItemPriceResult.value)
-            matchingPriceInMainCurrency += barterItemPriceResult.value.price.valueInMainCurrency
+            matchingPriceBarterItemPrices.push(barterItemPrice)
+            matchingPriceInMainCurrency += barterItemPrice.price.valueInMainCurrency
           }
         }
 
@@ -226,7 +197,7 @@ export class InventoryItemService {
           hasUnitPrice = true
           unitPrice = {
             // Creating a new instance because we need to set the valueInMainCurrency.
-            // If we directly use a reference to matchinPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
+            // If we directly use a reference to matchingPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
             ...matchingPrice,
             valueInMainCurrency: matchingPriceInMainCurrency
           }
@@ -263,31 +234,17 @@ export class InventoryItemService {
       })
     }
 
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return Result.failFrom(mainCurrencyResult)
-    }
-
     const inventoryPrice: IInventoryItemPrice = {
       missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !hasUnitPrice,
       price,
       pricesWithContent: [],
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: price.valueInMainCurrency,
-        valueInMainCurrency: price.valueInMainCurrency
-      },
+      priceWithContentInMainCurrency: price.valueInMainCurrency,
       unitPrice,
       unitPriceIgnoreStatus
     }
 
-    if (price.valueInMainCurrency > 0) {
+    if (price.valueInMainCurrency > 0 || price.value > 0) {
+      // Barters have no value while items with price currency that has no price (GP coin for example) have no value in main currency
       if (price.currencyName !== 'barter') {
         inventoryPrice.pricesWithContent.push({
           barterItems: [],
@@ -325,8 +282,16 @@ export class InventoryItemService {
       }
     }
 
+    let preset = inventoryItemInSameSlotInPreset
+
+    if (preset == null) {
+      preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
+    }
+
     // Adding content prices
-    for (const containedItem of inventoryItem.content) {
+    for (let i = 0; i < inventoryItem.content.length; i++) {
+      const containedItem = inventoryItem.content[i]
+
       /* c8 ignore start */
       if (containedItem == null) {
         // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
@@ -334,13 +299,9 @@ export class InventoryItemService {
       }
       /* c8 ignore stop */
 
-      const containedItemPriceResult = await this.getPrice(containedItem, presetModSlotItem)
+      const containedItemPrice = await this.getPriceAsync(containedItem, preset?.content[i])
 
-      if (!containedItemPriceResult.success) {
-        return Result.failFrom(containedItemPriceResult)
-      }
-
-      for (const containedItemPriceWithContent of containedItemPriceResult.value.pricesWithContent) {
+      for (const containedItemPriceWithContent of containedItemPrice.pricesWithContent) {
         const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === containedItemPriceWithContent.currencyName)
 
         if (currencyIndex < 0) {
@@ -350,33 +311,24 @@ export class InventoryItemService {
           inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += containedItemPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceWithContentInMainCurrency.value += containedItemPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency += containedItemPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceWithContentInMainCurrency += containedItemPriceWithContent.valueInMainCurrency
       }
 
-      if (containedItemPriceResult.value.missingPrice) {
+      if (containedItemPrice.missingPrice) {
         inventoryPrice.missingPrice = true
       }
     }
 
     // Adding mod prices
-    if (presetModSlotItem == null) {
-      presetModSlotItem = Services.get(PresetService).getPreset(inventoryItem.itemId)
-    }
-
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue
       }
 
-      const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
-      const modPriceResult = await this.getPrice(modSlot.item, presetModSlot?.item)
+      const presetModSlot = preset?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
+      const modPrice = await this.getPriceAsync(modSlot.item, presetModSlot?.item)
 
-      if (!modPriceResult.success) {
-        return Result.failFrom(modPriceResult)
-      }
-
-      for (const modPriceWithContent of modPriceResult.value.pricesWithContent) {
+      for (const modPriceWithContent of modPrice.pricesWithContent) {
         const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === modPriceWithContent.currencyName)
 
         if (currencyIndex < 0) {
@@ -386,11 +338,10 @@ export class InventoryItemService {
           inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += modPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceWithContentInMainCurrency.value += modPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency += modPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceWithContentInMainCurrency += modPriceWithContent.valueInMainCurrency
       }
 
-      if (modPriceResult.value.missingPrice) {
+      if (modPrice.missingPrice) {
         inventoryPrice.missingPrice = true
       }
     }
@@ -399,7 +350,7 @@ export class InventoryItemService {
       inventoryPrice.pricesWithContent = PriceUtils.sortByCurrency(inventoryPrice.pricesWithContent)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventoryPrice
   }
 
   /**
@@ -407,23 +358,19 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Recoil.
    */
-  public async getRecoil(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemRecoil>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getRecoilAsync(inventoryItem: IInventoryItem): Promise<IInventoryItemRecoil> {
+    const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
-    if (!Services.get(ItemPropertiesService).isRangedWeapon(itemResult.value)) {
-      return Result.ok({
+    if (!Services.get(ItemPropertiesService).isRangedWeapon(item)) {
+      return {
         horizontalRecoil: 0,
         horizontalRecoilWithMods: 0,
         verticalRecoil: 0,
         verticalRecoilWithMods: 0
-      })
+      }
     }
 
-    const rangedWeapon = itemResult.value as IRangedWeapon
+    const rangedWeapon = item as IRangedWeapon
     const recoil: IInventoryItemRecoil = {
       horizontalRecoil: rangedWeapon.horizontalRecoil,
       horizontalRecoilWithMods: rangedWeapon.horizontalRecoil,
@@ -431,69 +378,58 @@ export class InventoryItemService {
       verticalRecoilWithMods: rangedWeapon.verticalRecoil
     }
 
-    // Getting the chambered or in magazine ammunition recoil percentage modifier
-    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(inventoryItem.modSlots)
+    // Getting the chambered or in magazine ammunition recoil modifier
+    const chamberedAmmunitionRecoilModifier = await this.getChamberedAmmunitionRecoilModifierAsync(inventoryItem.modSlots) ?? 0
 
-    if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
-      return Result.failFrom(chamberedAmmunitionRecoilPercentageModifierResult)
-    }
+    // Applying the chambered ammunition recoil modifier
+    recoil.horizontalRecoilWithMods += chamberedAmmunitionRecoilModifier
+    recoil.verticalRecoilWithMods += chamberedAmmunitionRecoilModifier
 
-    // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
-    const chamberedAmmunitionRecoilPercentageModifier = 0/*chamberedAmmunitionRecoilPercentageModifierResult.value*/
-
-    // Getting the recoil percentage modifier for each mods
-    let modsRecoilPercentageModifiers = 0
+    // Getting the recoil modifier percentage for each mods
+    let modsRecoilModifierPercentages = 0
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue
       }
 
-      const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
-
-      if (!modRecoilPercentageModifierResult.success) {
-        return Result.failFrom(modRecoilPercentageModifierResult)
-      }
-
-      modsRecoilPercentageModifiers += modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
+      const modRecoilModifierPercentage = await this.getRecoilModifierPercentageAsync(modSlot.item)
+      modsRecoilModifierPercentages += modRecoilModifierPercentage.recoilModifierPercentageWithMods
     }
 
-    // Applying to the weapon recoil the recoil percentage modifiers of its mods
-    recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
-    recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
-    recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
-    recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
+    // Applying to the weapon recoil the recoil modifier percentages of its mods
+    recoil.horizontalRecoilWithMods += recoil.horizontalRecoilWithMods * modsRecoilModifierPercentages
+    recoil.verticalRecoilWithMods += recoil.verticalRecoilWithMods * modsRecoilModifierPercentages
 
-    return Result.ok(recoil)
+    return recoil
   }
 
   /**
    * Gets the recoil modifier of an inventory item including or not its content and mods.
    * @param inventoryItem - Inventory item.
-   * @returns Recoil percentage modifier.
+   * @returns Recoil modifier percentage.
    */
-  public async getRecoilPercentageModifier(inventoryItem: IInventoryItem): Promise<Result<IRecoilPercentageModifier>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
+  public async getRecoilModifierPercentageAsync(inventoryItem: IInventoryItem): Promise<IRecoilModifierPercentage> {
     const itemPropertiesService = Services.get(ItemPropertiesService)
-    const recoilPercentageModifier: IRecoilPercentageModifier = {
-      recoilPercentageModifier: 0,
-      recoilPercentageModifierWithMods: 0
+    const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
+
+    if (!itemPropertiesService.isModdable(item)) {
+      return {
+        recoilModifierPercentage: 0,
+        recoilModifierPercentageWithMods: 0
+      }
     }
 
-    if (!itemPropertiesService.isModdable(itemResult.value)) {
-      return Result.ok(recoilPercentageModifier)
+    const recoilModifierPercentage: IRecoilModifierPercentage = {
+      recoilModifierPercentage: 0,
+      recoilModifierPercentageWithMods: 0
     }
 
-    const rangedWeaponMod = itemResult.value as IRangedWeaponMod
+    const rangedWeaponMod = item as IRangedWeaponMod
 
-    if (itemPropertiesService.isRangedWeaponMod(itemResult.value)) {
-      recoilPercentageModifier.recoilPercentageModifier = rangedWeaponMod.recoilPercentageModifier
-      recoilPercentageModifier.recoilPercentageModifierWithMods = rangedWeaponMod.recoilPercentageModifier
+    if (itemPropertiesService.isRangedWeaponMod(item)) {
+      recoilModifierPercentage.recoilModifierPercentage = rangedWeaponMod.recoilModifierPercentage
+      recoilModifierPercentage.recoilModifierPercentageWithMods = rangedWeaponMod.recoilModifierPercentage
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -501,36 +437,31 @@ export class InventoryItemService {
         continue
       }
 
-      const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
-
-      if (!modRecoilPercentageModifierResult.success) {
-        return Result.failFrom(modRecoilPercentageModifierResult)
-      }
-
-      recoilPercentageModifier.recoilPercentageModifierWithMods = recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
+      const modRecoilModifierPercentage = await this.getRecoilModifierPercentageAsync(modSlot.item)
+      recoilModifierPercentage.recoilModifierPercentageWithMods = recoilModifierPercentage.recoilModifierPercentageWithMods + modRecoilModifierPercentage.recoilModifierPercentageWithMods
     }
 
-    return Result.ok(recoilPercentageModifier)
+    return recoilModifierPercentage
   }
 
   /**
    * Gets a shopping list for this item and all its content, mod and barter items that must be bought.
    * @param inventoryItem - Inventory item.
-   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
+   * @param inventorySlotId - Name of the inventory slot in which the item is found.
    * @returns Shopping list items.
    */
-  public async getShoppingList(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<Result<IShoppingListItem[]>> {
+  public async getShoppingListAsync(
+    inventoryItem: IInventoryItem,
+    canBeLooted = true,
+    presetModSlotItem: IInventoryItem | undefined = undefined,
+    inventorySlotId: string | undefined = undefined): Promise<IShoppingListItem[]> {
     const itemService = Services.get(ItemService)
     const shoppingList: IShoppingListItem[] = []
     const shoppingListItemsToAdd: IShoppingListItem[] = []
 
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
+    const item = await itemService.getItemAsync(inventoryItem.itemId)
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
     if (!canBeLooted) {
@@ -541,55 +472,55 @@ export class InventoryItemService {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
 
-    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const priceResult = await this.getPrice(inventoryItem)
-
-      if (!priceResult.success) {
-        return Result.failFrom(priceResult)
-      }
-
+    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notLootable
+      || unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored
+    ) {
+      shoppingListItemsToAdd.push({
+        ignorePrice: unitPriceIgnoreStatus,
+        inventorySlotId: inventorySlotId,
+        item,
+        missingPrice: false,
+        quantity: inventoryItem.quantity
+      })
+    } else if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
       let unitPrice: IPrice
+      const price = await this.getPriceAsync(inventoryItem)
 
       // Barters
       const shoppingListBartersToAdd: IShoppingListItem[] = []
 
-      if (priceResult.value.unitPrice.currencyName === 'barter') {
-        for (const barterItem of priceResult.value.unitPrice.barterItems) {
-          const barterItemShoppingListResult = await this.getShoppingList({
+      if (price.unitPrice.currencyName === 'barter') {
+        for (const barterItem of price.unitPrice.barterItems) {
+          const barterItemShoppingList = await this.getShoppingListAsync({
             content: [],
             ignorePrice: false,
             itemId: barterItem.itemId,
             modSlots: [],
             quantity: barterItem.quantity * inventoryItem.quantity
           })
-
-          /* c8 ignore start */
-          if (!barterItemShoppingListResult.success) {
-            // Should never happen since barter item prices are already searched in the getPrice() method
-            return Result.failFrom(barterItemShoppingListResult)
-          }
-          /* c8 ignore stop */
-
-          shoppingListBartersToAdd.push(...barterItemShoppingListResult.value)
+          shoppingListBartersToAdd.push(...barterItemShoppingList)
         }
 
         // Setting the unit price of items that have barter items to 0 since barter items and their price are added to the shopping list
         unitPrice = {
-          barterItems: [],
+          barterItems: price.unitPrice.barterItems,
           currencyName: 'barter',
           itemId: inventoryItem.itemId,
-          merchant: priceResult.value.unitPrice.merchant,
-          merchantLevel: priceResult.value.unitPrice.merchantLevel,
-          quest: priceResult.value.unitPrice.quest,
+          merchant: price.unitPrice.merchant,
+          merchantLevel: price.unitPrice.merchantLevel,
+          quest: price.unitPrice.quest,
           value: 0,
           valueInMainCurrency: 0
         }
       } else {
-        unitPrice = priceResult.value.unitPrice
+        unitPrice = price.unitPrice
       }
 
       shoppingListItemsToAdd.push({
-        item: itemResult.value,
+        ignorePrice: unitPriceIgnoreStatus,
+        inventorySlotId: inventorySlotId,
+        item,
+        missingPrice: price.missingPrice && price.unitPrice.barterItems.length === 0 && price.unitPrice.valueInMainCurrency === 0,
         quantity: inventoryItem.quantity,
         price: {
           barterItems: unitPrice.barterItems,
@@ -611,53 +542,42 @@ export class InventoryItemService {
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      /* c8 ignore start */
       if (modSlot.item == null) {
         continue
       }
-      /* c8 ignore stop */
 
       const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
-      const shoppingListResult = await this.getShoppingList(modSlot.item, presetModSlot?.item)
-
-      /* c8 ignore start */
-      if (!shoppingListResult.success) {
-        // Should never happen since mod prices are already searched in the getPrice() method
-        return Result.failFrom(shoppingListResult)
-      }
-      /* c8 ignore stop */
-
-      shoppingListItemsToAdd.push(...shoppingListResult.value)
+      const modShoppingList = await this.getShoppingListAsync(modSlot.item, true, presetModSlot?.item)
+      shoppingListItemsToAdd.push(...modShoppingList)
     }
 
     // Content
     for (const content of inventoryItem.content) {
-      const shoppingListResult = await this.getShoppingList(content)
-
-      /* c8 ignore start */
-      if (!shoppingListResult.success) {
-        // Should never happen since content item prices are already searched in the getPrice() method
-        return Result.failFrom(shoppingListResult)
-      }
-      /* c8 ignore stop */
-
-      shoppingListItemsToAdd.push(...shoppingListResult.value)
+      const containedItemShoppingList = await this.getShoppingListAsync(content)
+      shoppingListItemsToAdd.push(...containedItemShoppingList)
     }
 
     // Regrouping similar items
     for (const shoppingListItemToAdd of shoppingListItemsToAdd) {
-      const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
+      const shoppingListItemIndex = shoppingList.findIndex(sli =>
+        sli.item.id === shoppingListItemToAdd.item.id
+        && sli.ignorePrice === shoppingListItemToAdd.ignorePrice
+        && sli.missingPrice === shoppingListItemToAdd.missingPrice)
 
       if (shoppingListItemIndex < 0) {
         shoppingList.push(shoppingListItemToAdd)
       } else {
         shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
-        shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
-        shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+
+        if (shoppingList[shoppingListItemIndex].price != null
+          && shoppingListItemToAdd.unitPrice != null) {
+          shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
+          shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+        }
       }
     }
 
-    return Result.ok(shoppingList)
+    return shoppingList
   }
 
   /**
@@ -665,58 +585,39 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Wearable modifiers.
    */
-  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemWearableModifiers>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getWearableModifiersAsync(inventoryItem: IInventoryItem): Promise<IWearableModifiers> {
+    const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    if (!Services.get(ItemPropertiesService).isWearable(item)) {
+      return {
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
+      }
     }
 
-    if (!Services.get(ItemPropertiesService).isWearable(itemResult.value)) {
-      return Result.ok({
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
-      })
-    }
+    const wearable = item as IWearable
 
-    const wearable = itemResult.value as IWearable
-    const ergonomicsPercentageModifier = wearable.ergonomicsPercentageModifier
-    let ergonomicsPercentageModifierWithMods = ergonomicsPercentageModifier
-
-    const movementSpeedPercentageModifier = wearable.movementSpeedPercentageModifier
-    let movementSpeedPercentageModifierWithMods = movementSpeedPercentageModifier
-
-    const turningSpeedPercentageModifier = wearable.turningSpeedPercentageModifier
-    let turningSpeedPercentageModifierWithMods = turningSpeedPercentageModifier
+    let ergonomicsModifierPercentage = wearable.ergonomicsModifierPercentage
+    let movementSpeedModifierPercentage = wearable.movementSpeedModifierPercentage
+    let turningSpeedModifierPercentage = wearable.turningSpeedModifierPercentage
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue
       }
 
-      const modWearableModifiersResult = await this.getWearableModifiers(modSlot.item)
-
-      if (!modWearableModifiersResult.success) {
-        return Result.failFrom(modWearableModifiersResult)
-      }
-
-      ergonomicsPercentageModifierWithMods += modWearableModifiersResult.value.ergonomicsPercentageModifierWithMods
-      movementSpeedPercentageModifierWithMods += modWearableModifiersResult.value.movementSpeedPercentageModifierWithMods
-      turningSpeedPercentageModifierWithMods += modWearableModifiersResult.value.turningSpeedPercentageModifierWithMods
+      const modWearableModifiers = await this.getWearableModifiersAsync(modSlot.item)
+      ergonomicsModifierPercentage += modWearableModifiers.ergonomicsModifierPercentage
+      movementSpeedModifierPercentage += modWearableModifiers.movementSpeedModifierPercentage
+      turningSpeedModifierPercentage += modWearableModifiers.turningSpeedModifierPercentage
     }
 
-    return Result.ok({
-      ergonomicsPercentageModifier,
-      ergonomicsPercentageModifierWithMods,
-      movementSpeedPercentageModifier,
-      movementSpeedPercentageModifierWithMods,
-      turningSpeedPercentageModifier,
-      turningSpeedPercentageModifierWithMods
-    })
+    return {
+      ergonomicsModifierPercentage,
+      movementSpeedModifierPercentage,
+      turningSpeedModifierPercentage
+    }
   }
 
   /**
@@ -724,61 +625,153 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Weight.
    */
-  public async getWeight(inventoryItem: IInventoryItem): Promise<Result<IWeight>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
-    const weight = itemResult.value.weight * inventoryItem.quantity
+  public async getWeightAsync(inventoryItem: IInventoryItem): Promise<IWeight> {
+    const item = await Services.get(ItemService).getItemAsync(inventoryItem.itemId)
+    const weight = item.weight * inventoryItem.quantity
     let weightWithContent = weight
-
-    for (const containedItem of inventoryItem.content) {
-      /* c8 ignore start */
-      if (containedItem == null) {
-        // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
-        continue
-      }
-      /* c8 ignore stop */
-
-      const containedItemWeightResult = await this.getWeight(containedItem)
-
-      if (!containedItemWeightResult.success) {
-        return Result.failFrom(containedItemWeightResult)
-      }
-
-      weightWithContent += containedItemWeightResult.value.weightWithContent
-    }
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue
       }
 
-      const modWeightResult = await this.getWeight(modSlot.item)
-
-      if (!modWeightResult.success) {
-        return Result.failFrom(modWeightResult)
-      }
-
-      weightWithContent += modWeightResult.value.weightWithContent
+      const modWeight = await this.getWeightAsync(modSlot.item)
+      weightWithContent += modWeight.weightWithContent
     }
 
-    return Result.ok({
+    for (const containedItem of inventoryItem.content) {
+      /* c8 ignore start */ // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
+      if (containedItem == null) {
+        continue
+      }
+      /* c8 ignore stop */
+
+      const containedItemWeight = await this.getWeightAsync(containedItem)
+      weightWithContent += containedItemWeight.weightWithContent
+    }
+
+    return {
       weight: weight,
       weightWithContent: weightWithContent,
-      unitWeight: itemResult.value.weight
-    })
+      unitWeight: item.weight
+    }
   }
 
   /**
-   * Gets the recoil percentage modifier of the chambered ammunition (or contained in the magazine when not having a chamber)
-   * of a ranged weapon.
-   * @param modSlots - Mod slots.
-   * @returns Recoil percentage modifier.
+   * Converts an inventory item to a text.
+   * @param inventorySlot - Inventory item to convert.
+   * @param options - Options.
+   * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
+   * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
-  private async getChamberedAmmunitionRecoilPercentageModifier(modSlots: IInventoryModSlot[]): Promise<Result<number>> {
+  public async toTextAsync(inventoryItem: IInventoryItem, options: IBuildsToTextOptions, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+    const boldToken = options.type === BuildsToTextType.markdown ? '**' : ''
+    const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
+    const lineEnd = options.type === BuildsToTextType.markdown ? '  ' : ''
+
+    const itemService = Services.get(ItemService)
+
+    let inventoryItemAsString = ''
+    const mainCurrency = itemService.getMainCurrency()
+    const item = await itemService.getItemAsync(inventoryItem.itemId)
+    const hasPrice = options.includePrices
+      && canBeLooted
+      && !inventoryItem.ignorePrice
+      && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId
+
+    if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
+      const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
+      inventoryItemAsString += `${itemCountAsString}${boldToken}${item.name}${boldToken}`
+    }
+
+    if (hasPrice) {
+      const price = await this.getPriceAsync(inventoryItem, itemInSameSlotInPreset, canBeLooted)
+
+      if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
+        if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
+          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('message.noMerchant', options.language)}`
+        } else {
+          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('caption.merchant_' + price.unitPrice.merchant, options.language)}`
+
+          if (price.unitPrice.merchant !== 'flea-market') {
+            inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
+          }
+
+          if (price.unitPrice.currencyName === 'barter') {
+            inventoryItemAsString += ` (${italicToken}${this.translate('caption.barter', options.language).toLocaleLowerCase()}${italicToken}) ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, options.language)}${mainCurrency.symbol}${boldToken}`
+          } else {
+            inventoryItemAsString += ` ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, options.language)}`
+
+            if (price.price.currencyName === mainCurrency.name) {
+              inventoryItemAsString += `${mainCurrency.symbol}${boldToken}`
+            } else {
+              const priceCurrency = itemService.getCurrency(price.price.currencyName)
+              inventoryItemAsString += `${priceCurrency.symbol}${boldToken} (= ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, options.language)}${mainCurrency.symbol}${boldToken})`
+            }
+          }
+        }
+      }
+    }
+
+    if (inventoryItemAsString !== '') {
+      inventoryItemAsString += `${lineEnd}`
+    }
+
+    if (inventoryItem.content.length > 0 || inventoryItem.modSlots.length > 0) {
+      let preset = itemInSameSlotInPreset
+
+      if (preset == null) {
+        preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
+      }
+
+      indentationLevel++
+      let indentation = ''
+
+      for (let i = 1; i <= indentationLevel; i++) {
+        indentation += ' '
+      }
+
+      // Mods
+      for (const modSlot of inventoryItem.modSlots) {
+        if (modSlot.item == null) {
+          continue
+        }
+
+        const modSlotInPreset = preset?.modSlots.find(ms => ms.modSlotName === modSlot.modSlotName)
+        const modSlotItemAsString = await this.toTextAsync(modSlot.item, options, modSlotInPreset?.item, indentationLevel)
+
+        if (modSlotItemAsString !== '') {
+          const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, options.language)
+
+          if (modSlotItemAsString.startsWith('\n')) {
+            inventoryItemAsString += `\n${indentation}[${italicToken}${modSlotName}${italicToken}]${lineEnd}${modSlotItemAsString}`
+          } else {
+            inventoryItemAsString += `\n${indentation}[${italicToken}${modSlotName}${italicToken}] ${modSlotItemAsString}`
+          }
+        }
+      }
+
+      // Content
+      for (let i = 0; i < inventoryItem.content.length; i++) {
+        const containedItem = inventoryItem.content[i]
+        const containedItemInPreset = preset?.content[i]
+        const containedItemAsString = await this.toTextAsync(containedItem, options, containedItemInPreset, indentationLevel)
+
+        if (containedItemAsString !== '') {
+          inventoryItemAsString += `\n${indentation}${containedItemAsString}`
+        }
+      }
+    }
+
+    return inventoryItemAsString
+  }
+
+  /**
+   * Gets the recoil modifier of the ammunition contained in the magazine of a ranged weapon.
+   * @param modSlots - Mod slots.
+   * @returns Recoil modifier.
+   */
+  private async getChamberedAmmunitionRecoilModifierAsync(modSlots: IInventoryModSlot[]): Promise<number> {
     let ammunitionId: string | undefined
 
     for (const modSlot of modSlots) {
@@ -800,15 +793,23 @@ export class InventoryItemService {
     }
 
     if (ammunitionId == null) {
-      return Result.ok(0)
+      return 0
     }
 
-    const ammunitionResult = await Services.get(ItemService).getItem(ammunitionId)
+    const item = await Services.get(ItemService).getItemAsync(ammunitionId)
+    const ammunition = item as IAmmunition
 
-    if (!ammunitionResult.success) {
-      return Result.failFrom(ammunitionResult)
-    }
+    return ammunition.recoilModifier
+  }
 
-    return Result.ok((ammunitionResult.value as IAmmunition).recoilPercentageModifier)
+  /**
+   * Translates a caption.
+   * @param caption - Caption.
+   * @param language - Language.
+   * @returns Translated caption.
+   */
+  private translate(caption: string, language: string): string {
+    // @ts-expect-error - For some reason, this signature of vueI18n.t() is not recognized while it really exists
+    return vueI18n.t(caption, 1, { 'locale': language })
   }
 }

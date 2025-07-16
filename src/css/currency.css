@@ -1,20 +1,36 @@
 .currency-EUR {
   color: rgb(123, 131, 198);
-  margin-left: 0.25rem;
-  /* To make the euro symbol the same width as the ruble symnbol to be able to align them */
+  margin-right: 0.25rem;
+  /* To make the euro symbol the same width as the ruble symbol to be able to align them */
+  margin-left: 0.125rem;
+  /* To make the euro symbol the same width as the ruble symbol to be able to align them */
+}
+
+.currency-GPCOIN {
+  /* https://css-shape.com/hexagon/ */
+  align-items: center;
+  aspect-ratio: 1 / cos(30deg);
+  background-color: #ddc93c;
+  clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
+  color: var(--background-color);
+  display: flex;
+  font-size: 0.85rem;
+  font-weight: bolder;
   margin-right: 0.125rem;
-  /* To make the euro symbol the same width as the ruble symnbol to be able to align them */
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  font-style: normal;
 }
 
 .currency-USD {
   color: rgb(131, 205, 124);
-  margin-left: 0.25rem;
-  /* To make the dollar symbol the same width as the ruble symnbol to be able to align them */
-  margin-right: 0.125rem;
-  /* To make the dollar symbol the same width as the ruble symnbol to be able to align them */
+  margin-right: 0.25rem;
+  /* To make the dollar symbol the same width as the ruble symbol to be able to align them */
+  margin-left: 0.125rem;
+  /* To make the dollar symbol the same width as the ruble symbol to be able to align them */
 }
 
 .currency-RUB {
   color: var(--yellow-400);
-  margin-left: 0.25rem;
+  margin-right: 0.25rem;
 }

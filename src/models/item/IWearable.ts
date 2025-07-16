@@ -8,15 +8,15 @@ export interface IWearable extends IItem {
   /**
    * Modifier added to the weapon ergonomics in percentage.
    */
-  ergonomicsPercentageModifier: number
+  ergonomicsModifierPercentage: number
 
   /**
    * Modifier added to the character movement speed in percentage.
    */
-  movementSpeedPercentageModifier: number
+  movementSpeedModifierPercentage: number
 
   /**
-   * Wearable modifier of the whole preset added to the weapon in percentage.
+   * Wearable modifier of the whole preset added to the wearable in percentage.
    * Undefined if the item is not a preset.
    */
   presetWearableModifiers: IWearableModifiers | undefined
@@ -24,5 +24,5 @@ export interface IWearable extends IItem {
   /**
    * Modifier added to the character turning speed in percentage.
    */
-  turningSpeedPercentageModifier: number
+  turningSpeedModifierPercentage: number
 }

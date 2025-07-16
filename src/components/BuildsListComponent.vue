@@ -1,0 +1,428 @@
+<script setup lang="ts">
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { IBuild } from '../models/build/IBuild'
+import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
+import { BuildPropertiesService } from '../services/BuildPropertiesService'
+import { BuildService } from '../services/BuildService'
+import { GlobalFilterService } from '../services/GlobalFilterService'
+import { ImportService } from '../services/ImportService'
+import { ItemService } from '../services/ItemService'
+import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
+import Services from '../services/repository/Services'
+import { SortingService } from '../services/sorting/SortingService'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
+import BuildCard from './BuildCardComponent.vue'
+import FilterChips from './FilterChipsComponent.vue'
+import InfiniteScroller from './InfiniteScrollerComponent.vue'
+import Loading from './LoadingComponent.vue'
+import Paginator from './PaginatorComponent.vue'
+
+const modelAllSelected = defineModel<boolean>('allSelected', { default: false })
+const modelCurrentPage = defineModel<number>('currentPage', { default: 0 })
+const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
+const modelSelectedBuilds = defineModel<IBuild[]>('selectedBuilds', { required: false, default: [] })
+
+const props = withDefaults(
+  defineProps<{
+    autoScrollToFirstElement?: boolean,
+    elementToStickTo?: HTMLElement | null,
+    getBuildsFunction: () => IBuild[],
+    infiniteScrolling?: boolean,
+    maxElementsPerLine?: number,
+    selectionOptions?: IListSelectionOptions,
+    showActionsButton?: boolean,
+    showChips?: boolean
+    showNotExported?: boolean,
+    showShoppingList?: boolean
+  }>(),
+  {
+    autoScrollToFirstElement: true,
+    elementToStickTo: undefined,
+    infiniteScrolling: false,
+    maxElementsPerLine: 4,
+    selectionOptions: () => <IListSelectionOptions>{
+      canUnselect: true,
+      isEnabled: false,
+      isMultiSelection: false,
+      selectionButtonCaption: undefined,
+      selectionButtonIcon: undefined
+    },
+    showActionsButton: undefined,
+    showChips: true,
+    showNotExported: true,
+    showShoppingList: undefined
+  })
+
+const _buildService = Services.get(BuildService)
+const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _globalFilterService = Services.get(GlobalFilterService)
+const _importService = Services.get(ImportService)
+const _itemService = Services.get(ItemService)
+const _sortingService = Services.get(SortingService)
+
+let _builds: IBuild[] = []
+const _elementHeight = 308 // 22rem
+let _watchAllSelected = true
+
+const buildsPerLine = computed(() => {
+  let elementsPerLine = 4
+
+  if (isSmartphoneLandscapeOrSmaller.value) {
+    elementsPerLine = 1
+  } else if (isTabletLandscapeOrSmaller.value) {
+    elementsPerLine = 2
+  } else if (isPcOrSmaller.value) {
+    elementsPerLine = 3
+  }
+
+  return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
+})
+
+const canSwipe = ref(true)
+const filteredAndSortedBuildSummaries = ref<IBuildSummary[]>([])
+const isInitializing = ref(true)
+const isLoading = ref(true)
+const {
+  isSmartphoneLandscapeOrSmaller,
+  isTabletLandscapeOrSmaller,
+  isPcOrSmaller
+} = WebBrowserUtils.getScreenSize()
+const linesPerPage = computed(() => {
+  let lines = 3
+
+  if (isTabletLandscapeOrSmaller.value) {
+    lines = 10
+  }
+
+  return lines
+})
+
+onMounted(() => {
+  _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _importService.emitter.on(ImportService.buildsImportedEvent, onBuildImported)
+
+  // Getting the builds once items have been fully initialized
+  if (_itemService.initializationState === ServiceInitializationState.initializing) {
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, () => {
+      filterAndSortBuildsAsync(true)
+    })
+  } else {
+    filterAndSortBuildsAsync(true)
+  }
+})
+
+onUnmounted(() => {
+  _buildService.emitter.off(BuildService.deletedEvent, onBuildDeleted)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _importService.emitter.off(ImportService.buildsImportedEvent, onBuildImported)
+})
+
+watch(modelAllSelected, (value) => {
+  if (!_watchAllSelected) {
+    return
+  }
+
+  if (value) {
+    selectAllFilteredBuilds()
+  } else {
+    modelSelectedBuilds.value = []
+  }
+})
+
+watch(
+  modelFilterAndSortingData,
+  (value: BuildFilterAndSortingData, oldValue: BuildFilterAndSortingData) => {
+    if (!isInitializing.value) {
+      filterAndSortBuildsAsync(value.filter !== oldValue.filter)
+    }
+  })
+
+/**
+ * Indicates whether a build is selected.
+ * @param build - Build.
+ * @returns `true` when the build is selected; otherwise `false`.
+ */
+function checkIsSelected(build: IBuildSummary): boolean {
+  const isSelected = modelSelectedBuilds.value.some(sbi => sbi.id === build.id)
+
+  return isSelected
+}
+
+/**
+ * Gets builds (if necessary), get their summaries, filters and sorts them.
+ * @param buildsListNeedsUpdate - Indicates whether the builds list need to be updated before summaries are gotten, filtered and sorted.
+ * This is the case when a build has been deleted or a new build has been imported.
+ */
+async function filterAndSortBuildsAsync(buildsListNeedsUpdate: boolean): Promise<void> {
+  isLoading.value = true
+
+  if (buildsListNeedsUpdate) {
+    _builds = props.getBuildsFunction()
+  }
+
+  let buildSummariesToFilterAndSort: IBuildSummary[] = []
+  const promises: Promise<void>[] = []
+
+  for (const build of _builds) {
+    const promise = _buildPropertiesService.getSummaryAsync(build)
+      .then(bs => {
+        buildSummariesToFilterAndSort.push(bs)
+      })
+    promises.push(promise)
+  }
+
+  await Promise.allSettled(promises)
+  buildSummariesToFilterAndSort = await filterBuildsAsync(buildSummariesToFilterAndSort)
+  buildSummariesToFilterAndSort = await sortBuildsAsync(buildSummariesToFilterAndSort)
+  filteredAndSortedBuildSummaries.value = buildSummariesToFilterAndSort
+
+  // Updating selected builds by removing previously selected builds that do not match filtered builds
+  if (props.selectionOptions.isMultiSelection) {
+    let selectedBuilds = [...modelSelectedBuilds.value]
+    const selectedBuildsNotVisibleAnymore = selectedBuilds.filter(sb => !filteredAndSortedBuildSummaries.value.some(fsbs => fsbs.id === sb.id))
+
+    for (const selectedBuildNotVisibleAnymore of selectedBuildsNotVisibleAnymore) {
+      const index = selectedBuilds.findIndex(sb => sb.id === selectedBuildNotVisibleAnymore.id)
+      selectedBuilds.splice(index, 1)
+    }
+
+    modelSelectedBuilds.value = selectedBuilds
+
+    // Updating the allSelected indicators because the new filtered builds may contain builds that are not
+    _watchAllSelected = false
+    modelAllSelected.value = selectedBuilds.length === filteredAndSortedBuildSummaries.value.length
+    nextTick(() => _watchAllSelected = true) // To avoid the watcher to be triggered and deselect everything
+  }
+
+  nextTick(() => {
+    if (isInitializing.value) {
+      isInitializing.value = false
+    }
+
+    isLoading.value = false
+  })
+}
+
+/**
+ * Filters build summaries.
+ * @param buildSummariesToFilter - Build summaries to filter.
+ */
+async function filterBuildsAsync(buildSummariesToFilter: IBuildSummary[]): Promise<IBuildSummary[]> {
+  if (modelFilterAndSortingData.value.filter == null) {
+    return buildSummariesToFilter
+  }
+
+  const filteredBuildSummaries: IBuildSummary[] = []
+  const promises: Promise<void>[] = []
+
+  for (const buildSummaryToFilter of buildSummariesToFilter) {
+    promises.push(new Promise(resolve => {
+      const matchesFilter = _buildPropertiesService.checkMatchesFilter(buildSummaryToFilter, modelFilterAndSortingData.value.filter)
+
+      if (matchesFilter) {
+        filteredBuildSummaries.push(buildSummaryToFilter)
+      }
+
+      resolve()
+    }))
+  }
+
+  await Promise.allSettled(promises)
+
+  return filteredBuildSummaries
+}
+
+/**
+ * Reacts to a build being deleted.
+ *
+ * Updates the builds and their summaries, filters and sorts them.
+ */
+function onBuildDeleted(): void {
+  filterAndSortBuildsAsync(true)
+}
+
+/**
+ * Reacts to a build being impoted.
+ *
+ * Updates the builds and their summaries, filters and sorts them.
+ */
+function onBuildImported(): void {
+  filterAndSortBuildsAsync(true)
+}
+
+/**
+ * Reacts to a the merchant filter changing.
+ *
+ * Updates the build summaries, filters and sorts them.
+ */
+function onMerchantFilterChanged(): void {
+  filterAndSortBuildsAsync(false)
+}
+
+/**
+ * Selects all filtered builds and unselects builds that are not part of filtered builds.
+ */
+function selectAllFilteredBuilds(): void {
+  modelSelectedBuilds.value = _builds.filter(b => filteredAndSortedBuildSummaries.value.some(fsbs => fsbs.id === b.id))
+}
+
+/**
+ * Sorts build summaries.
+ * @param buildSummariesToSort - Build summaries to sort.
+ */
+async function sortBuildsAsync(buildSummariesToSort: IBuildSummary[]): Promise<IBuildSummary[]> {
+  buildSummariesToSort = await _sortingService.sortAsync(buildSummariesToSort, modelFilterAndSortingData.value)
+
+  return buildSummariesToSort
+}
+
+/**
+ * Updates the list of selected builds.
+ * @param buildSummary - Build.
+ * @param isSelected - Indicates whether the build is selected.
+ */
+function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean): void {
+  if (isSelected) {
+    const build = _builds.find(b => b.id === buildSummary.id)
+
+    if (props.selectionOptions.isMultiSelection) {
+      modelSelectedBuilds.value = [
+        ...modelSelectedBuilds.value,
+        build!
+      ]
+    } else {
+      modelSelectedBuilds.value = [build!]
+    }
+  } else {
+    modelSelectedBuilds.value = modelSelectedBuilds.value.filter(bs => bs.id !== buildSummary.id)
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="builds-list-container">
+    <div
+      v-if="isInitializing || isLoading"
+      class="builds-list-loading"
+    >
+      <Loading />
+    </div>
+    <div
+      v-if="!isInitializing"
+      class="builds-list"
+    >
+      <FilterChips
+        v-if="showChips"
+        v-model:filter-and-sorting-data="modelFilterAndSortingData"
+        :element-to-stick-to="elementToStickTo"
+        filter-sidebar-component="BuildsListSidebar"
+      />
+      <InfiniteScroller
+        v-if="infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
+        v-show="!isLoading"
+        :auto-scroll-to-first-element="autoScrollToFirstElement"
+        :element-height="_elementHeight"
+        :elements-per-line="buildsPerLine"
+        :elements="filteredAndSortedBuildSummaries"
+        :get-key-function="i => (i as IBuildSummary).id"
+      >
+        <template #element="{ element }">
+          <BuildCard
+            v-model:can-swipe="canSwipe"
+            :build-summary="element as IBuildSummary"
+            :filter-and-sorting-data="modelFilterAndSortingData"
+            :is-selected="checkIsSelected(element as IBuildSummary)"
+            :selection-options="selectionOptions"
+            :show-actions-button="showActionsButton"
+            :show-not-exported="showNotExported"
+            :show-shopping-list="showShoppingList"
+            @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
+          />
+        </template>
+      </InfiniteScroller>
+      <Paginator
+        v-else-if="!infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
+        v-show="!isLoading"
+        v-model:current-page="modelCurrentPage"
+        :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
+        :can-swipe="canSwipe"
+        :elements-per-line="buildsPerLine"
+        :elements="filteredAndSortedBuildSummaries"
+        :get-key-function="b => (b as IBuildSummary).id"
+        :lines-per-page="linesPerPage"
+      >
+        <template #element="{ element }">
+          <BuildCard
+            v-model:can-swipe="canSwipe"
+            :build-summary="element as IBuildSummary"
+            :filter-and-sorting-data="modelFilterAndSortingData"
+            :is-selected="checkIsSelected(element as IBuildSummary)"
+            :selection-options="selectionOptions"
+            :show-actions-button="showActionsButton"
+            :show-not-exported="showNotExported"
+            :show-shopping-list="showShoppingList"
+            @update:is-selected="updateSelectedBuilds(element as IBuildSummary, $event)"
+          />
+        </template>
+      </Paginator>
+      <div
+        v-else
+        class="builds-list-no-results-message"
+      >
+        {{ $t('message.noBuildsFound') }}
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.builds-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.builds-list-container {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.builds-list-loading {
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-top: 3rem;
+  /* Because the is a 3rem padding above the app-footer */
+}
+
+.builds-list-no-results-message {
+  font-size: 1.5rem;
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-top: 3rem;
+  text-align: center;
+}
+</style>

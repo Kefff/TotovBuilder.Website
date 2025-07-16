@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IVest } from '../../models/item/IVest'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -43,12 +44,13 @@ describe('parseReducedItem', () => {
           'StomachButtocks'
         ],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         capacity: 12,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
-        ergonomicsPercentageModifier: -0.07,
+        ergonomicsModifierPercentage: -0.07,
         iconLink: 'https://assets.tarkov.dev/5d5d646386f7742797261fd9-icon.webp',
         id: '5d5d646386f7742797261fd9',
         imageLink: 'https://assets.tarkov.dev/5d5d646386f7742797261fd9-image.webp',
@@ -56,12 +58,14 @@ describe('parseReducedItem', () => {
         material: 'Titan',
         maxStackableAmount: 1,
         modSlots: [],
-        movementSpeedPercentageModifier: -0.05,
+        movementSpeedModifierPercentage: -0.05,
         name: '6B3TM-01 armored rig (Khaki)',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: '6B3TM-01',
-        turningSpeedPercentageModifier: -0.01,
+        turningSpeedModifierPercentage: -0.01,
         weight: 8.2,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B3TM-01_armored_rig_(Khaki)'
       } as IVest
@@ -159,12 +163,13 @@ describe('parseReducedItem', () => {
           'BCKPLATE'
         ],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         capacity: 18,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: '65766527303700411c0242a6',
         durability: 0,
-        ergonomicsPercentageModifier: 0,
+        ergonomicsModifierPercentage: 0,
         iconLink: 'https://assets.tarkov.dev/5b44cad286f77402a54ae7e5-icon.webp',
         id: '5b44cad286f77402a54ae7e5',
         imageLink: 'https://assets.tarkov.dev/5b44cad286f77402a54ae7e5-image.webp',
@@ -240,12 +245,14 @@ describe('parseReducedItem', () => {
             required: false
           }
         ],
-        movementSpeedPercentageModifier: -0.01,
+        movementSpeedModifierPercentage: -0.01,
         name: '5.11 Tactical TacTec plate carrier (Ranger Green)',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'TacTec',
-        turningSpeedPercentageModifier: 0,
+        turningSpeedModifierPercentage: 0,
         weight: 2.35,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.11_Tactical_TacTec_plate_carrier_(Ranger_Green)'
       } as IVest
@@ -343,12 +350,13 @@ describe('parseReducedItem', () => {
           'BCKPLATE'
         ],
         baseItemId: '5b44cad286f77402a54ae7e5',
+        blindnessProtectionPercentage: 0,
         capacity: 18,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
-        ergonomicsPercentageModifier: 0,
+        ergonomicsModifierPercentage: 0,
         iconLink: 'https://assets.tarkov.dev/5b44cad286f77402a54ae7e5-icon.webp',
         id: '65766527303700411c0242a6',
         imageLink: 'https://assets.tarkov.dev/5b44cad286f77402a54ae7e5-image.webp',
@@ -424,12 +432,14 @@ describe('parseReducedItem', () => {
             required: false
           }
         ],
-        movementSpeedPercentageModifier: -0.01,
+        movementSpeedModifierPercentage: -0.01,
         name: '5.11 Tactical TacTec plate carrier (Ranger Green) Default',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'TacTec Default',
-        turningSpeedPercentageModifier: 0,
+        turningSpeedModifierPercentage: 0,
         weight: 2.35,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.11_Tactical_TacTec_plate_carrier_(Ranger_Green)'
       } as IVest as IVest
@@ -451,12 +461,13 @@ describe('parseReducedItem', () => {
         armorClass: 0,
         armoredAreas: [],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         capacity: 6,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
-        ergonomicsPercentageModifier: 0,
+        ergonomicsModifierPercentage: 0,
         iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.webp',
         id: '572b7adb24597762ae139821',
         imageLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-image.webp',
@@ -464,12 +475,14 @@ describe('parseReducedItem', () => {
         material: '',
         maxStackableAmount: 1,
         modSlots: [],
-        movementSpeedPercentageModifier: 0,
+        movementSpeedModifierPercentage: 0,
         name: 'Scav Vest',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'Scav Vest',
-        turningSpeedPercentageModifier: 0,
+        turningSpeedModifierPercentage: 0,
         weight: 0.4,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Scav_Vest'
       } as IVest

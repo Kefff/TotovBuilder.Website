@@ -1,17 +1,19 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Builds from '../components/builds/BuildsComponent.vue'
-import BuildComponent from '../components/build/BuildComponent.vue'
-import Welcome from '../components/welcome/WelcomeComponent.vue'
 import { App } from 'vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import ItemsComponent from '../components/ItemsComponent.vue'
+import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
+
+const Build = (): unknown => import('../components/BuildComponent.vue')
+const Builds = (): unknown => import('../components/BuildsComponent.vue')
 
 const routes: RouteRecordRaw[] = [
   {
     component: Welcome,
     name: 'Welcome',
     path: '/',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       const language = LanguageUtils.getLanguage()
       LanguageUtils.setLanguage(language)
 
@@ -26,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     component: Welcome,
     name: 'WelcomeWithLanguage',
     path: '/:language',
-    beforeEnter: (to, from, next) => {
+    beforeEnter: (to, from, next): void => {
       const language = to.params.language as string
       LanguageUtils.setLanguage(language)
       next()
@@ -36,7 +38,7 @@ const routes: RouteRecordRaw[] = [
     component: Builds,
     name: 'Builds',
     path: '/builds',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'Builds',
         refUri: from.path,
@@ -45,10 +47,10 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    component: BuildComponent,
+    component: Build,
     name: 'NewBuild',
     path: '/build',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'NewBuild',
         refUri: from.path,
@@ -57,24 +59,48 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    component: BuildComponent,
-    name: 'Build',
-    path: '/build/:id',
-    beforeEnter: (to, from) => {
+    component: Build,
+    name: 'CopyBuild',
+    path: '/copy/:id',
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
-        name: 'Build',
+        name: 'CopyBuild',
         refUri: from.path,
         uri: to.path
       })
     }
   },
   {
-    component: BuildComponent,
-    name: 'SharedBuild',
+    component: Build,
+    name: 'ShareBuild',
     path: '/s/:sharedBuild',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'SharedBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
+  },
+  {
+    component: Build,
+    name: 'Build',
+    path: '/build/:id',
+    beforeEnter: (to, from): void => {
+      applicationInsights.trackPageView({
+        name: 'CopyBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
+  },
+  {
+    component: ItemsComponent,
+    name: 'Items',
+    path: '/items',
+    beforeEnter: (to, from): void => {
+      applicationInsights.trackPageView({
+        name: 'Items',
         refUri: from.path,
         uri: to.path
       })
@@ -92,7 +118,7 @@ const router = createRouter({
   routes
 })
 
-export function useRouter(app: App<Element>): void {
+export function useVueRouter(app: App<Element>): void {
   app.use(router)
 }
 

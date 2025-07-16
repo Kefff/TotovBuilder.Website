@@ -1,0 +1,49 @@
+import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../../../models/item/IItem'
+import { IMagazine } from '../../../../models/item/IMagazine'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
+import { SortingService } from '../../../../services/sorting/SortingService'
+import { MagazineSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+
+describe('comparisonFunction', () => {
+  it.each([
+    ['checkSpeedModifierPercentage', false],
+    ['checkSpeedModifierPercentage', true],
+    ['ergonomicsModifier', false],
+    ['ergonomicsModifier', true],
+    ['loadSpeedModifierPercentage', false],
+    ['loadSpeedModifierPercentage', true],
+    ['malfunctionPercentage', false],
+    ['malfunctionPercentage', true]
+  ])('should sort by %s', async (property: string, isPreset: boolean) => {
+    // Arrange
+    const item1 = {
+      categoryId: ItemCategoryId.magazine,
+      checkSpeedModifierPercentage: 2,
+      ergonomicsModifier: 2,
+      presetErgonomicsModifier: isPreset ? 2 : undefined,
+      loadSpeedModifierPercentage: 2,
+      malfunctionPercentage: 2
+    } as IMagazine
+
+    const item2 = {
+      categoryId: ItemCategoryId.magazine,
+      checkSpeedModifierPercentage: 1,
+      ergonomicsModifier: 1,
+      presetErgonomicsModifier: isPreset ? 1 : undefined,
+      loadSpeedModifierPercentage: 1,
+      malfunctionPercentage: 1
+    } as IMagazine
+
+    const sortingData = new ItemFilterAndSortingData(MagazineSortingFunctions)
+    sortingData.property = property
+
+    const sortingService = new SortingService()
+
+    // Act
+    const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)
+
+    // Assert
+    expect(sortedItems).toStrictEqual([item2, item1])
+  })
+})

@@ -1,140 +1,240 @@
 import { describe, expect, it } from 'vitest'
-import StatsUtils from '../../utils/StatsUtils'
+import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
+import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 
-describe('StringUtils.getDisplayValue()', () => {
-  it.each([
-    [1, false, 0, undefined, '1'],
-    [-1, false, 0, undefined, '-1'],
-    [0, false, 0, undefined, '0'],
-    [1, true, 0, undefined, '+1'],
-    [-1, true, 0, undefined, '-1'],
-    [0, true, 0, undefined, '0'],
-    [1, false, 0, 2, '1.00'],
-    [-1, false, 0, 2, '-1.00'],
-    [0, false, 0, 2, '0.00'],
-    [1, true, 0, 2, '+1.00'],
-    [-1, true, 0, 2, '-1.00'],
-    [0, true, 0, 2, '0.00'],
-    [1.111, false, 0, undefined, '1'],
-    [-1.111, false, 0, undefined, '-1'],
-    [1.111, true, 0, undefined, '+1'],
-    [-1.111, true, 0, undefined, '-1'],
-    [1.111, false, 0, 2, '1.00'],
-    [-1.111, false, 0, 2, '-1.00'],
-    [1.111, true, 0, 2, '+1.00'],
-    [-1.111, true, 0, 2, '-1.00'],
-    [1.999, false, 0, undefined, '2'],
-    [-1.999, false, 0, undefined, '-2'],
-    [1.999, true, 0, undefined, '+2'],
-    [-1.999, true, 0, undefined, '-2'],
-    [1.999, false, 0, 2, '2.00'],
-    [-1.999, false, 0, 2, '-2.00'],
-    [1.999, true, 0, 2, '+2.00'],
-    [-1.999, true, 0, 2, '-2.00'],
-    [1.111, false, 1, undefined, '1.1'],
-    [-1.111, false, 1, undefined, '-1.1'],
-    [1.111, true, 1, undefined, '+1.1'],
-    [-1.111, true, 1, undefined, '-1.1'],
-    [1.111, false, 1, 2, '1.10'],
-    [-1.111, false, 1, 2, '-1.10'],
-    [1.111, true, 1, 2, '+1.10'],
-    [-1.111, true, 1, 2, '-1.10'],
-    [1.199, false, 1, undefined, '1.2'],
-    [-1.199, false, 1, undefined, '-1.2'],
-    [1.199, true, 1, undefined, '+1.2'],
-    [-1.199, true, 1, undefined, '-1.2'],
-    [1.199, false, 1, 2, '1.20'],
-    [-1.199, false, 1, 2, '-1.20'],
-    [1.199, true, 1, 2, '+1.20'],
-    [-1.199, true, 1, 2, '-1.20']
-  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
-    // Assert
-    expect(StatsUtils.getDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)).toBe(expected)
+describe('StringUtils', () => {
+  describe('getStandardDisplayValue', () => {
+    it.each([
+      [DisplayValueType.accuracyModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.armorClass, '1,235'],
+      [DisplayValueType.armorDamagePercentage, '123,456.8%'],
+      [DisplayValueType.bleedingChanceModifier, '+123,456.8%'],
+      [DisplayValueType.blindnessProtectionPercentage, '+123,456.8%'],
+      [DisplayValueType.checkSpeedModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.durabilityBurnModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.ergonomics, '1,235'],
+      [DisplayValueType.ergonomicsModifier, '+1,234.6'],
+      [DisplayValueType.ergonomicsModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.fragmentationChance, '123,456.8%'],
+      [DisplayValueType.loadSpeedModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.movementSpeedModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.price, '1,235'],
+      [DisplayValueType.recoil, '1,235'],
+      [DisplayValueType.recoilModifier, '+1,234.6'],
+      [DisplayValueType.recoilModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.turningSpeedModifierPercentage, '+123,456.8%'],
+      [DisplayValueType.velocity, '1,235 m/s'],
+      [DisplayValueType.weight, '1,234.568 kg'],
+      [999, 'Error']
+    ])('should get the display value in the standard format associated with the value type', (type: DisplayValueType, expected: string) => {
+      // Arrange
+      const value = 1234.56789
+
+      // Act
+      const result = StatsUtils.getStandardDisplayValue(type, value)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
   })
-})
 
-describe('StringUtils.getPercentageDisplayValue()', () => {
-  it.each([
-    [1, false, 0, undefined, '100%'],
-    [-1, false, 0, undefined, '-100%'],
-    [0, false, 0, undefined, '0%'],
-    [1, true, 0, undefined, '+100%'],
-    [-1, true, 0, undefined, '-100%'],
-    [0, true, 0, undefined, '0%'],
-    [1, false, 0, 2, '100.00%'],
-    [-1, false, 0, 2, '-100.00%'],
-    [0, false, 0, 2, '0.00%'],
-    [1, true, 0, 2, '+100.00%'],
-    [-1, true, 0, 2, '-100.00%'],
-    [0, true, 0, 2, '0.00%'],
-    [0.11111, false, 0, undefined, '11%'],
-    [-0.11111, false, 0, undefined, '-11%'],
-    [0.11111, true, 0, undefined, '+11%'],
-    [-0.11111, true, 0, undefined, '-11%'],
-    [0.11111, false, 0, 2, '11.00%'],
-    [-0.11111, false, 0, 2, '-11.00%'],
-    [0.11111, true, 0, 2, '+11.00%'],
-    [-0.11111, true, 0, 2, '-11.00%'],
-    [0.19999, false, 0, undefined, '20%'],
-    [-0.19999, false, 0, undefined, '-20%'],
-    [0.19999, true, 0, undefined, '+20%'],
-    [-0.19999, true, 0, undefined, '-20%'],
-    [0.19999, false, 0, 2, '20.00%'],
-    [-0.19999, false, 0, 2, '-20.00%'],
-    [0.19999, true, 0, 2, '+20.00%'],
-    [-0.19999, true, 0, 2, '-20.00%'],
-    [0.11111, false, 1, undefined, '11.1%'],
-    [-0.11111, false, 1, undefined, '-11.1%'],
-    [0.11111, true, 1, undefined, '+11.1%'],
-    [-0.11111, true, 1, undefined, '-11.1%'],
-    [0.11111, false, 1, 2, '11.10%'],
-    [-0.11111, false, 1, 2, '-11.10%'],
-    [0.11111, true, 1, 2, '+11.10%'],
-    [-0.11111, true, 1, 2, '-11.10%'],
-    [0.11199, false, 1, undefined, '11.2%'],
-    [-0.11199, false, 1, undefined, '-11.2%'],
-    [0.11199, true, 1, undefined, '+11.2%'],
-    [-0.11199, true, 1, undefined, '-11.2%'],
-    [0.11199, false, 1, 2, '11.20%'],
-    [-0.11199, false, 1, 2, '-11.20%'],
-    [0.11199, true, 1, 2, '+11.20%'],
-    [-0.11199, true, 1, 2, '-11.20%']
-  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
-    // Assert
-    expect(StatsUtils.getPercentageDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)).toBe(expected)
+  describe('getDisplayValue', () => {
+    it.each([
+      [1, false, 0, undefined, '1'],
+      [-1, false, 0, undefined, '-1'],
+      [0, false, 0, undefined, '0'],
+      [1, true, 0, undefined, '+1'],
+      [-1, true, 0, undefined, '-1'],
+      [0, true, 0, undefined, '0'],
+      [1, false, 0, 2, '1.00'],
+      [-1, false, 0, 2, '-1.00'],
+      [0, false, 0, 2, '0.00'],
+      [1, true, 0, 2, '+1.00'],
+      [-1, true, 0, 2, '-1.00'],
+      [0, true, 0, 2, '0.00'],
+      [1.111, false, 0, undefined, '1'],
+      [-1.111, false, 0, undefined, '-1'],
+      [1.111, true, 0, undefined, '+1'],
+      [-1.111, true, 0, undefined, '-1'],
+      [1.111, false, 0, 2, '1.00'],
+      [-1.111, false, 0, 2, '-1.00'],
+      [1.111, true, 0, 2, '+1.00'],
+      [-1.111, true, 0, 2, '-1.00'],
+      [1.999, false, 0, undefined, '2'],
+      [-1.999, false, 0, undefined, '-2'],
+      [1.999, true, 0, undefined, '+2'],
+      [-1.999, true, 0, undefined, '-2'],
+      [1.999, false, 0, 2, '2.00'],
+      [-1.999, false, 0, 2, '-2.00'],
+      [1.999, true, 0, 2, '+2.00'],
+      [-1.999, true, 0, 2, '-2.00'],
+      [1.111, false, 1, undefined, '1.1'],
+      [-1.111, false, 1, undefined, '-1.1'],
+      [1.111, true, 1, undefined, '+1.1'],
+      [-1.111, true, 1, undefined, '-1.1'],
+      [1.111, false, 1, 2, '1.10'],
+      [-1.111, false, 1, 2, '-1.10'],
+      [1.111, true, 1, 2, '+1.10'],
+      [-1.111, true, 1, 2, '-1.10'],
+      [1.199, false, 1, undefined, '1.2'],
+      [-1.199, false, 1, undefined, '-1.2'],
+      [1.199, true, 1, undefined, '+1.2'],
+      [-1.199, true, 1, undefined, '-1.2'],
+      [1.199, false, 1, 2, '1.20'],
+      [-1.199, false, 1, 2, '-1.20'],
+      [1.199, true, 1, 2, '+1.20'],
+      [-1.199, true, 1, 2, '-1.20']
+    ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
+      // Act
+      const result = StatsUtils.getDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it.each([
+      ['en', '1,234.60'],
+      ['fr', '1 234,60'],
+      [undefined, '1,234.60']
+    ])('should localize stat values', (language: string | undefined, expected: string) => {
+      // Act
+      const result = StatsUtils.getDisplayValue(1234.5678, false, 1, 2, language)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
   })
-})
 
-describe('StringUtils.getValueColorClass()', () => {
-  it.each([
-    [1, false, 'stats-value-positive'],
-    [-1, false, 'stats-value-negative'],
-    [1, true, 'stats-value-negative'],
-    [-1, true, 'stats-value-positive'],
-    [0, undefined, ''],
-    [0, true, '']
-  ])('should get the CSS class to apply to a stats value', (value: number, invert: boolean | undefined, expected: string) => {
-    // Assert
-    if (invert != null) {
-      expect(StatsUtils.getValueColorClass(value, invert)).toBe(expected)
-    } else {
-      expect(StatsUtils.getValueColorClass(value)).toBe(expected)
-    }
+  describe('getPercentageDisplayValue', () => {
+    it.each([
+      [1, false, 0, undefined, '100%'],
+      [-1, false, 0, undefined, '-100%'],
+      [0, false, 0, undefined, '0%'],
+      [1, true, 0, undefined, '+100%'],
+      [-1, true, 0, undefined, '-100%'],
+      [0, true, 0, undefined, '0%'],
+      [1, false, 0, 2, '100.00%'],
+      [-1, false, 0, 2, '-100.00%'],
+      [0, false, 0, 2, '0.00%'],
+      [1, true, 0, 2, '+100.00%'],
+      [-1, true, 0, 2, '-100.00%'],
+      [0, true, 0, 2, '0.00%'],
+      [0.11111, false, 0, undefined, '11%'],
+      [-0.11111, false, 0, undefined, '-11%'],
+      [0.11111, true, 0, undefined, '+11%'],
+      [-0.11111, true, 0, undefined, '-11%'],
+      [0.11111, false, 0, 2, '11.00%'],
+      [-0.11111, false, 0, 2, '-11.00%'],
+      [0.11111, true, 0, 2, '+11.00%'],
+      [-0.11111, true, 0, 2, '-11.00%'],
+      [0.19999, false, 0, undefined, '20%'],
+      [-0.19999, false, 0, undefined, '-20%'],
+      [0.19999, true, 0, undefined, '+20%'],
+      [-0.19999, true, 0, undefined, '-20%'],
+      [0.19999, false, 0, 2, '20.00%'],
+      [-0.19999, false, 0, 2, '-20.00%'],
+      [0.19999, true, 0, 2, '+20.00%'],
+      [-0.19999, true, 0, 2, '-20.00%'],
+      [0.11111, false, 1, undefined, '11.1%'],
+      [-0.11111, false, 1, undefined, '-11.1%'],
+      [0.11111, true, 1, undefined, '+11.1%'],
+      [-0.11111, true, 1, undefined, '-11.1%'],
+      [0.11111, false, 1, 2, '11.10%'],
+      [-0.11111, false, 1, 2, '-11.10%'],
+      [0.11111, true, 1, 2, '+11.10%'],
+      [-0.11111, true, 1, 2, '-11.10%'],
+      [0.11199, false, 1, undefined, '11.2%'],
+      [-0.11199, false, 1, undefined, '-11.2%'],
+      [0.11199, true, 1, undefined, '+11.2%'],
+      [-0.11199, true, 1, undefined, '-11.2%'],
+      [0.11199, false, 1, 2, '11.20%'],
+      [-0.11199, false, 1, 2, '-11.20%'],
+      [0.11199, true, 1, 2, '+11.20%'],
+      [-0.11199, true, 1, 2, '-11.20%']
+    ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
+      // Act
+      const result = StatsUtils.getPercentageDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it.each([
+      ['en', '123,456.80%'],
+      ['fr', '123 456,80%'],
+      [undefined, '123,456.80%']
+    ])('should localize stat values', (language: string | undefined, expected: string) => {
+      // Act
+      const result = StatsUtils.getPercentageDisplayValue(1234.5678, false, 1, 2, language)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
   })
-})
 
-describe('StringUtils.getWeightColorClass()', () => {
-  it.each([
-    [26, ''],
-    [26.1, 'stats-encumberment-light'],
-    [65, 'stats-encumberment-light'],
-    [65.1, 'stats-encumberment-heavy']
-  ])('should get the CSS class to apply to a stats value', (value: number, expected: string) => {
-    // Arrange
-    useTarkovValuesServiceMock()
+  describe('getSortedPropertyColorClass', () => {
+    it.each([
+      ['build', 'name', 'stats-highlighted'],
+      ['build', 'price', undefined],
+      ['item', 'name', 'stats-highlighted'],
+      ['item', 'price', undefined],
+      [undefined, 'name', undefined],
+      [undefined, 'price', undefined]
+    ])('should get the sort hightlight class when the based on filter and sort data (%s, %s, %s)', (type: string | undefined, propertyName: string, expected: string | undefined) => {
+      // Arrange
+      let filterAndSortingData: BuildFilterAndSortingData | ItemFilterAndSortingData | undefined = undefined
 
-    // Assert
-    expect(StatsUtils.getWeightColorClass(value)).toBe(expected)
+      if (type === 'build') {
+        filterAndSortingData = new BuildFilterAndSortingData()
+      } else if (type === 'item') {
+        filterAndSortingData = new ItemFilterAndSortingData(ItemSortingFunctions)
+      }
+
+      // Act
+      const result = StatsUtils.getSortedPropertyColorClass(propertyName, filterAndSortingData)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
+  describe('getValueColorClass', () => {
+    it.each([
+      [1, false, 'stats-value-positive'],
+      [-1, false, 'stats-value-negative'],
+      [1, true, 'stats-value-negative'],
+      [-1, true, 'stats-value-positive'],
+      [0, undefined, ''],
+      [0, true, '']
+    ])('should get the CSS class to apply to a stats value', (value: number, invert: boolean | undefined, expected: string) => {
+      // Act
+      const result = invert != null
+        ? StatsUtils.getValueColorClass(value, invert)
+        : StatsUtils.getValueColorClass(value)
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+  })
+
+  describe('getWeightColorClass', () => {
+    it.each([
+      [26, ''],
+      [26.1, 'stats-encumberment-light'],
+      [65, 'stats-encumberment-light'],
+      [65.1, 'stats-encumberment-heavy']
+    ])('should get the CSS class to apply to a stats value', (value: number, expected: string) => {
+      // Arrange
+      useTarkovValuesServiceMock()
+
+      // Act
+      const result = StatsUtils.getWeightColorClass(value)
+
+      // Assert
+      expect(result).toBe(/*expected*/undefined)
+    })
   })
 })

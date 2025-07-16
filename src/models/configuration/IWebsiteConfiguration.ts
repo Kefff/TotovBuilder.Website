@@ -7,7 +7,7 @@ export interface IWebsiteConfiguration {
    */
   allowCookiesStorageKey: string
 
-  /*
+  /**
    * Bug report URL.
    */
   bugReportUrl: string
@@ -17,57 +17,62 @@ export interface IWebsiteConfiguration {
    */
   buildSharingUrl: string
 
-  /*
+  /**
+   * Storage key for the current page in the builds list.
+   */
+  buildsPageStorageKey: string,
+
+  /**
+   * Storage key for the current build filter.
+   */
+  buildsFilterStorageKey: string,
+
+  /**
    * Storage key for the current build sorting colum.
    */
-  buildsSortFieldStorageKey: string
+  buildsSortPropertyStorageKey: string
 
-  /*
+  /**
    * Storage key for the current build sort order.
    */
   buildsSortOrderStorageKey: string
 
-  /*
+  /**
    * Storage key prefix for builds.
    */
   buildStorageKeyPrefix: string
 
-  /*
+  /**
    * Cache dureation (in seconds).
    */
   cacheDuration: number
 
-  /*
+  /**
    * Contact mail address.
    */
   contactAddress: string
 
-  /*
+  /**
    * Discord server URL.
    */
   discordUrl: string
 
-  /*
+  /**
    * Changelog endpoint.
    */
   endpointChangelog: string
 
-  /*
-   * Item categories endpoint.
-   */
-  endpointItemCategories: string
-
-  /*
+  /**
    * Items endpoint.
    */
   endpointItems: string
 
-  /*
+  /**
    * Presets endpoint.
    */
   endpointPresets: string
 
-  /*
+  /**
    * Prices endpoint.
    */
   endpointPrices: string
@@ -77,27 +82,42 @@ export interface IWebsiteConfiguration {
    */
   endpointTarkovValues: string
 
-  /*
+  /**
+   * URL shortener endpoint.
+   */
+  endpointUrlShortener: string
+
+  /**
+   * Website configuration endpoint.
+   */
+  endpointWebsiteConfiguration: string
+
+  /**
    * Export file extension.
    */
   exportFileExtension: string
 
-  /*
+  /**
    * Export file prefix.
    */
   exportFileNamePrefix: string
 
-  /*
+  /**
    * Storage key for the value indicating whether the warning about builds not exported has been displayed.
    */
   exportWarningShowedStorageKey: string
+
+  /**
+   * Storage key for the value indicating whether the export warning should be showed.
+   */
+  exportWarningStorageKey: string
 
   /**
    * Maximum number of tries when an error occurs when fetching data.
    */
   fetchMaxTries: number
 
-  /*
+  /**
    * Fetch timeout (in seconds).
    */
   fetchTimeout: number
@@ -107,40 +127,75 @@ export interface IWebsiteConfiguration {
    */
   fetchWaitTimeBetweenRetries: number
 
-  /*
+  /**
    * Github project URL.
    */
   githubUrl: string
 
-  /*
+  /**
    * Storage key for the current global filter.
    */
   globalFilterStorageKey: string
 
-  /*
+  /**
+   * Suffix of the storage key for the current sort field of each item category.
+   */
+  itemCategorySortPropertyStorageKeySuffix: string
+
+  /**
+   * Suffix of the storage key for the current sort order of each item category.
+   */
+  itemCategorySortOrderStorageKeySuffix: string
+
+  /**
+   * Storage key for the current item filter.
+   */
+  itemsFilterStorageKey: string
+
+  /**
+   * Storage key for the current item category filter and sort order.
+   */
+  itemsFilterAndSortCategoryStorageKey: string
+
+  /**
+   * Storage key for the current item sorting colum.
+   */
+  itemsSortPropertyStorageKey: string
+
+  /**
+   * Storage key for the current item sort order.
+   */
+  itemsSortOrderStorageKey: string
+
+  /**
    * Storage key for the current language.
    */
   languageStorageKey: string
 
-  /*
+  /**
    * Error notifications duration (in seconds).
    */
   notificationErrorDuration: number
 
-  /*
+  /**
    * Information notifications duration (in seconds).
    */
   notificationInformationDuration: number
 
-  /*
+  /**
    * Success notifications duration (in seconds).
    */
   notificationSuccessDuration: number
 
-  /*
+  /**
    * Warning notifications duration (in seconds).
    */
   notificationWarningDuration: number
+
+  /**
+   * Storage key for the value indicating whether the a warning should be displayed when saving changes to a build that was shared indicating that the link is no longer up to date.
+   */
+  outdatedSharableUrlWarningStorageKey: string
 
   /**
    * Indicates whether we are in a post-update period and items and prices are being updated.
@@ -152,7 +207,7 @@ export interface IWebsiteConfiguration {
    */
   version: string,
 
-  /*
+  /**
    * Storage key for the current version.
    */
   versionStorageKey: string

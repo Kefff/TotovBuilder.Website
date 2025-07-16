@@ -1,5 +1,3 @@
-import { IChangelogChange } from './IChangelogChange'
-
 /**
  * Provides the functionalities of a changelog entry.
  */
@@ -7,7 +5,7 @@ export interface IChangelogEntry {
   /**
    * Changes.
    */
-  changes: IChangelogChange[]
+  changes: Record<string, string>[]
 
   /**
    * Date.

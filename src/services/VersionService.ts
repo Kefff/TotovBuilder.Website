@@ -1,14 +1,14 @@
+import { IBuild } from '../models/build/IBuild'
 import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
+import { IMigration } from '../models/utils/IMigration'
 import vueI18n from '../plugins/vueI18n'
-import { FetchService } from './FetchService'
-import Services from './repository/Services'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import { NotificationService, NotificationType } from './NotificationService'
 import Migrations from '../utils/migrations/Migrations'
 import { BuildService } from './BuildService'
-import { IMigration } from '../models/utils/IMigration'
-import { IBuild } from '../models/build/IBuild'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
+import { NotificationService, NotificationType } from './NotificationService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 export class VersionService {
   /**
@@ -24,7 +24,7 @@ export class VersionService {
   /**
    * Changelog fetching promise.
    */
-  private changelogFetchingPromise: Promise<void> = Promise.resolve()
+  private changelogFetchingPromise: Promise<IChangelogEntry[] | undefined> = Promise.resolve([])
 
   /**
    * Indicates whether the website has changed of version since the last visit.
@@ -54,18 +54,18 @@ export class VersionService {
   /**
    * Version during the last visit.
    */
-  private lastVisitVersion: string | undefined = undefined
+  private lastVisitVersion: string | undefined
 
   /**
    * Current version.
    */
-  private version = '1.0.0'
+  private version: string = ''
 
   /**
    * Indicates whether the website has changed of version since the last visit.
    */
-  public async checkHasNewVersion(): Promise<boolean> {
-    await this.initialize()
+  public async checkHasNewVersionAsync(): Promise<boolean> {
+    await this.initializeAsync()
 
     return this.hasNewVersion
   }
@@ -105,53 +105,66 @@ export class VersionService {
   /**
    * Executes migrations required to update a build since the last connection to the website.
    * @param build - Build to update.
-   * @returns true when all the required migrations have successfuly been executed; otherwise false.
+   * @returns `true` when all the required migrations have successfuly been executed; otherwise `false`.
    */
-  public async executeBuildMigrations(build: IBuild): Promise<boolean> {
+  public async executeBuildMigrationsAsync(build: IBuild): Promise<boolean> {
+    let success = true
+    const logService = Services.get(LogService)
     const migrationsToExecute = this.getMigrationsToExecute(build.lastWebsiteVersion)
 
     for (const migration of migrationsToExecute) {
-      const migrationResult = await migration.migrateBuild(build)
+      if (this.isDebug) {
+        logService.logInformation(vueI18n.t('message.buildMigrationExecution', { id: build.id, version: migration.version }))
+      }
 
-      if (!migrationResult.success) {
-        const notificationMessage = build.id !== ''
+      const migrationSuccess = await migration.migrateBuildPromise(build)
+
+      if (!migrationSuccess) {
+        const errorMessage = build.id !== ''
           ? vueI18n.t('message.buildMigrationErrorNotification', { buildName: build.name, buildId: build.id, oldVersion: build.lastWebsiteVersion, newVersion: migration.version })
           : vueI18n.t('message.sharedBuildMigrationErrorNotification', { newVersion: migration.version })
-        const errorMessage = vueI18n.t('message.buildMigrationError', { message: notificationMessage, errors: migrationResult.failureMessage })
 
         Services.get(LogService).logError(errorMessage)
-        Services.get(NotificationService).notify(NotificationType.error, notificationMessage)
+        Services.get(NotificationService).notify(NotificationType.error, errorMessage)
 
-        return false
+        success = false
       }
     }
 
-    return true
+    return success
   }
 
   /**
    * Gets the changelog.
+   * Displays a notification when no changelog could be fetched.
    * @returns Changelog.
    */
-  public async getChangelog(): Promise<IChangelogEntry[]> {
-    await this.initialize()
+  public async getChangelogAsync(): Promise<IChangelogEntry[]> {
+    await this.initializeAsync()
 
     if (!this.changelogFetched) {
-      await this.fetchChangelog()
-    }
+      this.changelogFetched = await this.fetchChangelogAsync()
 
-    if (this.changelog.length === 0) {
-      return []
+      if (!this.changelogFetched) {
+        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
+      }
     }
-
-    this.changelogFetched = true
 
     const changelogs: IChangelogEntry[] = []
-    const hasChangelogsInCurrentLanguage = this.changelog.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
 
     for (const changelog of this.changelog) {
       changelogs.push({
-        changes: changelog.changes.filter(c => c.language === (hasChangelogsInCurrentLanguage ? vueI18n.locale.value : vueI18n.fallbackLocale.value)),
+        changes: changelog.changes.map(c => {
+          const newChanges: Record<string, string> = {}
+
+          if (c[vueI18n.locale.value] != null) {
+            newChanges[vueI18n.locale.value] = c[vueI18n.locale.value]
+          } else if (c[vueI18n.fallbackLocale.value as string] != null) {
+            newChanges[vueI18n.locale.value] = c[vueI18n.fallbackLocale.value as string]
+          }
+
+          return newChanges
+        }),
         date: new Date(changelog.date),
         isNew: this.isNew(changelog.version),
         version: changelog.version
@@ -164,8 +177,8 @@ export class VersionService {
   /**
    * Gets the current version.
    */
-  public async getVersion(): Promise<string> {
-    await this.initialize()
+  public async getVersionAsync(): Promise<string> {
+    await this.initializeAsync()
 
     return this.version
   }
@@ -173,13 +186,13 @@ export class VersionService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<void> {
+  public async initializeAsync(): Promise<void> {
     if (this.isInitialized) {
       return
     }
 
     if (!this.isInitializing) {
-      this.initializationPromise = this.startInitialization()
+      this.initializationPromise = this.startInitializationAsync()
     }
 
     await this.initializationPromise
@@ -187,26 +200,33 @@ export class VersionService {
 
   /**
    * Executes migrations required to update data not related to builds since the last connection to the website.
-   * @returns true when the migrations have successfully been executed; otherwise false.
+   * @returns `true` when the migrations have successfully been executed; otherwise `false`.
    */
-  private async executeBuildUnrelatedMigrations(): Promise<boolean> {
+  private async executeBuildUnrelatedMigrationsAsync(): Promise<boolean> {
+    const logService = Services.get(LogService)
     const migrationsToExecute = this.getMigrationsToExecute(this.lastVisitVersion)
 
-    for (const migration of migrationsToExecute) {
-      const migrationResult = await migration.migrateBuildUnrelatedData()
+    let hasSucceeded = true
 
-      if (!migrationResult.success) {
-        return false
+    for (const migration of migrationsToExecute) {
+      if (this.isDebug) {
+        logService.logInformation(vueI18n.t('message.buildUnrelatedMigrationExecution', { version: migration.version }))
+      }
+
+      const migrationSuccess = await migration.migrateBuildUnrelatedDataPromise()
+
+      if (!migrationSuccess) {
+        hasSucceeded = false
       }
     }
 
-    return true
+    return hasSucceeded
   }
 
   /**
    * Executes the migrations.
    */
-  private async executeMigrations(): Promise<void> {
+  private async executeMigrationsAsync(): Promise<void> {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     if (!this.hasNewVersion) {
@@ -218,20 +238,20 @@ export class VersionService {
       return
     }
 
-    const buildUnrelatedMigrationsResult = await this.executeBuildUnrelatedMigrations()
+    const buildUnrelatedMigrationsResult = await this.executeBuildUnrelatedMigrationsAsync()
 
     const buidService = Services.get(BuildService)
     let buildsMigrationsResult = true
 
     for (const build of buidService.getAll()) {
-      const buildMigrationsResult = await this.executeBuildMigrations(build)
+      const buildMigrationsResult = await this.executeBuildMigrationsAsync(build)
 
       if (!buildMigrationsResult) {
         buildsMigrationsResult = false
         continue
       }
 
-      buidService.update(build.id, build)
+      await buidService.updateAsync(build, this.version)
     }
 
     if (buildUnrelatedMigrationsResult && buildsMigrationsResult) {
@@ -242,13 +262,22 @@ export class VersionService {
 
   /**
    * Fetches the changelog.
+   * @returns
    */
-  private async fetchChangelog(): Promise<void> {
+  private async fetchChangelogAsync(): Promise<boolean> {
     if (!this.isFetchingChangelogs) {
-      this.changelogFetchingPromise = this.startChangelogFetching()
+      this.changelogFetchingPromise = this.startChangelogFetchingAsync()
     }
 
-    await this.changelogFetchingPromise
+    const changelog = await this.changelogFetchingPromise
+
+    if (changelog == undefined) {
+      return false
+    }
+
+    this.changelog = changelog
+
+    return true
   }
 
   /**
@@ -268,11 +297,18 @@ export class VersionService {
   }
 
   /**
+   * Indicates whether the application is in debug mode.
+   */
+  private get isDebug(): boolean {
+    return import.meta.env.VITE_DEBUG === 'true'
+  }
+
+  /**
    * Indicates whether a version is newer than the last visit version.
    * @param version - Version.
-   * @returns true when the version is newer than the last visit version; otherwise false.
+   * @returns `true` when the version is newer than the last visit version; otherwise `false`.
    */
-  private isNew(version: string) {
+  private isNew(version: string): boolean {
     const isNew =
       this.lastVisitVersion != null
       && this.compareVersions(version, this.lastVisitVersion) > 0
@@ -282,30 +318,39 @@ export class VersionService {
 
   /**
    * Starts the fetching of the changelog.
-   * @returns true when the changelog has been fetched; otherwise false.
+   * @returns Changelog.
    */
-  private async startChangelogFetching(): Promise<void> {
+  private async startChangelogFetchingAsync(): Promise<IChangelogEntry[] | undefined> {
     this.isFetchingChangelogs = true
 
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointChangelog
-    const changelogResult = await fetchService.get<IChangelogEntry[]>(endpoint)
 
-    if (changelogResult.success) {
-      this.changelog = changelogResult.value
-      Services.get(LogService).logInformation('message.changelogFetched')
-    } else {
-      Services.get(LogService).logError('message.changelogNotFetched')
-      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingChangelog', { date: new Date().toISOString() })
+    }
+
+    const changelog = await fetchService.fetchWithRetryAsync<IChangelogEntry[]>({ endpoint })
+
+    if (changelog == null || changelog.length === 0) {
+      Services.get(LogService).logException('message.changelogNotFetched')
+
+      return undefined
+    }
+
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.changelogFetched', { date: new Date().toISOString() })
     }
 
     this.isFetchingChangelogs = false
+
+    return changelog
   }
 
   /**
    * Starts the initialization of the service.
    */
-  private async startInitialization(): Promise<void> {
+  private async startInitializationAsync(): Promise<void> {
     this.isInitializing = true
 
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
@@ -314,7 +359,7 @@ export class VersionService {
     this.lastVisitVersion = localStorage.getItem(websiteConfiguration.versionStorageKey) ?? undefined
     this.hasNewVersion = this.isNew(this.version)
 
-    await this.executeMigrations()
+    await this.executeMigrationsAsync()
 
     this.isInitializing = false
     this.isInitialized = true

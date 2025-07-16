@@ -1,41 +1,74 @@
+import { TinyEmitter } from 'tiny-emitter'
 import { IBuild } from '../models/build/IBuild'
-import { BuildService } from './BuildService'
-import Services from './repository/Services'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
+import { BuildService } from './BuildService'
+import { FileService } from './FileService'
+import { LogService } from './LogService'
+import { NotificationService, NotificationType } from './NotificationService'
+import Services from './repository/Services'
+import { VersionService } from './VersionService'
 
 /**
  * Represents a service responsible for importing builds.
  */
 export class ImportService {
   /**
+   * Name of the event fired when builds have been imported.
+   */
+  public static buildsImportedEvent = 'buildsImported'
+
+  /**
+   * Event emitter used to indicate an export has succeeded.
+   */
+  public emitter = new TinyEmitter()
+
+  /**
    * Gets the builds from a file.
    * @param file - File.
    * @returns Builds contained in the file.
    */
-  /* c8 ignore start */
-  public async getBuildsFromFile(file: File): Promise<Result<IBuild[]>> {
-    return new Promise<Result<IBuild[]>>((resolve) => {
-      const fileReader = new FileReader()
-      fileReader.onloadend = () => {
-        const buildsResult = this.readFile(fileReader)
-        resolve(buildsResult)
-      }
-      fileReader.readAsText(file)
-    })
+  public async getBuildsFromFileAsync(file: File | undefined): Promise<IBuild[] | undefined> {
+    if (file == null) {
+      Services.get(LogService).logError('message.invalidBuildFile')
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
+
+      return undefined
+    }
+
+    const fileContent = await Services.get(FileService).readFile(file)
+
+    if (fileContent == null) {
+      return undefined
+    }
+
+    const builds = this.parseBuilds(fileContent)
+
+    if (builds == null || builds.length === 0) {
+      return undefined
+    }
+
+    const versionService = Services.get(VersionService)
+
+    for (const build of builds) {
+      await versionService.executeBuildMigrationsAsync(build)
+    }
+
+    return builds
   }
-  /* c8 ignore stop */
 
   /**
    * Imports builds.
    * @param builds - Builds to import.
    */
-  public async import(builds: IBuild[]): Promise<void> {
+  public async importAsync(builds: IBuild[]): Promise<void> {
     const buildService = Services.get(BuildService)
 
     for (const build of builds) {
-      await buildService.add(build)
+      await buildService.addAsync(build)
     }
+
+    this.emitter.emit(ImportService.buildsImportedEvent)
+    Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsImported'))
   }
 
   /**
@@ -43,16 +76,21 @@ export class ImportService {
    * @param fileReader - File reader.
    * @returns file - Builds.
    */
-  /* c8 ignore start */
-  private readFile(fileReader: FileReader): Result<IBuild[]> {
-    if (fileReader.error != null) {
-      return Result.fail(FailureType.error, vueI18n.t('message.importError'))
+  private parseBuilds(fileContent: string): IBuild[] | undefined {
+    let builds: IBuild[] | undefined
+
+    try {
+      builds = JSON.parse(fileContent) as IBuild[]
+    }
+    catch {
+      // Do nothing
     }
 
-    const builds = JSON.parse(fileReader.result as string) as IBuild[]
+    if (builds == null || builds.length == null) {
+      Services.get(LogService).logError('message.importError')
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
 
-    if (builds == null) {
-      return Result.fail(FailureType.error, vueI18n.t('message.importError'))
+      return undefined
     }
 
     const importDate = new Date()
@@ -62,7 +100,6 @@ export class ImportService {
       build.lastUpdated = importDate
     }
 
-    return Result.ok(builds)
+    return builds
   }
-  /* c8 ignore stop */
 }

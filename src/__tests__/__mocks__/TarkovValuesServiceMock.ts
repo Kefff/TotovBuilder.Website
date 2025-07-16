@@ -1,8 +1,8 @@
 import { instance, mock, when } from 'ts-mockito'
-import Services from '../../services/repository/Services'
-import { TarkovValuesService } from '../../services/TarkovValuesService'
 import TarkovValuesMock from '../../../public/data/tarkov-values.json'
 import { ITarkovValues } from '../../models/configuration/ITarkovValues'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
+import Services from '../../services/repository/Services'
 
 export function useTarkovValuesServiceMock(): void {
   const tarkovValuesServiceMock = mock<TarkovValuesService>()

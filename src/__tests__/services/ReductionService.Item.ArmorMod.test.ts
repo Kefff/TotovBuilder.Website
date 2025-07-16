@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IArmorMod } from '../../models/item/IArmorMod'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -60,10 +61,10 @@ describe('parseReducedItem', () => {
           '5c0e66e2d174af02a96252f4',
           '5e00cdd986f7747473332240'
         ],
-        categoryId: 'armorMod',
+        categoryId: ItemCategoryId.armorMod,
         defaultPresetId: undefined,
         durability: 40,
-        ergonomicsPercentageModifier: -0.05,
+        ergonomicsModifierPercentage: -0.05,
         iconLink: 'https://assets.tarkov.dev/5ea18c84ecf1982c7712d9a2-icon.webp',
         id: '5ea18c84ecf1982c7712d9a2',
         imageLink: 'https://assets.tarkov.dev/5ea18c84ecf1982c7712d9a2-image.webp',
@@ -81,12 +82,14 @@ describe('parseReducedItem', () => {
             required: false
           }
         ],
-        movementSpeedPercentageModifier: 0,
+        movementSpeedModifierPercentage: 0,
         name: 'Diamond Age Bastion helmet armor plate',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'Bastion plate',
-        turningSpeedPercentageModifier: -0.06,
+        turningSpeedModifierPercentage: -0.06,
         weight: 0.99,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Diamond_Age_Bastion_helmet_armor_plate'
       } as IArmorMod
@@ -134,7 +137,7 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         blindnessProtectionPercentage: 0.1,
-        categoryId: 'armorMod',
+        categoryId: ItemCategoryId.armorMod,
         conflictingItemIds: [
           '5c0e66e2d174af02a96252f4',
           '5c0696830db834001d23f5da',
@@ -148,7 +151,7 @@ describe('parseReducedItem', () => {
         ],
         defaultPresetId: undefined,
         durability: 40,
-        ergonomicsPercentageModifier: -0.04,
+        ergonomicsModifierPercentage: -0.04,
         iconLink: 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-icon.webp',
         id: '5a16b7e1fcdbcb00165aa6c9',
         imageLink: 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-image.webp',
@@ -156,12 +159,14 @@ describe('parseReducedItem', () => {
         material: 'Glass',
         maxStackableAmount: 1,
         modSlots: [],
-        movementSpeedPercentageModifier: 0,
+        movementSpeedModifierPercentage: 0,
         name: 'Ops-Core FAST multi-hit ballistic face shield',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'FAST FS',
-        turningSpeedPercentageModifier: -0.08,
+        turningSpeedModifierPercentage: -0.08,
         weight: 1.2,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Ops-Core_FAST_multi-hit_ballistic_face_shield'
       } as IArmorMod

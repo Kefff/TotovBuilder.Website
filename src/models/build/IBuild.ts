@@ -22,15 +22,20 @@ export interface IBuild {
   /**
    * Last export date.
    */
-  lastExported: Date | undefined,
+  lastExported?: Date,
 
   /**
    * Last update date.
    */
-  lastUpdated: Date | undefined,
+  lastUpdated?: Date,
 
   /**
    * Last version of the website that updated the build.
    */
-  lastWebsiteVersion: string | undefined
+  lastWebsiteVersion?: string
+
+  /**
+   * URL for sharing the build.
+   */
+  sharabledUrl?: string
 }

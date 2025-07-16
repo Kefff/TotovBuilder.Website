@@ -1,4 +1,4 @@
-import vueI18n from '../plugins/vueI18n'
+import { IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 
 /**
  * Represents an utility class for manipulating strings.
@@ -8,7 +8,7 @@ export default class StringUtils {
    * Indicates whether a string contains another string without casing.
    * @param container - String that should contain the other string.
    * @param searchedString - String that should be contained in the string.
-   * @returns True if the string is contained in the other string; otherwise false.
+   * @returns `true` if the string is contained in the other string; otherwise `false`.
    */
   public static contains(container: string, searchedString: string): boolean {
     return container.toUpperCase().includes(searchedString.toUpperCase())
@@ -16,24 +16,34 @@ export default class StringUtils {
 
   /**
    * Indicates whether a string contains other strings without casing.
-   * @param container - String that should contain the other string.
+   * @param container - String that should contain the other strings.
    * @param searchedStrings - Strings that should be contained in the string.
-   * @returns True if all the strings are contained in the string; otherwise false.
+   * @returns `true` if all the strings are contained in the string; otherwise `false`.
    */
-  public static async containsAll(container: string, searchedStrings: string[]): Promise<boolean> {
-    const promises: Promise<void>[] = []
+  public static containsAll(container: string, searchedStrings: string[]): boolean {
     const results: boolean[] = []
 
     for (const searchedString of searchedStrings) {
-      promises.push(new Promise((resolve) => {
-        results.push(this.contains(container, searchedString))
-        resolve()
-      }))
+      results.push(this.contains(container, searchedString))
     }
 
-    await Promise.allSettled(promises)
-
     return results.every(r => r === true)
+  }
+
+  /**
+   * Indicates whether a string contains one of several strings without casing.
+   * @param container - String that should contain the other strings.
+   * @param searchedStrings - Strings that should be contained in the string.
+   * @returns `true` if any of the strings are contained in the string; otherwise `false`.
+   */
+  public static containsAny(container: string, searchedStrings: string[]): boolean {
+    for (const searchedString of searchedStrings) {
+      if (this.contains(container, searchedString)) {
+        return true
+      }
+    }
+
+    return false
   }
 
   /**
@@ -56,12 +66,17 @@ export default class StringUtils {
   }
 
   /**
-     * Gets a tooltip indicating the activation state of a checkbox.
-     * @param enabled - Indicates whether the checkbox is enabled or not.
-     * @returns Tooltip.
-     */
-  public static getCheckboxStateTooltip(enabled: boolean): string {
-    return vueI18n.t('caption.' + (enabled ? 'enabled' : 'disabled'))
+   * Gets a stat emoji when the type is `markdown`.
+   * @param options - Options.
+   * @param icon - Icon to display.
+   * @returns Icon text.
+   */
+  public static getTextStatEmoji(options: IBuildsToTextOptions, icon: string): string {
+    if (!options.includeEmojis) {
+      return ''
+    }
+
+    return `${icon} `
   }
 
   /**

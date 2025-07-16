@@ -1,5 +1,5 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { ak12PistolGrip, ak12Stock, armor6b13FlDefault, bansheeDefault, m9a3Cap, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512755mmRib, mts25512Default, mts25512beech, mts25512choke, mts25512cyl, mts25512wood, plate6b33Back, plate6b33Front, rpk1615inch, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube } from './itemMocks'
+import { ak12PistolGrip, ak12Stock, armor6b13FlDefault, bansheeDefault, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Prot, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512755mmRib, mts25512Default, mts25512beech, mts25512choke, mts25512cyl, mts25512wood, plate6b33Back, plate6b33Front, rpk1615inch, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube } from './itemMocks'
 
 export const armor6b13FlDefaultPreset: IInventoryItem = {
   content: [],
@@ -73,7 +73,7 @@ export const m9a3DefaultPreset: IInventoryItem = {
           {
             item: {
               content: [],
-              itemId: m9a3Cap.id,
+              itemId: m9a3Prot.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1

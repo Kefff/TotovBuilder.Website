@@ -1,0 +1,151 @@
+<script setup lang="ts">
+import Images from '../images'
+import { IMerchantFilter } from '../models/utils/IMerchantFilter'
+import { GlobalFilterService } from '../services/GlobalFilterService'
+import Services from '../services/repository/Services'
+import StringUtils from '../utils/StringUtils'
+import Tooltip from './TooltipComponent.vue'
+
+const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
+
+const _globalFilterService = Services.get(GlobalFilterService)
+
+/**
+ * Gets the level options for a merchant.
+ * @param merchantName - Merchant name.
+ * @returns Level options.
+ */
+function getMerchantLevels(merchantName: string): number[] {
+  const levels = _globalFilterService.getMerchantLevels(merchantName)
+
+  return levels
+}
+
+/**
+ * Indicates whether a merchant has levels.
+ * @param merchantName - Merchant name.
+ * @returns `true` when the merchant has levels; otherwise `false`.
+ */
+function hasLevels(merchantName: string): boolean {
+  const result = _globalFilterService.hasLevels(merchantName)
+
+  return result
+}
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
+ * Updates the filter.
+ */
+function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number): void {
+  const newMerchantFilters: IMerchantFilter[] = [...modelMerchantFilters.value]
+  newMerchantFilters[index].enabled = enabled
+  newMerchantFilters[index].merchantLevel = merchantLevel
+
+  modelMerchantFilters.value = newMerchantFilters
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div>
+    <div
+      v-for="(merchantFilter, index) of modelMerchantFilters"
+      :key="merchantFilter.merchant"
+      class="merchant-filter"
+    >
+      <div
+        class="sidebar-option-icon"
+        :class="!merchantFilter.enabled ? 'sidebar-option-disabled' : ''"
+      >
+        <Checkbox
+          :binary="true"
+          :model-value="merchantFilter.enabled"
+          @update:model-value="onMerchantFilterChanged(index, $event, merchantFilter.merchantLevel)"
+        />
+      </div>
+      <div
+        class="merchant-filter-merchant"
+        :class="!merchantFilter.enabled ? 'sidebar-option-disabled' : ''"
+        @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
+      >
+        {{ $t('caption.merchant_' + merchantFilter.merchant) }}
+      </div>
+      <img
+        :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
+        class="merchant-filter-icon"
+        :class="!merchantFilter.enabled ? 'sidebar-option-disabled' : ''"
+        @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
+      >
+      <Tooltip
+        :apply-hover-style="false"
+        :tooltip="$t('caption.level')"
+        :disabled-on-mobile="true"
+      >
+        <Dropdown
+          v-if="hasLevels(merchantFilter.merchant)"
+          :disabled="!merchantFilter.enabled"
+          :model-value="merchantFilter.merchantLevel"
+          :options="getMerchantLevels(merchantFilter.merchant)"
+          :placeholder="$t('caption.level')"
+          @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
+        >
+          <template #value="slotProps">
+            <div class="merchant-filter-level-value">
+              {{ slotProps.value }}
+            </div>
+          </template>
+        </Dropdown>
+      </Tooltip>
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.merchant-filter {
+  align-items: center;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 2rem 1fr 3rem 5.25rem;
+  height: 3.5rem;
+}
+
+.merchant-filter:last-child {
+  margin-bottom: 0;
+}
+
+.merchant-filter-icon {
+  border-radius: 6px;
+  cursor: pointer;
+  width: 3rem;
+}
+
+.merchant-filter-merchant {
+  cursor: pointer;
+}
+
+.merchant-filter-level-value {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 2rem;
+}
+</style>

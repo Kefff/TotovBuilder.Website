@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
+import { ItemCategoryId } from '../../../models/item/IItem'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
 import { Migration160 } from '../../../utils/migrations/Migration1.6.0'
 import { berkut, m9a3, m9a3Default, rpk16, rpk16Default } from '../../__data__/itemMocks'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
+describe('migrateBuildUnrelatedData and migrateBuild', () => {
   it('should update obsolete builds to use the default preset item instead of the base item for their weapons', async () => {
     // Arrange
     useItemServiceMock()
@@ -73,12 +74,12 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new Migration160()
 
     // Act
-    const result1 = await migration.migrateBuildUnrelatedData()
-    const result2 = await migration.migrateBuild(obsoleteBuild)
+    const result1 = await migration.migrateBuildUnrelatedDataPromise()
+    const result2 = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
-    expect(result1.success).toBe(true)
-    expect(result2.success).toBe(true)
+    expect(result1).toBe(true)
+    expect(result2).toBe(true)
     expect(obsoleteBuild).toStrictEqual({
       id: '',
       inventorySlots: [
@@ -146,7 +147,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
         {
           baseItemId: undefined,
           caliber: '',
-          categoryId: 'mainWeapon',
+          categoryId: ItemCategoryId.mainWeapon,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomics: 0,
@@ -161,9 +162,8 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
           minuteOfAngle: undefined,
           modSlots: [],
           name: 'Item without default preset id',
-          presetErgonomics: undefined,
-          presetHorizontalRecoil: undefined,
-          presetVerticalRecoil: undefined,
+          presetRangedWeaponModifiers: undefined,
+          presetWeight: undefined,
           prices: [],
           shortName: 'IWDPI',
           verticalRecoil: 0,
@@ -210,11 +210,10 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new Migration160()
 
     // Act
-    const result = await migration.migrateBuild(obsoleteBuild)
+    const result = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Item "invalid" not found.')
+    expect(result).toBe(false)
     expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
   })
 })

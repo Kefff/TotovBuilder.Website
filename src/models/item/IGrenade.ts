@@ -5,6 +5,11 @@ import { IItem } from './IItem'
  */
 export interface IGrenade extends IItem {
   /**
+   * Indicates whether the ammunitions can blind opponents.
+   */
+  blinding: boolean
+
+  /**
    * Delay before explosion in seconds.
    */
   explosionDelay: number
@@ -13,6 +18,11 @@ export interface IGrenade extends IItem {
    * Number of fragments.
    */
   fragmentsAmount: number
+
+  /**
+   * Explodes on impact.
+   */
+  impact: boolean
 
   /**
    * Maximum explosion range in meters.
@@ -25,7 +35,7 @@ export interface IGrenade extends IItem {
   minimumExplosionRange: number
 
   /**
-   * Type of grenade.
+   * Emits smoke.
    */
-  type: string
+  smoke: boolean
 }

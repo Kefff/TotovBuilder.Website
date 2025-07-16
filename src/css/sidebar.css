@@ -1,33 +1,70 @@
 .sidebar-option {
-  display: flex;
-  flex-direction: column;
-  min-height: 3.25rem;
-  padding: 0.5rem;
-  overflow-x: hidden;
-  /* Needed for Firefox to avoid having an horizontal scrolling in certain situations for some reason */
-}
-
-.sidebar-option-with-hover {
   align-items: center;
   display: flex;
-  min-height: 3.25rem;
-  padding: 0.5rem;
+  flex-direction: row;
+  margin-top: 1rem;
 }
 
-.sidebar-option-with-hover:hover {
-  background: var(--util-color2);
-  border-radius: 3px;
+.sidebar-option:first-child {
+  margin-top: 0;
+}
+
+.sidebar-title + .sidebar-option {
+  /* First .sidebar-option after a .sidebar-title */
+  margin-top: 0.5rem;
+}
+
+.sidebar-option-description {
+  align-items: center;
+  color: var(--util-color7);
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.25rem;
+  max-width: 35rem;
+}
+
+.sidebar-option-description > span {
+  font-size: 0.85rem;
+  white-space: preserve;
+}
+
+.sidebar-option-clickable {
   cursor: pointer;
 }
 
+.sidebar-option-disabled {
+  opacity: 50%;
+}
+
+.sidebar-option-icon {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  justify-content: center;
+  margin-right: 0.5rem;
+  width: 1.75rem;
+}
+
+.sidebar-option-prevent-click {
+  pointer-events: none;
+}
+
 .sidebar-title {
+  align-items: center;
+  display: flex;
   font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-weight: bolder;
   margin-top: 3rem;
-  white-space: nowrap;
+}
+
+.sidebar-title-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-right: 0.5rem;
+  width: 1.75rem;
 }
 
 .sidebar-title:first-child {
-  margin-top: 0rem;
+  margin-top: 0;
 }

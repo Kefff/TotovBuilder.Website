@@ -13,12 +13,12 @@ export interface IMagazine extends IContainer, IMod {
   /**
    * Modifier added to the check speed in percentage.
    */
-  checkSpeedPercentageModifier: number
+  checkSpeedModifierPercentage: number
 
   /**
    * Modifier added to the loading speed in percentage.
    */
-  loadSpeedPercentageModifier: number
+  loadSpeedModifierPercentage: number
 
   /**
    * Malfunction chance in percentage.

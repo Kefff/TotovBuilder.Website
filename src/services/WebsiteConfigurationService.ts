@@ -1,12 +1,10 @@
-import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
-import Services from './repository/Services'
-import { FetchService } from './FetchService'
-import Result, { FailureType } from '../utils/Result'
-import vueI18n from '../plugins/vueI18n'
 import { TinyEmitter } from 'tiny-emitter'
-import { ServiceInitializationState } from './repository/ServiceInitializationState'
-import { NotificationService, NotificationType } from './NotificationService'
+import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
+import baseConfiguration from '../websiteConfiguration'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
+import { ServiceInitializationState } from './repository/ServiceInitializationState'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for getting the website configuration.
@@ -20,39 +18,10 @@ export class WebsiteConfigurationService {
   /**
    * Website configuration.
    */
-  public configuration: IWebsiteConfiguration = {
-    allowCookiesStorageKey: 'allow_cookies',
-    bugReportUrl: import.meta.env.VITE_DISCORD_URL,
-    buildSharingUrl: '',
-    buildsSortFieldStorageKey: 'builds_sort_field',
-    buildsSortOrderStorageKey: 'builds_sort_order',
-    buildStorageKeyPrefix: 'build_',
-    cacheDuration: 3600,
-    contactAddress: 'totovbuilder@gmail.com',
-    discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
-    endpointChangelog: '',
-    endpointItemCategories: '',
-    endpointItems: '',
-    endpointPresets: '',
-    endpointPrices: '',
-    endpointTarkovValues: '',
-    exportFileExtension: '',
-    exportFileNamePrefix: '',
-    exportWarningShowedStorageKey: '',
-    fetchMaxTries: 6,
-    fetchTimeout: 9,
-    fetchWaitTimeBetweenRetries: 1,
-    githubUrl: '',
-    globalFilterStorageKey: 'global_filter',
-    languageStorageKey: 'language',
-    notificationErrorDuration: 10,
-    notificationInformationDuration: 5,
-    notificationSuccessDuration: 5,
-    notificationWarningDuration: 10,
-    postUpdatePeriod: false,
-    version: '',
-    versionStorageKey: ''
+  public get configuration(): IWebsiteConfiguration {
+    return this._configuration
   }
+  private _configuration = baseConfiguration // Base configuration to be able to fetch the real full configuration
 
   /**
    * Event emitter used to initialization state change.
@@ -74,18 +43,14 @@ export class WebsiteConfigurationService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<boolean> {
-    const websiteConfigurationResult = await this.fetchWebsiteConfiguration()
+  public async initializeAsync(): Promise<boolean> {
+    const websiteConfiguration = await this.fetchWebsiteConfigurationAsync()
 
-    if (!websiteConfigurationResult.success) {
+    if (websiteConfiguration == null) {
       return false
     }
 
-    this.configuration = websiteConfigurationResult.value
-
-    if (this.configuration.postUpdatePeriod) {
-      Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
-    }
+    this._configuration = { ...this._configuration, ...websiteConfiguration }
 
     return true
   }
@@ -94,16 +59,26 @@ export class WebsiteConfigurationService {
    * Fetches the website configuration.
    * @returns Website configuration.
    */
-  private async fetchWebsiteConfiguration(): Promise<Result<IWebsiteConfiguration>> {
+  private async fetchWebsiteConfigurationAsync(): Promise<IWebsiteConfiguration | undefined> {
+    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
-    const websiteConfigurationResult = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
 
-    if (!websiteConfigurationResult.success) {
-      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', vueI18n.t('message.websiteConfigurationNotFetched'))
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.fetchingWebsiteConfiguration', { date: new Date().toISOString() })
     }
 
-    Services.get(LogService).logInformation('message.websiteConfigurationFetched')
+    const websiteConfiguration = await fetchService.fetchWithRetryAsync<IWebsiteConfiguration>({ endpoint: '/' + this._configuration.endpointWebsiteConfiguration })
 
-    return websiteConfigurationResult
+    if (websiteConfiguration == null) {
+      Services.get(LogService).logException('message.websiteConfigurationNotFetched')
+
+      return undefined
+    }
+
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.websiteConfigurationFetched', { date: new Date().toISOString() })
+    }
+
+    return websiteConfiguration
   }
 }

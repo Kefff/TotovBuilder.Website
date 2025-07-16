@@ -1,3 +1,4 @@
+import { IArmorModifiers } from '../utils/IArmorModifiers'
 import { IModdable } from './IModdable'
 import { IWearable } from './IWearable'
 
@@ -16,6 +17,11 @@ export interface IArmor extends IModdable, IWearable {
   armoredAreas: string[]
 
   /**
+  * Blindness protection percentage.
+  */
+  blindnessProtectionPercentage: number
+
+  /**
    * Durability
    */
   durability: number
@@ -24,4 +30,10 @@ export interface IArmor extends IModdable, IWearable {
    * Material which composes the armor.
    */
   material: string
+
+  /**
+   * Armor modifier of the whole preset added to the armor in percentage.
+   * Undefined if the item is not a preset.
+   */
+  presetArmorModifiers: IArmorModifiers | undefined
 }

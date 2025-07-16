@@ -7,11 +7,6 @@ import { IRicochetChance } from './IRicochetChance'
  */
 export interface ITarkovValues {
   /**
-   * Armor penetration efficiencies.
-   */
-  armorPenetrationEfficiencies: string[]
-
-  /**
    * Player character chest HP.
    */
   chestHp: number
@@ -30,6 +25,11 @@ export interface ITarkovValues {
    * Weight at which the character is lightly encumbered.
    */
   lightEncumbermentWeight: number
+
+  /**
+   * Maximum level an armor can have.
+   */
+  maxArmorLevel: number
 
   /**
    * Merchants.

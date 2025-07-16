@@ -5,13 +5,13 @@
 
 @font-face {
   font-family: 'Escape From Tarkov';
-  src: url('../../assets/fonts/escape-from-tarkov-bender.otf') format('opentype');
+  src: url('/fonts/escape-from-tarkov-bender.otf') format('opentype');
   font-display: fallback;
 }
 
 @font-face {
   font-family: 'Escape From Tarkov Title';
-  src: url('../../assets/fonts/escape-from-tarkov.ttf') format('truetype');
+  src: url('/fonts/escape-from-tarkov.ttf') format('truetype');
   font-display: fallback;
 }
 
@@ -128,6 +128,18 @@
   --surface-d: hsla(0, 0%, 100%, 0.12);
   --surface-e: var(--surface-a);
   --surface-f: #262626;
+
+  --surface-transparent-0: rgba(18, 18, 18, 0.75);
+  --surface-transparent-50: rgba(24, 24, 24, 0.75);
+  --surface-transparent-100: rgba(30, 30, 30, 0.75);
+  --surface-transparent-200: rgba(36, 36, 36, 0.75);
+  --surface-transparent-300: rgba(42, 42, 42, 0.75);
+  --surface-transparent-400: rgba(48, 48, 48, 0.75);
+  --surface-transparent-500: rgba(54, 54, 54, 0.75);
+  --surface-transparent-600: rgba(59, 59, 59, 0.75);
+  --surface-transparent-700: rgba(65, 65, 65, 0.75);
+  --surface-transparent-800: rgba(71, 71, 71, 0.75);
+  --surface-transparent-900: rgba(77, 77, 77, 0.75);
 
   /* Font */
   --font-main: 'Escape From Tarkov', sans-serif;
@@ -246,8 +258,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('Roboto'), local('Roboto-Regular'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-regular.woff2') format('woff2'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-regular.woff') format('woff');
+    url('/fonts/roboto-v20-latin-ext_latin-regular.woff2') format('woff2'),
+    url('/fonts/roboto-v20-latin-ext_latin-regular.woff') format('woff');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
@@ -257,8 +269,8 @@
   font-style: normal;
   font-weight: 500;
   src: local('Roboto Medium'), local('Roboto-Medium'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-500.woff2') format('woff2'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-500.woff') format('woff');
+    url('/fonts/roboto-v20-latin-ext_latin-500.woff2') format('woff2'),
+    url('/fonts/roboto-v20-latin-ext_latin-500.woff') format('woff');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
@@ -268,8 +280,8 @@
   font-style: normal;
   font-weight: 700;
   src: local('Roboto Bold'), local('Roboto-Bold'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-700.woff2') format('woff2'),
-    url('../../assets/fonts/roboto-v20-latin-ext_latin-700.woff') format('woff');
+    url('/fonts/roboto-v20-latin-ext_latin-700.woff2') format('woff2'),
+    url('/fonts/roboto-v20-latin-ext_latin-700.woff') format('woff');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
@@ -770,6 +782,11 @@
   border-radius: 4px;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s,
     box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  box-shadow:
+    1px 1px 1px var(--surface-a),
+    1px -1px 1px var(--surface-a),
+    -1px 1px 1px var(--surface-a),
+    -1px -1px 1px var(--surface-a);
 }
 
 .p-checkbox .p-checkbox-box .p-checkbox-icon {
@@ -883,16 +900,28 @@
     0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
+/* Custom */
+.p-dropdown {
+  height: 2.75rem;
+}
+
+/* Custom */
+.p-dropdown > .p-dropdown-label {
+  padding: 0.25rem;
+}
+
 .p-dropdown {
   background: var(--surface-a);
   border: 1px solid var(--util-color5);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s,
     box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 4px;
+  border-color: var(--primary-color6);
 }
 
 .p-dropdown:not(.p-disabled):hover {
-  border-color: var(--util-color7);
+  /*border-color: var(--util-color7);*/
+  border-color: var(--primary-color);
 }
 
 .p-dropdown:not(.p-disabled).p-focus {
@@ -971,7 +1000,7 @@
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
   margin: 0;
-  /*padding: 1rem 1rem; Disabled to be able to customize the padding by setting it in the templace for items */
+  padding: 1rem 1rem;
   border: 0 none;
   color: var(--text-color);
   background: transparent;
@@ -998,7 +1027,7 @@
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
-  padding: 1rem 1rem;
+  /*padding: 1rem 1rem;*/
   color: var(--text-color);
   background: transparent;
 }
@@ -1270,6 +1299,11 @@
   border-color: var(--error-color);
 }
 
+/* Custom */
+.p-inputtext {
+  padding: 0.25rem;
+}
+
 .p-inputtext {
   font-family: var(--font-main);
   font-size: 1rem;
@@ -1281,10 +1315,12 @@
     box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   appearance: none;
   border-radius: 4px;
+  border-color: var(--primary-color6);
 }
 
 .p-inputtext:enabled:hover {
-  border-color: var(--util-color7);
+  /*border-color: var(--util-color7);*/
+  border-color: var(--primary-color);
 }
 
 .p-inputtext:enabled:focus {
@@ -2051,7 +2087,8 @@
 
 .p-button.p-button-sm {
   font-size: 0.875rem;
-  padding: 0.62475rem 0.875rem;
+  /* padding: 0.62475rem 0.875rem; */
+  padding: 0.5rem;
 }
 
 .p-button.p-button-sm .p-button-icon {
@@ -3338,12 +3375,12 @@
 }
 
 .p-paginator {
-  background: var(--surface-a);
+  background: var(--surface-transparent-0);
   color: var(--text-color);
-  border: solid #404040;
-  border-width: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border: solid;
+  border-color: var(--primary-color6);
+  border-radius: 6px;
+  border-width: 1px;
 }
 
 .p-paginator .p-paginator-first,
@@ -3353,8 +3390,8 @@
   background-color: transparent;
   border: 0 none;
   color: var(--util-color7);
-  min-width: 3rem;
-  height: 3rem;
+  min-width: 2rem;
+  height: 2rem;
   margin: 0.143rem;
   transition: none;
   border-radius: 50%;
@@ -3367,16 +3404,6 @@
   background: var(--util-color2);
   border-color: transparent;
   color: var(--util-color7);
-}
-
-.p-paginator .p-paginator-first {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.p-paginator .p-paginator-last {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
 }
 
 .p-paginator .p-dropdown {
@@ -3402,8 +3429,8 @@
   background-color: transparent;
   border: 0 none;
   color: var(--util-color7);
-  min-width: 3rem;
-  height: 3rem;
+  min-width: 2rem;
+  height: 2rem;
   margin: 0.143rem;
   transition: none;
   border-radius: 50%;
@@ -4243,6 +4270,7 @@
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
     0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
   border: 0 none;
+  margin: 1rem
 }
 
 .p-dialog .p-dialog-header {
@@ -4290,6 +4318,8 @@
   background: var(--surface-f);
   color: var(--text-color);
   padding: 0 1.5rem 1.5rem 1.5rem;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .p-dialog .p-dialog-footer {
@@ -4329,6 +4359,10 @@
 }
 
 .p-overlaypanel .p-overlaypanel-content {
+  border-color: var(--primary-color);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
   padding: 1rem;
 }
 
@@ -4352,30 +4386,43 @@
 .p-overlaypanel:after {
   border: solid transparent;
   border-color: rgba(38, 38, 38, 0);
-  border-bottom-color: var(--surface-f);
+  border-bottom-color: var(--primary-color);
 }
 
 .p-overlaypanel:before {
   border: solid transparent;
   border-color: rgba(38, 38, 38, 0);
-  border-bottom-color: var(--surface-f);
+  border-bottom-color: var(--primary-color);
 }
 
 .p-overlaypanel.p-overlaypanel-flipped:after {
-  border-top-color: var(--surface-f);
+  border-top-color: var(--primary-color);
 }
 
 .p-overlaypanel.p-overlaypanel-flipped:before {
-  border-top-color: var(--surface-f);
+  border-top-color: var(--primary-color);
 }
 
 .p-sidebar {
   background: var(--surface-f);
   color: var(--text-color);
-  padding: 1rem;
+  /* padding: 1rem; */
   border: 0 none;
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
     0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+  max-width: 100vw;
+}
+
+.p-sidebar-header {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+}
+
+.p-sidebar-content {
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .p-sidebar .p-sidebar-close {
@@ -5549,6 +5596,12 @@
   border-radius: 50%;
   background: transparent;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.p-message.p-component > .p-message-wrapper > .p-message-close.p-link {
+  margin-left: 0.5rem;
+  /* Adds the same margin as the one à the right of the message icon */
 }
 
 .p-message .p-message-close:hover {
@@ -5631,6 +5684,8 @@
   height: 1.5rem;
   margin-right: 0.5rem;
   width: 1.5rem;
+  min-width: 1.5rem;
+  /* Avoids the icon to be very small on mobile */
 }
 
 .p-toast {
@@ -6751,7 +6806,8 @@
 }
 
 .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
-  background: var(--secondary-color);
+  /*background: var(--secondary-color);*/
+  background: var(--primary-color);
   color: var(--text-color2);
 }
 

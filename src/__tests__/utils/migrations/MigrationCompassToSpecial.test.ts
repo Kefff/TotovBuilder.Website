@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../../models/build/InventorySlotTypes'
 import { MigrationCompassToSpecial } from '../../../utils/migrations/MigrationCompassToSpecial'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
+describe('migrateBuildUnrelatedData and migrateBuild', () => {
   it('should replaces the compass inventory slot by the special inventory slots in obsolete builds.', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
@@ -22,7 +23,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
               quantity: 1
             }
           ],
-          typeId: 'compass'
+          typeId: 'compass' as InventorySlotTypeId
         }
       ],
       lastExported: new Date(1),
@@ -34,12 +35,12 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new MigrationCompassToSpecial()
 
     // Act
-    const result1 = await migration.migrateBuildUnrelatedData()
-    const result2 = await migration.migrateBuild(obsoleteBuild)
+    const result1 = await migration.migrateBuildUnrelatedDataPromise()
+    const result2 = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
-    expect(result1.success).toBe(true)
-    expect(result2.success).toBe(true)
+    expect(result1).toBe(true)
+    expect(result2).toBe(true)
     expect(obsoleteBuild).toStrictEqual({
       id: '',
       inventorySlots: [
@@ -94,10 +95,10 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new MigrationCompassToSpecial()
 
     // Act
-    const result = await migration.migrateBuild(obsoleteBuild)
+    const result = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
-    expect(result.success).toBe(true)
+    expect(result).toBe(true)
     expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
   })
 })

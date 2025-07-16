@@ -7,17 +7,12 @@ export interface IAmmunition extends IItem {
   /**
    * Modifier added to the weapon accuracy in percentage.
    */
-  accuracyPercentageModifier: number
+  accuracyModifierPercentage: number
 
   /**
    * Armor damage percentage.
    */
   armorDamagePercentage: number
-
-  /**
-   * List of the penetration efficiencies by armor class.
-   */
-  armorPenetrations: number[]
 
   /**
    * Indicates whether the ammunitions can blind opponents.
@@ -30,9 +25,9 @@ export interface IAmmunition extends IItem {
   caliber: string
 
   /**
-   * Durability burn percentage modifier.
+   * Durability burn modifier percentage.
    */
-  durabilityBurnPercentageModifier: number
+  durabilityBurnModifierPercentage: number
 
   /**
    * Damage done the the body when penetrating armor.
@@ -42,17 +37,22 @@ export interface IAmmunition extends IItem {
   /**
    * Percentage of chance to fragment and inflict additional damage to the body.
    */
-  fragmentationChancePercentage: number
+  fragmentationChance: number
 
   /**
    * Percentage of chance to inflict a heavy bleeding when hitting flesh.
    */
-  heavyBleedingPercentageChance: number
+  heavyBleedingChance: number
 
   /**
    * Percentage of chance to inflict a light bleeding when hitting flesh.
    */
-  lightBleedingPercentageChance: number
+  lightBleedingChance: number
+
+  /**
+   * Armor level a bullet can easily penetrate.
+   */
+  penetratedArmorLevel: number
 
   /**
    * Armor penetration power.
@@ -66,9 +66,9 @@ export interface IAmmunition extends IItem {
   projectiles: number
 
   /**
-   * Modifier added to the weapon recoil in percentage.
+   * Modifier added to the weapon recoil.
    */
-  recoilPercentageModifier: number
+  recoilModifier: number
 
   /**
    * Indicates whether the ammunition is subsonic or not.

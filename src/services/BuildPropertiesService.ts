@@ -1,21 +1,23 @@
+/* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IBuild } from '../models/build/IBuild'
-import { IInventoryItem } from '../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { IConflictingItem } from '../models/configuration/IConflictingItem'
-import { IVest } from '../models/item/IVest'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
+import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
-import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result, { FailureType } from '../utils/Result'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import StringUtils from '../utils/StringUtils'
+import { BuildService } from './BuildService'
+import { GlobalFilterService } from './GlobalFilterService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
-import { InventorySlotService } from './InventorySlotService'
 import { ItemService } from './ItemService'
 import Services from './repository/Services'
 
@@ -24,121 +26,35 @@ import Services from './repository/Services'
  */
 export class BuildPropertiesService {
   /**
-   * Checks if a build contains an armored vest preventing the usage of an armor.
-   * @param build - Build.
-   * @returns Success if the build doesn't contain an armored vest; otherwise Failure.
-   */
-  public async canAddArmor(build: IBuild): Promise<Result> {
-    const itemService = Services.get(ItemService)
-    const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
+ * Checks whether a build summary matches a filter.
+ * @param buildSummaryToCheck - Build summary that must be checked against the filter.
+ * @param filter - Filter.
+ */
+  public checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filter: string | undefined | null): boolean {
+    const filterWords = filter == null ? [] : filter.split(' ')
 
-    if (vestSlot.items[0] != null) {
-      const vestResult = await itemService.getItem(vestSlot.items[0].itemId)
-
-      if (!vestResult.success) {
-        return Result.failFrom(vestResult)
-      }
-
-      if ((vestResult.value as IVest).armorClass > 0) {
-        return Result.fail(
-          FailureType.hidden,
-          'BuildService.canAddArmor()',
-          vueI18n.t('message.cannotAddBodyArmor')
-        )
-      }
-    }
-
-    return Result.ok()
-  }
-
-  /**
-   * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
-   * @param build - Build.
-   * @param modId - ID of the mod to be added.
-   * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
-   * @returns Success if the mod can be added; otherwise Failure.
-   */
-  public async canAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
-    const itemService = Services.get(ItemService)
-    const modResult = await itemService.getItem(modId)
-
-    if (!modResult.success) {
-      return Result.failFrom(modResult)
-    }
-
-    const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
-    const inventoryItemResult = PathUtils.getInventoryItemFromPath(build, firstItemPath)
-
-    if (!inventoryItemResult.success) {
-      return Result.failFrom(inventoryItemResult)
-    }
-
-    const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
-    const conflictingItemsResult = await this.getConflictingItems(inventoryItemResult.value, changedModSlotPath)
-
-    if (!conflictingItemsResult.success) {
-      return Result.failFrom(conflictingItemsResult)
-    }
-
-    for (const conflictingItem of conflictingItemsResult.value) {
-      if (
-        conflictingItem.path.startsWith(path) || // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
-        (conflictingItem.conflictingItemId !== modId && // Checking the conflicting items for all the other mods
-          !modResult.value.conflictingItemIds.includes(conflictingItem.itemId)) // Checking the conflicting items of the mod being added
-      ) {
+    for (const filterWord of filterWords) {
+      if (StringUtils.contains(buildSummaryToCheck.name, filterWord)) {
         continue
       }
 
-      const conflictingItemResult = await itemService.getItem(conflictingItem.itemId)
+      let itemContains = false
+      const items = buildSummaryToCheck.shoppingList.map(sli => sli.item)
 
-      /* c8 ignore start */
-      if (!conflictingItemResult.success) {
-        return Result.failFrom(conflictingItemResult)
+      for (const item of items) {
+        if (StringUtils.contains(item.shortName, filterWord)
+          || StringUtils.contains(item.name, filterWord)) {
+          itemContains = true
+          break
+        }
       }
-      /* c8 ignore start */
 
-      return Result.fail(
-        FailureType.hidden,
-        'BuildService.canAddMod()',
-        vueI18n.t('message.cannotAddMod', {
-          modName: modResult.value.name,
-          conflictingItemName: conflictingItemResult.value.name
-        })
-      )
+      if (!itemContains) {
+        return false
+      }
     }
 
-    return Result.ok()
-  }
-
-  /**
-   * Checks if a build contains an armor preventing the usage of an armored vest.
-   * @param build - Build.
-   * @param vestId - Vest ID.
-   * @returns Success if the build doesn't contain an armor; otherwise Failure.
-   */
-  public async canAddVest(build: IBuild, vestId: string): Promise<Result> {
-    const itemService = Services.get(ItemService)
-    const vestResult = await itemService.getItem(vestId)
-
-    if (!vestResult.success) {
-      return Result.failFrom(vestResult)
-    }
-
-    if ((vestResult.value as IVest).armorClass === 0) {
-      return Result.ok()
-    }
-
-    const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
-
-    if (armorSlot.items[0] != null) {
-      return Result.fail(
-        FailureType.hidden,
-        'BuildService.canAddVest()',
-        vueI18n.t('message.cannotAddTacticalRig')
-      )
-    }
-
-    return Result.ok()
+    return true
   }
 
   /**
@@ -160,17 +76,160 @@ export class BuildPropertiesService {
   }
 
   /**
+   * Gets the merchants and their maximum level from a shopping list.
+   */
+  public getShoppingListMerchants(shoppingList: IShoppingListItem[]): IShoppingListMerchant[] {
+    const merchants: IShoppingListMerchant[] = []
+
+    for (const item of shoppingList) {
+      if (item.price == null || item.price.merchant === '') {
+        // Happens when an item only has barters that have items with a missing price
+        // This allows to display the barter to the user and to display the missing price icon on the barter items instead of the item itself
+        continue
+      }
+
+      const merchant = merchants.find(m => m.name === item.price!.merchant)
+
+      if (merchant == null) {
+        merchants.push({
+          name: item.price.merchant,
+          level: item.price.merchantLevel
+        })
+      } else {
+        if (merchant.level < item.price.merchantLevel) {
+          merchant.level = item.price.merchantLevel
+        }
+      }
+    }
+
+    merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
+
+    return merchants
+  }
+
+  /**
+   * Gets the stats of a build as a string.
+   * @param buildSummary - Build summary.
+   * @param options - Options.
+   * @param singleLine - Indicates whether the text should be on a single line.
+   */
+  public getStatsAsString(buildSummary: IBuildSummary, options: IBuildsToTextOptions, singleLine: boolean = false): string {
+    const itemService = Services.get(ItemService)
+
+    const mainCurrency = itemService.getMainCurrency()
+    const formattingTokens = this.getFormattingTokens(options)
+    const lineEnd = singleLine ? '    ' : `${formattingTokens.lineEnd}\n`
+
+    const hasArmor = buildSummary.armorModifiers.armorClass !== 0
+    const hasErgonomics = buildSummary.ergonomics !== 0
+    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
+    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+    const hasPrice = options.includePrices && buildSummary.price.priceByCurrency.length > 0
+    const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
+    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
+    const hasWeight = buildSummary.weight !== 0
+
+    let statsAsString = ''
+
+    if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
+      if (hasRecoil) {
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '↕️')}${this.translate('caption.verticalRecoil', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, options.language)}${formattingTokens.boldToken}`
+        statsAsString += `   ${StringUtils.getTextStatEmoji(options, '↔️')}${this.translate('caption.horizontalRecoil', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasErgonomics) {
+        if (hasRecoil) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasErgonomicsModifierPercentage) {
+        if (hasErgonomics) {
+          statsAsString += ` (${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${formattingTokens.boldToken})`
+        } else {
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomicsModifierPercentage', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${formattingTokens.boldToken}`
+        }
+      }
+
+      statsAsString += lineEnd
+    }
+
+    // Armor stats
+    if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
+      if (hasArmor) {
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '🛡️')}${this.translate('caption.armorClass', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasMovementSpeedModifierPercentage) {
+        if (hasArmor) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '🏃')}${this.translate('caption.speed', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
+      }
+
+      if (hasMovementSpeedModifierPercentage) {
+        if (hasArmor || hasMovementSpeedModifierPercentage) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeedModifierPercentage', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${formattingTokens.boldToken}`
+      }
+
+      statsAsString += lineEnd
+    }
+
+    // Price / weight
+    if (hasPrice || hasWeight) {
+      if (hasPrice) {
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('caption.price', options.language)} `
+
+        for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
+          if (buildSummary.price.priceByCurrency.length > 1
+            && i == buildSummary.price.priceByCurrency.length - 1) {
+            statsAsString += ` ${this.translate('caption.and', options.language)} `
+          } else if (i > 0) {
+            statsAsString += ', '
+          }
+
+          const priceInCurrency = buildSummary.price.priceByCurrency[i]
+          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
+          statsAsString += `${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, options.language)}${priceCurrency.symbol}${formattingTokens.boldToken}`
+        }
+
+        if (buildSummary.price.priceByCurrency.length > 1) {
+          statsAsString += ` (= ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, options.language)}${mainCurrency.symbol}${formattingTokens.boldToken})`
+        }
+      }
+
+      if (hasWeight) {
+        if (hasPrice) {
+          statsAsString += '   '
+        }
+
+        statsAsString += `${StringUtils.getTextStatEmoji(options, '⚓')}${this.translate('caption.weight', options.language)} ${formattingTokens.boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, options.language)}${formattingTokens.boldToken}`
+      }
+
+      statsAsString += formattingTokens.lineEnd
+    }
+
+    return statsAsString
+  }
+
+  /**
    * Gets a build summary.
    * @param build - Build.
    * @returns Build summary.
    */
-  public async getSummary(build: IBuild): Promise<IBuildSummary> {
+  public async getSummaryAsync(build: IBuild): Promise<IBuildSummary> {
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
     const lastUpdated = build.lastUpdated ?? new Date(1900, 1, 1)
 
-    const result: IBuildSummary = {
+    const summary: IBuildSummary = {
       armorModifiers: {
         armorClass: 0,
         durability: 0
@@ -192,46 +251,152 @@ export class BuildPropertiesService {
         verticalRecoil: 0
       },
       wearableModifiers: {
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       },
       weight: 0
     }
     const inventorySlotSummaries: IInventorySlotSummary[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotSummary = await inventorySlotPropertiesService.getSummary(inventorySlot)
+      const inventorySlotSummary = await inventorySlotPropertiesService.getSummaryAsync(inventorySlot)
       inventorySlotSummaries.push(inventorySlotSummary)
     }
 
-    // Armor modifiers
-    result.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
+    summary.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
+    summary.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
 
-    // Wearable modifiers
-    result.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
-
-    // Ergonomics
     const summaryErgonomics = this.getErgonomics(inventorySlotSummaries)
-    result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsPercentageModifier)
+    summary.ergonomics = summaryErgonomics * (1 + summary.wearableModifiers.ergonomicsModifierPercentage)
 
-    // Price
-    const priceResult = await this.getPrice(inventorySlotSummaries)
+    summary.price = this.getPrice(inventorySlotSummaries)
+    summary.recoil = this.getRecoil(inventorySlotSummaries)
+    summary.weight = this.getWeight(inventorySlotSummaries)
 
-    if (priceResult.success) {
-      result.price = priceResult.value
+    summary.shoppingList = await this.getShoppingListAsync(build)
+
+    return summary
+  }
+
+  /**
+   * Convert builds to a text.
+   * @param builds - Builds to convert.
+   * @param options - Options.
+   * @returns Text.
+   */
+  public async toTextAsync(builds: IBuild[], options: IBuildsToTextOptions): Promise<string> {
+    const buildService = Services.get(BuildService)
+    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
+
+    const formattingTokens = this.getFormattingTokens(options)
+
+    let buildsAsString = ''
+    const includeLink = options.linkOnly || options.includeLink
+
+    for (const build of builds) {
+      const sharableUrl = includeLink ? await buildService.toSharableUrlAsync(build) : undefined
+
+      if (options.linkOnly) {
+        if (options.type === BuildsToTextType.markdown) {
+          if (buildsAsString !== '') {
+            buildsAsString += '\n'
+          }
+
+          buildsAsString += `[${build.name}](${sharableUrl})`
+        } else {
+          if (buildsAsString !== '') {
+            buildsAsString += '\n\n\n\n'
+          }
+
+          buildsAsString += `${build.name}
+${sharableUrl}`
+        }
+
+        continue
+      }
+
+      let buildAsString = `${options.type === BuildsToTextType.markdown ? '# ' : ''}${build.name}`
+      const buildSummary = await this.getSummaryAsync(build)
+
+      if (options.type === BuildsToTextType.markdown && sharableUrl != null) {
+        // Build link
+        buildAsString += `\n\n${formattingTokens.italicToken}[${this.translate('caption.interactiveVersionWithFullStats', options.language)}](${sharableUrl})${formattingTokens.italicToken}`
+      }
+
+      // Main weapon stats
+      const statsAsString = this.getStatsAsString(buildSummary, options)
+
+      if (statsAsString !== '') {
+        buildAsString += `\n\n${statsAsString}`
+      }
+
+      // Inventory slots
+      let inventorySlotsAsString = ''
+
+      for (const inventorySlot of build.inventorySlots) {
+        const inventorySlotAsString = await inventorySlotPropertiesService.toTextAsync(inventorySlot, options)
+
+        if (inventorySlotAsString !== '') {
+          if (inventorySlotsAsString !== '') {
+            inventorySlotsAsString += '\n\n'
+          }
+
+          inventorySlotsAsString += inventorySlotAsString
+        }
+      }
+
+      if (inventorySlotsAsString !== '') {
+        buildAsString += `\n\n${inventorySlotsAsString}`
+      }
+
+      if (options.type === BuildsToTextType.simpleText && sharableUrl != null) {
+        // Build link
+        buildAsString += `\n\n${this.translate('caption.interactiveVersionWithFullStats', options.language)}
+${sharableUrl}`
+      }
+
+      if (buildsAsString !== '') {
+        buildsAsString += '\n\n\n\n'
+      }
+
+      buildsAsString += buildAsString
     }
 
-    // Recoil
-    result.recoil = this.getRecoil(inventorySlotSummaries)
+    if (options.linkOnly) {
+      return buildsAsString
+    }
 
-    // Weight
-    result.weight = this.getWeight(inventorySlotSummaries)
+    // Configured merchants
+    if (options.includePrices) {
+      const globalFilter = Services.get(GlobalFilterService).get()
+      const merchantFilters = globalFilter.merchantFilters.sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
 
-    // Shopping list
-    result.shoppingList = await this.getShoppingList(build)
+      let merchantsAsString = `${formattingTokens.italicToken}${this.translate('caption.configuredMerchants', options.language)}${formattingTokens.italicToken}`
 
-    return result
+      for (let i = 0; i < merchantFilters.length; i++) {
+        if (i % 3 === 0) {
+          merchantsAsString += `${formattingTokens.lineEnd}\n`
+        } else {
+          merchantsAsString += '   '
+        }
+
+        merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, options.language)} ${this.getTextMerchantLevel(options, options.language, merchantFilters[i].enabled, merchantFilters[i].merchantLevel)}`
+      }
+
+      buildsAsString += `\n\n\n\n${merchantsAsString}${formattingTokens.lineEnd}`
+    }
+
+    // Totov builder link
+    buildsAsString += '\n\n'
+
+    if (options.type === BuildsToTextType.markdown) {
+      buildsAsString += `${formattingTokens.italicToken}${this.translate('caption.createdWith', options.language)} [${this.translate('caption.totovBuilder', options.language)}](${window.location.origin})${formattingTokens.italicToken}`
+    } else {
+      buildsAsString += `${this.translate('caption.createdWith', options.language)} ${this.translate('caption.totovBuilder', options.language)}`
+    }
+
+    return buildsAsString
   }
 
   /**
@@ -239,13 +404,13 @@ export class BuildPropertiesService {
    * @param inventorySlotSummaries - Inventory slot summaries.
    */
   private getArmorModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IArmorModifiers {
-    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === 'bodyArmor')
+    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === InventorySlotTypeId.bodyArmor)
 
     if (armorSlotSummary != null && armorSlotSummary.armorModifiers.armorClass !== 0) {
       return armorSlotSummary.armorModifiers
     }
 
-    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === 'tacticalRig')
+    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === InventorySlotTypeId.tacticalRig)
 
     return vestSlot?.armorModifiers ?? {
       armorClass: 0,
@@ -254,63 +419,7 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the list conflicting items for an item and each of its mods.
-   * Items that do not have any conflicting items still are added in the list (with an undefined conflictingItemId) to be able to be tested against the added item conflicting items list.
-   * @param inventoryItem - Item.
-   * @param modSlotPath -"Path" to the mod slot the inventory item is in.
-   * @returns Conflicting items.
-   */
-  private async getConflictingItems(
-    inventoryItem: IInventoryItem,
-    modSlotPath: string
-  ): Promise<Result<IConflictingItem[]>> {
-    const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
-    const conflictingItems: IConflictingItem[] = []
-
-    if (itemResult.value.conflictingItemIds.length > 0) {
-      for (const conflictingItemId of itemResult.value.conflictingItemIds) {
-        conflictingItems.push({
-          itemId: itemResult.value.id,
-          path: modSlotPath,
-          conflictingItemId
-        })
-      }
-    } else {
-      conflictingItems.push({
-        itemId: itemResult.value.id,
-        path: modSlotPath,
-        conflictingItemId: undefined
-      })
-    }
-
-    for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item != null) {
-        const modConflictingItemIdsResult = await this.getConflictingItems(
-          modSlot.item,
-          modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
-        )
-
-        /* c8 ignore start */
-        if (!modConflictingItemIdsResult.success) {
-          return modConflictingItemIdsResult
-        }
-        /* c8 ignore stop */
-
-        conflictingItems.push(...modConflictingItemIdsResult.value)
-      }
-    }
-
-    return Result.ok(conflictingItems)
-  }
-
-  /**
-   * Gets the ergonomics of the main ranged weapon of a build (ergonomics percentage modifier not included).
+   * Gets the ergonomics of the main ranged weapon of a build (ergonomics modifier percentage not included).
    * @param inventorySlotSummaries - Inventory slot summaries.
    * @returns Ergonomics.
    */
@@ -321,24 +430,37 @@ export class BuildPropertiesService {
   }
 
   /**
+   * Gets formatting tokens for text generated from a build.
+   * @param options - Options.
+   * @returns Formatting tokens.
+   */
+  private getFormattingTokens(options: IBuildsToTextOptions): { boldToken: string, italicToken: string, lineEnd: string } {
+    return {
+      boldToken: options.type === BuildsToTextType.markdown ? '**' : '',
+      italicToken: options.type === BuildsToTextType.markdown ? '*' : '',
+      lineEnd: options.type === BuildsToTextType.markdown ? '  ' : ''
+    }
+  }
+
+  /**
    * Gets the summary of the main ranged weapon slot of a build.
    * @param inventoryItemSummaries - Inventory slot summaries.
    * @returns Main ranged weapon inventory slot summary.
    */
   private getMainRangedWeaponSummary(inventoryItemSummaries: IInventorySlotSummary[]): IInventorySlotSummary | undefined {
-    let mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'onSling')
+    let mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.onSling)
 
     if (mainRangedWeaponSummary != null && mainRangedWeaponSummary.recoil.verticalRecoil > 0) {
       return mainRangedWeaponSummary
     }
 
-    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'onBack')
+    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.onBack)
 
     if (mainRangedWeaponSummary != null && mainRangedWeaponSummary.recoil.verticalRecoil > 0) {
       return mainRangedWeaponSummary
     }
 
-    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'holster')
+    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.holster)
 
     return mainRangedWeaponSummary
   }
@@ -348,7 +470,7 @@ export class BuildPropertiesService {
    * @param inventorySlotSummaries - Inventory slot summaries.
    * @returns Price.
    */
-  private async getPrice(inventorySlotSummaries: IInventorySlotSummary[]): Promise<Result<IInventoryPrice>> {
+  private getPrice(inventorySlotSummaries: IInventorySlotSummary[]): IInventoryPrice {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       priceInMainCurrency: 0,
@@ -378,7 +500,7 @@ export class BuildPropertiesService {
       inventoryPrice.priceByCurrency = PriceUtils.sortByCurrency(inventoryPrice.priceByCurrency)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventoryPrice
   }
 
   /**
@@ -400,37 +522,38 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @returns Shopping list items.
    */
-  private async getShoppingList(build: IBuild): Promise<IShoppingListItem[]> {
+  private async getShoppingListAsync(build: IBuild): Promise<IShoppingListItem[]> {
     const inventoryItemService = Services.get(InventoryItemService)
     const shoppingList: IShoppingListItem[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-
-      if (!typeResult.success) {
-        continue
-      }
+      const inventorySlotType = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
 
       for (const item of inventorySlot.items) {
         if (item == null) {
           continue
         }
 
-        const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, typeResult.value.canBeLooted)
+        const inventoryItemShoppingList = await inventoryItemService.getShoppingListAsync(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
 
-        if (!shoppingListResult.success) {
-          continue
-        }
+        // Regrouping similar items
+        for (const inventoryItemShoppingListItemToAdd of inventoryItemShoppingList) {
+          const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli =>
+            sli.item.id === inventoryItemShoppingListItemToAdd.item.id
+            && sli.ignorePrice === inventoryItemShoppingListItemToAdd.ignorePrice
+            && sli.inventorySlotId == null // Regrouping only items that are not immediatly in an inventory slot
+            && inventoryItemShoppingListItemToAdd.inventorySlotId == null) // Regrouping only items that are not immediatly in an inventory slot
 
-        for (const shoppingListItemToAdd of shoppingListResult.value) {
-          const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
-
-          if (shoppingListItemIndex < 0) {
-            shoppingList.push(shoppingListItemToAdd)
+          if (inventoryItemShoppingListItemIndex < 0) {
+            shoppingList.push(inventoryItemShoppingListItemToAdd)
           } else {
-            shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
-            shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
-            shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].quantity += inventoryItemShoppingListItemToAdd.quantity
+
+            if (shoppingList[inventoryItemShoppingListItemIndex].price != null
+              && inventoryItemShoppingListItemToAdd.unitPrice != null) {
+              shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
+              shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
+            }
           }
         }
       }
@@ -440,21 +563,50 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the ergonomics percentage modifier of a build.
+   * Gets the merchant level to display in a text representing a build.
+   * @param options - Options.
+   * @param language - Language.
+   * @param enabled - Indicates whether the merchant is enable.
+   * @param level - Merchant level.
+   * @returns Merchant level.
+   */
+  private getTextMerchantLevel(options: IBuildsToTextOptions, language: string, enabled: boolean, level: number): string {
+    if (enabled) {
+      if (level === 0) {
+        return options.includeEmojis ? '✅' : this.translate('caption.yes', language)
+      }
+
+      switch (level) {
+        case 1:
+          return options.includeEmojis ? '1️⃣' : '1'
+        case 2:
+          return options.includeEmojis ? '2️⃣' : '2'
+        case 3:
+          return options.includeEmojis ? '3️⃣' : '3'
+        case 4:
+          return options.includeEmojis ? '4️⃣' : '4'
+      }
+    }
+
+    return options.includeEmojis ? '❌' : this.translate('caption.no', language)
+  }
+
+  /**
+   * Gets the ergonomics modifier percentage of a build.
    * @param inventorySlotSummaries - Inventory slot summaries.
-   * @returns Ergonomics percentage modifier.
+   * @returns Ergonomics modifier percentage.
    */
   private getWearableModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IWearableModifiers {
     const wearableModifiers: IWearableModifiers = {
-      ergonomicsPercentageModifier: 0,
-      movementSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifier: 0
+      ergonomicsModifierPercentage: 0,
+      movementSpeedModifierPercentage: 0,
+      turningSpeedModifierPercentage: 0
     }
 
     for (const inventorySlotSummary of inventorySlotSummaries) {
-      wearableModifiers.ergonomicsPercentageModifier += inventorySlotSummary.wearableModifiers.ergonomicsPercentageModifier
-      wearableModifiers.movementSpeedPercentageModifier += inventorySlotSummary.wearableModifiers.movementSpeedPercentageModifier
-      wearableModifiers.turningSpeedPercentageModifier += inventorySlotSummary.wearableModifiers.turningSpeedPercentageModifier
+      wearableModifiers.ergonomicsModifierPercentage += inventorySlotSummary.wearableModifiers.ergonomicsModifierPercentage
+      wearableModifiers.movementSpeedModifierPercentage += inventorySlotSummary.wearableModifiers.movementSpeedModifierPercentage
+      wearableModifiers.turningSpeedModifierPercentage += inventorySlotSummary.wearableModifiers.turningSpeedModifierPercentage
     }
 
     return wearableModifiers
@@ -473,5 +625,16 @@ export class BuildPropertiesService {
     }
 
     return weight
+  }
+
+  /**
+   * Translates a caption.
+   * @param caption - Caption.
+   * @param language - Language.
+   * @returns Translated caption.
+   */
+  private translate(caption: string, language: string): string {
+    // @ts-expect-error - For some reason, this signature of vueI18n.t() is not recognized while it really exists
+    return vueI18n.t(caption, 1, { 'locale': language })
   }
 }

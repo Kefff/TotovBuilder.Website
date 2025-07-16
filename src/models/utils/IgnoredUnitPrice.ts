@@ -1,5 +1,5 @@
 /**
- * Ignored unit price
+ * Ignored unit price.
  */
 export enum IgnoredUnitPrice {
   /**

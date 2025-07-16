@@ -1,10 +1,11 @@
-import { IBuild } from '../../models/build/IBuild'
-import { BuildService } from '../BuildService'
-import { NotificationService, NotificationType } from '../NotificationService'
-import vueI18n from '../../plugins/vueI18n'
 import { Router } from 'vue-router'
+import { IBuild } from '../../models/build/IBuild'
+import vueI18n from '../../plugins/vueI18n'
+import { BuildService } from '../BuildService'
+import { GeneralOptionsService } from '../GeneralOptionsService'
+import { NotificationService, NotificationType } from '../NotificationService'
 import Services from '../repository/Services'
-import Result from '../../utils/Result'
+import { WebsiteConfigurationService } from '../WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for managing a BuildComponent.
@@ -16,29 +17,8 @@ export class BuildComponentService {
    * @param build - Build to delete.
    */
   public deleteBuild(router: Router, build: IBuild): void {
-    const buildService = Services.get(BuildService)
-    const notificationService = Services.get(NotificationService)
-    const buildName = build.name
-
-    buildService.delete(build.id)
-    notificationService.notify(NotificationType.information, vueI18n.t('message.buildDeleted', { name: buildName }))
-    router.push({ name: 'Builds' })
-  }
-
-  /**
-   * Gets a build from an encoded string that can be shared in a URL.
-   * @param sharableString - Encoded string that can be shared in a URL.
-   * @returns Build.
-   */
-  public async getBuildFromSharableString(sharableString: string): Promise<Result<IBuild>> {
-    const buildService = Services.get(BuildService)
-    const buildResult = await buildService.fromSharableString(sharableString)
-
-    if (!buildResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, buildResult.failureMessage)
-    }
-
-    return buildResult
+    Services.get(BuildService).delete(build.id)
+    void router.push({ name: 'Builds' })
   }
 
   /**
@@ -53,15 +33,14 @@ export class BuildComponentService {
       return buildService.create()
     }
 
-    const result = buildService.get(id)
+    const build = buildService.get(id)
 
-    if (!result.success) {
-      Services.get(NotificationService).notify(NotificationType.warning, result.failureMessage)
-
+    if (build == null) {
+      // If the build cannot be found, we create a new build
       return buildService.create()
     }
 
-    return result.value
+    return build
   }
 
   /**
@@ -69,25 +48,51 @@ export class BuildComponentService {
    * @param router - Router used to redirect to the creation of a new build when the build corresponding to the ID is not found.
    * @param build - Build to save.
    */
-  public async saveBuild(router: Router, build: IBuild): Promise<void> {
+  public async saveBuildAsync(router: Router, build: IBuild): Promise<void> {
     const buildService = Services.get(BuildService)
-    const notificationService = Services.get(NotificationService)
+    const lastSharableUrl = build.sharabledUrl
+
+    if (lastSharableUrl != null) {
+      build.sharabledUrl = undefined // Resetting the sharable URL because changes may have been made
+    }
 
     if (build.id === '') {
       // New build
-      const newBuildId = await buildService.add(build)
-      router.push({ name: 'Build', params: { id: newBuildId } })
+      const newBuildId = await buildService.addAsync(build)
+      await router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
-      const result = await buildService.update(build.id, build)
-
-      if (!result.success) {
-        notificationService.notify(NotificationType.error, result.failureMessage)
-
-        return
-      }
+      await buildService.updateAsync(build)
     }
 
-    notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))
+    this.displaySaveNotifications(build.name, lastSharableUrl)
+  }
+
+  /**
+   * Displays notifications for alerting the user that the build has been saved.
+   * @param buildName - buildName Name of the build.
+   * @param lastSharableUrl - lastSharableUrl Last sharable URL of the build.
+   */
+  private displaySaveNotifications(buildName: string, lastSharableUrl: string | undefined): void {
+    const notificationService = Services.get(NotificationService)
+    notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: buildName }))
+
+    if (lastSharableUrl != null) {
+      const outdatedSharableUrlWarning = Services.get(GeneralOptionsService).getOutdatedSharableUrlWarningOption()
+
+      if (!outdatedSharableUrlWarning) {
+        return
+      }
+
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+      notificationService.notify(
+        NotificationType.warning,
+        vueI18n.t('message.buildSharableUrlOutdated'),
+        undefined,
+        undefined,
+        undefined,
+        websiteConfigurationService.configuration.outdatedSharableUrlWarningStorageKey
+      )
+    }
   }
 }

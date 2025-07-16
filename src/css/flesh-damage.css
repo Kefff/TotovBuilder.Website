@@ -7,11 +7,11 @@
 }
 
 .flesh-damage-oneshot {
+  bottom: 3px;
+  left: 10px;
   position: absolute;
-  right: -3px;
-  bottom: -6px;
 }
 
 .flesh-damage-oneshot-icon {
-  width: 0.5rem;
+  width: 0.5rem !important;
 }

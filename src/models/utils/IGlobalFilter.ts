@@ -1,4 +1,3 @@
-import { IItemExclusionFilter } from './IItemExclusionFilter'
 import { IMerchantFilter } from './IMerchantFilter'
 
 /**
@@ -6,9 +5,14 @@ import { IMerchantFilter } from './IMerchantFilter'
  */
 export interface IGlobalFilter {
   /**
-   * Item filters.
+   * Indicatew whether items that have no price matching the merchant filters are excluded.
    */
-  itemExclusionFilters: IItemExclusionFilter[]
+  excludeItemsWithoutMatchingPrice: boolean
+
+  /**
+   * Indicates whether the base items of presets are exluded.
+   */
+  excludePresetBaseItems: boolean
 
   /**
    * Merchant filters.

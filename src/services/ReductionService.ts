@@ -1,8 +1,8 @@
-import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import InventorySlotTypes, { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IQuest } from '../models/configuration/IQuest'
 import { IAmmunition } from '../models/item/IAmmunition'
 import { IArmor } from '../models/item/IArmor'
@@ -13,7 +13,7 @@ import { IContainer } from '../models/item/IContainer'
 import { IEyewear } from '../models/item/IEyewear'
 import { IGrenade } from '../models/item/IGrenade'
 import { IHeadwear } from '../models/item/IHeadwear'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IMagazine } from '../models/item/IMagazine'
 import { IMeleeWeapon } from '../models/item/IMeleeWeapon'
 import { IMod } from '../models/item/IMod'
@@ -24,10 +24,9 @@ import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IVest } from '../models/item/IVest'
 import { IWearable } from '../models/item/IWearable'
-import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
 import { BuildService } from './BuildService'
 import { ItemPropertiesService } from './ItemPropertiesService'
+import { LogService } from './LogService'
 import Services from './repository/Services'
 
 /**
@@ -39,31 +38,33 @@ export class ReductionService {
      * @param reducedBuild - Reduced build.
      * @returns Build.
      */
-  public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
+  public parseReducedBuild(reducedBuild: Record<string, unknown>): IBuild | undefined {
     const reducedInventorySlots = reducedBuild['s'] as Record<string, unknown>[]
 
     if (reducedInventorySlots == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedBuild()', vueI18n.t('message.cannotParseBuildWithoutInventorySlots'))
+      Services.get(LogService).logError('message.cannotParseBuildWithoutInventorySlots')
+
+      return undefined
     }
 
     const build = Services.get(BuildService).create(true)
     build.name = reducedBuild['n'] as string ?? ''
 
     for (const reducedInventorySlot of reducedInventorySlots) {
-      const inventorySlotResult = this.parseReducedInventorySlot(reducedInventorySlot)
+      const inventorySlot = this.parseReducedInventorySlot(reducedInventorySlot)
 
-      if (!inventorySlotResult.success) {
-        return Result.failFrom(inventorySlotResult)
+      if (inventorySlot == null) {
+        continue
       }
 
-      const index = build.inventorySlots.findIndex(is => is.typeId === inventorySlotResult.value.typeId)
+      const index = build.inventorySlots.findIndex(is => is.typeId === inventorySlot.typeId)
 
-      for (let i = 0; i < inventorySlotResult.value.items.length; i++) {
-        build.inventorySlots[index].items[i] = inventorySlotResult.value.items[i]
+      for (let i = 0; i < inventorySlot.items.length; i++) {
+        build.inventorySlots[index].items[i] = inventorySlot.items[i]
       }
     }
 
-    return Result.ok(build)
+    return build
   }
 
   /**
@@ -71,11 +72,13 @@ export class ReductionService {
    * @param reducedInventoryItem - Reduced inventory item.
    * @returns Inventory item.
    */
-  public parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): Result<IInventoryItem> {
+  public parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): IInventoryItem | undefined {
     const itemId = reducedInventoryItem['i'] as string
 
     if (itemId == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventoryItem()', vueI18n.t('message.cannotParseInventoryItemWithoutItemId'))
+      Services.get(LogService).logError('message.cannotParseInventoryItemWithoutItemId')
+
+      return undefined
     }
 
     const ignorePrice = reducedInventoryItem['p'] != null
@@ -90,13 +93,11 @@ export class ReductionService {
 
     if (reducedContainedItems != null) {
       for (const reducedContainedItem of reducedContainedItems) {
-        const itemResult = this.parseReducedInventoryItem(reducedContainedItem)
+        const item = this.parseReducedInventoryItem(reducedContainedItem)
 
-        if (!itemResult.success) {
-          return Result.failFrom(itemResult)
+        if (item != null) {
+          containedItems.push(item)
         }
-
-        containedItems.push(itemResult.value)
       }
     }
 
@@ -105,23 +106,21 @@ export class ReductionService {
 
     if (reducedModSlots != null) {
       for (const reducedModSlot of reducedModSlots) {
-        const modSlotResult = this.parseReducedInventoryModSlot(reducedModSlot)
+        const modSlot = this.parseReducedInventoryModSlot(reducedModSlot)
 
-        if (!modSlotResult.success) {
-          return Result.failFrom(modSlotResult)
+        if (modSlot != null) {
+          modSlots.push(modSlot)
         }
-
-        modSlots.push(modSlotResult.value)
       }
     }
 
-    return Result.ok({
+    return {
       content: containedItems,
       ignorePrice,
       itemId,
       modSlots,
       quantity
-    })
+    }
   }
 
   /**
@@ -155,6 +154,7 @@ export class ReductionService {
       case itemPropertiesService.isGrenade(item):
         item = this.parseReducedGrenade(reducedItem, item)
         break
+      case itemPropertiesService.isFaceCover(item):
       case itemPropertiesService.isHeadwear(item):
         item = this.parseReducedHeadwear(reducedItem, item)
         break
@@ -194,7 +194,7 @@ export class ReductionService {
     const itemId = reducedPrice['i'] as string
     const merchant = reducedPrice['m'] as string ?? 'flea-market'
     const merchantLevel = reducedPrice['ml'] as number ?? 0
-    let quest: IQuest | undefined = undefined
+    let quest: IQuest | undefined
     const value = reducedPrice['v'] as number ?? 0
     const valueInMainCurrency = reducedPrice['vm'] as number ?? 0
 
@@ -307,38 +307,38 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedAmmunition(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IAmmunition {
-    const accuracyPercentageModifier = reducedItem['ac'] as number ?? 0
+    const accuracyModifierPercentage = reducedItem['ac'] as number ?? 0
     const armorDamagePercentage = reducedItem['ad'] as number ?? 0
-    const armorPenetrations = reducedItem['ap'] as number[] ?? [0, 0, 0, 0, 0, 0]
     const blinding = reducedItem['b'] != null
     const caliber = reducedItem['ca'] as string
-    const durabilityBurnPercentageModifier = reducedItem['d'] as number ?? 0
+    const durabilityBurnModifierPercentage = reducedItem['d'] as number ?? 0
     const fleshDamage = reducedItem['f'] as number ?? 0
-    const fragmentationChancePercentage = reducedItem['fr'] as number ?? 0
-    const heavyBleedingPercentageChance = reducedItem['h'] as number ?? 0
-    const lightBleedingPercentageChance = reducedItem['l'] as number ?? 0
+    const fragmentationChance = reducedItem['fr'] as number ?? 0
+    const heavyBleedingChance = reducedItem['h'] as number ?? 0
+    const lightBleedingChance = reducedItem['l'] as number ?? 0
+    const penetratedArmorLevel = reducedItem['pa'] as number ?? 0
     const penetrationPower = reducedItem['pp'] as number ?? 0
     const projectiles = reducedItem['p'] as number ?? 1
-    const recoilPercentageModifier = reducedItem['r'] as number ?? 0
+    const recoilModifier = reducedItem['r'] as number ?? 0
     const subsonic = reducedItem['su'] != null
     const tracer = reducedItem['t'] != null
     const velocity = reducedItem['v'] as number
 
     return {
       ...baseItemProperties,
-      accuracyPercentageModifier,
+      accuracyModifierPercentage,
       armorDamagePercentage,
-      armorPenetrations,
       blinding,
       caliber,
-      durabilityBurnPercentageModifier,
+      durabilityBurnModifierPercentage,
       fleshDamage,
-      fragmentationChancePercentage,
-      heavyBleedingPercentageChance,
-      lightBleedingPercentageChance,
+      fragmentationChance,
+      heavyBleedingChance,
+      lightBleedingChance,
+      penetratedArmorLevel,
       penetrationPower,
       projectiles,
-      recoilPercentageModifier,
+      recoilModifier,
       subsonic,
       tracer,
       velocity
@@ -357,6 +357,7 @@ export class ReductionService {
 
     const armorClass = reducedItem['ac'] as number ?? 0
     const armoredAreas = reducedItem['aa'] as string[] ?? []
+    const blindnessProtectionPercentage = reducedItem['bp'] as number ?? 0
     const durability = reducedItem['d'] as number ?? 0
     const material = reducedItem['ma'] as string ?? ''
 
@@ -366,8 +367,10 @@ export class ReductionService {
       ...wearableProperties,
       armorClass,
       armoredAreas,
+      blindnessProtectionPercentage,
       durability,
-      material
+      material,
+      presetArmorModifiers: undefined
     }
   }
 
@@ -380,12 +383,9 @@ export class ReductionService {
   private parseReducedArmorMod(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IArmorMod {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
 
-    const blindnessProtectionPercentage = reducedItem['bp'] as number ?? 0
-
     return {
       ...baseItemProperties,
-      ...armorProperties,
-      blindnessProtectionPercentage
+      ...armorProperties
     }
   }
 
@@ -428,11 +428,11 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedEyewear(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IEyewear {
-    const blindnessProtectionPercentage = reducedItem['bp'] as number
+    const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
 
     return {
       ...baseItemProperties,
-      blindnessProtectionPercentage
+      ...armorProperties
     }
   }
 
@@ -443,19 +443,23 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedGrenade(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IGrenade {
+    const blinding = reducedItem['b'] != null
     const explosionDelay = reducedItem['d'] as number
     const fragmentsAmount = reducedItem['f'] as number ?? 0
+    const impact = reducedItem['ip'] != null
     const maximumExplosionRange = reducedItem['ma'] as number ?? 0
     const minimumExplosionRange = reducedItem['mi'] as number ?? 0
-    const type = reducedItem['t'] as string
+    const smoke = reducedItem['sm'] != null
 
     return {
       ...baseItemProperties,
+      blinding,
       explosionDelay,
       fragmentsAmount,
+      impact,
       maximumExplosionRange,
       minimumExplosionRange,
-      type
+      smoke
     }
   }
 
@@ -469,8 +473,8 @@ export class ReductionService {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
 
     const blocksHeadphones = reducedItem['h'] != null
-    const deafening = reducedItem['de'] as string ?? 'None'
-    const ricochetChance = reducedItem['r'] as string ?? ''
+    const deafening = reducedItem['de'] as string
+    const ricochetChance = reducedItem['r'] as string
 
     return {
       ...baseItemProperties,
@@ -492,8 +496,8 @@ export class ReductionService {
     const modProperties = this.parseReducedMod(reducedItem, baseItemProperties)
 
     const acceptedAmmunitionIds = reducedItem['aa'] as string[]
-    const checkSpeedPercentageModifier = reducedItem['cs'] as number ?? 0
-    const loadSpeedPercentageModifier = reducedItem['l'] as number ?? 0
+    const checkSpeedModifierPercentage = reducedItem['cs'] as number ?? 0
+    const loadSpeedModifierPercentage = reducedItem['l'] as number ?? 0
     const malfunctionPercentage = reducedItem['ma'] as number ?? 0
 
     return {
@@ -501,8 +505,8 @@ export class ReductionService {
       ...containerProperties,
       ...modProperties,
       acceptedAmmunitionIds,
-      checkSpeedPercentageModifier,
-      loadSpeedPercentageModifier,
+      checkSpeedModifierPercentage,
+      loadSpeedModifierPercentage,
       malfunctionPercentage
     }
   }
@@ -608,9 +612,7 @@ export class ReductionService {
       fireRate,
       horizontalRecoil,
       minuteOfAngle,
-      presetErgonomics: undefined,
-      presetHorizontalRecoil: undefined,
-      presetVerticalRecoil: undefined,
+      presetRangedWeaponModifiers: undefined,
       verticalRecoil
     }
   }
@@ -624,15 +626,15 @@ export class ReductionService {
   private parseReducedRangedWeaponMod(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IRangedWeaponMod {
     const modProperties = this.parseReducedMod(reducedItem, baseItemProperties)
 
-    const accuracyPercentageModifier = reducedItem['ac'] as number ?? 0
-    const recoilPercentageModifier = reducedItem['r'] as number ?? 0
+    const accuracyModifierPercentage = reducedItem['ac'] as number ?? 0
+    const recoilModifierPercentage = reducedItem['r'] as number ?? 0
 
     return {
       ...baseItemProperties,
       ...modProperties,
-      accuracyPercentageModifier,
-      presetRecoilPercentageModifier: undefined,
-      recoilPercentageModifier
+      accuracyModifierPercentage,
+      presetRecoilModifierPercentage: undefined,
+      recoilModifierPercentage
     }
   }
 
@@ -660,16 +662,16 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedWearable(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IWearable {
-    const ergonomicsPercentageModifier = reducedItem['e'] as number ?? 0
-    const movementSpeedPercentageModifier = reducedItem['ms'] as number ?? 0
-    const turningSpeedPercentageModifier = reducedItem['t'] as number ?? 0
+    const ergonomicsModifierPercentage = reducedItem['e'] as number ?? 0
+    const movementSpeedModifierPercentage = reducedItem['ms'] as number ?? 0
+    const turningSpeedModifierPercentage = reducedItem['t'] as number ?? 0
 
     return {
       ...baseItemProperties,
-      ergonomicsPercentageModifier,
-      movementSpeedPercentageModifier,
+      ergonomicsModifierPercentage,
+      movementSpeedModifierPercentage,
       presetWearableModifiers: undefined,
-      turningSpeedPercentageModifier
+      turningSpeedModifierPercentage
     }
   }
 
@@ -678,30 +680,26 @@ export class ReductionService {
    * @param reducedInventoryModSlot - Reduced inventory mod slot.
    * @returns Mod slot.
    */
-  private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): Result<IInventoryModSlot> {
+  private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): IInventoryModSlot | undefined {
     const modSlotName = reducedInventoryModSlot['n'] as string
 
     if (modSlotName == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventoryModSlot()', vueI18n.t('message.cannotParseInventoryModSlotWithoutModSlotName'))
+      Services.get(LogService).logError('message.cannotParseInventoryModSlotWithoutModSlotName')
+
+      return undefined
     }
 
-    let inventoryItem: IInventoryItem | undefined = undefined
+    let inventoryItem: IInventoryItem | undefined
     const reducedItem = reducedInventoryModSlot['i'] as Record<string, unknown> | undefined
 
     if (reducedItem != null) {
-      const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
-
-      if (!inventoryItemResult.success) {
-        return Result.failFrom(inventoryItemResult)
-      }
-
-      inventoryItem = inventoryItemResult.value
+      inventoryItem = this.parseReducedInventoryItem(reducedItem)
     }
 
-    return Result.ok({
+    return {
       item: inventoryItem,
       modSlotName
-    })
+    }
   }
 
   /**
@@ -709,42 +707,47 @@ export class ReductionService {
    * @param reducedInventorySlot - Reduced inventory slot.
    * @returns Inventory slot.
    */
-  private parseReducedInventorySlot(reducedInventorySlot: Record<string, unknown>): Result<IInventorySlot> {
+  private parseReducedInventorySlot(reducedInventorySlot: Record<string, unknown>): IInventorySlot | undefined {
+    const logService = Services.get(LogService)
     const reducedItems = reducedInventorySlot['i'] as Record<string, unknown>[]
 
     if (reducedItems == null || reducedItems.length === 0) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventorySlot()', vueI18n.t('message.cannotParseInventorySlotWithoutItems'))
+      logService.logError('message.cannotParseInventorySlotWithoutItems')
+
+      return undefined
     }
 
     const typeId = reducedInventorySlot['t'] as string
 
     if (typeId == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventorySlot()', vueI18n.t('message.cannotParseInventorySlotWithoutTypeId'))
+      logService.logError('message.cannotParseInventorySlotWithoutTypeId')
+
+      return undefined
     }
 
     const inventorySlotType = InventorySlotTypes.find(ist => ist.id === typeId)
 
     if (inventorySlotType == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventorySlot()', vueI18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
+      logService.logError('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId })
+
+      return undefined
     }
 
     const inventoryItems: IInventoryItem[] = Array(inventorySlotType.itemSlotsAmount)
 
     for (let i = 0; i < reducedItems.length; i++) {
       const reducedItem = reducedItems[i]
-      const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
+      const inventoryItem = this.parseReducedInventoryItem(reducedItem)
 
-      if (!inventoryItemResult.success) {
-        return Result.failFrom(inventoryItemResult)
+      if (inventoryItem != null) {
+        inventoryItems[i] = inventoryItem
       }
-
-      inventoryItems[i] = inventoryItemResult.value
     }
 
-    return Result.ok({
+    return {
       items: inventoryItems,
-      typeId
-    })
+      typeId: InventorySlotTypeId[typeId as keyof typeof InventorySlotTypeId]
+    }
   }
 
   /**
@@ -767,7 +770,7 @@ export class ReductionService {
     const wikiLink = reducedItem['wi'] as string
 
     return {
-      categoryId,
+      categoryId: ItemCategoryId[categoryId as keyof typeof ItemCategoryId],
       conflictingItemIds,
       iconLink,
       id,
@@ -775,6 +778,7 @@ export class ReductionService {
       marketLink,
       maxStackableAmount,
       name,
+      presetWeight: undefined,
       prices,
       shortName,
       weight,

@@ -1,36 +1,32 @@
 import { createApp } from 'vue'
-import App from './components/app/AppComponent.vue'
-import Item from './components/item/ItemComponent.vue'
-import Price from './components/price/PriceComponent.vue'
+import App from './components/AppComponent.vue'
 import { useApplicationInsights } from './plugins/applicationInsights'
+import { useFloatingVue } from './plugins/floatingVue'
 import { useFontAwesome } from './plugins/fontAwesome'
 import { usePrimeVue } from './plugins/primeVue'
+import { useUnhead } from './plugins/unhead'
 import { useI18n } from './plugins/vueI18n'
-import { useRouter } from './plugins/vueRouter'
+import { useVueRouter } from './plugins/vueRouter'
 import { polyfill } from './polyfill'
-import { configureServices } from './servicesConfiguration'
-
-useApplicationInsights()
+import { initializeServicesAsync } from './servicesConfiguration'
 
 // Polyfill
 polyfill()
 
 // Services
-configureServices()
-
+void initializeServicesAsync()
 
 // App
 const app = createApp(App)
 
 // Plugins
+useApplicationInsights()
+useFloatingVue(app)
 useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)
-useRouter(app)
-
-// Global components
-app.component('Item', Item) // Needs to be registered globally otherwise locally registering Item inside ItemContent which is registered inside Item doesn't work
-app.component('Price', Price)
+useUnhead(app)
+useVueRouter(app)
 
 // Start
 app.mount('#app')

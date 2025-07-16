@@ -1,16 +1,9 @@
 import vueI18n from '../plugins/vueI18n'
-import { LogService } from '../services/LogService'
-import Services from '../services/repository/Services'
 
 /**
  * Represents the result of an operation.
  */
 export default class Result<T = void> {
-  /**
-   * Informations about the context in which the failure occurred.
-   */
-  public failureContext = ''
-
   /**
    * Failure message.
    */
@@ -47,29 +40,12 @@ export default class Result<T = void> {
 
   /**
    * Create a failure result.
-   * @param type - Failure type determining how the failure is logged.
-   * @param context - Informations about the context in which the failure occurred.
    * @param message - Failure message.
    * @returns Failure result.
    */
-  public static fail<T = void>(type: FailureType = FailureType.hidden, context?: string, message?: string): Result<T> {
+  public static fail<T = void>(message: string): Result<T> {
     const result = new Result<T>(false)
-    result.failureContext = context ?? ''
-    result.failureMessage = message ?? ''
-    result.logFailure(type)
-
-    return result
-  }
-
-  /**
-   * Creates a failure result from another result.
-   * @param originalResult - Original result.
-   * @returns Failure result.
-   */
-  public static failFrom<T = void>(originalResult: Result<unknown>): Result<T> {
-    const result = new Result<T>(false)
-    result.failureContext = originalResult.failureContext
-    result.failureMessage = originalResult.failureMessage
+    result.failureMessage = message
 
     return result
   }
@@ -84,70 +60,4 @@ export default class Result<T = void> {
 
     return result
   }
-
-  /**
-   * Logs a failure.
-   * @param type - Failure type determining how the failure is logged.
-   * @param context - Failure context.
-   * @param message - Failure message.
-   */
-  private logFailure(type: FailureType) {
-    const service = Services.get(LogService)
-
-    switch (type) {
-      case FailureType.error: {
-        if (import.meta.env.VITE_DEBUG === 'true') {
-          service.logError('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
-        } else {
-          service.logError(this.failureMessage)
-        }
-
-        break
-      }
-      case FailureType.exception: {
-        if (import.meta.env.VITE_DEBUG === 'true') {
-          service.logException('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
-        } else {
-          service.logException(this.failureMessage)
-        }
-
-        break
-      }
-      case FailureType.warning: {
-        if (import.meta.env.VITE_DEBUG === 'true') {
-          service.logWarning('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
-        } else {
-          service.logWarning(this.failureMessage)
-        }
-
-        break
-      }
-    }
-  }
-}
-
-/**
- * Failure types.
- */
-export enum FailureType {
-  /**
-   * Failure logged as an error.
-   */
-  error,
-
-  /**
-   * Failure logged as an exception.
-   */
-  exception,
-
-  /**
-   * Failure not logged.
-   * Usually used when a failure is normal and expected.
-   */
-  hidden,
-
-  /**
-   * Failure logged as a warning.
-   */
-  warning
 }

@@ -1,7 +1,7 @@
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
+import { IMagazine } from '../../models/item/IMagazine'
 import { ItemService } from '../ItemService'
 import Services from '../repository/Services'
-import { IMagazine } from '../../models/item/IMagazine'
 
 /**
  * Represents a service responsible for managing an ItemContentComponent.
@@ -12,21 +12,17 @@ export class ItemContentComponentService {
    * @param itemId - Item ID.
    * @returns Accepted items.
    */
-  public async getAcceptedItems(itemId: string): Promise<IItem[]> {
+  public async getAcceptedItemsAsync(itemId: string): Promise<IItem[]> {
     let acceptedItems: IItem[] = []
-    const itemResult = await Services.get(ItemService).getItem(itemId)
+    const item = await Services.get(ItemService).getItemAsync(itemId)
 
-    if (!itemResult.success) {
-      return []
-    }
-
-    switch (itemResult.value.categoryId) {
-      case 'magazine': {
-        acceptedItems = await this.getMagazineAcceptedItems(itemResult.value)
+    switch (item.categoryId) {
+      case ItemCategoryId.magazine: {
+        acceptedItems = await this.getMagazineAcceptedItemsAsync(item)
         break
       }
       default: {
-        acceptedItems = await this.getItemAcceptedItems()
+        acceptedItems = await this.getItemAcceptedItemsAsync()
       }
     }
 
@@ -38,10 +34,10 @@ export class ItemContentComponentService {
    * @param itemCategoryId - Parent item category ID.
    * @returns Accepted items category ID or undefined when all items are accepted.
    */
-  public getAcceptedItemsCategoryId(itemCategoryId: string): string | undefined {
+  public getAcceptedItemsCategoryId(itemCategoryId: ItemCategoryId): ItemCategoryId | undefined {
     switch (itemCategoryId) {
-      case 'magazine': {
-        return 'ammunition'
+      case ItemCategoryId.magazine: {
+        return ItemCategoryId.ammunition
       }
       default: {
         return undefined
@@ -51,18 +47,14 @@ export class ItemContentComponentService {
 
   /**
    * Gets the accepted items for an item.
+   * This corresponds to all item categories.
    * @returns Accepted items.
    */
-  private async getItemAcceptedItems(): Promise<IItem[]> {
+  private async getItemAcceptedItemsAsync(): Promise<IItem[]> {
     const itemService = Services.get(ItemService)
-    const itemCategories = await itemService.getItemCategories()
-    const itemsResult = await itemService.getItemsOfCategories(itemCategories, true)
+    const items = await itemService.getItemsOfCategoriesAsync(Object.values(ItemCategoryId) as ItemCategoryId[], true)
 
-    if (itemsResult.success) {
-      return itemsResult.value
-    } else {
-      return []
-    }
+    return items
   }
 
   /**
@@ -70,15 +62,9 @@ export class ItemContentComponentService {
    * @param magazine - Magazine.
    * @returns Accepted items.
    */
-  private async getMagazineAcceptedItems(magazine: IItem): Promise<IItem[]> {
-    const itemService = Services.get(ItemService)
-    const itemsResult = await itemService.getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
+  private async getMagazineAcceptedItemsAsync(magazine: IItem): Promise<IItem[]> {
+    const items = await Services.get(ItemService).getItemsAsync((magazine as IMagazine).acceptedAmmunitionIds, true)
 
-    if (itemsResult.success) {
-      return itemsResult.value
-    } else {
-      return []
-    }
-
+    return items
   }
 }

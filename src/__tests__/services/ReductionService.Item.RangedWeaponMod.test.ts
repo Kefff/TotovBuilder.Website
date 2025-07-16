@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -22,9 +23,9 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/MPX-SD_9x19_integrated_sound_suppressor'
       },
       {
-        accuracyPercentageModifier: -0.01,
+        accuracyModifierPercentage: -0.01,
         baseItemId: undefined,
-        categoryId: 'rangedWeaponMod',
+        categoryId: ItemCategoryId.rangedWeaponMod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: -5,
@@ -36,9 +37,10 @@ describe('parseReducedItem', () => {
         modSlots: [],
         name: 'MPX-SD 9x19 integrated sound suppressor',
         presetErgonomicsModifier: undefined,
-        presetRecoilPercentageModifier: undefined,
+        presetRecoilModifierPercentage: undefined,
+        presetWeight: undefined,
         prices: [],
-        recoilPercentageModifier: -0.15,
+        recoilModifierPercentage: -0.15,
         shortName: 'MPX-SD',
         weight: 0.6,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MPX-SD_9x19_integrated_sound_suppressor'
@@ -68,9 +70,9 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/AKS-74U_gas_tube_(6P26_Sb.1-2)'
       },
       {
-        accuracyPercentageModifier: 0,
+        accuracyModifierPercentage: 0,
         baseItemId: undefined,
-        categoryId: 'rangedWeaponMod',
+        categoryId: ItemCategoryId.rangedWeaponMod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: 0,
@@ -94,9 +96,10 @@ describe('parseReducedItem', () => {
         ],
         name: 'AKS-74U gas tube (6P26 Sb.1-2)',
         presetErgonomicsModifier: undefined,
-        presetRecoilPercentageModifier: undefined,
+        presetRecoilModifierPercentage: undefined,
+        presetWeight: undefined,
         prices: [],
-        recoilPercentageModifier: 0,
+        recoilModifierPercentage: 0,
         shortName: '6P26 Sb.1-2',
         weight: 0.03,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AKS-74U_gas_tube_(6P26_Sb.1-2)'

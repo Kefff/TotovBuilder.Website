@@ -5,7 +5,7 @@ export interface ICurrency {
   /**
    * Icon name.
    */
-  iconName: string
+  iconName?: string
 
   /**
    * ID of the item representing the currency.
@@ -26,6 +26,11 @@ export interface ICurrency {
    * Value determining the position of the currency when a price containing multiple currencies is displayed.
    */
   sortOrder: number
+
+  /**
+   * Symbol.
+   */
+  symbol?: string
 
   /**
    * Value in main currency.

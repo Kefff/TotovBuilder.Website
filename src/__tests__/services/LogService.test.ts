@@ -1,14 +1,14 @@
-import { LogService } from '../../services/LogService'
-import vueI18n from '../../plugins/vueI18n'
 import { anything, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
+import vueI18n from '../../plugins/vueI18n'
+import { LogService } from '../../services/LogService'
 
-describe('getMessage()', () => {
+describe('getMessage', () => {
   it('should get a message', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
-    let log: string | undefined = undefined
+    let log: string | undefined
     const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key) })
 
     const consoleSpy = spy(console)
@@ -27,7 +27,7 @@ describe('getMessage()', () => {
     const key = 'test.logger2'
     const parameters = { article: 'an', messageType: 'error' }
     const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key, parameters) })
-    let log: string | undefined = undefined
+    let log: string | undefined
 
 
     const consoleSpy = spy(console)
@@ -46,7 +46,7 @@ describe('getMessage()', () => {
     const key = 'test.logger3'
     const plural = 2
     const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key, plural) })
-    let log: string | undefined = undefined
+    let log: string | undefined
 
     const consoleSpy = spy(console)
     when(consoleSpy.warn(anything())).thenCall((args) => log = args as string)
@@ -59,13 +59,13 @@ describe('getMessage()', () => {
   })
 })
 
-describe('logError()', () => {
+describe('logError', () => {
   it('should log an error message', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
     const expected = vueI18n.t(key)
-    let log: string | undefined = undefined
+    let log: string | undefined
 
     const consoleSpy = spy(console)
     when(consoleSpy.error(anything())).thenCall((args) => log = args as string)
@@ -79,16 +79,13 @@ describe('logError()', () => {
   })
 })
 
-describe('logException()', () => {
-  it.each([
-    [true, 'Error : This is a message.'],
-    [false, 'An internal error occured.']
-  ])('should log an exception message when in debug mode, otherwise a generic exception message', (debug: boolean, expected: string) => {
+describe('logException', () => {
+  it('should log an exception message', () => {
     // Arrange
     const loggerService = new LogService()
-    import.meta.env.VITE_DEBUG = debug.toString().toLocaleLowerCase()
     const key = 'test.logger1'
-    let log: string | undefined = undefined
+    const expected = vueI18n.t(key)
+    let log: string | undefined
 
     const consoleSpy = spy(console)
     when(consoleSpy.error(anything())).thenCall((args) => log = args as string)
@@ -102,13 +99,13 @@ describe('logException()', () => {
   })
 })
 
-describe('logInformation()', () => {
+describe('logInformation', () => {
   it('should log an information message', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
     const expected = vueI18n.t(key)
-    let log: string | undefined = undefined
+    let log: string | undefined
 
     const consoleSpy = spy(console)
     when(consoleSpy.log(anything())).thenCall((args) => log = args as string)
@@ -122,13 +119,13 @@ describe('logInformation()', () => {
   })
 })
 
-describe('logWarning()', () => {
+describe('logWarning', () => {
   it('should log a warning message', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
     const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key) })
-    let log: string | undefined = undefined
+    let log: string | undefined
 
     const consoleSpy = spy(console)
     when(consoleSpy.warn(anything())).thenCall((args) => log = args as string)

@@ -1,6 +1,6 @@
 import vueI18n from '../plugins/vueI18n'
-import Services from '../services/repository/Services'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+import Services from '../services/repository/Services'
 
 /**
  * Represents an utility class for managing language changes.
@@ -35,9 +35,5 @@ export default class LanguageUtils {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     vueI18n.locale.value = language as 'en' | 'fr'
     localStorage.setItem(websiteConfigurationService.configuration.languageStorageKey, language)
-
-    // Setting metadata
-    document.title = vueI18n.t('caption.metaTitle')
-    document.head.querySelector('meta[name=description]')?.setAttribute('content', vueI18n.t('caption.metaDescription'))
   }
 }

@@ -1,35 +1,11 @@
-.custom-icon {
-  width: 1rem;
-}
-
-.custom-icon-after-text {
-  align-items: center;
-  display: flex;
-}
-
-.custom-icon-after-text > img {
-  margin-left: 0.25rem;
-  width: 1rem;
-}
-
-.custom-icon-before-text {
-  align-items: center;
-  display: flex;
-}
-
-.custom-icon-before-text > img {
-  margin-right: 0.25rem;
-  width: 1rem;
-}
-
 .icon-after-text {
-  min-height: 1rem;
+  height: 1rem;
   margin-left: 0.25rem;
-  min-width: 1rem;
+  width: 1rem;
 }
 
 .icon-before-text {
-  min-height: 1rem;
+  height: 1rem;
   margin-right: 0.25rem;
-  min-width: 1rem;
+  width: 1rem;
 }
