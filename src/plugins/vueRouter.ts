@@ -2,8 +2,11 @@ import { App } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import ItemsComponent from '../components/ItemsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
+import Services from '../services/repository/Services'
+import { SeoService } from '../services/SeoService'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
+import vueI18n from './vueI18n'
 
 const Build = (): unknown => import('../components/BuildComponent.vue')
 const Builds = (): unknown => import('../components/BuildsComponent.vue')
@@ -31,6 +34,7 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: (to, from, next): void => {
       const language = to.params.language as string
       LanguageUtils.setLanguage(language)
+
       next()
     }
   },
@@ -39,6 +43,9 @@ const routes: RouteRecordRaw[] = [
     name: 'Builds',
     path: '/builds',
     beforeEnter: (to, from): void => {
+      Services.get(SeoService).updateSeoMetadata({
+        title: vueI18n.t('caption.builds')
+      })
       applicationInsights.trackPageView({
         name: 'Builds',
         refUri: from.path,
@@ -51,6 +58,9 @@ const routes: RouteRecordRaw[] = [
     name: 'NewBuild',
     path: '/build',
     beforeEnter: (to, from): void => {
+      Services.get(SeoService).updateSeoMetadata({
+        title: vueI18n.t('caption.newBuild')
+      })
       applicationInsights.trackPageView({
         name: 'NewBuild',
         refUri: from.path,
@@ -87,6 +97,9 @@ const routes: RouteRecordRaw[] = [
     name: 'Build',
     path: '/build/:id',
     beforeEnter: (to, from): void => {
+      Services.get(SeoService).updateSeoMetadata({
+        title: vueI18n.t('caption.build')
+      })
       applicationInsights.trackPageView({
         name: 'CopyBuild',
         refUri: from.path,
@@ -99,6 +112,9 @@ const routes: RouteRecordRaw[] = [
     name: 'Items',
     path: '/items',
     beforeEnter: (to, from): void => {
+      Services.get(SeoService).updateSeoMetadata({
+        title: vueI18n.t('caption.items')
+      })
       applicationInsights.trackPageView({
         name: 'Items',
         refUri: from.path,

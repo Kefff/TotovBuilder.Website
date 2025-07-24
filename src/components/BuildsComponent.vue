@@ -16,7 +16,6 @@ import {
   NotificationService,
   NotificationType
 } from '../services/NotificationService'
-import { SeoService } from '../services/SeoService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
 import BuildsList from './BuildsListComponent.vue'
@@ -253,10 +252,6 @@ function getBuilds(): IBuild[] {
  * Initializes the component.
  */
 function initialize(): void {
-  Services.get(SeoService).updateSeoMetadata({
-    title: vueI18n.t('caption.builds')
-  })
-
   const page = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsPageStorageKey)
   currentPage.value = page != null
     ? Number.parseInt(page)
