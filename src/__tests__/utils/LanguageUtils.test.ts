@@ -1,5 +1,7 @@
+import { instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import vueI18n from '../../plugins/vueI18n'
+import { SeoService } from '../../services/SeoService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
 import LanguageUtils from '../../utils/LanguageUtils'
@@ -36,14 +38,18 @@ describe('setLanguage', () => {
   it.each([
     ['fr', 'fr'],
     ['invalid', 'en']
-  ])('should change the language', (language: string, expectedLanguage: string) => {
+  ])('should change the language and update SEO metadata', (language: string, expectedLanguage: string) => {
     // Arrange
     useWebsiteConfigurationServiceMock()
+
+    const seoServiceMock = mock<SeoService>()
+    Services.configure(SeoService, undefined, instance(seoServiceMock))
 
     // Act
     LanguageUtils.setLanguage(language)
 
     // Assert
     expect(vueI18n.locale.value).toBe(expectedLanguage)
+    verify(seoServiceMock.updateSeoMetadata()).once()
   })
 })
