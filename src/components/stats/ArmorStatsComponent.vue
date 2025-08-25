@@ -131,7 +131,7 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
             class="icon-before-text"
           />
         </div>
-        <span>{{ $t('caption.armoredArea' + armoredArea) }}</span>
+        <span>{{ armoredArea }}</span>
       </div>
     </div>
   </div>
