@@ -4,8 +4,10 @@ import { ICurrency } from '../models/configuration/ICurrency'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import vueI18n from '../plugins/vueI18n'
+import GameModeService from './GameModeService'
 import { GlobalFilterService } from './GlobalFilterService'
 import { ItemFetcherService } from './ItemFetcherService'
+import LanguageService from './LanguageService'
 import { LogService } from './LogService'
 import { NotificationService, NotificationType } from './NotificationService'
 import { PresetService } from './PresetService'
@@ -27,11 +29,6 @@ export class ItemService {
    * Event emitter used to initialization state change.
    */
   public emitter = new TinyEmitter()
-
-  /**
-   * Indicates whether prices have successfully been fetched once.
-   */
-  public hasPrices = false
 
   /**
    * Initialization state of the service.
@@ -256,11 +253,26 @@ export class ItemService {
   }
 
   /**
+   * Invalidates the items cache to force them to be fetched the next time items are gotten.
+   */
+  public invalidatedItemsCache(): void {
+    this.hasStaticDataCached = false
+  }
+
+  /**
+   * Invalidates the prices cache to force them to be fetched the next time items are gotten.
+   */
+  public invalidatedPricesCache(): void {
+    this.lastPricesFetchDate = undefined
+  }
+
+  /**
    * Fetches items.
    * @returns `true` when items have correctly been fetched; otherwise `false`.
    */
   private async fetchItemsAsync(): Promise<boolean> {
-    const items = await Services.get(ItemFetcherService).fetchItemsAsync()
+    const itemsLanguage = Services.get(LanguageService).getItemsLanguage()
+    const items = await Services.get(ItemFetcherService).fetchItemsAsync(itemsLanguage)
 
     if (items == undefined) {
       return false
@@ -338,13 +350,16 @@ export class ItemService {
   private async startPricesFetchingAsync(): Promise<void> {
     this.isFetchingPrices = true
 
-    const prices = await Services.get(ItemFetcherService).fetchPricesAsync()
+    const gameMode = Services.get(GameModeService).getGameMode()
+    const itemsLanguage = Services.get(LanguageService).getItemsLanguage()
+    const itemFetcher = Services.get(ItemFetcherService)
+    const prices = await itemFetcher.fetchPricesAsync(gameMode, itemsLanguage)
 
     if (prices == undefined) {
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.pricesLoadingError'))
 
-      // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
-      // This is to avoid making a new request for each of the 3000+ items.
+      // When an error occurs, we set the last fetch date in order to make the cache expire later.
+      // This is to avoid immediatly making a new request for each time an item is gotten when loading a page.
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
       this.lastPricesFetchDate = new Date(
         new Date().getTime()
@@ -430,7 +445,6 @@ export class ItemService {
     this.updateCurrencyValues()
     this.updatePricesInMainCurrency()
     this.lastPricesFetchDate = new Date()
-    this.hasPrices = true
   }
 
   /**

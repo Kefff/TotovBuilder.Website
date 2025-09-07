@@ -2,9 +2,9 @@ import { App } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import ItemsComponent from '../components/ItemsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
+import LanguageService from '../services/LanguageService'
 import Services from '../services/repository/Services'
 import { SeoService } from '../services/SeoService'
-import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
 import vueI18n from './vueI18n'
 
@@ -17,8 +17,9 @@ const routes: RouteRecordRaw[] = [
     name: 'Welcome',
     path: '/',
     beforeEnter: (to, from): void => {
-      const language = LanguageUtils.getLanguage()
-      LanguageUtils.setLanguage(language)
+      const languageService = Services.get(LanguageService)
+      const language = languageService.getStoredOrBrowserApplicationLanguage()
+      languageService.setApplicationLanguage(language)
 
       applicationInsights.trackPageView({
         name: 'Welcome',
@@ -33,7 +34,7 @@ const routes: RouteRecordRaw[] = [
     path: '/:language',
     beforeEnter: (to, from, next): void => {
       const language = to.params.language as string
-      LanguageUtils.setLanguage(language)
+      Services.get(LanguageService).setApplicationLanguage(language)
 
       next()
     }

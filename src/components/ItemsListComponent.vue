@@ -4,9 +4,11 @@ import { IBuildItemWithPath } from '../models/build/IBuildItemWithPath'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
+import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
+import LanguageService from '../services/LanguageService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
@@ -48,9 +50,11 @@ const props = withDefaults(
     }
   })
 
+const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
+const _languageService = Services.get(LanguageService)
 const _sortingService = Services.get(SortingService)
 
 let _itemsWaitingToBeFilteredAndSorted: IItem[] | undefined = undefined
@@ -117,7 +121,9 @@ const {
 } = WebBrowserUtils.getScreenSize()
 
 onMounted(() => {
+  _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _languageService.emitter.on(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
 
   // Getting the items once they have been fully initialized
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
@@ -129,7 +135,11 @@ onMounted(() => {
   }
 })
 
-onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
+onUnmounted(() => {
+  _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, onGameModeChanged)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _languageService.emitter.off(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
+})
 
 watch(
   () => modelFilterAndSortingData.value,
@@ -248,9 +258,27 @@ function getAvailableItemCategoryIdsFromItems(items: IItem[]): ItemCategoryId[] 
 }
 
 /**
+ * Reacts to a the game mode changing.
+ *
+ * Filters and sorts items.
+ */
+function onGameModeChanged(): void {
+  filterAndSortItemsAsync(true)
+}
+
+/**
+ * Reacts to a the items language changing.
+ *
+ * Filters and sorts items.
+ */
+function onItemsLanguageChanged(): void {
+  filterAndSortItemsAsync(true)
+}
+
+/**
  * Reacts to a the merchant filter changing.
  *
- * Filters and sorts them.
+ * Filters and sorts items.
  */
 function onMerchantFilterChanged(): void {
   filterAndSortItemsAsync(true)
@@ -305,7 +333,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       <Loading />
     </div>
     <div
-      v-if="!isInitializing"
+      v-if="!isInitializing && !isLoading"
       class="items-list"
     >
       <FilterChips

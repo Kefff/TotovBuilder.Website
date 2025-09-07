@@ -82,7 +82,7 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
         <span>{{ $t('caption.material') }} :</span>
       </div>
       <div class="stats-value">
-        {{ $t('caption.material' + armor.material) }}
+        {{ armor.material }}
       </div>
     </div>
     <slot />

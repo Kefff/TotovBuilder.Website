@@ -1,12 +1,14 @@
 import MockDate from 'mockdate'
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { ICurrency } from '../../models/configuration/ICurrency'
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
+import GameModeService from '../../services/GameModeService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
+import LanguageService from '../../services/LanguageService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
@@ -197,8 +199,8 @@ describe('ItemService', () => {
       Services.configure(LogService, undefined, instance(logServiceMock))
 
       const itemFetcherServiceMock = mock<ItemFetcherService>()
-      when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(undefined)
-      when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(PriceMocks)
+      when(itemFetcherServiceMock.fetchItemsAsync('en')).thenResolve(undefined)
+      when(itemFetcherServiceMock.fetchPricesAsync('pvp', 'en')).thenResolve(PriceMocks)
       when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(undefined)
       Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
@@ -322,8 +324,8 @@ describe('ItemService', () => {
       Services.configure(NotificationService)
 
       const itemFetcherServiceMock = mock<ItemFetcherService>()
-      when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(undefined)
-      when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(PriceMocks)
+      when(itemFetcherServiceMock.fetchItemsAsync('en')).thenResolve(undefined)
+      when(itemFetcherServiceMock.fetchPricesAsync('pvp', 'en')).thenResolve(PriceMocks)
       when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(undefined)
       Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
@@ -522,8 +524,8 @@ describe('ItemService', () => {
       await itemService.initializeAsync()
 
       // Assert
-      verify(itemFetcherServiceSpy.fetchItemsAsync()).once()
-      verify(itemFetcherServiceSpy.fetchPricesAsync()).twice()
+      verify(itemFetcherServiceSpy.fetchItemsAsync('en')).once()
+      verify(itemFetcherServiceSpy.fetchPricesAsync('pvp', 'en')).twice()
 
       MockDate.reset()
     })
@@ -545,8 +547,8 @@ describe('ItemService', () => {
       await itemService.initializeAsync()
 
       // Assert
-      verify(itemFetcherServiceSpy.fetchItemsAsync()).once()
-      verify(itemFetcherServiceSpy.fetchPricesAsync()).once()
+      verify(itemFetcherServiceSpy.fetchItemsAsync('en')).once()
+      verify(itemFetcherServiceSpy.fetchPricesAsync('pvp', 'en')).once()
     })
 
     it('should do nothing when services failed to initialize', async () => {
@@ -566,8 +568,8 @@ describe('ItemService', () => {
       await itemService.initializeAsync()
 
       // Assert
-      verify(itemFetcherServiceSpy.fetchItemsAsync()).never()
-      verify(itemFetcherServiceSpy.fetchPricesAsync()).never()
+      verify(itemFetcherServiceSpy.fetchItemsAsync('en')).never()
+      verify(itemFetcherServiceSpy.fetchPricesAsync('pvp', 'en')).never()
       verify(itemFetcherServiceSpy.fetchPresetsAsync()).never()
       expect(itemService.initializationState).toBe(ServiceInitializationState.error)
     })
@@ -581,9 +583,9 @@ describe('ItemService', () => {
       useWebsiteConfigurationServiceMock()
 
       const itemFetcherServiceMock = mock<ItemFetcherService>()
-      when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(ItemMocks)
+      when(itemFetcherServiceMock.fetchItemsAsync('en')).thenResolve(ItemMocks)
       when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(PresetMocks)
-      when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(undefined)
+      when(itemFetcherServiceMock.fetchPricesAsync('pvp', 'en')).thenResolve(undefined)
       Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
       const notificationServiceMock = mock<NotificationService>()
@@ -596,6 +598,70 @@ describe('ItemService', () => {
 
       // Assert
       verify(notificationServiceMock.notify(NotificationType.error, 'Something went wrong while updating prices.\nTry waiting a bit and reloading the page.')).once()
+    })
+  })
+
+  describe('invalidatedItemsCache', () => {
+    it('should force items to be fetched again the next time items are gotten', async () => {
+      // Arrange
+      vi.useFakeTimers()
+
+      useGlobalFilterServiceMock()
+      useItemFetcherServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+
+      const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
+
+      const itemService = new ItemService()
+      Services.configure(ItemService, undefined, itemService)
+
+      await itemService.getItemAsync(rpk16Default.id)
+      vi.advanceTimersByTime(1000)
+
+      // Act
+      Services.get(LanguageService).setItemsLanguage('fr') // Calls invalidatedItemsCache
+      await itemService.getItemAsync(rpk16Default.id)
+
+      // Assert
+      verify(itemFetcherServiceSpy.fetchItemsAsync('en')).once()
+      verify(itemFetcherServiceSpy.fetchItemsAsync('fr')).once()
+
+      // Clean
+      vi.useRealTimers()
+    })
+  })
+
+  describe('invalidatedPricesCache', () => {
+    it('should force prices to be fetched again the next time items are gotten', async () => {
+      // Arrange
+      vi.useFakeTimers()
+
+      useGlobalFilterServiceMock()
+      useItemFetcherServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+
+      const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
+
+      const itemService = new ItemService()
+      Services.configure(ItemService, undefined, itemService)
+
+      await itemService.getItemAsync(rpk16Default.id)
+      vi.advanceTimersByTime(1000)
+
+      // Act
+      Services.get(GameModeService).setGameMode('pve') // Calls invalidatedPricesCache
+      await itemService.getItemAsync(rpk16Default.id)
+
+      // Assert
+      verify(itemFetcherServiceSpy.fetchPricesAsync('pvp', 'en')).once()
+      verify(itemFetcherServiceSpy.fetchPricesAsync('pve', 'en')).once()
+
+      // Clean
+      vi.useRealTimers()
     })
   })
 })

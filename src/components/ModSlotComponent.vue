@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Ref, computed, inject, onMounted, onUnmounted, ref } from 'vue'
+import { Ref, inject, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IItem } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
-import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
@@ -25,8 +24,6 @@ let _acceptedItemsNeedsUpdated = true
 
 const acceptedItems = ref<IItem[]>([])
 const isEditing = inject<Ref<boolean>>('isEditing')
-
-const modSlotName = computed(() => vueI18n.t(`caption.modSlot_${props.modSlot.name.startsWith('chamber') ? 'chamber' : props.modSlot.name}`))
 
 onMounted(() => _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
@@ -70,7 +67,7 @@ function onMerchantFilterChanged(): void {
   >
     <div class="mod-slot-header">
       <span class="mod-slot-name">
-        {{ modSlotName }}
+        {{ modSlot.name }}
       </span>
       <Tooltip :tooltip="$t('caption.requiredMod')">
         <span

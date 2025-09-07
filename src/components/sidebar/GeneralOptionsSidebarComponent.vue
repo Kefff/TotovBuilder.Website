@@ -2,15 +2,21 @@
 import { computed, onMounted, ref } from 'vue'
 import { IGeneralOption } from '../../models/utils/IGeneralOption'
 import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import vueI18n from '../../plugins/vueI18n'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
+import LanguageService from '../../services/LanguageService'
 import Services from '../../services/repository/Services'
-import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import LanguageSelector from '../LanguageSelectorComponent.vue'
 
 const modelParameters = defineModel<GeneralOptionsSidebarParameters>('parameters')
 
 defineProps<{ identifier: number }>()
 
 const _generalOptionsService = Services.get(GeneralOptionsService)
+const _languageService = Services.get(LanguageService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
 
 const allowCookies = ref(true)
 const exportWarning = ref(true)
@@ -19,11 +25,21 @@ const outdatedSharableUrlWarning = ref(true)
 const additionalDisplayOptions = computed(() => modelParameters.value?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
 const additionalGeneralOptions = computed(() => modelParameters.value?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
 const additionalOptionGroups = computed(() => modelParameters.value?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
+const applicationLanguage = computed({
+  get: () => vueI18n.locale.value,
+  set: (value) => _languageService.setApplicationLanguage(value)
+})
+
+let itemsLanguage = ref<string>('')
+
+
 
 onMounted(() => {
   allowCookies.value = _generalOptionsService.getAllowCookiesOption()
   exportWarning.value = _generalOptionsService.getExportWarningOption()
   outdatedSharableUrlWarning.value = _generalOptionsService.getOutdatedSharableUrlWarningOption()
+
+  itemsLanguage.value = _languageService.getItemsLanguage()
 })
 
 /**
@@ -51,12 +67,31 @@ function onAllowCookiesChanged(): void {
 }
 
 /**
+ * Reacts to the application language being changed.
+ *
+ * Sets the application language with the same value.
+ */
+function onApplicationLanguageChanged(): void {
+  itemsLanguage.value = applicationLanguage.value
+  onItemsLanguageChanged()
+}
+
+/**
  * Reacts to the export warning option being changed.
  *
  * Sets the export warning option.
  */
 function onExportWarningChanged(): void {
   _generalOptionsService.setExportWarningOption(exportWarning.value)
+}
+
+/**
+ * Reacts to the items language being changed.
+ *
+ * Persists the items language and invalidates items and prices cache to force them to be reloaded with the new language.
+ */
+function onItemsLanguageChanged(): void {
+  _languageService.setItemsLanguage(itemsLanguage.value)
 }
 
 /**
@@ -104,9 +139,28 @@ function toggleOutdatedSharableUrlWarningValue(): void {
 
 <template>
   <!-- Display options -->
-  <!-- Language -->
+  <!-- Application & items language -->
   <div class="sidebar-option">
-    <ApplicationLanguageSelector />
+    <div class="general-options-languages">
+      <div>
+        <font-awesome-icon icon="language" />
+      </div>
+      <span>{{ $t('caption.language') }}</span>
+      <LanguageSelector
+        v-model:language="applicationLanguage"
+        :languages="vueI18n.availableLocales"
+        @update:language="onApplicationLanguageChanged"
+      />
+      <div>
+        <font-awesome-icon icon="language" />
+      </div>
+      <span>{{ $t('caption.itemsLanguage') }}</span>
+      <LanguageSelector
+        v-model:language="itemsLanguage"
+        :languages="_websiteConfigurationService.configuration.itemsLanguages"
+        @update:language="onItemsLanguageChanged"
+      />
+    </div>
   </div>
   <!-- Additional display options -->
   <div
@@ -259,6 +313,14 @@ function toggleOutdatedSharableUrlWarningValue(): void {
 <style scoped>
 .general-options-additional-group {
   margin-top: 3rem;
+}
+
+.general-options-languages {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: auto auto 1fr;
+  width: 100%;
 }
 
 .general-options-name {
