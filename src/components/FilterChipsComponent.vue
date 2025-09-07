@@ -337,7 +337,13 @@ function switchSortOrder(): void {
             <div class="filter-chip-icon">
               <font-awesome-icon icon="gamepad" />
             </div>
-            <div class="filter-chip-game-mode-text">
+            <div
+              class="filter-chip-game-mode-text"
+              :class="{
+                'filter-chip-game-mode-text-pve': gameMode === 'pve',
+                'filter-chip-game-mode-text-pvp': gameMode === 'pvp',
+              }"
+            >
               {{ $t(`caption.gameMode_${gameMode}`) }}
             </div>
           </div>
@@ -578,6 +584,15 @@ function switchSortOrder(): void {
 
 .filter-chip-game-mode-text {
   margin-right: 0.5rem;
+  font-weight: bolder;
+}
+
+.filter-chip-game-mode-text-pve {
+  color: var(--success-color);
+}
+
+.filter-chip-game-mode-text-pvp {
+  color: var(--primary-color);
 }
 
 .filter-chip-icon {

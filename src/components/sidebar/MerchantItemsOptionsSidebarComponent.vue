@@ -59,12 +59,18 @@ function save(): void {
 
 <template>
   <!-- Game mode -->
-  <div class="sidebar-option">
-    <span :class="{ 'sidebar-option-disabled': globalFilter.excludeItemsWithoutMatchingPrice }">
+  <div class="sidebar-option merchant-items-options-game-mode">
+    <span :class="{ 'merchant-items-options-game-mode-pve-selected': !isPvp, 'sidebar-option-disabled': isPvp }">
       {{ $t('caption.gameMode_pve') }}
     </span>
-    <InputSwitch v-model="isPvp" />
-    <span :class="{ 'sidebar-option-disabled': globalFilter.excludeItemsWithoutMatchingPrice }">
+    <div class="merchant-items-options-game-mode">
+      <InputSwitch
+        v-model="isPvp"
+        class="merchant-items-options-game-mode-input"
+        :class="{ 'merchant-items-options-game-mode-input-pve': !isPvp, 'merchant-items-options-game-mode-input-pvp': isPvp }"
+      />
+    </div>
+    <span :class="{ 'merchant-items-options-game-mode-pvp-selected': isPvp, 'sidebar-option-disabled': !isPvp }">
       {{ $t('caption.gameMode_pvp') }}
     </span>
   </div>
@@ -153,4 +159,50 @@ function save(): void {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.merchant-items-options-game-mode {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.merchant-items-options-game-mode {
+  height: 1.75rem;
+}
+
+.merchant-items-options-game-mode-pve-selected {
+  color: var(--success-color);
+  font-weight: bolder;
+}
+
+.merchant-items-options-game-mode-pvp-selected {
+  color: var(--primary-color);
+  font-weight: bolder;
+}
+</style>
+
+<style>
+.merchant-items-options-game-mode-input .p-inputswitch-slider {
+  border-style: none;
+}
+
+.merchant-items-options-game-mode-input.p-inputswitch:not(.p-disabled):hover .p-inputswitch-slider::before,
+.merchant-items-options-game-mode-input.p-inputswitch .p-inputswitch-slider::before {
+  box-shadow: none;
+}
+
+.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pve .p-inputswitch-slider,
+.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pve .p-inputswitch-slider:hover {
+  background: linear-gradient(90deg, rgba(76, 175, 80, 0.76) 0%, rgba(76, 175, 80, 0.76) 50%, rgba(255, 255, 255, 0.3) 100%);
+}
+
+.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pve .p-inputswitch-slider::before {
+  background: var(--success-color);
+}
+
+.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pvp .p-inputswitch-slider,
+.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pvp .p-inputswitch-slider:hover,
+.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pvp.p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(33, 150, 243, 0.76) 50%, rgba(33, 150, 243, 0.76) 100%);
+}
+</style>
