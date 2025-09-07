@@ -18,6 +18,7 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('Dropdown', defineAsyncComponent(() => import('primevue/dropdown')))
   app.component('InputNumber', defineAsyncComponent(() => import('primevue/inputnumber')))
   app.component('InputText', defineAsyncComponent(() => import('primevue/inputtext')))
+  app.component('InputSwitch', defineAsyncComponent(() => import('primevue/inputswitch')))
   app.component('Message', defineAsyncComponent(() => import('primevue/message')))
   app.component('OverlayPanel', defineAsyncComponent(() => import('primevue/overlaypanel')))
   app.component('Panel', defineAsyncComponent(() => import('primevue/panel')))

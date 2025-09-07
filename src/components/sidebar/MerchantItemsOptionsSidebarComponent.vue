@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
+import GameModeService from '../../services/GameModeService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
@@ -10,9 +11,19 @@ defineModel<undefined>('parameters')
 
 const props = defineProps<{ identifier: number }>()
 
+const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
+const isPvp = computed({
+  get: () => gameMode.value === 'pvp',
+  set: (value: boolean) => {
+    gameMode.value = value ? 'pvp' : 'pve'
+    _gameModeService.setGameMode(gameMode.value)
+  }
+})
+
+const gameMode = ref<string>('')
 const globalFilter = ref<IGlobalFilter>({
   excludeItemsWithoutMatchingPrice: true,
   excludePresetBaseItems: true,
@@ -23,6 +34,7 @@ const hasChanged = ref(false)
 onMounted(() => {
   _globalSidebarService.setOnCloseAction(props.identifier, save)
   globalFilter.value = _globalFilterService.get()
+  gameMode.value = _gameModeService.getGameMode()
 })
 
 /**
@@ -46,7 +58,31 @@ function save(): void {
 
 
 <template>
+  <!-- Game mode -->
+  <div class="sidebar-option">
+    <span :class="{ 'sidebar-option-disabled': globalFilter.excludeItemsWithoutMatchingPrice }">
+      {{ $t('caption.gameMode_pve') }}
+    </span>
+    <InputSwitch v-model="isPvp" />
+    <span :class="{ 'sidebar-option-disabled': globalFilter.excludeItemsWithoutMatchingPrice }">
+      {{ $t('caption.gameMode_pvp') }}
+    </span>
+  </div>
+  <div class="sidebar-option-description">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
+    </div>
+    <span>
+      {{ $t('message.gameModeExplanation') }}
+    </span>
+  </div>
   <!-- Exclude items without matching prices -->
+  <div class="sidebar-title">
+    <div class="sidebar-title-icon">
+      <font-awesome-icon icon="clipboard-list" />
+    </div>
+    <span>{{ $t('caption.items') }}</span>
+  </div>
   <div
     class="sidebar-option"
     :class="{ 'sidebar-option-disabled': globalFilter.excludeItemsWithoutMatchingPrice }"
@@ -116,3 +152,5 @@ function save(): void {
     />
   </div>
 </template>
+
+<style scoped></style>

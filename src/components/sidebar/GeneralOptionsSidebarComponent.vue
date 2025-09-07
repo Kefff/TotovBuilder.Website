@@ -142,19 +142,23 @@ function toggleOutdatedSharableUrlWarningValue(): void {
   <!-- Application & items language -->
   <div class="sidebar-option">
     <div class="general-options-languages">
-      <div>
+      <div class="sidebar-option-icon">
         <font-awesome-icon icon="language" />
       </div>
-      <span>{{ $t('caption.language') }}</span>
+      <div class="general-options-languages-caption">
+        {{ $t('caption.applicationLanguage') }}
+      </div>
       <LanguageSelector
         v-model:language="applicationLanguage"
         :languages="vueI18n.availableLocales"
         @update:language="onApplicationLanguageChanged"
       />
-      <div>
+      <div class="sidebar-option-icon">
         <font-awesome-icon icon="language" />
       </div>
-      <span>{{ $t('caption.itemsLanguage') }}</span>
+      <div class="general-options-languages-caption">
+        {{ $t('caption.itemsLanguage') }}
+      </div>
       <LanguageSelector
         v-model:language="itemsLanguage"
         :languages="_websiteConfigurationService.configuration.itemsLanguages"
@@ -318,9 +322,13 @@ function toggleOutdatedSharableUrlWarningValue(): void {
 .general-options-languages {
   align-items: center;
   display: grid;
-  gap: 1rem;
   grid-template-columns: auto auto 1fr;
+  row-gap: 1rem;
   width: 100%;
+}
+
+.general-options-languages-caption {
+  margin-right: 0.5rem;
 }
 
 .general-options-name {

@@ -8,6 +8,7 @@ import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlob
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
+import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
@@ -30,6 +31,7 @@ const props = withDefaults(
     elementToStickTo: undefined
   })
 
+const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
@@ -151,6 +153,7 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
   }))
 
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
+const gameMode = ref<string>('')
 const globalFilter = ref<IGlobalFilter>()
 const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
@@ -166,12 +169,15 @@ watch(
   () => filterInternal.value = modelFilterAndSortingData.value.filter)
 
 onMounted(() => {
+  _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, getGameMode)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, getGlobalFilter)
 
+  getGameMode()
   getGlobalFilter()
 })
 
 onUnmounted(() => {
+  _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, getGameMode)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, getGlobalFilter)
 })
 
@@ -214,6 +220,10 @@ function copyFilterAndSortingData(): BuildFilterAndSortingData | ItemFilterAndSo
     : new ItemFilterAndSortingData(modelFilterAndSortingData.value.sortingFunctions, modelFilterAndSortingData.value as ItemFilterAndSortingData)
 
   return fasd
+}
+
+function getGameMode(): void {
+  gameMode.value = _gameModeService.getGameMode()
 }
 
 /**
@@ -314,6 +324,58 @@ function switchSortOrder(): void {
     align="left"
   >
     <div class="filter-chips">
+      <!-- Game mode -->
+      <Chip class="filter-chip">
+        <Tooltip
+          :disabled-on-mobile="true"
+          :full-size="true"
+          :tooltip="$t('caption.gameMode') + ' : ' + $t(`caption.gameMode_${gameMode}`)"
+          style="height: 100%;"
+          @click="showGlobalFilterSidebar"
+        >
+          <div class="filter-chip-game-mode">
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="gamepad" />
+            </div>
+            <div class="filter-chip-game-mode-text">
+              {{ $t(`caption.gameMode_${gameMode}`) }}
+            </div>
+          </div>
+        </Tooltip>
+      </Chip>
+      <!-- Merchants chip -->
+      <Chip class="filter-chip">
+        <Tooltip
+          :disabled-on-mobile="true"
+          :full-size="true"
+          :tooltip="merchantsTooltip"
+          style="height: 100%;"
+          @click="showGlobalFilterSidebar"
+        >
+          <div class="filter-chip-merchants">
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="user-tag" />
+            </div>
+            <div
+              v-if="(isInSidebar || isCompactMode) && enabledMerchants.length > 0"
+              class="filter-chip-merchants-count"
+            >
+              {{ enabledMerchants.length }}
+            </div>
+            <div
+              v-if="!isInSidebar && !isCompactMode"
+              class="filter-chip-merchants-list"
+            >
+              <MerchantIcon
+                v-for="merchant of enabledMerchants"
+                :key="merchant.merchant"
+                :merchant="merchant.merchant"
+                :merchant-level="merchant.merchantLevel"
+              />
+            </div>
+          </div>
+        </Tooltip>
+      </Chip>
       <!-- Sorting chip -->
       <Chip class="filter-chip">
         <Tooltip
@@ -390,39 +452,6 @@ function switchSortOrder(): void {
             </template>
           </Dropdown>
         </div>
-      </Chip>
-      <!-- Merchants chip -->
-      <Chip class="filter-chip">
-        <Tooltip
-          :disabled-on-mobile="true"
-          :full-size="true"
-          :tooltip="merchantsTooltip"
-          style="height: 100%;"
-          @click="showGlobalFilterSidebar"
-        >
-          <div class="filter-chip-merchants">
-            <div class="filter-chip-icon">
-              <font-awesome-icon icon="user-tag" />
-            </div>
-            <div
-              v-if="(isInSidebar || isCompactMode) && enabledMerchants.length > 0"
-              class="filter-chip-merchants-count"
-            >
-              {{ enabledMerchants.length }}
-            </div>
-            <div
-              v-if="!isInSidebar && !isCompactMode"
-              class="filter-chip-merchants-list"
-            >
-              <MerchantIcon
-                v-for="merchant of enabledMerchants"
-                :key="merchant.merchant"
-                :merchant="merchant.merchant"
-                :merchant-level="merchant.merchantLevel"
-              />
-            </div>
-          </div>
-        </Tooltip>
       </Chip>
       <!-- Filter chip -->
       <Chip class="filter-chip">
@@ -542,6 +571,15 @@ function switchSortOrder(): void {
   width: 100%;
 }
 
+.filter-chip-game-mode {
+  align-items: center;
+  display: flex;
+}
+
+.filter-chip-game-mode-text {
+  margin-right: 0.5rem;
+}
+
 .filter-chip-icon {
   align-items: center;
   display: flex;
@@ -656,7 +694,7 @@ function switchSortOrder(): void {
   align-items: center;
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 }
