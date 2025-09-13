@@ -277,7 +277,7 @@ function onBuildImported(): void {
 /**
  * Reacts to a the game mode changing.
  *
- * Updates the builds and their summaries, filters and sorts them..
+ * Updates the builds and their summaries, filters and sorts them.
  */
 function onGameModeChanged(): void {
   filterAndSortBuildsAsync(true)
@@ -286,7 +286,7 @@ function onGameModeChanged(): void {
 /**
  * Reacts to a the items language changing.
  *
- * Updates the builds and their summaries, filters and sorts them..
+ * Updates the builds and their summaries, filters and sorts them.
  */
 function onItemsLanguageChanged(): void {
   filterAndSortBuildsAsync(true)

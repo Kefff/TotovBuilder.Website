@@ -13,6 +13,7 @@ import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
 import { BuildComponentService } from '../services/components/BuildComponentService'
 import { ExportService } from '../services/ExportService'
+import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
@@ -35,6 +36,7 @@ const router = useRouter()
 
 const _buildComponentService = Services.get(BuildComponentService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
@@ -247,25 +249,29 @@ provide('isEditing', isEditing)
 provide('isNewBuild', isNewBuild)
 
 onMounted(() => {
+  _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
   addNavigationGuards()
 
   isEditing.value = isNewBuild.value
   hasChanges.value = isNewBuild.value
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitializedAsync)
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
   } else {
-    onItemServiceInitializedAsync()
+    initializeBuildAsync()
   }
 })
 
 onUnmounted(() => {
+  _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
   removeNavigationGuards()
 })
 
-watch(() => route.params, onItemServiceInitializedAsync)
+watch(() => route.params, initializeBuildAsync)
 
 /**
  * Adds navigation guards to avoid leaving the build screen without saving.
@@ -500,22 +506,9 @@ function goToBuilds(): void {
 }
 
 /**
- * Reacts to an inventory item being changed.
- *
- * Signals to the build one of its inventory slots has changed.
- */
-async function onInventorySlotChangedAsync(): Promise<void> {
-  hasChanges.value = true
-  setSummaryAsync()
-  buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
-}
-
-/**
- * Reacts to the item service being initialized.
- *
  * Initializes the build.
  */
-async function onItemServiceInitializedAsync(): Promise<void> {
+async function initializeBuildAsync(): Promise<void> {
   isLoading.value = true
 
   if (route.name === 'CopyBuild') {
@@ -534,6 +527,35 @@ async function onItemServiceInitializedAsync(): Promise<void> {
   buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
 
   nextTick(() => isLoading.value = false)
+}
+
+/**
+ * Reacts to a the game mode changing.
+ *
+ * Reload the build.
+ */
+function onGameModeChanged(): void {
+  initializeBuildAsync()
+}
+
+/**
+ * Reacts to an inventory item being changed.
+ *
+ * Signals to the build one of its inventory slots has changed.
+ */
+async function onInventorySlotChangedAsync(): Promise<void> {
+  hasChanges.value = true
+  setSummaryAsync()
+  buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
+}
+
+/**
+ * Reacts to the item service being initialized.
+ *
+ * Initializes the build.
+ */
+function onItemServiceInitialized(): void {
+  initializeBuildAsync()
 }
 
 /**

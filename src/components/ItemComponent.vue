@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, ref, Ref, watch } from 'vue'
 import { IBuildItemWithPath } from '../models/build/IBuildItemWithPath'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
@@ -13,6 +13,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemComponentService } from '../services/ItemComponentService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
+import LanguageService from '../services/LanguageService'
 import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
 import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
@@ -53,6 +54,7 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemComponentService = Services.get(ItemComponentService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
+const _languageService = Services.get(LanguageService)
 const _presetService = Services.get(PresetService)
 
 const canIgnorePrice = computed(() => inventoryItemInSameSlotInPreset.value !== item.value)
@@ -100,8 +102,14 @@ watch(
   () => setSelectedTab())
 
 onMounted(() => {
+  _languageService.emitter.on(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChangedAsync)
+
   inventoryItemInSameSlotInPreset.value = _presetService.getPresetItemIdFromPath(props.path)
   initializeItemAsync()
+})
+
+onUnmounted(() => {
+  _languageService.emitter.off(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChangedAsync)
 })
 
 /**
@@ -198,6 +206,17 @@ function onItemChanged(): void {
   }
 
   itemChanging.value = false
+}
+
+/**
+ * Reacts to a the items language changing.
+ *
+ * Reload the build.
+ */
+async function onItemsLanguageChangedAsync(): Promise<void> {
+  if (props.inventoryItem != null) {
+    item.value = await _itemService.getItemAsync(props.inventoryItem.itemId)
+  }
 }
 
 /**
