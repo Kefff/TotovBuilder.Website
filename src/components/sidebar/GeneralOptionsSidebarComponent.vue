@@ -22,9 +22,9 @@ const allowCookies = ref(true)
 const exportWarning = ref(true)
 const outdatedSharableUrlWarning = ref(true)
 
-const additionalDisplayOptions = computed(() => modelParameters.value?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
-const additionalGeneralOptions = computed(() => modelParameters.value?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
-const additionalOptionGroups = computed(() => modelParameters.value?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
+const additionalDisplayOptions = computed(() => modelParameters.value?.optionGroups.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
+const additionalGeneralOptions = computed(() => modelParameters.value?.optionGroups.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
+const additionalOptionGroups = computed(() => modelParameters.value?.optionGroups.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
 const applicationLanguage = computed({
   get: () => vueI18n.locale.value,
   set: (value) => _languageService.setApplicationLanguage(value)
@@ -161,6 +161,7 @@ function toggleOutdatedSharableUrlWarningValue(): void {
       </div>
       <LanguageSelector
         v-model:language="itemsLanguage"
+        :is-items-language-input-enabled="parameters?.isItemsLanguageInputEnabled"
         :languages="_websiteConfigurationService.configuration.itemsLanguages"
         @update:language="onItemsLanguageChanged"
       />

@@ -5,7 +5,14 @@ import StringUtils from '../utils/StringUtils'
 
 const modelLanguage = defineModel<string>('language', { required: true })
 
-const props = defineProps<{ languages: string[] }>()
+const props = withDefaults(
+  defineProps<{
+    isItemsLanguageInputEnabled?: boolean,
+    languages: string[]
+  }>(),
+  {
+    isItemsLanguageInputEnabled: true
+  })
 
 const availableLanguages = computed<string[]>(() => props.languages.filter(l => l !== modelLanguage.value))
 </script>
@@ -22,6 +29,7 @@ const availableLanguages = computed<string[]>(() => props.languages.filter(l => 
 <template>
   <Dropdown
     v-model="modelLanguage"
+    :disabled="!isItemsLanguageInputEnabled"
     :options="availableLanguages"
     :placeholder="$t('caption.language')"
     class="language-selector"

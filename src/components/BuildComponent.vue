@@ -412,7 +412,13 @@ function displayConfirmationDialog(options: {
  * Displays the general options.
  */
 function displayGeneralOptions(): void {
-  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
+  _globalSidebarService.display({
+    displayedComponentType: 'GeneralOptionsSidebar',
+    displayedComponentParameters: {
+      isItemsLanguageInputEnabled: !isEditing.value,
+      optionGroups: []
+    }
+  })
 }
 
 /**
@@ -437,7 +443,10 @@ function displayInventorySlotSelector(): void {
  */
 function displayMerchantItemsOptions(): void {
   _globalSidebarService.display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar'
+    displayedComponentType: 'MerchantItemsOptionsSidebar',
+    displayedComponentParameters: {
+      isGameModeInputEnabled: !isEditing.value
+    }
   })
 }
 

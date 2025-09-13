@@ -393,7 +393,7 @@
     "fileReadingException": "Error while reading file : {message}",
     "fileWritingError": "Error while writing file.",
     "fileWritingException": "Error while writing file : {message}",
-    "gameModeExplanation": "Available items and prices depend on the chosen game mode.",
+    "gameModeExplanation": "Available items and prices depend on the game mode chosen.",
     "importError": "Error while importing builds.",
     "invalidBuildFile": "Build file could not be read.",
     "invalidSharableString": "Error while reading the shared link.\nIt seems to be corrupted.",

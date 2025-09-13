@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
+import { MerchantItemsOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import GameModeService from '../../services/GameModeService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import MerchantFilter from '../MerchantFilterComponent.vue'
 
-defineModel<undefined>('parameters')
+const modelParameters = defineModel<MerchantItemsOptionsSidebarParameters>('parameters')
 
 const props = defineProps<{ identifier: number }>()
 
@@ -15,6 +16,7 @@ const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
+const gameModeUnselectedTextCursor = computed(() => modelParameters.value?.isGameModeInputEnabled ? 'pointer' : 'unset')
 const isPvp = computed({
   get: () => gameMode.value === 'pvp',
   set: (value: boolean) => {
@@ -46,6 +48,20 @@ function save(): void {
     hasChanged.value = false
   }
 }
+
+/**
+ * Toggles the game mode.
+ * @param gameModeSwitch - Type of switch that toggles the game mode.
+ */
+function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
+  if (gameModeSwitch === 'pve' && !isPvp.value || gameModeSwitch === 'pvp' && isPvp.value) {
+    return
+  }
+
+  if (modelParameters.value?.isGameModeInputEnabled) {
+    isPvp.value = !isPvp.value
+  }
+}
 </script>
 
 
@@ -60,17 +76,27 @@ function save(): void {
 <template>
   <!-- Game mode -->
   <div class="sidebar-option merchant-items-options-game-mode">
-    <span :class="{ 'merchant-items-options-game-mode-pve-selected': !isPvp, 'sidebar-option-disabled': isPvp }">
+    <span
+      :class="{ 'merchant-items-options-game-mode-pve-selected': !isPvp, 'merchant-items-options-game-mode-caption-unselected': isPvp, 'sidebar-option-disabled': isPvp }"
+      @click="toggleGameMode('pve')"
+    >
       {{ $t('caption.gameMode_pve') }}
     </span>
     <div class="merchant-items-options-game-mode">
       <InputSwitch
         v-model="isPvp"
+        :disabled="!modelParameters?.isGameModeInputEnabled"
         class="merchant-items-options-game-mode-input"
-        :class="{ 'merchant-items-options-game-mode-input-pve': !isPvp, 'merchant-items-options-game-mode-input-pvp': isPvp }"
+        :class="{
+          'merchant-items-options-game-mode-input-pve': !isPvp,
+          'merchant-items-options-game-mode-input-pvp': isPvp
+        }"
       />
     </div>
-    <span :class="{ 'merchant-items-options-game-mode-pvp-selected': isPvp, 'sidebar-option-disabled': !isPvp }">
+    <span
+      :class="{ 'merchant-items-options-game-mode-pvp-selected': isPvp, 'merchant-items-options-game-mode-caption-unselected': !isPvp, 'sidebar-option-disabled': !isPvp }"
+      @click=" toggleGameMode('pvp')"
+    >
       {{ $t('caption.gameMode_pvp') }}
     </span>
   </div>
@@ -168,6 +194,10 @@ function save(): void {
 
 .merchant-items-options-game-mode {
   height: 1.75rem;
+}
+
+.merchant-items-options-game-mode-caption-unselected:hover {
+  cursor: v-bind(gameModeUnselectedTextCursor);
 }
 
 .merchant-items-options-game-mode-pve-selected {
