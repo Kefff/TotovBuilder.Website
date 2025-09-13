@@ -30,7 +30,7 @@ const applicationLanguage = computed({
   set: (value) => _languageService.setApplicationLanguage(value)
 })
 
-let itemsLanguage = ref<string>('')
+let itemsLanguage = ref<string>()
 
 
 
@@ -91,7 +91,7 @@ function onExportWarningChanged(): void {
  * Persists the items language and invalidates items and prices cache to force them to be reloaded with the new language.
  */
 function onItemsLanguageChanged(): void {
-  _languageService.setItemsLanguage(itemsLanguage.value)
+  _languageService.setItemsLanguage(itemsLanguage.value!)
 }
 
 /**
@@ -160,6 +160,7 @@ function toggleOutdatedSharableUrlWarningValue(): void {
         {{ $t('caption.itemsLanguage') }}
       </div>
       <LanguageSelector
+        v-if="itemsLanguage != null"
         v-model:language="itemsLanguage"
         :is-items-language-input-enabled="parameters?.isItemsLanguageInputEnabled"
         :languages="_websiteConfigurationService.configuration.itemsLanguages"

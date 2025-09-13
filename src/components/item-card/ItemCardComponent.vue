@@ -257,7 +257,7 @@ function showDetails(): void {
             :class="StatsUtils.getSortedPropertyColorClass('price', filterAndSortingData)"
           >
             <div v-if="item.isPartOfPreset">
-              {{ $t('caption.partOfPreset', { preset: 'Tutu' }) }}
+              {{ $t('caption.partOfPreset') }}
             </div>
             <Price
               v-else-if="itemUnitPrice?.currencyName === 'barter'

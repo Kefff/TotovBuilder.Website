@@ -17,6 +17,7 @@ import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
+import LanguageService from '../services/LanguageService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { SeoService } from '../services/SeoService'
@@ -40,6 +41,7 @@ const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
+const _languageService = Services.get(LanguageService)
 const _seoService = Services.get(SeoService)
 
 const _compactBuildSummaryExpansionAnimationLenght = 500
@@ -251,6 +253,7 @@ provide('isNewBuild', isNewBuild)
 onMounted(() => {
   _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _languageService.emitter.on(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
 
   addNavigationGuards()
 
@@ -267,6 +270,7 @@ onMounted(() => {
 onUnmounted(() => {
   _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _languageService.emitter.off(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
 
   removeNavigationGuards()
 })
@@ -532,10 +536,11 @@ async function initializeBuildAsync(): Promise<void> {
 /**
  * Reacts to a the game mode changing.
  *
- * Reload the build.
+ * Reloads the build.
  */
 function onGameModeChanged(): void {
-  initializeBuildAsync()
+  build.value.inventorySlots = [] // Needed to force item components to unmount and remount
+  nextTick(() => initializeBuildAsync()) // nextTick needed to force item components to unmount and remount
 }
 
 /**
@@ -571,6 +576,16 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
   }
+}
+
+/**
+ * Reacts to a the items language changing.
+ *
+ * Reloads the build.
+ */
+function onItemsLanguageChanged(): void {
+  build.value.inventorySlots = [] // Needed to force item components to unmount and remount
+  nextTick(() => initializeBuildAsync()) // nextTick needed to force item components to unmount and remount
 }
 
 /**

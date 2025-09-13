@@ -112,10 +112,7 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
         >
       </div>
       <div class="stats-sidebar-name">
-        <div
-          v-if="specializedComponent != null"
-          style="font-size: 1.25rem;"
-        >
+        <div style="font-size: 1.25rem;">
           {{ parameters.name }}
         </div>
         <Tooltip
