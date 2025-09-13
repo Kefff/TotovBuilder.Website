@@ -17,6 +17,7 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const gameModeUnselectedTextCursor = computed(() => modelParameters.value?.isGameModeInputEnabled ? 'pointer' : 'unset')
+const isGameModeInputEnabled = computed(() => modelParameters.value?.isGameModeInputEnabled ?? true)
 const isPvp = computed({
   get: () => gameMode.value === 'pvp',
   set: (value: boolean) => {
@@ -58,7 +59,7 @@ function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
     return
   }
 
-  if (modelParameters.value?.isGameModeInputEnabled) {
+  if (isGameModeInputEnabled.value) {
     isPvp.value = !isPvp.value
   }
 }
@@ -85,7 +86,7 @@ function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
     <div class="merchant-items-options-game-mode">
       <InputSwitch
         v-model="isPvp"
-        :disabled="!modelParameters?.isGameModeInputEnabled"
+        :disabled="!isGameModeInputEnabled"
         class="merchant-items-options-game-mode-input"
         :class="{
           'merchant-items-options-game-mode-input-pve': !isPvp,
