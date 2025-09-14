@@ -66,8 +66,8 @@ function onMerchantFilterChanged(): void {
     class="mod-slot"
   >
     <div class="mod-slot-header">
-      <span class="mod-slot-name">
-        {{ modSlot.name }}
+      <span class="mod-slot-caption">
+        {{ modSlot.caption ?? $t(`caption.modSlot_${modSlot.name}`) }}
       </span>
       <Tooltip :tooltip="$t('caption.requiredMod')">
         <span
@@ -102,15 +102,15 @@ function onMerchantFilterChanged(): void {
   width: 100%;
 }
 
+.mod-slot-caption {
+  font-weight: bolder;
+}
+
 .mod-slot-header {
   align-items: center;
   display: flex;
   gap: 0.25rem;
   margin-bottom: 0.25rem;
-}
-
-.mod-slot-name {
-  font-weight: bolder;
 }
 
 .mod-slot-required-ok {

@@ -52,6 +52,7 @@ function initialize(): void {
 
     for (const inventoryModSlot of modelInventoryModSlots.value) {
       modSlots.value.push({
+        caption: inventoryModSlot.modSlotName,
         compatibleItemIds: [inventoryModSlot.item?.itemId ?? ''],
         maxStackableAmount: 1,
         name: inventoryModSlot.modSlotName,

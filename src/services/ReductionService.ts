@@ -564,12 +564,14 @@ export class ReductionService {
 
     if (reducedModSlots != null) {
       for (const reducedModSlot of reducedModSlots) {
+        const modSlotCaption = reducedModSlot['c'] as string
         const modSlotCompatibleItemIds = reducedModSlot['i'] as string[] ?? []
         const modSlotMaxStackableAmount = reducedModSlot['a'] as number ?? 1
         const modSlotName = reducedModSlot['n'] as string
         const modSlotRequired = reducedModSlot['r'] != null
 
         modSlots.push({
+          caption: modSlotCaption,
           compatibleItemIds: modSlotCompatibleItemIds,
           maxStackableAmount: modSlotMaxStackableAmount,
           name: modSlotName,

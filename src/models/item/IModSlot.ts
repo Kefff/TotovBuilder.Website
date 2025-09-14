@@ -3,6 +3,11 @@
  */
 export interface IModSlot {
   /**
+   * Caption
+   */
+  caption?: string
+
+  /**
    * IDs of compatible items.
    */
   compatibleItemIds: string[]
