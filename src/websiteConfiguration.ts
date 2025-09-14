@@ -4,7 +4,7 @@ import { IWebsiteConfiguration } from './models/configuration/IWebsiteConfigurat
  * Version of the website.
  * It must be updated each time a new update of the website is deployed.
  */
-const version = '2.0.0'
+const version = '2.1.0'
 
 /**
  * Part of the website configuration that cannot be changed by getting updated values from the website configuration API.
