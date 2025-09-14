@@ -67,8 +67,13 @@ export default class LanguageService {
   /**
    * Sets the items language, stores it in the local storage, invalidates items and prices cache and emits an event indicating the items language has changed.
    * @param language - Language.
+   * @param emitEvent - Indicates whether the event that indicates the items language has changed must be emitted.
    */
-  public setItemsLanguage(language: string): void {
+  public setItemsLanguage(language: string, emitEvent: boolean = true): void {
+    if (language === this._itemsLanguage) {
+      return
+    }
+
     this._itemsLanguage = language
     localStorage.setItem(Services.get(WebsiteConfigurationService).configuration.itemsLanguageStorageKey, language)
 
@@ -76,6 +81,8 @@ export default class LanguageService {
     itemService.invalidatedItemsCache()
     itemService.invalidatedPricesCache()
 
-    this.emitter.emit(LanguageService.itemsLanguageChangedEvent)
+    if (emitEvent) {
+      this.emitter.emit(LanguageService.itemsLanguageChangedEvent)
+    }
   }
 }

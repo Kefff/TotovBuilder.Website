@@ -30,7 +30,7 @@ const applicationLanguage = computed({
   set: (value) => _languageService.setApplicationLanguage(value)
 })
 
-let itemsLanguage = ref<string>()
+const itemsLanguage = ref<string>(_languageService.getItemsLanguage())
 
 
 
@@ -38,8 +38,6 @@ onMounted(() => {
   allowCookies.value = _generalOptionsService.getAllowCookiesOption()
   exportWarning.value = _generalOptionsService.getExportWarningOption()
   outdatedSharableUrlWarning.value = _generalOptionsService.getOutdatedSharableUrlWarningOption()
-
-  itemsLanguage.value = _languageService.getItemsLanguage()
 })
 
 /**
@@ -91,7 +89,7 @@ function onExportWarningChanged(): void {
  * Persists the items language and invalidates items and prices cache to force them to be reloaded with the new language.
  */
 function onItemsLanguageChanged(): void {
-  _languageService.setItemsLanguage(itemsLanguage.value!)
+  _languageService.setItemsLanguage(itemsLanguage.value)
 }
 
 /**

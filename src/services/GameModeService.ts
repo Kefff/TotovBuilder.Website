@@ -41,11 +41,19 @@ export default class GameModeService {
   /**
    * Sets the game mode, stores it in the local storage, invalidates prices cache and emits an event indicating the gale mode has changed.
    * @param gameMode - Game mode.
+   * @param emitEvent - Indicates whether the event that indicates the items language has changed must be emitted.
    */
-  public setGameMode(gameMode: string): void {
+  public setGameMode(gameMode: string, emitEvent: boolean = true): void {
+    if (gameMode === this._gameMode) {
+      return
+    }
+
     this._gameMode = gameMode
     localStorage.setItem(Services.get(WebsiteConfigurationService).configuration.gameModeStorageKey, gameMode)
     Services.get(ItemService).invalidatedPricesCache()
-    this.emitter.emit(GameModeService.gameModeChangedEvent)
+
+    if (emitEvent) {
+      this.emitter.emit(GameModeService.gameModeChangedEvent)
+    }
   }
 }

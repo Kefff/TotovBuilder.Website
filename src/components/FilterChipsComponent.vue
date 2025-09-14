@@ -153,7 +153,7 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
   }))
 
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
-const gameMode = ref<string>('')
+const gameMode = ref(_gameModeService.getGameMode())
 const globalFilter = ref<IGlobalFilter>()
 const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
@@ -172,7 +172,6 @@ onMounted(() => {
   _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, getGameMode)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, getGlobalFilter)
 
-  getGameMode()
   getGlobalFilter()
 })
 

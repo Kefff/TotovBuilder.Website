@@ -98,7 +98,7 @@ describe('LanguageService', () => {
   })
 
   describe('setItemsLanguage', () => {
-    it('should change the items language, store it, invalidate items and prices cache and emit an event', () => {
+    it.each([[true], [false]])('should change the items language, store it, invalidate items and prices cache and emit an event', (emitEvent: boolean) => {
       // Arrange
       useWebsiteConfigurationServiceMock()
 
@@ -110,7 +110,7 @@ describe('LanguageService', () => {
       service.emitter.on(LanguageService.itemsLanguageChangedEvent, () => emitted = true)
 
       // Act
-      service.setItemsLanguage('fr')
+      service.setItemsLanguage('fr', emitEvent)
 
       // Assert
       const itemsLanguage = service.getItemsLanguage()
@@ -118,7 +118,24 @@ describe('LanguageService', () => {
 
       expect(itemsLanguage).toBe('fr')
       expect(storedItemsLanguage).toBe('fr')
-      expect(emitted).toBe(true)
+      expect(emitted).toBe(emitEvent)
+    })
+
+    it('should do nothing when called with the same items language as the current one', () => {
+      // Arrange
+      useWebsiteConfigurationServiceMock()
+
+      let emittedCount = 0
+
+      const service = new LanguageService()
+      service.emitter.on(LanguageService.itemsLanguageChangedEvent, () => emittedCount += 1)
+
+      // Act
+      service.setItemsLanguage('fr')
+      service.setItemsLanguage('fr')
+
+      // Assert
+      expect(emittedCount).toBe(1)
     })
   })
 })

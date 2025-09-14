@@ -323,6 +323,8 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
 .global-sidebar-title {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   width: 100%;
 }
 

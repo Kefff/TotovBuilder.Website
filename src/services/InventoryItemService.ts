@@ -706,7 +706,11 @@ export class InventoryItemService {
               inventoryItemAsString += `${mainCurrency.symbol}${boldToken}`
             } else {
               const priceCurrency = itemService.getCurrency(price.price.currencyName)
-              inventoryItemAsString += `${priceCurrency.symbol}${boldToken} (= ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, options.language)}${mainCurrency.symbol}${boldToken})`
+              inventoryItemAsString += `${priceCurrency.symbol}${boldToken}`
+
+              if (price.price.valueInMainCurrency > 0) {
+                inventoryItemAsString += ` (= ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, options.language)}${mainCurrency.symbol}${boldToken})`
+              }
             }
           }
         }

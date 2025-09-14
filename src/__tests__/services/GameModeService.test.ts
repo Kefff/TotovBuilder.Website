@@ -37,7 +37,7 @@ describe('GameModeService', () => {
   })
 
   describe('setGameMode', () => {
-    it('should change the game mode, store it, invalidate prices cache and emit an event', () => {
+    it.each([[true], [false]])('should change the game mode, store it, invalidate prices cache and emit an event', (emitEvent: boolean) => {
       // Arrange
       useWebsiteConfigurationServiceMock()
 
@@ -49,7 +49,7 @@ describe('GameModeService', () => {
       service.emitter.on(GameModeService.gameModeChangedEvent, () => emitted = true)
 
       // Act
-      service.setGameMode('pve')
+      service.setGameMode('pve', emitEvent)
 
       // Assert
       const gameMode = service.getGameMode()
@@ -57,7 +57,24 @@ describe('GameModeService', () => {
 
       expect(gameMode).toBe('pve')
       expect(storedGameMode).toBe('pve')
-      expect(emitted).toBe(true)
+      expect(emitted).toBe(emitEvent)
+    })
+
+    it('should do nothing when called with the same game mode as the current one', () => {
+      // Arrange
+      useWebsiteConfigurationServiceMock()
+
+      let emittedCount = 0
+
+      const service = new GameModeService()
+      service.emitter.on(GameModeService.gameModeChangedEvent, () => emittedCount += 1)
+
+      // Act
+      service.setGameMode('pve')
+      service.setGameMode('pve')
+
+      // Assert
+      expect(emittedCount).toBe(1)
     })
   })
 })

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { MerchantItemsOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import GameModeService from '../../services/GameModeService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import GameModeSelector from '../GameModeSelectorComponent.vue'
 import MerchantFilter from '../MerchantFilterComponent.vue'
 
-const modelParameters = defineModel<MerchantItemsOptionsSidebarParameters>('parameters')
+defineModel<MerchantItemsOptionsSidebarParameters>('parameters')
 
 const props = defineProps<{ identifier: number }>()
 
@@ -16,17 +17,7 @@ const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const gameModeUnselectedTextCursor = computed(() => modelParameters.value?.isGameModeInputEnabled ? 'pointer' : 'unset')
-const isGameModeInputEnabled = computed(() => modelParameters.value?.isGameModeInputEnabled ?? true)
-const isPvp = computed({
-  get: () => gameMode.value === 'pvp',
-  set: (value: boolean) => {
-    gameMode.value = value ? 'pvp' : 'pve'
-    _gameModeService.setGameMode(gameMode.value)
-  }
-})
-
-const gameMode = ref<string>('')
+const gameMode = ref<string>(_gameModeService.getGameMode())
 const globalFilter = ref<IGlobalFilter>({
   excludeItemsWithoutMatchingPrice: true,
   excludePresetBaseItems: true,
@@ -37,8 +28,16 @@ const hasChanged = ref(false)
 onMounted(() => {
   _globalSidebarService.setOnCloseAction(props.identifier, save)
   globalFilter.value = _globalFilterService.get()
-  gameMode.value = _gameModeService.getGameMode()
 })
+
+/**
+ * Reacts to the game mode being changed.
+ *
+ * Changes the application game mode.
+ */
+function onGameModeChanged(): void {
+  _gameModeService.setGameMode(gameMode.value)
+}
 
 /**
  * Saves the global filter and closes the side bar.
@@ -47,20 +46,6 @@ function save(): void {
   if (hasChanged.value) {
     _globalFilterService.save(globalFilter.value)
     hasChanged.value = false
-  }
-}
-
-/**
- * Toggles the game mode.
- * @param gameModeSwitch - Type of switch that toggles the game mode.
- */
-function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
-  if (gameModeSwitch === 'pve' && !isPvp.value || gameModeSwitch === 'pvp' && isPvp.value) {
-    return
-  }
-
-  if (isGameModeInputEnabled.value) {
-    isPvp.value = !isPvp.value
   }
 }
 </script>
@@ -77,29 +62,11 @@ function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
 <template>
   <!-- Game mode -->
   <div class="sidebar-option merchant-items-options-game-mode">
-    <span
-      :class="{ 'merchant-items-options-game-mode-pve-selected': !isPvp, 'merchant-items-options-game-mode-caption-unselected': isPvp, 'sidebar-option-disabled': isPvp }"
-      @click="toggleGameMode('pve')"
-    >
-      {{ $t('caption.gameMode_pve') }}
-    </span>
-    <div class="merchant-items-options-game-mode">
-      <InputSwitch
-        v-model="isPvp"
-        :disabled="!isGameModeInputEnabled"
-        class="merchant-items-options-game-mode-input"
-        :class="{
-          'merchant-items-options-game-mode-input-pve': !isPvp,
-          'merchant-items-options-game-mode-input-pvp': isPvp
-        }"
-      />
-    </div>
-    <span
-      :class="{ 'merchant-items-options-game-mode-pvp-selected': isPvp, 'merchant-items-options-game-mode-caption-unselected': !isPvp, 'sidebar-option-disabled': !isPvp }"
-      @click=" toggleGameMode('pvp')"
-    >
-      {{ $t('caption.gameMode_pvp') }}
-    </span>
+    <GameModeSelector
+      v-model:game-mode="gameMode"
+      :is-enabled="parameters?.isGameModeInputEnabled"
+      @update:game-mode="onGameModeChanged"
+    />
   </div>
   <div class="sidebar-option-description">
     <div class="sidebar-option-icon">
@@ -185,55 +152,3 @@ function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
     />
   </div>
 </template>
-
-<style scoped>
-.merchant-items-options-game-mode {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-}
-
-.merchant-items-options-game-mode {
-  height: 1.75rem;
-}
-
-.merchant-items-options-game-mode-caption-unselected:hover {
-  cursor: v-bind(gameModeUnselectedTextCursor);
-}
-
-.merchant-items-options-game-mode-pve-selected {
-  color: var(--success-color);
-  font-weight: bolder;
-}
-
-.merchant-items-options-game-mode-pvp-selected {
-  color: var(--primary-color);
-  font-weight: bolder;
-}
-</style>
-
-<style>
-.merchant-items-options-game-mode-input .p-inputswitch-slider {
-  border-style: none;
-}
-
-.merchant-items-options-game-mode-input.p-inputswitch:not(.p-disabled):hover .p-inputswitch-slider::before,
-.merchant-items-options-game-mode-input.p-inputswitch .p-inputswitch-slider::before {
-  box-shadow: none;
-}
-
-.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pve .p-inputswitch-slider,
-.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pve .p-inputswitch-slider:hover {
-  background: linear-gradient(90deg, rgba(76, 175, 80, 0.76) 0%, rgba(76, 175, 80, 0.76) 50%, rgba(255, 255, 255, 0.3) 100%);
-}
-
-.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pve .p-inputswitch-slider::before {
-  background: var(--success-color);
-}
-
-.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pvp .p-inputswitch-slider,
-.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pvp .p-inputswitch-slider:hover,
-.merchant-items-options-game-mode-input.merchant-items-options-game-mode-input-pvp.p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(33, 150, 243, 0.76) 50%, rgba(33, 150, 243, 0.76) 100%);
-}
-</style>

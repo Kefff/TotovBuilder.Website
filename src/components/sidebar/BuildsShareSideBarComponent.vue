@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOption'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
@@ -10,10 +10,14 @@ import { ShareButtons } from '../../models/utils/ShareButtons'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
+import GameModeService from '../../services/GameModeService'
+import LanguageService from '../../services/LanguageService'
 import Services from '../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import BuildShareButtons from '../BuildShareButtonsComponent.vue'
 import BuildsList from '../BuildsListComponent.vue'
+import GameModeSelector from '../GameModeSelectorComponent.vue'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
 import Loading from '../LoadingComponent.vue'
 import Toolbar from '../ToolbarComponent.vue'
@@ -24,7 +28,12 @@ defineProps<{ identifier: number }>()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _gameModeService = Services.get(GameModeService)
+const _languageService = Services.get(LanguageService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
+const _originalGameMode = _gameModeService.getGameMode()
+const _originalItemsLanguage = _languageService.getItemsLanguage()
 const _toolbarButtons: IToolbarButton[] = [
   {
     action: selectBuildsToShare,
@@ -71,12 +80,14 @@ useEventListener(document, 'keydown', onKeyDown)
 const builds = ref<IBuild[]>([])
 const buildsShareToolbar = useTemplateRef('buildsShareToolbar')
 const buildsToShare = ref<IBuild[]>([])
+const gameMode = ref(_originalGameMode)
 const includeEmojis = ref(true)
 const includeLink = ref(true)
 const includePrices = ref(true)
 const isGenerating = ref(false)
 const isLoading = ref(true)
-const language = ref<string>(vueI18n.locale.value)
+const itemsLanguage = ref(_originalItemsLanguage)
+const language = ref(vueI18n.locale.value)
 const linkOnly = ref(false)
 const selectedBuilds = ref<IBuild[]>([])
 const text = ref<string>()
@@ -95,6 +106,7 @@ const buildsToTextType = computed(() => {
 })
 const checkboxesGridTemplateColumns = computed(() => isSmartphonePortrait.value || isTabletPortrait.value ? '1fr 1fr' : '1fr 1fr 1fr 1fr')
 const isToggleSelectionVisible = computed(() => builds.value.length > 1)
+const languagesGridTemplateColumns = computed(() => isSmartphonePortrait.value || isTabletPortrait.value ? '1fr' : '1fr 1fr')
 const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
 const shareExplanation = computed(() => {
   switch (typeOption.value.type) {
@@ -111,7 +123,15 @@ const toolbarContainer = computed(() => buildsShareToolbar.value?.container)
 const allSelected = ref(false)
 const { isSmartphonePortrait, isTabletPortrait } = WebBrowserUtils.getScreenSize()
 
-onMounted(() => initialize())
+onMounted(() => {
+  itemsLanguage.value = _languageService.getItemsLanguage()
+  initialize()
+})
+
+onUnmounted(() => {
+  _gameModeService.setGameMode(_originalGameMode, false) // Setting back the original game mode configured in the global options
+  _languageService.setItemsLanguage(_originalItemsLanguage, false) // Setting back the original items language configured in the global options
+})
 
 /**
  * Copies the text to the clipboard.
@@ -165,6 +185,26 @@ function initialize(): void {
   }
 
   nextTick(() => isLoading.value = false)
+}
+
+/**
+ * Reacts to the items language of the sidebar being changed.
+ *
+ * Changes the game mode and regenerates the shared text.
+ */
+function onGameModeChanged(): void {
+  _gameModeService.setGameMode(gameMode.value, false)
+  getTextAsync()
+}
+
+/**
+ * Reacts to the items language of the sidebar being changed.
+ *
+ * Changes the items language and regenerates the shared text.
+ */
+function onItemsLanguageChanged(): void {
+  _languageService.setItemsLanguage(itemsLanguage.value, false)
+  getTextAsync()
 }
 
 /**
@@ -319,12 +359,43 @@ function toggleSelection(): void {
           {{ $t(shareExplanation) }}
         </span>
       </div>
-      <div class="sidebar-option builds-share-sidebar-dropdown">
-        <LanguageSelector
-          v-if="typeOption != null"
-          v-model:language="language"
-          @update:language="getTextAsync()"
-        />
+      <div
+        v-if="typeOption != null"
+        class="sidebar-option"
+      >
+        <div class="builds-share-sidebar-game-mode">
+          <span>{{ $t('caption.gameMode') }}</span>
+          <GameModeSelector
+            v-model:game-mode="gameMode"
+            @update:game-mode="onGameModeChanged"
+          />
+        </div>
+      </div>
+      <div
+        v-if="typeOption != null"
+        class="sidebar-option builds-share-sidebar-languages"
+      >
+        <div class="builds-share-sidebar-language-dropdown">
+          <span>{{ $t('caption.labelsLanguage') }}</span>
+          <div class="builds-share-sidebar-dropdown">
+            <LanguageSelector
+              v-model:language="language"
+              :languages="vueI18n.availableLocales"
+              @update:language="getTextAsync()"
+            />
+          </div>
+        </div>
+        <div class="builds-share-sidebar-language-dropdown">
+          <span>{{ $t('caption.itemsLanguage') }}</span>
+          <div class="builds-share-sidebar-dropdown">
+            <LanguageSelector
+              v-if="itemsLanguage != null"
+              v-model:language="itemsLanguage"
+              :languages="_websiteConfigurationService.configuration.itemsLanguages"
+              @update:language="onItemsLanguageChanged"
+            />
+          </div>
+        </div>
       </div>
       <div
         v-if="typeOption != null"
@@ -499,10 +570,29 @@ function toggleSelection(): void {
   gap: 1rem;
 }
 
+.builds-share-sidebar-game-mode {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
 .builds-share-sidebar-dropdown {
   height: 2.75rem;
   max-width: 25rem;
   width: 100%;
+}
+
+.builds-share-sidebar-language-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.builds-share-sidebar-languages {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: v-bind(languagesGridTemplateColumns);
 }
 
 .builds-share-sidebar-large {
@@ -513,6 +603,7 @@ function toggleSelection(): void {
 
 .builds-share-sidebar-loading {
   margin-top: 2.5rem;
+  height: 100%;
 }
 
 .builds-share-sidebar-selection {
