@@ -8,13 +8,13 @@ import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlob
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
-import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import CustomIcon from './CustomIconComponent.vue'
+import GameModeChip from './GameModeChipComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
 import Sticky from './StickyComponent.vue'
@@ -31,7 +31,6 @@ const props = withDefaults(
     elementToStickTo: undefined
   })
 
-const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
@@ -153,7 +152,6 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
   }))
 
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
-const gameMode = ref(_gameModeService.getGameMode())
 const globalFilter = ref<IGlobalFilter>()
 const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
@@ -169,14 +167,12 @@ watch(
   () => filterInternal.value = modelFilterAndSortingData.value.filter)
 
 onMounted(() => {
-  _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, getGameMode)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, getGlobalFilter)
 
   getGlobalFilter()
 })
 
 onUnmounted(() => {
-  _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, getGameMode)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, getGlobalFilter)
 })
 
@@ -219,10 +215,6 @@ function copyFilterAndSortingData(): BuildFilterAndSortingData | ItemFilterAndSo
     : new ItemFilterAndSortingData(modelFilterAndSortingData.value.sortingFunctions, modelFilterAndSortingData.value as ItemFilterAndSortingData)
 
   return fasd
-}
-
-function getGameMode(): void {
-  gameMode.value = _gameModeService.getGameMode()
 }
 
 /**
@@ -323,31 +315,8 @@ function switchSortOrder(): void {
     align="left"
   >
     <div class="filter-chips">
-      <!-- Game mode -->
-      <Chip class="filter-chip">
-        <Tooltip
-          :disabled-on-mobile="true"
-          :full-size="true"
-          :tooltip="$t('caption.gameMode') + ' : ' + $t(`caption.gameMode_${gameMode}`)"
-          style="height: 100%;"
-          @click="showGlobalFilterSidebar"
-        >
-          <div class="filter-chip-game-mode">
-            <div class="filter-chip-icon">
-              <font-awesome-icon icon="gamepad" />
-            </div>
-            <div
-              class="filter-chip-game-mode-text"
-              :class="{
-                'filter-chip-game-mode-text-pve': gameMode === 'pve',
-                'filter-chip-game-mode-text-pvp': gameMode === 'pvp',
-              }"
-            >
-              {{ $t(`caption.gameMode_${gameMode}`) }}
-            </div>
-          </div>
-        </Tooltip>
-      </Chip>
+      <!-- Game mode chip -->
+      <GameModeChip />
       <!-- Merchants chip -->
       <Chip class="filter-chip">
         <Tooltip
@@ -558,7 +527,7 @@ function switchSortOrder(): void {
   border-color: var(--primary-color3);
   border-style: solid;
   border-width: 1px;
-  height: 100%;
+  height: 2.5rem;
   overflow: hidden;
   padding: 0rem;
   width: 100%;
@@ -574,24 +543,6 @@ function switchSortOrder(): void {
   grid-template-columns: auto auto auto;
   height: 100%;
   width: 100%;
-}
-
-.filter-chip-game-mode {
-  align-items: center;
-  display: flex;
-}
-
-.filter-chip-game-mode-text {
-  margin-right: 0.5rem;
-  font-weight: bolder;
-}
-
-.filter-chip-game-mode-text-pve {
-  color: var(--success-color);
-}
-
-.filter-chip-game-mode-text-pvp {
-  color: var(--primary-color);
 }
 
 .filter-chip-icon {

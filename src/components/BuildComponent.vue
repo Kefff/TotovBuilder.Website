@@ -24,6 +24,7 @@ import { SeoService } from '../services/SeoService'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildSummary from './BuildSummaryComponent.vue'
+import GameModeChip from './GameModeChipComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
 import InventorySlots from './InventorySlotsComponent.vue'
 import Loading from './LoadingComponent.vue'
@@ -843,31 +844,34 @@ function updateSeoMetadata(): void {
         </Transition>
       </template>
       <template #under>
-        <div
-          v-if="!isLoading && isCompactMode"
-          class="build-summary-popup-buttons-container"
-        >
+        <div style="display: flex;">
+          <GameModeChip class="build-game-mode-chip" />
           <div
-            class="build-summary-popup-button build-summary-popup-toggle-button"
-            @click="() => toggleCompactBuildSummaryAsync()"
+            v-if="!isLoading && isCompactMode"
+            class="build-summary-popup-buttons-container"
           >
-            <font-awesome-icon
-              v-if="!isCompactBuildSummaryExpanded"
-              icon="clipboard-list"
-            />
-            <font-awesome-icon
-              v-if="isCompactBuildSummaryExpanded"
-              icon="chevron-up"
-            />
-          </div>
-          <div
-            v-show="isCompactBuildSummaryExpanded"
-            class="build-summary-popup-button build-summary-popup-pin-button"
-            :style="{ 'background-color': isCompactBuildSummaryPinned ? 'var(--primary-color)' : 'var(--surface-a)' }"
-            @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
-          >
-            <!-- Style needed here instead of a class because the style was not updating when unpinning on mobile when deployed -->
-            <font-awesome-icon icon="thumbtack" />
+            <div
+              class="build-summary-popup-button build-summary-popup-toggle-button"
+              @click="() => toggleCompactBuildSummaryAsync()"
+            >
+              <font-awesome-icon
+                v-if="!isCompactBuildSummaryExpanded"
+                icon="clipboard-list"
+              />
+              <font-awesome-icon
+                v-if="isCompactBuildSummaryExpanded"
+                icon="chevron-up"
+              />
+            </div>
+            <div
+              v-show="isCompactBuildSummaryExpanded"
+              class="build-summary-popup-button build-summary-popup-pin-button"
+              :style="{ 'background-color': isCompactBuildSummaryPinned ? 'var(--primary-color)' : 'var(--surface-a)' }"
+              @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
+            >
+              <!-- Style needed here instead of a class because the style was not updating when unpinning on mobile when deployed -->
+              <font-awesome-icon icon="thumbtack" />
+            </div>
           </div>
         </div>
       </template>
@@ -1037,6 +1041,11 @@ function updateSeoMetadata(): void {
 .build-empty-message-text {
   margin-left: auto;
   margin-right: auto;
+}
+
+.build-game-mode-chip {
+  margin-top: 0.5rem;
+  position: absolute;
 }
 
 .build-inventory-slots {
