@@ -845,7 +845,10 @@ function updateSeoMetadata(): void {
       </template>
       <template #under>
         <div style="display: flex;">
-          <GameModeChip class="build-game-mode-chip" />
+          <GameModeChip
+            :is-editing-build="isEditing"
+            class="build-game-mode-chip"
+          />
           <div
             v-if="!isLoading && isCompactMode"
             class="build-summary-popup-buttons-container"

@@ -166,6 +166,14 @@ function toggleOutdatedSharableUrlWarningValue(): void {
       />
     </div>
   </div>
+  <div class="sidebar-option-description">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
+    </div>
+    <span>
+      {{ $t('message.itemsLanguageExplanation') }}
+    </span>
+  </div>
   <!-- Additional display options -->
   <div
     v-for="(additionalDisplayOption, index) of additionalDisplayOptions"

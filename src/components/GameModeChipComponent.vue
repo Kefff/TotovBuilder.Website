@@ -8,6 +8,12 @@ import Tooltip from './TooltipComponent.vue'
 const _gameModeService = Services.get(GameModeService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
+const props = withDefaults(
+  defineProps<{ isEditingBuild?: boolean }>(),
+  {
+    isEditingBuild: false
+  })
+
 const gameMode = ref(_gameModeService.getGameMode())
 
 onMounted(() => {
@@ -30,7 +36,10 @@ function getGameMode(): void {
  */
 function showGlobalFilterSidebar(): void {
   _globalSidebarService.display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar'
+    displayedComponentType: 'MerchantItemsOptionsSidebar',
+    displayedComponentParameters: {
+      isGameModeInputEnabled: !props.isEditingBuild
+    }
   })
 }
 </script>
