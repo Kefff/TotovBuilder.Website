@@ -6,6 +6,7 @@ import { IAmmunition } from '../models/item/IAmmunition'
 import { IArmor } from '../models/item/IArmor'
 import { IArmorMod } from '../models/item/IArmorMod'
 import { IMod } from '../models/item/IMod'
+import { IModdable } from '../models/item/IModdable'
 import { IPrice } from '../models/item/IPrice'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
@@ -745,7 +746,10 @@ export class InventoryItemService {
         const modSlotItemAsString = await this.toTextAsync(modSlot.item, options, modSlotInPreset?.item, indentationLevel)
 
         if (modSlotItemAsString !== '') {
-          const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, options.language)
+          const itemModSlot = (item as IModdable).modSlots?.find(ms => ms.name === modSlot.modSlotName)
+          const modSlotName = itemModSlot != null
+            ? this.translate(itemModSlot?.caption ?? `caption.modSlot_${modSlot.modSlotName}`, options.language)
+            : modSlot.modSlotName
 
           if (modSlotItemAsString.startsWith('\n')) {
             inventoryItemAsString += `\n${indentation}[${italicToken}${modSlotName}${italicToken}]${lineEnd}${modSlotItemAsString}`

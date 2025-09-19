@@ -122,7 +122,7 @@ describe('PathUtils', () => {
           },
           {
             item: lshZ2dtmFs,
-            path: `build:build_1/slot:headwear_0/item:${lshZ2dtm.id}/mod:mod_equipment/item:${lshZ2dtmFs.id}`
+            path: `build:build_1/slot:headwear_0/item:${lshZ2dtm.id}/mod:mod_equipment_000/item:${lshZ2dtmFs.id}`
           },
           {
             item: berkut,

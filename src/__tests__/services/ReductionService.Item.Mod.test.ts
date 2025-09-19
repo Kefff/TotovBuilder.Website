@@ -45,6 +45,7 @@ describe('parseReducedItem', () => {
       {
         'mo': [
           {
+            'c': 'Tactical',
             'i': [
               '5a800961159bd4315e3a1657',
               '57fd23e32459772d0805bcf1',
@@ -92,6 +93,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         modSlots: [
           {
+            caption: 'Tactical',
             compatibleItemIds: [
               '5a800961159bd4315e3a1657',
               '57fd23e32459772d0805bcf1',

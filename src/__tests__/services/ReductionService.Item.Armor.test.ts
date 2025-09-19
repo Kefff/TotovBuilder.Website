@@ -52,21 +52,21 @@ describe('parseReducedItem', () => {
       {
         'ac': 6,
         'aa': [
-          'FRPLATE',
-          'BCKPLATE',
-          'LPLATE',
-          'RPLATE',
+          'FR. PLATE',
+          'BCK. PLATE',
+          'L. PLATE',
+          'R. PLATE',
           'Stomach',
-          'Chest',
-          'ThoraxUpperBack',
-          'StomachLowerBack',
-          'StomachLeftSide',
-          'StomachRightSide',
-          'ThoraxThroat',
-          'ThoraxNeck',
-          'LeftArmShoulder',
-          'RightArmShoulder',
-          'StomachGroin'
+          'Thorax',
+          'Thorax, Upper back',
+          'Stomach, Lower back',
+          'Stomach, Left Side',
+          'Stomach, Right Side',
+          'Thorax, Throat',
+          'Thorax, Neck',
+          'Left arm, Shoulder',
+          'Right arm, Shoulder',
+          'Stomach, Groin'
         ],
         'dp': '65766adc234b9f6e050a431a',
         'e': -0.1,
@@ -169,21 +169,21 @@ describe('parseReducedItem', () => {
       {
         armorClass: 6,
         armoredAreas: [
-          'FRPLATE',
-          'BCKPLATE',
-          'LPLATE',
-          'RPLATE',
+          'FR. PLATE',
+          'BCK. PLATE',
+          'L. PLATE',
+          'R. PLATE',
           'Stomach',
-          'Chest',
-          'ThoraxUpperBack',
-          'StomachLowerBack',
-          'StomachLeftSide',
-          'StomachRightSide',
-          'ThoraxThroat',
-          'ThoraxNeck',
-          'LeftArmShoulder',
-          'RightArmShoulder',
-          'StomachGroin'
+          'Thorax',
+          'Thorax, Upper back',
+          'Stomach, Lower back',
+          'Stomach, Left Side',
+          'Stomach, Right Side',
+          'Thorax, Throat',
+          'Thorax, Neck',
+          'Left arm, Shoulder',
+          'Right arm, Shoulder',
+          'Stomach, Groin'
         ],
         blindnessProtectionPercentage: 0,
         categoryId: ItemCategoryId.armor,
@@ -202,6 +202,7 @@ describe('parseReducedItem', () => {
         name: '6B43 Zabralo-Sh body armor (Digital Flora)',
         modSlots: [
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4dea7c17dec2f50cc86a',
               '65573fa5655447403702a816',
@@ -236,6 +237,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4a964b446df1ad03f192',
               '65573fa5655447403702a816',
@@ -269,6 +271,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4f8bc721968a4404ef18',
               '6557458f83942d705f0c4962',
@@ -280,6 +283,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4f8bc721968a4404ef18',
               '6557458f83942d705f0c4962',
@@ -305,21 +309,21 @@ describe('parseReducedItem', () => {
       {
         'ac': 6,
         'aa': [
-          'FRPLATE',
-          'BCKPLATE',
-          'LPLATE',
-          'RPLATE',
+          'FR. PLATE',
+          'BCK. PLATE',
+          'L. PLATE',
+          'R. PLATE',
           'Stomach',
-          'Chest',
-          'ThoraxUpperBack',
-          'StomachLowerBack',
-          'StomachLeftSide',
-          'StomachRightSide',
-          'ThoraxThroat',
-          'ThoraxNeck',
-          'LeftArmShoulder',
-          'RightArmShoulder',
-          'StomachGroin'
+          'Thorax',
+          'Thorax, Upper back',
+          'Stomach, Lower back',
+          'Stomach, Left Side',
+          'Stomach, Right Side',
+          'Thorax, Throat',
+          'Thorax, Neck',
+          'Left arm, Shoulder',
+          'Right arm, Shoulder',
+          'Stomach, Groin'
         ],
         'bi': '545cdb794bdc2d3a198b456a',
         'e': -0.1,
@@ -422,21 +426,21 @@ describe('parseReducedItem', () => {
       {
         armorClass: 6,
         armoredAreas: [
-          'FRPLATE',
-          'BCKPLATE',
-          'LPLATE',
-          'RPLATE',
+          'FR. PLATE',
+          'BCK. PLATE',
+          'L. PLATE',
+          'R. PLATE',
           'Stomach',
-          'Chest',
-          'ThoraxUpperBack',
-          'StomachLowerBack',
-          'StomachLeftSide',
-          'StomachRightSide',
-          'ThoraxThroat',
-          'ThoraxNeck',
-          'LeftArmShoulder',
-          'RightArmShoulder',
-          'StomachGroin'
+          'Thorax',
+          'Thorax, Upper back',
+          'Stomach, Lower back',
+          'Stomach, Left Side',
+          'Stomach, Right Side',
+          'Thorax, Throat',
+          'Thorax, Neck',
+          'Left arm, Shoulder',
+          'Right arm, Shoulder',
+          'Stomach, Groin'
         ],
         blindnessProtectionPercentage: 0,
         categoryId: ItemCategoryId.armor,
@@ -455,6 +459,7 @@ describe('parseReducedItem', () => {
         name: '6B43 Zabralo-Sh body armor (Digital Flora) Default',
         modSlots: [
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4dea7c17dec2f50cc86a',
               '65573fa5655447403702a816',
@@ -489,6 +494,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4a964b446df1ad03f192',
               '65573fa5655447403702a816',
@@ -522,6 +528,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4f8bc721968a4404ef18',
               '6557458f83942d705f0c4962',
@@ -533,6 +540,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4f8bc721968a4404ef18',
               '6557458f83942d705f0c4962',

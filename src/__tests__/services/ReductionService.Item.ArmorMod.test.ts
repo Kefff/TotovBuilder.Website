@@ -11,14 +11,15 @@ describe('parseReducedItem', () => {
       {
         'ac': 6,
         'aa': [
-          'HeadTopOfTheHead',
-          'HeadNape'
+          'Head, Top of the head',
+          'Head, Nape'
         ],
         'd': 40,
         'e': -0.05,
         'ma': 'Ceramic',
         'mo': [
           {
+            'c': 'Shroud',
             'i': [
               '5c0558060db834001b735271',
               '5a16b8a9fcdbcb00165aa6ca'
@@ -48,8 +49,8 @@ describe('parseReducedItem', () => {
       {
         armorClass: 6,
         armoredAreas: [
-          'HeadTopOfTheHead',
-          'HeadNape'
+          'Head, Top of the head',
+          'Head, Nape'
         ],
         baseItemId: undefined,
         blindnessProtectionPercentage: 0,
@@ -73,6 +74,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         modSlots: [
           {
+            caption: 'Shroud',
             compatibleItemIds: [
               '5c0558060db834001b735271',
               '5a16b8a9fcdbcb00165aa6ca'

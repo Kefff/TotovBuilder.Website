@@ -213,7 +213,7 @@ export const build1: IBuild = {
                 modSlots: [],
                 quantity: 1
               },
-              modSlotName: 'mod_equipment'
+              modSlotName: 'mod_equipment_000'
             }
           ],
           quantity: 1
@@ -708,7 +708,7 @@ export const reducedBuild1: Record<string, unknown> = {
               'i': {
                 'i': lshZ2dtmFs.id
               },
-              'n': 'mod_equipment'
+              'n': 'mod_equipment_000'
             }
           ]
         }

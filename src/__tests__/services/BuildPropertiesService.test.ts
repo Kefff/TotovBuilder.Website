@@ -242,10 +242,10 @@ describe('BuildPropertiesService', () => {
 
   describe('getStatsAsString', () => {
     it.each([
-      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-17.5%**)  
+      [build1, true, true, 'en', BuildsToTextType.markdown, `↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-19.5%**)  
 🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**  
 💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  `],
-      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 31 (-17,5%)
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, `Recul vertical 66   Recul horizontal 216   Ergonomie 31 (-19,5%)
 Classe d'armure 4   Vitesse -7%   Vitesse de rotation -12%
 Poids 26,153 kg`],
       [build2, true, false, 'fr', BuildsToTextType.markdown, `↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
@@ -280,8 +280,8 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
     })
 
     it.each([
-      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-17.5%**)    🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**    💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  '],
-      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 31 (-17,5%)    Classe d\'armure 4   Vitesse -7%   Vitesse de rotation -12%    Poids 26,153 kg'],
+      [build1, true, true, 'en', BuildsToTextType.markdown, '↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-19.5%**)    🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**    💵 Price **520,961₽**   ⚓ Weight **26.153 kg**  '],
+      [build1, false, false, 'fr', BuildsToTextType.simpleText, 'Recul vertical 66   Recul horizontal 216   Ergonomie 31 (-19,5%)    Classe d\'armure 4   Vitesse -7%   Vitesse de rotation -12%    Poids 26,153 kg'],
       [build2, true, false, 'fr', BuildsToTextType.markdown, '↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)    🛡️ Classe d\'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**    ⚓ Poids **9,236 kg**  '],
       [build2, false, true, 'en', BuildsToTextType.simpleText, 'Vertical recoil 362   Horizontal recoil 249   Ergonomics 52 (-3%)    Armor class 4   Speed -3%   Turning speed -1%    Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg']
     ])('should get the stats of a build as a single line', async (build: IBuild, includeEmojis: boolean, includePrices: boolean, language: string, type: BuildsToTextType, expected: string) => {
@@ -745,20 +745,20 @@ Ref Non   Skier 1   La Toubib 3
       // Assert
       expect(result).toBe(`# Build 1
 
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk)*
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-17,5%**)  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-19,5%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
 ⚓ Poids **26,153 kg**  
 
 [*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
+ [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**  
   95 x **5.45x39mm US gs**  
 
 [*Pare-balles*] **6B13 assault armor (Flora) Default**  
 
 [*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**  
- [*Équipement*] **LShZ-2DTM face shield**  
+ [*Gear*] **LShZ-2DTM face shield**  
 
 [*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**  
  **Iskra ration pack**  
@@ -886,7 +886,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
         })
 
       // Assert
-      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)
+      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk)
 [Build 2](http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A)`)
     })
 
@@ -920,18 +920,18 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       // Assert
       expect(result).toBe(`# Build 1
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-17,5%**)  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-19,5%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
 💵 Prix **361 226₽**   ⚓ Poids **26,153 kg**  
 
 [*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+ [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
   95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
 
 [*Pare-balles*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64 269₽**  
 
 [*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
+ [*Gear*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
 
 [*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**   💵 Ragman 2 **24 509₽**  
  **Iskra ration pack**   💵 Jaeger 2 **24 392₽**  
@@ -955,11 +955,11 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 💵 Prix **187 902₽** et **444$** (= **251 397₽**)   ⚓ Poids **9,236 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
- [*Canon*]  
-  [*Bouche*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
- [*Chargeur*]  
+ [*Barrel*]  
+  [*Muzzle*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
+ [*Magazine*]  
   17 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 241₽**  
- [*Dispositif tactique*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
+ [*Tactical*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
 
 [*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU)**   💵 Marché **33 950₽**  
  [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
@@ -1386,18 +1386,18 @@ Créé avec Totov Builder`)
       // Assert
       expect(result).toBe(`Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-17,5%)
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-19,5%)
 🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
 ⚓ Poids 26,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default
- [Chargeur] RPK-16 5.45x39 95-round drum magazine
+ [Magazine] RPK-16 5.45x39 95-round drum magazine
   95 x 5.45x39mm US gs
 
 [Pare-balles] 6B13 assault armor (Flora) Default
 
 [Couvre-chef] BNTI LShZ-2DTM helmet (Black)
- [Équipement] LShZ-2DTM face shield
+ [Gear] LShZ-2DTM face shield
 
 [Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)
  Iskra ration pack
@@ -1413,7 +1413,7 @@ Créé avec Totov Builder`)
 [Masque] Atomic Defense CQCM up armored ballistic mask (Black)
 
 Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
+http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk
 
 Créé avec Totov Builder`)
     })
@@ -1532,7 +1532,7 @@ Créé avec Totov Builder`)
 
       // Assert
       expect(result).toBe(`Build 1
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
+http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk
 
 
 
@@ -1570,18 +1570,18 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       // Assert
       expect(result).toBe(`Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-17,5%)
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-19,5%)
 🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
 💵 Prix 361 226₽   ⚓ Poids 26,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+ [Magazine] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
   95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
 
 [Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
 
 [Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
+ [Gear] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
 
 [Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24 509₽
  Iskra ration pack   💵 Jaeger 2 24 392₽
@@ -1605,11 +1605,11 @@ Build 2
 💵 Prix 187 902₽ et 444$ (= 251 397₽)   ⚓ Poids 9,236 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
- [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
- [Chargeur]
+ [Barrel]
+  [Muzzle] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
+ [Magazine]
   17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
+ [Tactical] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
 
 [Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   💵 Marché 33 950₽
  [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
@@ -1640,9 +1640,9 @@ Créé avec Totov Builder`)
 
 const expectedMarkdownString1En = `# Build 1
 
-*[Interactive version with full statistics](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
+*[Interactive version with full statistics](http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk)*
 
-↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-17.5%**)  
+↕️ Vertical recoil **66**   ↔️ Horizontal recoil **216**   ✋ Ergonomics **31** (**-19.5%**)  
 🛡️ Armor class **4**   🏃 Speed **-7%**   🔄 Turning speed **-12%**  
 💵 Price **361,226₽**   ⚓ Weight **26.153 kg**  
 
@@ -1653,7 +1653,7 @@ const expectedMarkdownString1En = `# Build 1
 [*Body armor*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64,269₽**  
 
 [*Headwear*] **BNTI LShZ-2DTM helmet (Black)**   💵 Flea market **63,493₽**  
- [*Equipment*] **LShZ-2DTM face shield**   💵 Ragman 3 (*barter*) **29,805₽**  
+ [*Gear*] **LShZ-2DTM face shield**   💵 Ragman 3 (*barter*) **29,805₽**  
 
 [*Backpack*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**   💵 Ragman 2 **24,509₽**  
  **Iskra ration pack**   💵 Jaeger 2 **24,392₽**  
@@ -1679,20 +1679,20 @@ Ref 4️⃣   Skier 4️⃣   Therapist 4️⃣
 
 const expectedMarkdownString1Fr = `# Build 1
 
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA)*
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk)*
 
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-17,5%**)  
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **31** (**-19,5%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-7%**   🔄 Vitesse de rotation **-12%**  
 💵 Prix **361 226₽**   ⚓ Poids **26,153 kg**  
 
 [*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+ [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
   95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
 
 [*Pare-balles*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64 269₽**  
 
 [*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
+ [*Gear*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
 
 [*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**   💵 Ragman 2 **24 509₽**  
  **Iskra ration pack**   💵 Jaeger 2 **24 392₽**  
@@ -1725,11 +1725,11 @@ const expectedMarkdownString2 = `# Build 2
 💵 Prix **187 902₽** et **444$** (= **251 397₽**)   ⚓ Poids **9,236 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
- [*Canon*]  
-  [*Bouche*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
- [*Chargeur*]  
+ [*Barrel*]  
+  [*Muzzle*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
+ [*Magazine*]  
   17 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 241₽**  
- [*Dispositif tactique*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
+ [*Tactical*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
 
 [*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU)**   💵 Marché **33 950₽**  
  [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
@@ -1832,7 +1832,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 const expectedString1En = `Build 1
 
-↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 31 (-17.5%)
+↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 31 (-19.5%)
 🛡️ Armor class 4   🏃 Speed -7%   🔄 Turning speed -12%
 💵 Price 361,226₽   ⚓ Weight 26.153 kg
 
@@ -1843,7 +1843,7 @@ const expectedString1En = `Build 1
 [Body armor] 6B13 assault armor (Flora) Default   💵 Ragman 2 64,269₽
 
 [Headwear] BNTI LShZ-2DTM helmet (Black)   💵 Flea market 63,493₽
- [Equipment] LShZ-2DTM face shield   💵 Ragman 3 (barter) 29,805₽
+ [Gear] LShZ-2DTM face shield   💵 Ragman 3 (barter) 29,805₽
 
 [Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24,509₽
  Iskra ration pack   💵 Jaeger 2 24,392₽
@@ -1859,7 +1859,7 @@ const expectedString1En = `Build 1
 [Face cover] Atomic Defense CQCM up armored ballistic mask (Black)   💵 No merchant
 
 Interactive version with full statistics
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
+http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk
 
 
 
@@ -1872,18 +1872,18 @@ Created with Totov Builder`
 
 const expectedString1Fr = `Build 1
 
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-17,5%)
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 31 (-19,5%)
 🛡️ Classe d'armure 4   🏃 Vitesse -7%   🔄 Vitesse de rotation -12%
 💵 Prix 361 226₽   ⚓ Poids 26,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+ [Magazine] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
   95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
 
 [Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
 
 [Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
+ [Gear] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
 
 [Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24 509₽
  Iskra ration pack   💵 Jaeger 2 24 392₽
@@ -1899,7 +1899,7 @@ const expectedString1Fr = `Build 1
 [Masque] Atomic Defense CQCM up armored ballistic mask (Black)   💵 Pas de marchand
 
 Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtikHjuX0FecBTU1iYhGDp7Trritv94OWkA
+http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOlgCxqLt8Bov5LviowT5gxPqUUzeDaLzDzLaoAVAimfU2eM0ebn_kDScJs1Coc_tRX7eeU4vprbG30Wkwga8ulvpfzqjd1XZMDQFlND7jMx9APhnRsB88DDfYX-w6ZYNumcfZdA8CMec4SQyp1uROA_2gTxlnvp71wDrwj8NaUc_bdnKg9eWtRvDgpoK_EGHtGgNcqTqjaKeEa0hiUApsM7wYSITJ5fHEpLmKJOScYLP_vfWGkk
 
 
 
@@ -1917,11 +1917,11 @@ const expectedString2 = `Build 2
 💵 Prix 187 902₽ et 444$ (= 251 397₽)   ⚓ Poids 9,236 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
- [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
- [Chargeur]
+ [Barrel]
+  [Muzzle] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
+ [Magazine]
   17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
+ [Tactical] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
 
 [Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   💵 Marché 33 950₽
  [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽

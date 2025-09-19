@@ -541,12 +541,12 @@ describe('InventorySlotPropertiesService', () => {
       })
     })
 
-    describe('Wrearable modifiers', () => {
+    describe('Wearable modifiers', () => {
       it.each([
         [
           inventorySlot1,
           {
-            ergonomicsModifierPercentage: -0.05,
+            ergonomicsModifierPercentage: -0.07,
             movementSpeedModifierPercentage: 0,
             turningSpeedModifierPercentage: -0.08
           } as IWearableModifiers
@@ -760,12 +760,12 @@ describe('InventorySlotPropertiesService', () => {
       [
         inventorySlot1,
         `[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  `
+ [*Gear*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  `
       ],
       [
         inventorySlot2,
         `[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+ [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
   95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
  **5.45x39mm US gs**   💵 Prapor 1 **96₽**  `
       ],
@@ -901,7 +901,7 @@ describe('InventorySlotPropertiesService', () => {
 
       // Assert
       expect(result).toBe(`[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   Ragman 3 (*échange*) **29 805₽**  `)
+ [*Gear*] **LShZ-2DTM face shield**   Ragman 3 (*échange*) **29 805₽**  `)
     })
 
     it('should ignore undefined items in an inventory slot', async () => {
@@ -935,12 +935,12 @@ describe('InventorySlotPropertiesService', () => {
       [
         inventorySlot1,
         `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽`
+ [Gear] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽`
       ],
       [
         inventorySlot2,
         `[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+ [Magazine] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
   95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
  5.45x39mm US gs   💵 Prapor 1 96₽`
       ],
@@ -1076,7 +1076,7 @@ describe('InventorySlotPropertiesService', () => {
 
       // Assert
       expect(result).toBe(`[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽`)
+ [Gear] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽`)
     })
 
     it('should ignore undefined items in an inventory slot', async () => {
@@ -1123,7 +1123,7 @@ const inventorySlot1: IInventorySlot = {
             modSlots: [],
             quantity: 1
           },
-          modSlotName: 'mod_equipment'
+          modSlotName: 'mod_equipment_000'
         }
       ],
       quantity: 1

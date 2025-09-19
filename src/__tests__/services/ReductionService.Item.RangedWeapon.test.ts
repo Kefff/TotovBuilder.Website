@@ -14,8 +14,8 @@ describe('parseReducedItem', () => {
         'dp': '584147732459775a2b6d9f12',
         'e': 44,
         'fm': [
-          'SingleFire',
-          'FullAuto'
+          'Single fire',
+          'Full auto'
         ],
         'r': 650,
         'h': 445,
@@ -38,7 +38,7 @@ describe('parseReducedItem', () => {
         conflictingItemIds: [],
         defaultPresetId: '584147732459775a2b6d9f12',
         ergonomics: 44,
-        fireModes: ['SingleFire', 'FullAuto'],
+        fireModes: ['Single fire', 'Full auto'],
         fireRate: 650,
         horizontalRecoil: 445,
         iconLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-icon.webp',
@@ -64,13 +64,14 @@ describe('parseReducedItem', () => {
         'dp': '584147732459775a2b6d9f12',
         'e': 44,
         'fm': [
-          'SingleFire',
-          'FullAuto'
+          'Single fire',
+          'Full auto'
         ],
         'r': 650,
         'h': 445,
         'mo': [
           {
+            'c': 'Pistol Grip',
             'i': [
               '5f6341043ada5942720e2dc5',
               '6087e663132d4d12c81fd96b',
@@ -98,6 +99,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_pistol_grip'
           },
           {
+            'c': 'Stock',
             'i': [
               '59ecc28286f7746d7a68aa8c',
               '5ab626e4d8ce87272e4c6e43',
@@ -106,6 +108,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_stock'
           },
           {
+            'c': 'Ch. Handle',
             'i': [
               '6130ca3fd92c473c77020dbd',
               '5648ac824bdc2ded0b8b457d'
@@ -113,6 +116,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_charge'
           },
           {
+            'c': 'Magazine',
             'i': [
               '564ca9df4bdc2d35148b4569',
               '564ca99c4bdc2d16268b4589',
@@ -128,6 +132,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_magazine'
           },
           {
+            'c': 'Muzzle',
             'i': [
               '5ac72e945acfc43f3b691116',
               '5ac7655e5acfc40016339a19',
@@ -146,6 +151,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_muzzle'
           },
           {
+            'c': 'Receiver',
             'i': [
               '57dc334d245977597164366f',
               '5839a7742459773cf9693481'
@@ -153,6 +159,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_reciever'
           },
           {
+            'c': 'Gas Block',
             'i': [
               '59d36a0086f7747e673f3946'
             ],
@@ -177,7 +184,7 @@ describe('parseReducedItem', () => {
         conflictingItemIds: [],
         defaultPresetId: '584147732459775a2b6d9f12',
         ergonomics: 44,
-        fireModes: ['SingleFire', 'FullAuto'],
+        fireModes: ['Single fire', 'Full auto'],
         fireRate: 650,
         horizontalRecoil: 445,
         iconLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-icon.jpg',
@@ -188,6 +195,7 @@ describe('parseReducedItem', () => {
         minuteOfAngle: undefined,
         modSlots: [
           {
+            caption: 'Pistol Grip',
             compatibleItemIds: [
               '5f6341043ada5942720e2dc5',
               '6087e663132d4d12c81fd96b',
@@ -217,6 +225,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Stock',
             compatibleItemIds: [
               '59ecc28286f7746d7a68aa8c',
               '5ab626e4d8ce87272e4c6e43',
@@ -227,6 +236,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Ch. Handle',
             compatibleItemIds: [
               '6130ca3fd92c473c77020dbd',
               '5648ac824bdc2ded0b8b457d'
@@ -236,6 +246,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Magazine',
             compatibleItemIds: [
               '564ca9df4bdc2d35148b4569',
               '564ca99c4bdc2d16268b4589',
@@ -253,6 +264,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Muzzle',
             compatibleItemIds: [
               '5ac72e945acfc43f3b691116',
               '5ac7655e5acfc40016339a19',
@@ -273,6 +285,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Receiver',
             compatibleItemIds: [
               '57dc334d245977597164366f',
               '5839a7742459773cf9693481'
@@ -282,6 +295,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Gas Block',
             compatibleItemIds: [
               '59d36a0086f7747e673f3946'
             ],
@@ -324,7 +338,7 @@ describe('parseReducedItem', () => {
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomics: 51,
-        fireModes: ['SingleFire'],
+        fireModes: [],
         fireRate: 30,
         horizontalRecoil: 400,
         iconLink: 'https://assets.tarkov.dev/624c0b3340357b5f566e8766-icon.jpg',

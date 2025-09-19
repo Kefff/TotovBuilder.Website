@@ -76,6 +76,7 @@ describe('parseReducedItem', () => {
         'e': -10,
         'mo': [
           {
+            'c': 'Chamber',
             'i': [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -87,6 +88,7 @@ describe('parseReducedItem', () => {
             'n': 'camora_000'
           },
           {
+            'c': 'Chamber',
             'i': [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -98,6 +100,7 @@ describe('parseReducedItem', () => {
             'n': 'camora_001'
           },
           {
+            'c': 'Chamber',
             'i': [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -109,6 +112,7 @@ describe('parseReducedItem', () => {
             'n': 'camora_002'
           },
           {
+            'c': 'Chamber',
             'i': [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -120,6 +124,7 @@ describe('parseReducedItem', () => {
             'n': 'camora_003'
           },
           {
+            'c': 'Chamber',
             'i': [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -131,6 +136,7 @@ describe('parseReducedItem', () => {
             'n': 'camora_004'
           },
           {
+            'c': 'Chamber',
             'i': [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -177,6 +183,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         modSlots: [
           {
+            caption: 'Chamber',
             compatibleItemIds: [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -190,6 +197,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Chamber',
             compatibleItemIds: [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -203,6 +211,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Chamber',
             compatibleItemIds: [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -216,6 +225,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Chamber',
             compatibleItemIds: [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -229,6 +239,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Chamber',
             compatibleItemIds: [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',
@@ -242,6 +253,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: 'Chamber',
             compatibleItemIds: [
               '5ede474b0c226a66f5402622',
               '5ede475b549eed7c6d5c18fb',

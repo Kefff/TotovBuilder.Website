@@ -202,7 +202,7 @@ describe('InventoryItemService', () => {
 
       // Assert
       expect(armorClassResult).toStrictEqual({
-        armorClass: 0,
+        armorClass: 2,
         durability: 72
       })
     })
@@ -3148,7 +3148,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         `**RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+ [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
   95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  `
       ],
       [
@@ -3251,11 +3251,11 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         `**Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
- [*Canon*]  
-  [*Bouche*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
- [*Chargeur*]  
+ [*Barrel*]  
+  [*Muzzle*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
+ [*Magazine*]  
   17 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 241₽**  
- [*Dispositif tactique*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  `
+ [*Tactical*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  `
       ],
       [
         {
@@ -3377,7 +3377,7 @@ describe('InventoryItemService', () => {
       // Assert
       expect(result).toBe(`**WARTECH Berkut BB-102 backpack (A-TACS FG)**  
  **RPK-16 5.45x39 light machine gun Default**  
-  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
+  [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**  
  50 x **9x19mm Green Tracer**  `)
     })
 
@@ -3441,8 +3441,8 @@ describe('InventoryItemService', () => {
       // Assert
       expect(result).toBe(`**Unknown item "5ca20d5986f774331e7c9602"**   💵 Pas de marchand  
  **Unknown item "5c0d1ec986f77439512a1a72"**   💵 Pas de marchand  
-  [*Poignée-pistolet*] **Unknown item "5beec8ea0db834001a6f9dbf"**   💵 Pas de marchand  
-  [*Chargeur*] **Unknown item "5bed625c0db834001c062946"**   💵 Pas de marchand  
+  [*mod_pistol_grip*] **Unknown item "5beec8ea0db834001a6f9dbf"**   💵 Pas de marchand  
+  [*mod_magazine*] **Unknown item "5bed625c0db834001c062946"**   💵 Pas de marchand  
  50 x **Unknown item "5c3df7d588a4501f290594e5"**   💵 Pas de marchand  `)
     })
 
@@ -3471,7 +3471,7 @@ describe('InventoryItemService', () => {
       // Assert
       expect(result).toBe(`**WARTECH Berkut BB-102 backpack (A-TACS FG)**   Ragman 2 **24 509₽**  
  **RPK-16 5.45x39 light machine gun Default**   Marché **43 345₽**  
-  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   Prapor 3 (*échange*) **24 218₽**  
+  [*Magazine*] **RPK-16 5.45x39 95-round drum magazine**   Prapor 3 (*échange*) **24 218₽**  
  50 x **9x19mm Green Tracer**   Le Mécano 1 **3 650₽**  `)
     })
   })
@@ -3621,7 +3621,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         `RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+ [Magazine] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
   95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽`
       ],
       [
@@ -3724,11 +3724,11 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         `Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
- [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
- [Chargeur]
+ [Barrel]
+  [Muzzle] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
+ [Magazine]
   17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)`
+ [Tactical] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)`
       ],
       [
         {
@@ -3850,7 +3850,7 @@ describe('InventoryItemService', () => {
       // Assert
       expect(result).toBe(`WARTECH Berkut BB-102 backpack (A-TACS FG)
  RPK-16 5.45x39 light machine gun Default
-  [Chargeur] RPK-16 5.45x39 95-round drum magazine
+  [Magazine] RPK-16 5.45x39 95-round drum magazine
  50 x 9x19mm Green Tracer`)
     })
 
@@ -3914,8 +3914,8 @@ describe('InventoryItemService', () => {
       // Assert
       expect(result).toBe(`Unknown item "5ca20d5986f774331e7c9602"   💵 Pas de marchand
  Unknown item "5c0d1ec986f77439512a1a72"   💵 Pas de marchand
-  [Poignée-pistolet] Unknown item "5beec8ea0db834001a6f9dbf"   💵 Pas de marchand
-  [Chargeur] Unknown item "5bed625c0db834001c062946"   💵 Pas de marchand
+  [mod_pistol_grip] Unknown item "5beec8ea0db834001a6f9dbf"   💵 Pas de marchand
+  [mod_magazine] Unknown item "5bed625c0db834001c062946"   💵 Pas de marchand
  50 x Unknown item "5c3df7d588a4501f290594e5"   💵 Pas de marchand`)
     })
 
@@ -3944,7 +3944,7 @@ describe('InventoryItemService', () => {
       // Assert
       expect(result).toBe(`WARTECH Berkut BB-102 backpack (A-TACS FG)   Ragman 2 24 509₽
  RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
-  [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
+  [Magazine] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
  50 x 9x19mm Green Tracer   Le Mécano 1 3 650₽`)
     })
   })

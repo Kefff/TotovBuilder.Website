@@ -599,7 +599,7 @@ export class ReductionService {
 
     const caliber = reducedItem['ca'] as string
     const ergonomics = reducedItem['e'] as number
-    const fireModes = reducedItem['fm'] as string[] ?? ['SingleFire']
+    const fireModes = reducedItem['fm'] as string[] ?? []
     const fireRate = reducedItem['r'] as number
     const horizontalRecoil = reducedItem['h'] as number
     const minuteOfAngle = reducedItem['ma'] as number ?? undefined
