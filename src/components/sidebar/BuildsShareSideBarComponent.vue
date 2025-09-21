@@ -162,6 +162,7 @@ async function getTextAsync(): Promise<void> {
   text.value = await _buildPropertiesService.toTextAsync(
     buildsToShare.value,
     {
+      gameMode: gameMode.value,
       includeEmojis: includeEmojis.value,
       includeLink: includeLink.value,
       includePrices: includePrices.value,

@@ -864,6 +864,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toTextAsync(
         inventorySlot,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -891,6 +892,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toTextAsync(
         inventorySlot1,
         {
+          gameMode: 'pvp',
           includeEmojis: false,
           includeLink: true,
           includePrices: true,
@@ -917,6 +919,7 @@ describe('InventorySlotPropertiesService', () => {
           typeId: InventorySlotTypeId.pockets
         },
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -1039,6 +1042,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toTextAsync(
         inventorySlot,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -1066,6 +1070,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toTextAsync(
         inventorySlot1,
         {
+          gameMode: 'pvp',
           includeEmojis: false,
           includeLink: true,
           includePrices: true,
@@ -1092,6 +1097,7 @@ describe('InventorySlotPropertiesService', () => {
           typeId: InventorySlotTypeId.pockets
         },
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,

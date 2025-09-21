@@ -3340,6 +3340,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -3366,6 +3367,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: false,
@@ -3404,6 +3406,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -3430,6 +3433,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -3460,6 +3464,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: false,
           includeLink: true,
           includePrices: true,
@@ -3813,6 +3818,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -3839,6 +3845,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: false,
@@ -3877,6 +3884,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -3903,6 +3911,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -3933,6 +3942,7 @@ describe('InventoryItemService', () => {
       const result = await service.toTextAsync(
         inventoryItem,
         {
+          gameMode: 'pvp',
           includeEmojis: false,
           includeLink: true,
           includePrices: true,

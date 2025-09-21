@@ -266,6 +266,7 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
       const result = service.getStatsAsString(
         summary,
         {
+          gameMode: 'pvp',
           includeEmojis,
           includeLink: false,
           includePrices,
@@ -296,6 +297,7 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
       const result = service.getStatsAsString(
         summary,
         {
+          gameMode: 'pvp',
           includeEmojis,
           includeLink: false,
           includePrices,
@@ -470,6 +472,7 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
       const result = await service.toTextAsync(
         [build],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -567,6 +570,7 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
       const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -600,6 +604,8 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
 [*Poches*] 25 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 825₽**  
 
 
+
+*Mode de jeu :* **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -688,6 +694,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
           } as IBuild
         ],
         {
+          gameMode: 'pvp',
           includeEmojis: false,
           includeLink: true,
           includePrices: true,
@@ -707,6 +714,8 @@ Prix **43 345₽**   Poids **1,500 kg**
 [*Dans le dos*] **RPK-16 5.45x39 light machine gun Default**   Marché **43 345₽**  
 
 
+
+*Mode de jeu :* **JcJ**
 
 *Marchands configurés*  
 Marché Oui   Le Mécano 2   Prapor 4  
@@ -734,6 +743,7 @@ Ref Non   Skier 1   La Toubib 3
       const result = await service.toTextAsync(
         [build1],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: false,
@@ -840,6 +850,7 @@ Ref Non   Skier 1   La Toubib 3
       const result = await buildPropertiesService.toTextAsync(
         [build],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -854,6 +865,8 @@ Ref Non   Skier 1   La Toubib 3
 *[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA)*
 
 
+
+*Mode de jeu :* **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣  
@@ -877,6 +890,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -909,6 +923,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: false,
           includePrices: true,
@@ -975,6 +990,8 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 [*Fourreau*] **6Kh5 Bayonet**  
 
 
+
+*Mode de jeu :* **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1145,6 +1162,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await service.toTextAsync(
         [build],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -1242,6 +1260,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
+          gameMode: 'pve',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -1277,6 +1296,8 @@ Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA
 
 
+
+Mode de jeu : JcE
 
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
@@ -1327,6 +1348,7 @@ Créé avec Totov Builder`)
           } as IBuild
         ],
         {
+          gameMode: 'pvp',
           includeEmojis: false,
           includeLink: true,
           includePrices: true,
@@ -1347,6 +1369,8 @@ Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA
 
 
+
+Mode de jeu : JcJ
 
 Marchands configurés
 Marché Oui   Jaeger 4   Le Mécano 4
@@ -1375,6 +1399,7 @@ Créé avec Totov Builder`)
       const result = await service.toTextAsync(
         [build1],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: false,
@@ -1482,6 +1507,7 @@ Créé avec Totov Builder`)
       const result = await buildPropertiesService.toTextAsync(
         [build],
         {
+          gameMode: 'pve',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -1497,6 +1523,8 @@ Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA
 
 
+
+Mode de jeu : JcE
 
 Marchands configurés
 Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣
@@ -1522,6 +1550,7 @@ Créé avec Totov Builder`)
       const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
+          gameMode: 'pvp',
           includeEmojis: true,
           includeLink: true,
           includePrices: true,
@@ -1559,6 +1588,7 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
+          gameMode: 'pve',
           includeEmojis: true,
           includeLink: false,
           includePrices: true,
@@ -1626,6 +1656,8 @@ Build 2
 
 
 
+Mode de jeu : JcE
+
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
@@ -1670,6 +1702,8 @@ const expectedMarkdownString1En = `# Build 1
 
 
 
+*Game mode :* **PvP**
+
 *Configured merchants*  
 Flea market ✅   Jaeger 4️⃣   Mechanic 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
@@ -1709,6 +1743,8 @@ const expectedMarkdownString1Fr = `# Build 1
 
 
 
+*Mode de jeu :* **JcJ**
+
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
@@ -1746,6 +1782,8 @@ const expectedMarkdownString2 = `# Build 2
 
 
 
+*Mode de jeu :* **JcJ**
+
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
@@ -1764,6 +1802,8 @@ const expectedMarkdownString3 = `# Build with armor only
 [*Pare-balles*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64 269₽**  
 
 
+
+*Mode de jeu :* **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1786,6 +1826,8 @@ const expectedMarkdownString4 = `# Build with backpack only and every currency
 
 
 
+*Mode de jeu :* **JcJ**
+
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
@@ -1804,6 +1846,8 @@ const expectedMarkdownString5 = `# Build with weapon on back only
 
 
 
+*Mode de jeu :* **JcJ**
+
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
@@ -1820,6 +1864,8 @@ const expectedMarkdownString6 = `# Build with missing price
 [*Poches*] 60 x **5.45x39mm BP gs**   💵 Pas de marchand  
 
 
+
+*Mode de jeu :* **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1863,6 +1909,8 @@ http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 
 
 
+Game mode : PvP
+
 Configured merchants
 Flea market ✅   Jaeger 4️⃣   Mechanic 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
@@ -1903,6 +1951,8 @@ http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 
 
 
+Mode de jeu : JcJ
+
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
@@ -1941,6 +1991,8 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
 
 
 
+Mode de jeu : JcJ
+
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
@@ -1960,6 +2012,8 @@ Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA
 
 
+
+Mode de jeu : JcJ
 
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
@@ -1983,6 +2037,8 @@ http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJC
 
 
 
+Mode de jeu : JcJ
+
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
@@ -2002,6 +2058,8 @@ http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17
 
 
 
+Mode de jeu : JcJ
+
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
@@ -2019,6 +2077,8 @@ Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCtEy9EU1vXI1gHKo_6AMbgo9kFz-nmBlk3iys6khYTodWFDluyJb2ICHD2ow222Wddpp99A___y7mAAA
 
 
+
+Mode de jeu : JcJ
 
 Marchands configurés
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣

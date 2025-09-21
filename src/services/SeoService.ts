@@ -55,6 +55,7 @@ export class SeoService {
     const description = Services.get(BuildPropertiesService).getStatsAsString(
       summary,
       {
+        gameMode: 'pvp',
         includeEmojis: true,
         includeLink: false,
         includePrices: true,

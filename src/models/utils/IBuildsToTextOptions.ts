@@ -3,6 +3,11 @@
  */
 export interface IBuildsToTextOptions {
   /**
+   * Game mode.
+   */
+  gameMode: string
+
+  /**
    * Indicates whether emojis should be included.
    */
   includeEmojis: boolean
