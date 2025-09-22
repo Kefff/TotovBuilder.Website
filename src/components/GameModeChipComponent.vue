@@ -94,7 +94,8 @@ function showGlobalFilterSidebar(): void {
   border-color: var(--primary-color3);
   border-style: solid;
   border-width: 1px;
-  height: 2.5rem;
+  height: 100%;
+  min-height: 2.5rem;
   overflow: hidden;
   padding: 0rem;
 }

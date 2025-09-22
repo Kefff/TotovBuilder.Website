@@ -1047,6 +1047,7 @@ function updateSeoMetadata(): void {
 }
 
 .build-game-mode-chip {
+  height: 2.5rem;
   margin-top: 0.5rem;
   position: absolute;
 }
