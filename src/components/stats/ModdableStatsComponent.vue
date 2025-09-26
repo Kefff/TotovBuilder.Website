@@ -15,21 +15,22 @@ const _itemService = Services.get(ItemService)
 
 const moddable = computed(() => props.item as IModdable)
 
-const modSlotItems = ref<{ modSlotName: string, compatibleItems: IItem[] }[]>([])
+const modSlotItems = ref<{ caption: string | undefined, compatibleItems: IItem[], name: string }[]>([])
 
 onMounted(() => getCompatibleModsAsync())
 
 /**
- * Gets the captions of the accepted ammunition.
+ * Gets the compatible mods.
  */
 async function getCompatibleModsAsync(): Promise<void> {
-  const msi: { modSlotName: string, compatibleItems: IItem[] }[] = []
+  const msi: { caption: string | undefined, compatibleItems: IItem[], name: string }[] = []
 
   for (const modSlot of moddable.value.modSlots) {
     const compatibleItems = await _itemService.getItemsAsync(modSlot.compatibleItemIds, false)
     msi.push({
+      caption: modSlot.caption,
       compatibleItems,
-      modSlotName: `modSlot_${modSlot.name}`
+      name: modSlot.name
     })
   }
 
@@ -49,8 +50,8 @@ async function getCompatibleModsAsync(): Promise<void> {
 <template>
   <StatsItems
     v-for="msi of modSlotItems"
-    :key="msi.modSlotName"
-    :caption="`${$t('caption.modSlot')} - ${$t('caption.' + msi.modSlotName)}`"
+    :key="msi.name"
+    :caption="`${$t('caption.modSlot')} - ${msi.caption ?? $t(`caption.modSlot_${msi.name}`)}`"
     :items="msi.compatibleItems"
   >
     <template #specializedStats="slotProps">

@@ -4,7 +4,7 @@ import { IWebsiteConfiguration } from './models/configuration/IWebsiteConfigurat
  * Version of the website.
  * It must be updated each time a new update of the website is deployed.
  */
-const version = '2.0.0'
+const version = '2.1.0'
 
 /**
  * Part of the website configuration that cannot be changed by getting updated values from the website configuration API.
@@ -15,20 +15,22 @@ const fixedConfiguration = {
   buildsFilterStorageKey: 'builds_filter_field',
   buildSharingUrl: 's/',
   buildsPageStorageKey: 'builds_page',
-  buildsSortPropertyStorageKey: 'builds_sort_field',
   buildsSortOrderStorageKey: 'builds_sort_order',
+  buildsSortPropertyStorageKey: 'builds_sort_field',
   buildStorageKeyPrefix: 'build_',
   exportFileExtension: '.ttb',
   exportFileNamePrefix: 'TotovBuilder',
   exportWarningShowedStorageKey: 'export_warning_showed',
   exportWarningStorageKey: 'export_warning',
+  gameModeStorageKey: 'gameMode',
   globalFilterStorageKey: 'global_filter',
-  itemCategorySortPropertyStorageKeySuffix: '_sort_field',
   itemCategorySortOrderStorageKeySuffix: '_sort_order',
+  itemCategorySortPropertyStorageKeySuffix: '_sort_field',
   itemsFilterAndSortCategoryStorageKey: 'items_filter_sort_category',
   itemsFilterStorageKey: 'items_filter',
-  itemsSortPropertyStorageKey: 'items_sort_field',
+  itemsLanguageStorageKey: 'items_language',
   itemsSortOrderStorageKey: 'items_sort_order',
+  itemsSortPropertyStorageKey: 'items_sort_field',
   languageStorageKey: 'language',
   outdatedSharableUrlWarningStorageKey: 'outdated_sharable_url_warning',
   version,
@@ -40,22 +42,24 @@ const fixedConfiguration = {
  * Values set here are the default values, they are used while the website configuration API has not yet been called.
  * Then they are replaced by the values gotten from the API.
  */
-const updatableWbsiteConfiguration = {
+const updatableWebsiteConfiguration = {
   bugReportUrl: import.meta.env.VITE_DISCORD_URL,
   cacheDuration: 3600,
   contactAddress: import.meta.env.VITE_CONTACT_ADDRESS,
   discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
   endpointChangelog: 'data/changelog.json',
-  endpointItems: 'data/items.json',
+  endpointItems: 'data/items_{0}.json',
   endpointPresets: 'data/presets.json',
-  endpointPrices: 'data/prices.json',
+  endpointPrices: 'data/prices_{0}_{1}.json',
   endpointTarkovValues: 'data/tarkov-values.json',
   endpointWebsiteConfiguration: 'data/website-configuration.json',
   endpointUrlShortener: 'https://spoo.me/',
   fetchMaxTries: 6,
   fetchTimeout: 9,
   fetchWaitTimeBetweenRetries: 1,
+  gameModes: ['pvp'],
   githubUrl: import.meta.env.VITE_GITHUB_URL,
+  itemsLanguages: ['en'],
   notificationErrorDuration: 10,
   notificationInformationDuration: 5,
   notificationSuccessDuration: 5,
@@ -69,7 +73,7 @@ const updatableWbsiteConfiguration = {
  */
 const configuration: IWebsiteConfiguration = {
   ...fixedConfiguration,
-  ...updatableWbsiteConfiguration
+  ...updatableWebsiteConfiguration
 }
 
 export default configuration

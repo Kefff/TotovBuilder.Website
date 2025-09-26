@@ -13,15 +13,18 @@ import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
 import { BuildComponentService } from '../services/components/BuildComponentService'
 import { ExportService } from '../services/ExportService'
+import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
+import LanguageService from '../services/LanguageService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { SeoService } from '../services/SeoService'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildSummary from './BuildSummaryComponent.vue'
+import GameModeChip from './GameModeChipComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
 import InventorySlots from './InventorySlotsComponent.vue'
 import Loading from './LoadingComponent.vue'
@@ -35,9 +38,11 @@ const router = useRouter()
 
 const _buildComponentService = Services.get(BuildComponentService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
+const _languageService = Services.get(LanguageService)
 const _seoService = Services.get(SeoService)
 
 const _compactBuildSummaryExpansionAnimationLenght = 500
@@ -247,25 +252,31 @@ provide('isEditing', isEditing)
 provide('isNewBuild', isNewBuild)
 
 onMounted(() => {
+  _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _languageService.emitter.on(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
+
   addNavigationGuards()
 
   isEditing.value = isNewBuild.value
   hasChanges.value = isNewBuild.value
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitializedAsync)
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
   } else {
-    onItemServiceInitializedAsync()
+    initializeBuildAsync()
   }
 })
 
 onUnmounted(() => {
+  _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _languageService.emitter.off(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
+
   removeNavigationGuards()
 })
 
-watch(() => route.params, onItemServiceInitializedAsync)
+watch(() => route.params, initializeBuildAsync)
 
 /**
  * Adds navigation guards to avoid leaving the build screen without saving.
@@ -412,7 +423,13 @@ function displayConfirmationDialog(options: {
  * Displays the general options.
  */
 function displayGeneralOptions(): void {
-  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
+  _globalSidebarService.display({
+    displayedComponentType: 'GeneralOptionsSidebar',
+    displayedComponentParameters: {
+      isItemsLanguageInputEnabled: !isEditing.value,
+      optionGroups: []
+    }
+  })
 }
 
 /**
@@ -437,7 +454,10 @@ function displayInventorySlotSelector(): void {
  */
 function displayMerchantItemsOptions(): void {
   _globalSidebarService.display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar'
+    displayedComponentType: 'MerchantItemsOptionsSidebar',
+    displayedComponentParameters: {
+      isGameModeInputEnabled: !isEditing.value
+    }
   })
 }
 
@@ -491,22 +511,9 @@ function goToBuilds(): void {
 }
 
 /**
- * Reacts to an inventory item being changed.
- *
- * Signals to the build one of its inventory slots has changed.
- */
-async function onInventorySlotChangedAsync(): Promise<void> {
-  hasChanges.value = true
-  setSummaryAsync()
-  buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
-}
-
-/**
- * Reacts to the item service being initialized.
- *
  * Initializes the build.
  */
-async function onItemServiceInitializedAsync(): Promise<void> {
+async function initializeBuildAsync(): Promise<void> {
   isLoading.value = true
 
   if (route.name === 'CopyBuild') {
@@ -528,6 +535,36 @@ async function onItemServiceInitializedAsync(): Promise<void> {
 }
 
 /**
+ * Reacts to a the game mode changing.
+ *
+ * Reloads the build.
+ */
+function onGameModeChanged(): void {
+  build.value.inventorySlots = [] // Needed to force item components to unmount and remount
+  nextTick(() => initializeBuildAsync()) // nextTick needed to force item components to unmount and remount
+}
+
+/**
+ * Reacts to an inventory item being changed.
+ *
+ * Signals to the build one of its inventory slots has changed.
+ */
+async function onInventorySlotChangedAsync(): Promise<void> {
+  hasChanges.value = true
+  setSummaryAsync()
+  buildItemsWithPath.value = await PathUtils.getBuildItemsWithPathsAsync(build.value)
+}
+
+/**
+ * Reacts to the item service being initialized.
+ *
+ * Initializes the build.
+ */
+function onItemServiceInitialized(): void {
+  initializeBuildAsync()
+}
+
+/**
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
@@ -540,6 +577,16 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
   }
+}
+
+/**
+ * Reacts to a the items language changing.
+ *
+ * Reloads the build.
+ */
+function onItemsLanguageChanged(): void {
+  build.value.inventorySlots = [] // Needed to force item components to unmount and remount
+  nextTick(() => initializeBuildAsync()) // nextTick needed to force item components to unmount and remount
 }
 
 /**
@@ -797,31 +844,37 @@ function updateSeoMetadata(): void {
         </Transition>
       </template>
       <template #under>
-        <div
-          v-if="!isLoading && isCompactMode"
-          class="build-summary-popup-buttons-container"
-        >
+        <div style="display: flex;">
+          <GameModeChip
+            :is-editing-build="isEditing"
+            class="build-game-mode-chip"
+          />
           <div
-            class="build-summary-popup-button build-summary-popup-toggle-button"
-            @click="() => toggleCompactBuildSummaryAsync()"
+            v-if="!isLoading && isCompactMode"
+            class="build-summary-popup-buttons-container"
           >
-            <font-awesome-icon
-              v-if="!isCompactBuildSummaryExpanded"
-              icon="clipboard-list"
-            />
-            <font-awesome-icon
-              v-if="isCompactBuildSummaryExpanded"
-              icon="chevron-up"
-            />
-          </div>
-          <div
-            v-show="isCompactBuildSummaryExpanded"
-            class="build-summary-popup-button build-summary-popup-pin-button"
-            :style="{ 'background-color': isCompactBuildSummaryPinned ? 'var(--primary-color)' : 'var(--surface-a)' }"
-            @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
-          >
-            <!-- Style needed here instead of a class because the style was not updating when unpinning on mobile when deployed -->
-            <font-awesome-icon icon="thumbtack" />
+            <div
+              class="build-summary-popup-button build-summary-popup-toggle-button"
+              @click="() => toggleCompactBuildSummaryAsync()"
+            >
+              <font-awesome-icon
+                v-if="!isCompactBuildSummaryExpanded"
+                icon="clipboard-list"
+              />
+              <font-awesome-icon
+                v-if="isCompactBuildSummaryExpanded"
+                icon="chevron-up"
+              />
+            </div>
+            <div
+              v-show="isCompactBuildSummaryExpanded"
+              class="build-summary-popup-button build-summary-popup-pin-button"
+              :style="{ 'background-color': isCompactBuildSummaryPinned ? 'var(--primary-color)' : 'var(--surface-a)' }"
+              @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
+            >
+              <!-- Style needed here instead of a class because the style was not updating when unpinning on mobile when deployed -->
+              <font-awesome-icon icon="thumbtack" />
+            </div>
           </div>
         </div>
       </template>
@@ -991,6 +1044,12 @@ function updateSeoMetadata(): void {
 .build-empty-message-text {
   margin-left: auto;
   margin-right: auto;
+}
+
+.build-game-mode-chip {
+  height: 2.5rem;
+  margin-top: 0.5rem;
+  position: absolute;
 }
 
 .build-inventory-slots {

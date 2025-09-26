@@ -5,13 +5,13 @@ import Images from '../images'
 import vueI18n from '../plugins/vueI18n'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import LanguageService from '../services/LanguageService'
 import { NotificationService, NotificationType } from '../services/NotificationService'
 import { SeoService } from '../services/SeoService'
 import { VersionService } from '../services/VersionService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
-import LanguageUtils from '../utils/LanguageUtils'
 import Loading from './LoadingComponent.vue'
 import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
@@ -132,7 +132,7 @@ async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
  */
 function setLanguage(): void {
   const language = localStorage.getItem(_websiteConfigurationService.configuration.languageStorageKey) ?? 'en'
-  LanguageUtils.setLanguage(language)
+  Services.get(LanguageService).setApplicationLanguage(language)
 }
 </script>
 

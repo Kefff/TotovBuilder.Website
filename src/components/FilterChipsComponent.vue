@@ -14,6 +14,7 @@ import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import CustomIcon from './CustomIconComponent.vue'
+import GameModeChip from './GameModeChipComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
 import Sticky from './StickyComponent.vue'
@@ -314,6 +315,41 @@ function switchSortOrder(): void {
     align="left"
   >
     <div class="filter-chips">
+      <!-- Game mode chip -->
+      <GameModeChip />
+      <!-- Merchants chip -->
+      <Chip class="filter-chip">
+        <Tooltip
+          :disabled-on-mobile="true"
+          :full-size="true"
+          :tooltip="merchantsTooltip"
+          style="height: 100%;"
+          @click="showGlobalFilterSidebar"
+        >
+          <div class="filter-chip-merchants">
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="user-tag" />
+            </div>
+            <div
+              v-if="(isInSidebar || isCompactMode) && enabledMerchants.length > 0"
+              class="filter-chip-merchants-count"
+            >
+              {{ enabledMerchants.length }}
+            </div>
+            <div
+              v-if="!isInSidebar && !isCompactMode"
+              class="filter-chip-merchants-list"
+            >
+              <MerchantIcon
+                v-for="merchant of enabledMerchants"
+                :key="merchant.merchant"
+                :merchant="merchant.merchant"
+                :merchant-level="merchant.merchantLevel"
+              />
+            </div>
+          </div>
+        </Tooltip>
+      </Chip>
       <!-- Sorting chip -->
       <Chip class="filter-chip">
         <Tooltip
@@ -390,39 +426,6 @@ function switchSortOrder(): void {
             </template>
           </Dropdown>
         </div>
-      </Chip>
-      <!-- Merchants chip -->
-      <Chip class="filter-chip">
-        <Tooltip
-          :disabled-on-mobile="true"
-          :full-size="true"
-          :tooltip="merchantsTooltip"
-          style="height: 100%;"
-          @click="showGlobalFilterSidebar"
-        >
-          <div class="filter-chip-merchants">
-            <div class="filter-chip-icon">
-              <font-awesome-icon icon="user-tag" />
-            </div>
-            <div
-              v-if="(isInSidebar || isCompactMode) && enabledMerchants.length > 0"
-              class="filter-chip-merchants-count"
-            >
-              {{ enabledMerchants.length }}
-            </div>
-            <div
-              v-if="!isInSidebar && !isCompactMode"
-              class="filter-chip-merchants-list"
-            >
-              <MerchantIcon
-                v-for="merchant of enabledMerchants"
-                :key="merchant.merchant"
-                :merchant="merchant.merchant"
-                :merchant-level="merchant.merchantLevel"
-              />
-            </div>
-          </div>
-        </Tooltip>
       </Chip>
       <!-- Filter chip -->
       <Chip class="filter-chip">
@@ -525,6 +528,7 @@ function switchSortOrder(): void {
   border-style: solid;
   border-width: 1px;
   height: 100%;
+  min-height: 2.5rem;
   overflow: hidden;
   padding: 0rem;
   width: 100%;
@@ -656,7 +660,7 @@ function switchSortOrder(): void {
   align-items: center;
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 }

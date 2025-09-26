@@ -128,6 +128,16 @@ export interface IWebsiteConfiguration {
   fetchWaitTimeBetweenRetries: number
 
   /**
+   * Game modes.
+   */
+  gameModes: string[]
+
+  /**
+   * Storage key for the current game mode.
+   */
+  gameModeStorageKey: string
+
+  /**
    * Github project URL.
    */
   githubUrl: string
@@ -158,6 +168,16 @@ export interface IWebsiteConfiguration {
   itemsFilterAndSortCategoryStorageKey: string
 
   /**
+   * Storage key for the items language.
+   */
+  itemsLanguageStorageKey: string
+
+  /**
+   * Languages in which items can be displayed.
+   */
+  itemsLanguages: string[]
+
+  /**
    * Storage key for the current item sorting colum.
    */
   itemsSortPropertyStorageKey: string
@@ -168,7 +188,7 @@ export interface IWebsiteConfiguration {
   itemsSortOrderStorageKey: string
 
   /**
-   * Storage key for the current language.
+   * Storage key for the application language.
    */
   languageStorageKey: string
 

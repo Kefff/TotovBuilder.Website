@@ -199,8 +199,8 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       _displayedComponent = ItemsListSidebar
       break
     case 'MerchantItemsOptionsSidebar':
-      icon.value = 'clipboard-list'
-      title.value = 'caption.items'
+      icon.value = 'gamepad'
+      title.value = 'caption.gameMode'
       _displayedComponent = MerchantItemsOptionsSidebar
       break
     case 'NotificationsSidebar':
@@ -264,6 +264,7 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
           <div
             v-else
             class="sidebar-title"
+            style="margin-bottom: 0;"
           >
             <span>{{ $t(title) }}</span>
           </div>
@@ -320,6 +321,10 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
 }
 
 .global-sidebar-title {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   width: 100%;
 }
 

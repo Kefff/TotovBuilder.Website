@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
@@ -7,16 +7,12 @@ import { IToolbarButton } from '../models/utils/IToolbarButton'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildService } from '../services/BuildService'
-import { ExportService } from '../services/ExportService'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
-import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import { ImportService } from '../services/ImportService'
 import {
   NotificationService,
   NotificationType
 } from '../services/NotificationService'
-import { SeoService } from '../services/SeoService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
 import BuildsList from './BuildsListComponent.vue'
@@ -24,10 +20,7 @@ import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 
 const _buildService = Services.get(BuildService)
-const _exportService = Services.get(ExportService)
-const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
-const _importService = Services.get(ImportService)
 const _notificationService = Services.get(NotificationService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
@@ -45,7 +38,7 @@ const _toolbarButtons: IToolbarButton[] = [
     action: goToItemList,
     caption: () => vueI18n.t('caption.goToItemList'),
     followedBySeparation: true,
-    icon: () => 'list',
+    icon: () => 'clipboard-list',
     name: 'goToItemList',
     showCaption: () => 'never',
     style: () => 'discreet'
@@ -115,19 +108,7 @@ const filterAndSortingData = ref<BuildFilterAndSortingData>()
 const isLoading = ref(true)
 const hasBuilds = ref(false)
 
-onMounted(() => {
-  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
-  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.on(ImportService.buildsImportedEvent, getBuilds)
-
-  initialize()
-})
-
-onUnmounted(() => {
-  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuilds)
-  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.off(ImportService.buildsImportedEvent, getBuilds)
-})
+onMounted(() => initialize())
 
 watch(
   currentPage,
@@ -253,10 +234,6 @@ function getBuilds(): IBuild[] {
  * Initializes the component.
  */
 function initialize(): void {
-  Services.get(SeoService).updateSeoMetadata({
-    title: vueI18n.t('caption.builds')
-  })
-
   const page = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsPageStorageKey)
   currentPage.value = page != null
     ? Number.parseInt(page)
@@ -319,15 +296,6 @@ function onFilterAndSortingDataChanged(): void {
 
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortPropertyStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
-}
-
-/**
- * Reacts to the merchant filter being changed.
- *
- * Gets builds.
- */
-function onMerchantFilterChanged(): void {
-  getBuilds()
 }
 
 /**

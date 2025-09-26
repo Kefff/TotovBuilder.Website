@@ -1,5 +1,4 @@
 /* eslint-disable no-irregular-whitespace */
-import vueI18n from '../../plugins/vueI18n'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import { IShareButton, ShareButtonTarget } from './IShareButton'
 
@@ -16,7 +15,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.bluesky,
     position: 7,
-    tooltip: vueI18n.t('caption.shareOnBluesky'),
+    tooltip: 'caption.shareOnBluesky',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const isMobile = WebBrowserUtils.isTouchScreen().value
       const url = encodeURI(isMobile
@@ -35,7 +34,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.discord,
     position: 1,
-    tooltip: vueI18n.t('caption.shareOnDiscord'),
+    tooltip: 'caption.shareOnDiscord',
     onClick: () => { }
   }
 
@@ -48,7 +47,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.facebook,
     position: 8,
-    tooltip: vueI18n.t('caption.shareOnFacebook'),
+    tooltip: 'caption.shareOnFacebook',
     onClick: (urlToShare: string) => {
       const url = encodeURI(`https://www.facebook.com/sharer.php?u=${urlToShare}`)
       window.open(url)
@@ -64,7 +63,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.link,
     position: 0,
-    tooltip: vueI18n.t('caption.shareByLink'),
+    tooltip: 'caption.shareByLink',
     onClick: (urlToShare: string) => WebBrowserUtils.copyToClipboardAsync(urlToShare)
   }
 
@@ -77,7 +76,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.mail,
     position: 10,
-    tooltip: vueI18n.t('caption.shareByMail'),
+    tooltip: 'caption.shareByMail',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const url = encodeURI(`mailto:?subject=${title}&body=${title}\n${text}\n${urlToShare}`)
       window.open(url)
@@ -93,7 +92,7 @@ export class ShareButtons {
     mobileOnly: true,
     name: ShareButtonTarget.messenger,
     position: 4,
-    tooltip: vueI18n.t('caption.shareOnMessenger'),
+    tooltip: 'caption.shareOnMessenger',
     onClick: (urlToShare: string) => {
       const url = encodeURI(`fb-messenger://share?link=${urlToShare}`)
       window.open(url)
@@ -109,7 +108,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.reddit,
     position: 2,
-    tooltip: vueI18n.t('caption.shareOnReddit'),
+    tooltip: 'caption.shareOnReddit',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const url = encodeURI(`https://www.reddit.com/submit?url=${urlToShare}&title=${title}\n${text}`)
       window.open(url)
@@ -125,7 +124,7 @@ export class ShareButtons {
     mobileOnly: true,
     name: ShareButtonTarget.sms,
     position: 9,
-    tooltip: vueI18n.t('caption.shareBySms'),
+    tooltip: 'caption.shareBySms',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const url = encodeURI(`sms:?body=${title}\n${text}\n${urlToShare}`)
       window.open(url)
@@ -141,7 +140,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.telegram,
     position: 5,
-    tooltip: vueI18n.t('caption.shareOnTelegram'),
+    tooltip: 'caption.shareOnTelegram',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const url = encodeURI(`https://t.me/share/url?url=${urlToShare}&text=${title}   ${text}`)
       window.open(url)
@@ -157,7 +156,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.twitter,
     position: 6,
-    tooltip: vueI18n.t('caption.shareOnTwitter'),
+    tooltip: 'caption.shareOnTwitter',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const url = encodeURI(`https://twitter.com/intent/tweet?url=${urlToShare}&text=${title}\n${text}`)
       window.open(url)
@@ -173,7 +172,7 @@ export class ShareButtons {
     mobileOnly: false,
     name: ShareButtonTarget.whatsapp,
     position: 3,
-    tooltip: vueI18n.t('caption.shareOnWhatsapp'),
+    tooltip: 'caption.shareOnWhatsapp',
     onClick: (urlToShare: string, title?: string, text?: string) => {
       const url = encodeURI(`whatsapp://send?text=${title}\n${text}\n${urlToShare}`)
       window.open(url)

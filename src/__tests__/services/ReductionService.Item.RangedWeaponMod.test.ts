@@ -50,6 +50,7 @@ describe('parseReducedItem', () => {
       {
         'mo': [
           {
+            'c': 'Handguard',
             'i': [
               '5d15ce51d7ad1a1eff619092',
               '5a957c3fa2750c00137fa5f7',
@@ -83,6 +84,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         modSlots: [
           {
+            caption: 'Handguard',
             compatibleItemIds: [
               '5d15ce51d7ad1a1eff619092',
               '5a957c3fa2750c00137fa5f7',

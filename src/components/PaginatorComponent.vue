@@ -89,7 +89,7 @@ watch(groupedElements, adjustPageAndScrollToElement)
 onMounted(() => adjustPageAndScrollToElement)
 
 /**
- * Adjust th current page when the current page index exceeds the last page index and scrolls to the element corresponding to props.scrollToIndex.
+ * Adjust the current page when the current page index exceeds the last page index and scrolls to the element corresponding to props.scrollToIndex.
  */
 function adjustPageAndScrollToElement(): void {
   if (modelCurrentPage.value > lastPageIndex.value) {

@@ -11,23 +11,25 @@ describe('parseReducedItem', () => {
       {
         'ac': 4,
         'aa': [
-          'HeadTopOfTheHead',
-          'HeadNape',
-          'HeadEars'
+          'Head, Top of the head',
+          'Head, Nape',
+          'Head, Ears'
         ],
         'h': 1,
         'de': 'High',
         'd': 99,
         'e': -0.03,
-        'ma': 'Combined',
+        'ma': 'Combined materials',
         'mo': [
           {
+            'c': 'Gear',
             'i': [
               '5d6d3829a4b9361bc8618943'
             ],
             'n': 'mod_equipment_000'
           },
           {
+            'c': 'Shroud',
             'i': [
               '5c0558060db834001b735271',
               '5a16b8a9fcdbcb00165aa6ca'
@@ -35,6 +37,7 @@ describe('parseReducedItem', () => {
             'n': 'mod_nvg'
           },
           {
+            'c': 'Mount',
             'i': [
               '5a800961159bd4315e3a1657',
               '57fd23e32459772d0805bcf1',
@@ -58,12 +61,14 @@ describe('parseReducedItem', () => {
             'n': 'mod_mount'
           },
           {
+            'c': 'Gear',
             'i': [
               '5d6d3be5a4b9361bc73bc763'
             ],
             'n': 'mod_equipment_001'
           },
           {
+            'c': 'Gear',
             'i': [
               '5d6d3943a4b9360dbc46d0cc'
             ],
@@ -107,7 +112,7 @@ describe('parseReducedItem', () => {
         'ac': 4,
         'd': 35,
         'e': -0.02,
-        'ma': 'UHMWPE',
+        'ma': 'Ultra high molecular weight polyethylene',
         'ms': -0.01,
         'r': 'High',
         't': -0.03,

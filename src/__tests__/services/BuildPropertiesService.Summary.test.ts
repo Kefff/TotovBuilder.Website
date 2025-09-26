@@ -197,7 +197,7 @@ describe('getSummaryAsync', () => {
 
   describe('Ergonomics', () => {
     it.each([
-      [build1, 31.349999999999998],
+      [build1, 30.590000000000003],
       [build2, 52.379999999999995],
       [
         {
@@ -1627,7 +1627,7 @@ describe('getSummaryAsync', () => {
       [
         build1,
         {
-          ergonomicsModifierPercentage: -0.17500000000000002,
+          ergonomicsModifierPercentage: -0.19499999999999998,
           movementSpeedModifierPercentage: -0.07,
           turningSpeedModifierPercentage: -0.12
         } as IWearableModifiers

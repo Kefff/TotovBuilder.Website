@@ -6,9 +6,12 @@ import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
+import { ExportService } from '../services/ExportService'
+import GameModeService from '../services/GameModeService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ImportService } from '../services/ImportService'
 import { ItemService } from '../services/ItemService'
+import LanguageService from '../services/LanguageService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
@@ -55,11 +58,14 @@ const props = withDefaults(
     showShoppingList: undefined
   })
 
-const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _buildService = Services.get(BuildService)
+const _exportService = Services.get(ExportService)
+const _gameModeService = Services.get(GameModeService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _importService = Services.get(ImportService)
 const _itemService = Services.get(ItemService)
+const _languageService = Services.get(LanguageService)
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
@@ -101,8 +107,11 @@ const linesPerPage = computed(() => {
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
+  _exportService.emitter.on(ExportService.buildsExportedEvent, onBuildExported)
+  _gameModeService.emitter.on(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
   _importService.emitter.on(ImportService.buildsImportedEvent, onBuildImported)
+  _languageService.emitter.on(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
 
   // Getting the builds once items have been fully initialized
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
@@ -116,8 +125,11 @@ onMounted(() => {
 
 onUnmounted(() => {
   _buildService.emitter.off(BuildService.deletedEvent, onBuildDeleted)
+  _exportService.emitter.off(ExportService.buildsExportedEvent, onBuildExported)
+  _gameModeService.emitter.off(GameModeService.gameModeChangedEvent, onGameModeChanged)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
   _importService.emitter.off(ImportService.buildsImportedEvent, onBuildImported)
+  _languageService.emitter.off(LanguageService.itemsLanguageChangedEvent, onItemsLanguageChanged)
 })
 
 watch(modelAllSelected, (value) => {
@@ -245,6 +257,15 @@ function onBuildDeleted(): void {
 }
 
 /**
+ * Reacts to a build being exported.
+ *
+ * Updates the builds and their summaries, filters and sorts them.
+ */
+function onBuildExported(): void {
+  filterAndSortBuildsAsync(true)
+}
+
+/**
  * Reacts to a build being impoted.
  *
  * Updates the builds and their summaries, filters and sorts them.
@@ -254,9 +275,27 @@ function onBuildImported(): void {
 }
 
 /**
+ * Reacts to a the game mode changing.
+ *
+ * Updates the builds and their summaries, filters and sorts them.
+ */
+function onGameModeChanged(): void {
+  filterAndSortBuildsAsync(true)
+}
+
+/**
+ * Reacts to a the items language changing.
+ *
+ * Updates the builds and their summaries, filters and sorts them.
+ */
+function onItemsLanguageChanged(): void {
+  filterAndSortBuildsAsync(true)
+}
+
+/**
  * Reacts to a the merchant filter changing.
  *
- * Updates the build summaries, filters and sorts them.
+ * Filters and sorts the builds and their summaries.
  */
 function onMerchantFilterChanged(): void {
   filterAndSortBuildsAsync(false)
@@ -320,7 +359,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
       <Loading />
     </div>
     <div
-      v-if="!isInitializing"
+      v-if="!isInitializing && !isLoading"
       class="builds-list"
     >
       <FilterChips

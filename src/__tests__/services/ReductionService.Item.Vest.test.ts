@@ -178,6 +178,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         modSlots: [
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4dea7c17dec2f50cc86a',
               '65573fa5655447403702a816',
@@ -212,6 +213,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4a964b446df1ad03f192',
               '65573fa5655447403702a816',
@@ -365,6 +367,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         modSlots: [
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4dea7c17dec2f50cc86a',
               '65573fa5655447403702a816',
@@ -399,6 +402,7 @@ describe('parseReducedItem', () => {
             required: false
           },
           {
+            caption: undefined,
             compatibleItemIds: [
               '654a4a964b446df1ad03f192',
               '65573fa5655447403702a816',

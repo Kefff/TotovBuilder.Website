@@ -30,26 +30,6 @@ export interface IGlobalSidebarOptions {
 }
 
 /**
- * Build sidebar parameters.
- */
-export type BuildSidebarParameters = IBuild
-
-/**
- * Builds list sidebar parameters.
- */
-export type BuildsListSidebarParameters = BuildFilterAndSortingData
-
-/**
- * General options sidebar parameters.
- */
-export type GeneralOptionsSidebarParameters = IGeneralOptionsGroup[]
-
-/**
- * Items  list sidebar parameters.
- */
-export type ItemsListSidebarParameters = ItemFilterAndSortingData
-
-/**
  * Components allowed to be displayed in a global sidebar.
  */
 export type GlobalSidebarComponent =
@@ -81,6 +61,7 @@ export type GlobalSidebarDisplayedComponentParameters =
   | InventorySlotSelectorSidebarParameters
   | ItemSelectionSidebarParameters
   | ItemsListSidebarParameters
+  | MerchantItemsOptionsSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
   | ToolbarSidebarParameters
@@ -108,6 +89,31 @@ export type BuildsShareSideBarParameters = {
    * Function for getting the builds the user can share from a selection screen.
    */
   getBuildsToShareFunction?: () => IBuild[]
+}
+
+/**
+ * Build sidebar parameters.
+ */
+export type BuildSidebarParameters = IBuild
+
+/**
+ * Builds list sidebar parameters.
+ */
+export type BuildsListSidebarParameters = BuildFilterAndSortingData
+
+/**
+ * General options sidebar parameters.
+ */
+export type GeneralOptionsSidebarParameters = {
+  /**
+   * Indicates whether the input for changing the items language is enabled.
+   */
+  isItemsLanguageInputEnabled: boolean
+
+  /**
+   * Option groups
+   */
+  optionGroups: IGeneralOptionsGroup[]
 }
 
 /**
@@ -147,6 +153,21 @@ export type ItemSelectionSidebarParameters = {
    * Items that appear as selected when the sidebar is displayed.
    */
   selectedItems: IItem[],
+}
+
+/**
+ * Items  list sidebar parameters.
+ */
+export type ItemsListSidebarParameters = ItemFilterAndSortingData
+
+/**
+ * Merchant and items options sidebar parameters.
+ */
+export type MerchantItemsOptionsSidebarParameters = {
+  /**
+   * Indicates whether the input for changing the game mode is enabled.
+   */
+  isGameModeInputEnabled: boolean
 }
 
 /**

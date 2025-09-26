@@ -60,6 +60,7 @@ export const ak12bt: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '602e620f9b513876d4338d9a',
         '5a9eb32da2750c00171b3f9c',
@@ -348,19 +349,19 @@ export const armbandBlue: IItem = {
 }
 
 export const armor6b13Fl: IArmor = {
-  armorClass: 0,
+  armorClass: 2,
   armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE',
+    'F. PLATE',
+    'BCK. PLATE',
     'Thorax',
     'Stomach',
-    'ThoraxUpperBack',
-    'StomachLowerBack',
-    'StomachLeftSide',
-    'StomachRightSide',
-    'ThoraxThroat',
-    'ThoraxNeck',
-    'StomachGroin'
+    'Thorax, Upper back',
+    'Stomach, Lower back',
+    'Stomach, Left Side',
+    'Stomach, Right Side',
+    'Thorax, Throat',
+    'Thorax, Neck',
+    'Stomach, Groin'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -377,67 +378,23 @@ export const armor6b13Fl: IArmor = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4dea7c17dec2f50cc86a',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
+        '656f63c027aed95beb08f62c',
         '656f57dc27aed95beb08f628',
         '656f603f94b480b8a500c0d6',
-        '656f611f94b480b8a500c0db',
-        '656f63c027aed95beb08f62c',
-        '656f664200d62bcd2e024077',
-        '656f66b5c6baea13cd07e108',
-        '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
-        '656fa8d700d62bcd2e024084',
-        '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
-        '656fae5f7c2d57afe200c0d7',
-        '656faf0ca0dce000a2020f77',
-        '656fafe3498d1b7e3e071da4',
-        '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c'
+        '656f611f94b480b8a500c0db'
       ],
       maxStackableAmount: 1,
       name: 'front_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4a964b446df1ad03f192',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
         '656efaf54772930db4031ff5',
         '656efd66034e8e01c407f35c',
-        '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
-        '656fa8d700d62bcd2e024084',
-        '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
-        '656fae5f7c2d57afe200c0d7',
-        '656faf0ca0dce000a2020f77',
-        '656fafe3498d1b7e3e071da4',
-        '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c',
-        '657b22485f444d6dff0c6c2f',
-        '657b2797c3dbcb01d60c35ea',
-        '657b28d25f444d6dff0c6c77'
+        '654a4a964b446df1ad03f192'
       ],
       maxStackableAmount: 1,
       name: 'back_plate',
@@ -457,19 +414,19 @@ export const armor6b13Fl: IArmor = {
 }
 
 export const armor6b13FlDefault: IArmor = {
-  armorClass: 0,
+  armorClass: 2,
   armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE',
+    'F. PLATE',
+    'BCK. PLATE',
     'Thorax',
     'Stomach',
-    'ThoraxUpperBack',
-    'StomachLowerBack',
-    'StomachLeftSide',
-    'StomachRightSide',
-    'ThoraxThroat',
-    'ThoraxNeck',
-    'StomachGroin'
+    'Thorax, Upper back',
+    'Stomach, Lower back',
+    'Stomach, Left Side',
+    'Stomach, Right Side',
+    'Thorax, Throat',
+    'Thorax, Neck',
+    'Stomach, Groin'
   ],
   baseItemId: '5c0e51be86f774598e797894',
   blindnessProtectionPercentage: 0,
@@ -486,67 +443,23 @@ export const armor6b13FlDefault: IArmor = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4dea7c17dec2f50cc86a',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
+        '656f63c027aed95beb08f62c',
         '656f57dc27aed95beb08f628',
         '656f603f94b480b8a500c0d6',
-        '656f611f94b480b8a500c0db',
-        '656f63c027aed95beb08f62c',
-        '656f664200d62bcd2e024077',
-        '656f66b5c6baea13cd07e108',
-        '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
-        '656fa8d700d62bcd2e024084',
-        '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
-        '656fae5f7c2d57afe200c0d7',
-        '656faf0ca0dce000a2020f77',
-        '656fafe3498d1b7e3e071da4',
-        '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c'
+        '656f611f94b480b8a500c0db'
       ],
       maxStackableAmount: 1,
       name: 'front_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4a964b446df1ad03f192',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
         '656efaf54772930db4031ff5',
         '656efd66034e8e01c407f35c',
-        '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
-        '656fa8d700d62bcd2e024084',
-        '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
-        '656fae5f7c2d57afe200c0d7',
-        '656faf0ca0dce000a2020f77',
-        '656fafe3498d1b7e3e071da4',
-        '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c',
-        '657b22485f444d6dff0c6c2f',
-        '657b2797c3dbcb01d60c35ea',
-        '657b28d25f444d6dff0c6c77'
+        '654a4a964b446df1ad03f192'
       ],
       maxStackableAmount: 1,
       name: 'back_plate',
@@ -566,13 +479,14 @@ export const armor6b13FlDefault: IArmor = {
 }
 
 export const banshee: IVest = {
-  armorClass: 0, armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE',
-    'LPLATE',
-    'RPLATE',
-    'StomachLeftSide',
-    'StomachRightSide'
+  armorClass: 2,
+  armoredAreas: [
+    'FR. PLATE',
+    'BCK. PLATE',
+    'L. PLATE',
+    'R. PLATE',
+    'Stomach, Left Side',
+    'Stomach, Right Side'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -590,89 +504,72 @@ export const banshee: IVest = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4dea7c17dec2f50cc86a',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
-        '656f57dc27aed95beb08f628',
-        '656f603f94b480b8a500c0d6',
-        '656f611f94b480b8a500c0db',
-        '656f63c027aed95beb08f62c',
-        '656f664200d62bcd2e024077',
-        '656f66b5c6baea13cd07e108',
         '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
         '656fa8d700d62bcd2e024084',
         '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
         '656fae5f7c2d57afe200c0d7',
         '656faf0ca0dce000a2020f77',
+        '656fa0fb498d1b7e3e071d9c',
         '656fafe3498d1b7e3e071da4',
+        '656fa76500d62bcd2e024080',
+        '656fa25e94b480b8a500c0e0',
+        '656fad8c498d1b7e3e071da0',
+        '656fa61e94b480b8a500c0e8',
+        '656fb21fa0dce000a2020f7c',
+        '656fac30c6baea13cd07e10c',
         '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c'
+        '656f9fa0498d1b7e3e071d98',
+        '656fa53d94b480b8a500c0e4',
+        '655746010177119f4a097ff7',
+        '64afdcb83efdfea28601d041'
       ],
       maxStackableAmount: 1,
       name: 'front_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4a964b446df1ad03f192',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
-        '656efaf54772930db4031ff5',
-        '656efd66034e8e01c407f35c',
         '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
         '656fa8d700d62bcd2e024084',
-        '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
         '656fae5f7c2d57afe200c0d7',
+        '656fa99800d62bcd2e024088',
         '656faf0ca0dce000a2020f77',
+        '656fa0fb498d1b7e3e071d9c',
         '656fafe3498d1b7e3e071da4',
-        '656fb0bd7c2d57afe200c0dc',
+        '656fa76500d62bcd2e024080',
+        '656fa25e94b480b8a500c0e0',
+        '656fad8c498d1b7e3e071da0',
+        '656fa61e94b480b8a500c0e8',
         '656fb21fa0dce000a2020f7c',
-        '657b22485f444d6dff0c6c2f',
-        '657b2797c3dbcb01d60c35ea',
-        '657b28d25f444d6dff0c6c77'
+        '656fac30c6baea13cd07e10c',
+        '656fb0bd7c2d57afe200c0dc',
+        '656f9fa0498d1b7e3e071d98',
+        '656fa53d94b480b8a500c0e4',
+        '655746010177119f4a097ff7',
+        '64afdcb83efdfea28601d041'
       ],
       maxStackableAmount: 1,
       name: 'back_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afd81707e2cf40e903a316',
-        '64afdb577bb3bfe8fe03fd1d',
-        '654a4f8bc721968a4404ef18',
-        '6557458f83942d705f0c4962'
+        '6557458f83942d705f0c4962',
+        '64afdb577bb3bfe8fe03fd1d'
       ],
       maxStackableAmount: 1,
       name: 'left_side_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afd81707e2cf40e903a316',
-        '64afdb577bb3bfe8fe03fd1d',
-        '654a4f8bc721968a4404ef18',
-        '6557458f83942d705f0c4962'
+        '6557458f83942d705f0c4962',
+        '64afdb577bb3bfe8fe03fd1d'
       ],
       maxStackableAmount: 1,
       name: 'right_side_plate',
@@ -692,14 +589,14 @@ export const banshee: IVest = {
 }
 
 export const bansheeDefault: IVest = {
-  armorClass: 0,
+  armorClass: 2,
   armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE',
-    'LPLATE',
-    'RPLATE',
-    'StomachLeftSide',
-    'StomachRightSide'
+    'FR. PLATE',
+    'BCK. PLATE',
+    'L. PLATE',
+    'R. PLATE',
+    'Stomach, Left Side',
+    'Stomach, Right Side'
   ],
   baseItemId: '639343fce101f4caa40a4ef3',
   blindnessProtectionPercentage: 0,
@@ -717,89 +614,72 @@ export const bansheeDefault: IVest = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4dea7c17dec2f50cc86a',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
-        '656f57dc27aed95beb08f628',
-        '656f603f94b480b8a500c0d6',
-        '656f611f94b480b8a500c0db',
-        '656f63c027aed95beb08f62c',
-        '656f664200d62bcd2e024077',
-        '656f66b5c6baea13cd07e108',
         '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
         '656fa8d700d62bcd2e024084',
         '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
         '656fae5f7c2d57afe200c0d7',
         '656faf0ca0dce000a2020f77',
+        '656fa0fb498d1b7e3e071d9c',
         '656fafe3498d1b7e3e071da4',
+        '656fa76500d62bcd2e024080',
+        '656fa25e94b480b8a500c0e0',
+        '656fad8c498d1b7e3e071da0',
+        '656fa61e94b480b8a500c0e8',
+        '656fb21fa0dce000a2020f7c',
+        '656fac30c6baea13cd07e10c',
         '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c'
+        '656f9fa0498d1b7e3e071d98',
+        '656fa53d94b480b8a500c0e4',
+        '655746010177119f4a097ff7',
+        '64afdcb83efdfea28601d041'
       ],
       maxStackableAmount: 1,
       name: 'front_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041',
-        '654a4a964b446df1ad03f192',
-        '65573fa5655447403702a816',
-        '655746010177119f4a097ff7',
-        '656efaf54772930db4031ff5',
-        '656efd66034e8e01c407f35c',
         '656f9d5900d62bcd2e02407c',
-        '656f9fa0498d1b7e3e071d98',
-        '656fa0fb498d1b7e3e071d9c',
-        '656fa25e94b480b8a500c0e0',
-        '656fa53d94b480b8a500c0e4',
-        '656fa61e94b480b8a500c0e8',
-        '656fa76500d62bcd2e024080',
         '656fa8d700d62bcd2e024084',
-        '656fa99800d62bcd2e024088',
-        '656fac30c6baea13cd07e10c',
-        '656fad8c498d1b7e3e071da0',
         '656fae5f7c2d57afe200c0d7',
+        '656fa99800d62bcd2e024088',
         '656faf0ca0dce000a2020f77',
+        '656fa0fb498d1b7e3e071d9c',
         '656fafe3498d1b7e3e071da4',
-        '656fb0bd7c2d57afe200c0dc',
+        '656fa76500d62bcd2e024080',
+        '656fa25e94b480b8a500c0e0',
+        '656fad8c498d1b7e3e071da0',
+        '656fa61e94b480b8a500c0e8',
         '656fb21fa0dce000a2020f7c',
-        '657b22485f444d6dff0c6c2f',
-        '657b2797c3dbcb01d60c35ea',
-        '657b28d25f444d6dff0c6c77'
+        '656fac30c6baea13cd07e10c',
+        '656fb0bd7c2d57afe200c0dc',
+        '656f9fa0498d1b7e3e071d98',
+        '656fa53d94b480b8a500c0e4',
+        '655746010177119f4a097ff7',
+        '64afdcb83efdfea28601d041'
       ],
       maxStackableAmount: 1,
       name: 'back_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afd81707e2cf40e903a316',
-        '64afdb577bb3bfe8fe03fd1d',
-        '654a4f8bc721968a4404ef18',
-        '6557458f83942d705f0c4962'
+        '6557458f83942d705f0c4962',
+        '64afdb577bb3bfe8fe03fd1d'
       ],
       maxStackableAmount: 1,
       name: 'left_side_plate',
       required: false
     },
     {
+      caption: undefined,
       compatibleItemIds: [
-        '64afd81707e2cf40e903a316',
-        '64afdb577bb3bfe8fe03fd1d',
-        '654a4f8bc721968a4404ef18',
-        '6557458f83942d705f0c4962'
+        '6557458f83942d705f0c4962',
+        '64afdb577bb3bfe8fe03fd1d'
       ],
       maxStackableAmount: 1,
       name: 'right_side_plate',
@@ -928,7 +808,7 @@ export const cqcm: IHeadwear = {
   id: '657089638db3adca1009f4ca',
   imageLink: 'https://assets.tarkov.dev/657089638db3adca1009f4ca-image.webp',
   marketLink: 'https://tarkov.dev/item/atomic-defense-cqcm-up-armored-ballistic-mask-black',
-  material: 'UHMWPE',
+  material: 'Ultra high molecular weight polyethylene',
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: -0.01,
@@ -958,7 +838,7 @@ export const crossbow: IEyewear = {
   id: '5d5fca1ea4b93635fd598c07',
   imageLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-image.webp',
   marketLink: 'https://tarkov.dev/item/ess-crossbow-tactical-glasses',
-  material: 'UHMWPE',
+  material: 'Ultra high molecular weight polyethylene',
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: 0,
@@ -976,8 +856,8 @@ export const crossbow: IEyewear = {
 export const cultLocust: IArmorMod = {
   armorClass: 5,
   armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE'
+    'FR. PLATE',
+    'BCK. PLATE'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -1022,6 +902,7 @@ export const ekp802dt: IRangedWeaponMod = {
   name: 'Axion Kobra EKP-8-02 reflex sight (Dovetail)',
   modSlots: [
     {
+      caption: 'Tactical',
       compatibleItemIds: [
         '591c4e1186f77410354b316e'
       ],
@@ -1190,9 +1071,9 @@ export const iskra: IItem = {
 export const k1s: IHeadwear = {
   armorClass: 2,
   armoredAreas: [
-    'HeadTopOfTheHead',
-    'HeadNape',
-    'HeadEars'
+    'Head, Top of the head',
+    'Head, Nape',
+    'Head, Ears'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -1211,6 +1092,7 @@ export const k1s: IHeadwear = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Gear',
       compatibleItemIds: [
         '5ac4c50d5acfc40019262e87'
       ],
@@ -1235,9 +1117,9 @@ export const k1s: IHeadwear = {
 export const k1sVisor: IArmorMod = {
   armorClass: 2,
   armoredAreas: [
-    'HeadFace',
-    'HeadEyes',
-    'HeadJaws'
+    'Head, Face',
+    'Head, Eyes',
+    'Head, Jaws'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0.15,
@@ -1245,7 +1127,7 @@ export const k1sVisor: IArmorMod = {
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 30,
-  ergonomicsModifierPercentage: 0,
+  ergonomicsModifierPercentage: -0.03,
   iconLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-icon.webp',
   id: '5ac4c50d5acfc40019262e87',
   imageLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-image.webp',
@@ -1303,9 +1185,9 @@ export const kotton: IHeadwear = {
 export const lshZ2dtm: IHeadwear = {
   armorClass: 4,
   armoredAreas: [
-    'HeadTopOfTheHead',
-    'HeadNape',
-    'HeadEars'
+    'Head, Top of the head',
+    'Head, Nape',
+    'Head, Ears'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -1320,10 +1202,11 @@ export const lshZ2dtm: IHeadwear = {
   id: '5d6d3716a4b9361bc8618872',
   imageLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-image.webp',
   marketLink: 'https://tarkov.dev/item/bnti-lshz-2dtm-helmet-black',
-  material: 'Combined',
+  material: 'Combined materials',
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Gear',
       compatibleItemIds: [
         '5d6d3829a4b9361bc8618943'
       ],
@@ -1332,6 +1215,7 @@ export const lshZ2dtm: IHeadwear = {
       required: false
     },
     {
+      caption: 'Shroud',
       compatibleItemIds: [
         '5c0558060db834001b735271',
         '5a16b8a9fcdbcb00165aa6ca'
@@ -1341,6 +1225,7 @@ export const lshZ2dtm: IHeadwear = {
       required: false
     },
     {
+      caption: 'Mount',
       compatibleItemIds: [
         '5a800961159bd4315e3a1657',
         '57fd23e32459772d0805bcf1',
@@ -1366,6 +1251,7 @@ export const lshZ2dtm: IHeadwear = {
       required: false
     },
     {
+      caption: 'Gear',
       compatibleItemIds: [
         '5d6d3be5a4b9361bc73bc763'
       ],
@@ -1374,6 +1260,7 @@ export const lshZ2dtm: IHeadwear = {
       required: false
     },
     {
+      caption: 'Gear',
       compatibleItemIds: [
         '5d6d3943a4b9360dbc46d0cc'
       ],
@@ -1398,9 +1285,9 @@ export const lshZ2dtm: IHeadwear = {
 export const lshZ2dtmFs: IArmorMod = {
   armorClass: 4,
   armoredAreas: [
-    'HeadFace',
-    'HeadEyes',
-    'HeadJaws'
+    'Head, Face',
+    'Head, Eyes',
+    'Head, Jaws'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0.1,
@@ -1414,7 +1301,7 @@ export const lshZ2dtmFs: IArmorMod = {
   ],
   defaultPresetId: undefined,
   durability: 50,
-  ergonomicsModifierPercentage: -0.02,
+  ergonomicsModifierPercentage: -0.04,
   iconLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-icon.webp',
   id: '5d6d3829a4b9361bc8618943',
   imageLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-image.webp',
@@ -1442,7 +1329,7 @@ export const m9a3: IRangedWeapon = {
   defaultPresetId: '5d3f0bc986f7743cb332abdc',
   ergonomics: 70,
   fireModes: [
-    'SingleFire'
+    'Single fire'
   ],
   fireRate: 30,
   horizontalRecoil: 280,
@@ -1454,6 +1341,7 @@ export const m9a3: IRangedWeapon = {
   minuteOfAngle: undefined,
   modSlots: [
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '5cadc1c6ae9215000f2775a4'
       ],
@@ -1462,6 +1350,7 @@ export const m9a3: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Pistol Grip',
       compatibleItemIds: [
         '5cadc431ae921500113bb8d5'
       ],
@@ -1470,6 +1359,7 @@ export const m9a3: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Receiver',
       compatibleItemIds: [
         '5cadc55cae921500103bb3be'
       ],
@@ -1478,6 +1368,7 @@ export const m9a3: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '5cadc2e0ae9215051e1c21e7',
         '676176b762e0497044079f49'
@@ -1487,6 +1378,7 @@ export const m9a3: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Tactical',
       compatibleItemIds: [
         '5a800961159bd4315e3a1657',
         '5cc9c20cd7f00c001336c65d',
@@ -1524,7 +1416,7 @@ export const m9a3Default: IRangedWeapon = {
   defaultPresetId: undefined,
   ergonomics: 70,
   fireModes: [
-    'SingleFire'
+    'Single fire'
   ],
   fireRate: 30,
   horizontalRecoil: 280,
@@ -1536,6 +1428,7 @@ export const m9a3Default: IRangedWeapon = {
   minuteOfAngle: 9.97,
   modSlots: [
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '5cadc1c6ae9215000f2775a4'
       ],
@@ -1544,6 +1437,7 @@ export const m9a3Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Pistol Grip',
       compatibleItemIds: [
         '5cadc431ae921500113bb8d5'
       ],
@@ -1552,6 +1446,7 @@ export const m9a3Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Receiver',
       compatibleItemIds: [
         '5cadc55cae921500103bb3be'
       ],
@@ -1560,6 +1455,7 @@ export const m9a3Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '5cadc2e0ae9215051e1c21e7',
         '676176b762e0497044079f49'
@@ -1569,6 +1465,7 @@ export const m9a3Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Tactical',
       compatibleItemIds: [
         '5a800961159bd4315e3a1657',
         '5cc9c20cd7f00c001336c65d',
@@ -1720,6 +1617,7 @@ export const m9a3Slide: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Rear Sight',
       compatibleItemIds: [
         '5cadd940ae9215051e1c2316',
         '5cadd954ae921500103bb3c2'
@@ -1729,6 +1627,7 @@ export const m9a3Slide: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Front Sight',
       compatibleItemIds: [
         '5cadd919ae921500126a77f3'
       ],
@@ -1762,6 +1661,7 @@ export const m9a3Thr: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Muzzle',
       compatibleItemIds: [
         '5cadc390ae921500126a77f1',
         '5c7e8fab2e22165df16b889b',
@@ -1873,8 +1773,8 @@ export const mechanism: IBackpack = {
 export const monocletePe: IArmorMod = {
   armorClass: 4,
   armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE'
+    'FR. PLATE',
+    'BCK. PLATE'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -1887,7 +1787,7 @@ export const monocletePe: IArmorMod = {
   id: '656fad8c498d1b7e3e071da0',
   imageLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-image.webp',
   marketLink: 'https://tarkov.dev/item/monoclete-level-iii-pe-ballistic-plate',
-  material: 'UHMWPE',
+  material: 'Ultra high molecular weight polyethylene',
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: -0.01,
@@ -1942,8 +1842,8 @@ export const mts25512: IRangedWeapon = {
   defaultPresetId: '6198e2ddef80673cae5d1c87',
   ergonomics: 50,
   fireModes: [
-    'SingleFire',
-    'DoubleAction'
+    'Single fire',
+    'Double action'
   ],
   fireRate: 30,
   horizontalRecoil: 486,
@@ -1955,6 +1855,7 @@ export const mts25512: IRangedWeapon = {
   minuteOfAngle: undefined,
   modSlots: [
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '60dc519adf4c47305f6d410d'
       ],
@@ -1963,6 +1864,7 @@ export const mts25512: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '612368f58b401f4f51239b33'
       ],
@@ -1971,6 +1873,7 @@ export const mts25512: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '612781056f3d944a17348d60'
       ],
@@ -1979,6 +1882,7 @@ export const mts25512: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Handguard',
       compatibleItemIds: [
         '6123649463849f3d843da7c4'
       ],
@@ -2005,8 +1909,8 @@ export const mts25512Default: IRangedWeapon = {
   defaultPresetId: undefined,
   ergonomics: 50,
   fireModes: [
-    'SingleFire',
-    'DoubleAction'
+    'Single fire',
+    'Double action'
   ],
   fireRate: 30,
   horizontalRecoil: 486,
@@ -2018,6 +1922,7 @@ export const mts25512Default: IRangedWeapon = {
   minuteOfAngle: 26.13,
   modSlots: [
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '60dc519adf4c47305f6d410d'
       ],
@@ -2026,6 +1931,7 @@ export const mts25512Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '612368f58b401f4f51239b33'
       ],
@@ -2034,6 +1940,7 @@ export const mts25512Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '612781056f3d944a17348d60'
       ],
@@ -2042,6 +1949,7 @@ export const mts25512Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Handguard',
       compatibleItemIds: [
         '6123649463849f3d843da7c4'
       ],
@@ -2074,6 +1982,7 @@ export const mts25512755mmRib: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Muzzle',
       compatibleItemIds: [
         '619d36da53b4d42ee724fae4'
       ],
@@ -2082,6 +1991,7 @@ export const mts25512755mmRib: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Mount',
       compatibleItemIds: [
         '609b9e31506cf869cf3eaf41',
         '5dfe14f30b92095fd441edaf'
@@ -2171,7 +2081,7 @@ export const mts25512cyl: IMagazine = {
     '64b8ee384b75259c590fa89b'
   ],
   baseItemId: undefined,
-  capacity: 5,
+  capacity: 0,
   categoryId: ItemCategoryId.magazine,
   checkSpeedModifierPercentage: 0,
   conflictingItemIds: [],
@@ -2186,6 +2096,7 @@ export const mts25512cyl: IMagazine = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Chamber',
       compatibleItemIds: [
         '560d5e524bdc2d25448b4571',
         '5d6e6772a4b936088465b17c',
@@ -2210,6 +2121,7 @@ export const mts25512cyl: IMagazine = {
       required: false
     },
     {
+      caption: 'Chamber',
       compatibleItemIds: [
         '560d5e524bdc2d25448b4571',
         '5d6e6772a4b936088465b17c',
@@ -2234,6 +2146,7 @@ export const mts25512cyl: IMagazine = {
       required: false
     },
     {
+      caption: 'Chamber',
       compatibleItemIds: [
         '560d5e524bdc2d25448b4571',
         '5d6e6772a4b936088465b17c',
@@ -2258,6 +2171,7 @@ export const mts25512cyl: IMagazine = {
       required: false
     },
     {
+      caption: 'Chamber',
       compatibleItemIds: [
         '560d5e524bdc2d25448b4571',
         '5d6e6772a4b936088465b17c',
@@ -2282,6 +2196,7 @@ export const mts25512cyl: IMagazine = {
       required: false
     },
     {
+      caption: 'Chamber',
       compatibleItemIds: [
         '560d5e524bdc2d25448b4571',
         '5d6e6772a4b936088465b17c',
@@ -2352,6 +2267,7 @@ export const nf30mm: IMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Scope',
       compatibleItemIds: [
         '5b2388675acfc4771e1be0be',
         '5b3b99475acfc432ff4dcbee',
@@ -2382,7 +2298,7 @@ export const opSksDefault: IRangedWeapon = {
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomics: 40,
-  fireModes: ['SingleFire'],
+  fireModes: ['Single fire'],
   fireRate: 40,
   horizontalRecoil: 360,
   iconLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-icon.webp',
@@ -2393,6 +2309,7 @@ export const opSksDefault: IRangedWeapon = {
   minuteOfAngle: 4.13,
   modSlots: [
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '5d0236dad7ad1a0940739d29',
         '587e0531245977466077a0f7',
@@ -2405,6 +2322,7 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '634eff66517ccc8a960fc735',
         '634f02331f9f536910079b51'
@@ -2414,6 +2332,7 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '61695095d92c473c7702147a',
         '5c5970672e221602b21d7855',
@@ -2425,6 +2344,7 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Mount',
       compatibleItemIds: [
         '587e08ee245977446b4410cf',
         '6415d33eda439c6a97048b5b'
@@ -2434,6 +2354,7 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Receiver',
       compatibleItemIds: [
         '634f06262e5def262d0b30ca',
         '634f05ca517ccc8a960fc748',
@@ -2467,6 +2388,7 @@ export const opSksDt: IMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Scope',
       compatibleItemIds: [
         '5947db3f86f77447880cf76f',
         '6113d6c3290d254f5e6b27db',
@@ -2502,10 +2424,10 @@ export const paca: IArmor = {
   armoredAreas: [
     'Stomach',
     'Thorax',
-    'StomachLowerBack',
-    'ThoraxUpperBack',
-    'StomachLeftSide',
-    'StomachRightSide'
+    'Stomach, Lower back',
+    'Thorax, Upper back',
+    'Stomach, Left Side',
+    'Stomach, Right Side'
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
@@ -2567,7 +2489,7 @@ export const pass: IItem = {
 
 export const plate6b33Back: IArmorMod = {
   armoredAreas: [
-    'BCKPLATE'
+    'BCK. PLATE'
   ],
   armorClass: 4,
   baseItemId: undefined,
@@ -2581,7 +2503,7 @@ export const plate6b33Back: IArmorMod = {
   id: '656efd66034e8e01c407f35c',
   imageLink: 'https://assets.tarkov.dev/656efd66034e8e01c407f35c-image.webp',
   marketLink: 'https://tarkov.dev/item/6b13-custom-ballistic-plates-back',
-  material: 'ArmoredSteel',
+  material: 'Armor steel',
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: -0.025,
@@ -2598,7 +2520,7 @@ export const plate6b33Back: IArmorMod = {
 
 export const plate6b33Front: IArmorMod = {
   armoredAreas: [
-    'FRPLATE'
+    'F. PLATE'
   ],
   armorClass: 4,
   baseItemId: undefined,
@@ -2612,7 +2534,7 @@ export const plate6b33Front: IArmorMod = {
   id: '656f603f94b480b8a500c0d6',
   imageLink: 'https://assets.tarkov.dev/656f603f94b480b8a500c0d6-image.webp',
   marketLink: 'https://tarkov.dev/item/6b33-ballistic-plate-front',
-  material: 'ArmoredSteel',
+  material: 'Armor steel',
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: -0.025,
@@ -2689,6 +2611,7 @@ export const pso1: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Tactical',
       compatibleItemIds: [
         '57f3a5ae2459772b0e0bf19e'
       ],
@@ -2782,8 +2705,8 @@ export const rpk16: IRangedWeapon = {
   defaultPresetId: '5c0d1ec986f77439512a1a72',
   ergonomics: 45,
   fireModes: [
-    'SingleFire',
-    'FullAuto'
+    'Single fire',
+    'Full auto'
   ],
   fireRate: 650,
   horizontalRecoil: 333,
@@ -2795,6 +2718,7 @@ export const rpk16: IRangedWeapon = {
   minuteOfAngle: undefined,
   modSlots: [
     {
+      caption: 'Pistol Grip',
       compatibleItemIds: [
         '5beec8ea0db834001a6f9dbf',
         '5649ad3f4bdc2df8348b4585',
@@ -2827,6 +2751,7 @@ export const rpk16: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Receiver',
       compatibleItemIds: [
         '5beec91a0db834001961942d'
       ],
@@ -2835,6 +2760,7 @@ export const rpk16: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '564ca9df4bdc2d35148b4569',
         '564ca99c4bdc2d16268b4589',
@@ -2854,6 +2780,7 @@ export const rpk16: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Ch. Handle',
       compatibleItemIds: [
         '6130ca3fd92c473c77020dbd',
         '5648ac824bdc2ded0b8b457d'
@@ -2863,6 +2790,7 @@ export const rpk16: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '5beec8b20db834001961942a',
         '649ec87d8007560a9001ab36',
@@ -2873,6 +2801,7 @@ export const rpk16: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Handguard',
       compatibleItemIds: [
         '5beec3e30db8340019619424'
       ],
@@ -2881,6 +2810,7 @@ export const rpk16: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '5beec1bd0db834001e6006f3',
         '5beec2820db834001b095426'
@@ -2908,8 +2838,8 @@ export const rpk16Default: IRangedWeapon = {
   defaultPresetId: undefined,
   ergonomics: 45,
   fireModes: [
-    'SingleFire',
-    'FullAuto'
+    'Single fire',
+    'Full auto'
   ],
   fireRate: 650,
   horizontalRecoil: 333,
@@ -2921,6 +2851,7 @@ export const rpk16Default: IRangedWeapon = {
   minuteOfAngle: 3.03,
   modSlots: [
     {
+      caption: 'Pistol Grip',
       compatibleItemIds: [
         '5beec8ea0db834001a6f9dbf',
         '5649ad3f4bdc2df8348b4585',
@@ -2953,6 +2884,7 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Receiver',
       compatibleItemIds: [
         '5beec91a0db834001961942d'
       ],
@@ -2961,6 +2893,7 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Magazine',
       compatibleItemIds: [
         '564ca9df4bdc2d35148b4569',
         '564ca99c4bdc2d16268b4589',
@@ -2980,6 +2913,7 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Ch. Handle',
       compatibleItemIds: [
         '6130ca3fd92c473c77020dbd',
         '5648ac824bdc2ded0b8b457d'
@@ -2989,6 +2923,7 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '5beec8b20db834001961942a',
         '649ec87d8007560a9001ab36',
@@ -2999,6 +2934,7 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Handguard',
       compatibleItemIds: [
         '5beec3e30db8340019619424'
       ],
@@ -3007,6 +2943,7 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     },
     {
+      caption: 'Barrel',
       compatibleItemIds: [
         '5beec1bd0db834001e6006f3',
         '5beec2820db834001b095426'
@@ -3040,6 +2977,7 @@ export const rpk1615inch: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Muzzle',
       compatibleItemIds: [
         '5ac72e945acfc43f3b691116',
         '5ac7655e5acfc40016339a19',
@@ -3121,6 +3059,7 @@ export const rpk16DustCover: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Scope',
       compatibleItemIds: [
         '57ac965c24597706be5f975c',
         '57aca93d2459771f2c7e26db',
@@ -3196,6 +3135,7 @@ export const rpk16DustCover: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Rear Sight',
       compatibleItemIds: [
         '5beec9450db83400970084fd'
       ],
@@ -3229,6 +3169,7 @@ export const rpk16Handguard: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Mount',
       compatibleItemIds: [
         '5beecbb80db834001d2c465e'
       ],
@@ -3237,6 +3178,7 @@ export const rpk16Handguard: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Mount',
       compatibleItemIds: [
         '5beecbb80db834001d2c465e'
       ],
@@ -3245,6 +3187,7 @@ export const rpk16Handguard: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Scope',
       compatibleItemIds: [
         '558022b54bdc2dac148b458d',
         '58491f3324597764bc48fa02',
@@ -3273,6 +3216,7 @@ export const rpk16Handguard: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Foregrip',
       compatibleItemIds: [
         '5c7fc87d2e221644f31c0298',
         '5cda9bcfd7f00c0c0b53e900',
@@ -3316,6 +3260,7 @@ export const rpk16Handguard: IRangedWeaponMod = {
       required: false
     },
     {
+      caption: 'Tactical',
       compatibleItemIds: [
         '57fd23e32459772d0805bcf1',
         '544909bb4bdc2d6f028b4577',
@@ -3378,6 +3323,7 @@ export const rpk16Rail: IMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Tactical',
       compatibleItemIds: [
         '5a800961159bd4315e3a1657',
         '57fd23e32459772d0805bcf1',
@@ -3455,6 +3401,7 @@ export const rpk16RsBase: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Rear Sight',
       compatibleItemIds: [
         '5ac733a45acfc400192630e2',
         '5649b0544bdc2d1b2b8b458a',
@@ -3496,6 +3443,7 @@ export const rpk16Tube: IRangedWeaponMod = {
   defaultPresetId: undefined,
   modSlots: [
     {
+      caption: 'Stock',
       compatibleItemIds: [
         '602e620f9b513876d4338d9a',
         '5a9eb32da2750c00171b3f9c',
@@ -3629,6 +3577,7 @@ export const specterDr: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [
     {
+      caption: 'Mount',
       compatibleItemIds: [],
       maxStackableAmount: 1,
       name: 'mod_mount',

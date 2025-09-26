@@ -22,9 +22,9 @@ export class ItemFetcherService {
    * Fetches all items.
    * @returns Items.
    */
-  public async fetchItemsAsync(): Promise<IItem[] | undefined> {
+  public async fetchItemsAsync(language: string): Promise<IItem[] | undefined> {
     const fetchService = Services.get(FetchService)
-    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems.replace('{0}', language)
 
     if (this.isDebug) {
       Services.get(LogService).logInformation('message.fetchingItems', { date: new Date().toISOString() })
@@ -57,9 +57,9 @@ export class ItemFetcherService {
    * Fetches all prices.
    * @returns Prices.
    */
-  public async fetchPricesAsync(): Promise<IPrice[] | undefined> {
+  public async fetchPricesAsync(gameMode: string, language: string): Promise<IPrice[] | undefined> {
     const fetchService = Services.get(FetchService)
-    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices.replace('{0}', gameMode).replace('{1}', language)
 
     if (this.isDebug) {
       Services.get(LogService).logInformation('message.fetchingPrices', { date: new Date().toISOString() })

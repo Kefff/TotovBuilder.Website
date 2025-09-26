@@ -266,10 +266,14 @@ function openNewBuild(): void {
             @click="displayMerchantItemsOptions()"
           >
             <font-awesome-icon
-              icon="user-tag"
+              icon="gamepad"
               class="icon-before-text"
             />
             <span>{{ $t('caption.welcomeConfigureMerchants') }}</span>
+            <font-awesome-icon
+              icon="user-tag"
+              class="icon-after-text"
+            />
           </Button>
         </div>
         <div class="welcome-action">
