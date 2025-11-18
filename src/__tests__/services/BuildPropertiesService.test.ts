@@ -605,7 +605,7 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -715,7 +715,7 @@ Prix **43 345₽**   Poids **1,500 kg**
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché Oui   Le Mécano 2   Prapor 4  
@@ -866,7 +866,7 @@ Ref Non   Skier 1   La Toubib 3
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣  
@@ -991,7 +991,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1702,7 +1702,7 @@ const expectedMarkdownString1En = `# Build 1
 
 
 
-*Game mode :* **PvP**
+*Game mode* : **PvP**
 
 *Configured merchants*  
 Flea market ✅   Jaeger 4️⃣   Mechanic 4️⃣  
@@ -1743,7 +1743,7 @@ const expectedMarkdownString1Fr = `# Build 1
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1782,7 +1782,7 @@ const expectedMarkdownString2 = `# Build 2
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1803,7 +1803,7 @@ const expectedMarkdownString3 = `# Build with armor only
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1826,7 +1826,7 @@ const expectedMarkdownString4 = `# Build with backpack only and every currency
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1846,7 +1846,7 @@ const expectedMarkdownString5 = `# Build with weapon on back only
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
@@ -1865,7 +1865,7 @@ const expectedMarkdownString6 = `# Build with missing price
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
