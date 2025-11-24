@@ -220,6 +220,11 @@ export class GlobalFilterService {
         }
       }
 
+      if (merchantFilter.merchantLevel < merchant.minLevel
+        || merchantFilter.merchantLevel > merchant.maxLevel) {
+        merchantFilter.merchantLevel = merchant.maxLevel
+      }
+
       orderedMerchantFilters.push(merchantFilter)
     }
 

@@ -586,6 +586,8 @@ ${sharableUrl}`
           return options.includeEmojis ? '3️⃣' : '3'
         case 4:
           return options.includeEmojis ? '4️⃣' : '4'
+        default:
+          return level.toLocaleString()
       }
     }
 
