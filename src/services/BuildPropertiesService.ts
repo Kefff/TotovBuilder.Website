@@ -372,7 +372,7 @@ ${sharableUrl}`
       const globalFilter = Services.get(GlobalFilterService).get()
       const merchantFilters = globalFilter.merchantFilters.sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
 
-      let merchantsAsString = `${formattingTokens.italicToken}${this.translate('caption.gameMode', options.language)} :${formattingTokens.italicToken} ${formattingTokens.boldToken}${this.translate(`caption.gameMode_${options.gameMode}`, options.language)}${formattingTokens.boldToken}`
+      let merchantsAsString = `${formattingTokens.italicToken}${this.translate('caption.gameMode', options.language)}${formattingTokens.italicToken} : ${formattingTokens.boldToken}${this.translate(`caption.gameMode_${options.gameMode}`, options.language)}${formattingTokens.boldToken}`
       merchantsAsString += `\n\n${formattingTokens.italicToken}${this.translate('caption.configuredMerchants', options.language)}${formattingTokens.italicToken}`
 
       for (let i = 0; i < merchantFilters.length; i++) {
@@ -586,6 +586,8 @@ ${sharableUrl}`
           return options.includeEmojis ? '3️⃣' : '3'
         case 4:
           return options.includeEmojis ? '4️⃣' : '4'
+        default:
+          return level.toLocaleString()
       }
     }
 

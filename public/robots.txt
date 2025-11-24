@@ -2,5 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /build/
 Disallow: /copy/
-Disallow: /s/
 Sitemap: https://www.totovbuilder.com/sitemap.xml

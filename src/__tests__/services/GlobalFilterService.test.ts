@@ -1,4 +1,6 @@
+import { instance, mock, when } from 'ts-mockito'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { ITarkovValues } from '../../models/configuration/ITarkovValues'
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
@@ -6,6 +8,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
 import { ammo545bp, berkut, rpk16, rpk1615inch } from '../__data__/itemMocks'
 import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
@@ -130,7 +133,7 @@ describe('GlobalFilterService', () => {
           {
             enabled: true,
             merchant: 'flea-market',
-            merchantLevel: 0
+            merchantLevel: 99
           }
         ]
       } as IGlobalFilter)
@@ -195,7 +198,7 @@ describe('GlobalFilterService', () => {
           {
             enabled: true,
             merchant: 'flea-market',
-            merchantLevel: 0
+            merchantLevel: 99
           }
         ]
       } as IGlobalFilter)
@@ -503,7 +506,7 @@ describe('GlobalFilterService', () => {
       const levels3 = service.getMerchantLevels('invalid')
 
       // Assert
-      expect(levels1).toStrictEqual([0])
+      expect(levels1).toStrictEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99])
       expect(levels2).toStrictEqual([1, 2, 3, 4])
       expect(levels3).toStrictEqual([])
     })
@@ -512,13 +515,35 @@ describe('GlobalFilterService', () => {
   describe('hasLevels', () => {
     it('should indicates whether a merchant has multiple levels or not', () => {
       // Arrange
-      useTarkovValuesServiceMock()
+      const tarkovValues = {
+        'merchants': [
+          {
+            'maxLevel': 4,
+            'minLevel': 1,
+            'name': 'prapor',
+            'order': 1,
+            'showInFilter': true
+          },
+          {
+            'maxLevel': 0,
+            'minLevel': 0,
+            'name': 'merchantWithoutLevels',
+            'order': 2,
+            'showInFilter': true
+          }
+        ]
+      } as ITarkovValues
+
       useWebsiteConfigurationServiceMock()
+
+      const tarkovValuesServiceMock = mock<TarkovValuesService>()
+      when(tarkovValuesServiceMock.values).thenReturn(tarkovValues)
+      Services.configure(TarkovValuesService, undefined, instance(tarkovValuesServiceMock))
 
       const service = new GlobalFilterService()
 
       // Act
-      const hasLevels1 = service.hasLevels('flea-market')
+      const hasLevels1 = service.hasLevels('merchantWithoutLevels')
       const hasLevels2 = service.hasLevels('prapor')
       const hasLevels3 = service.hasLevels('invalid')
 
@@ -781,7 +806,7 @@ describe('GlobalFilterService', () => {
           {
             enabled: false,
             merchant: 'flea-market',
-            merchantLevel: 0
+            merchantLevel: 99
           }
         ]
       } as IGlobalFilter)

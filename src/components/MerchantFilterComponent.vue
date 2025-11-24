@@ -4,6 +4,7 @@ import { IMerchantFilter } from '../models/utils/IMerchantFilter'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
+import InputNumberField from './InputNumberFieldComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
 const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
@@ -15,10 +16,16 @@ const _globalFilterService = Services.get(GlobalFilterService)
  * @param merchantName - Merchant name.
  * @returns Level options.
  */
-function getMerchantLevels(merchantName: string): number[] {
-  const levels = _globalFilterService.getMerchantLevels(merchantName)
+// function getMerchantLevels(merchantName: string): number[] {
+//   const levels = _globalFilterService.getMerchantLevels(merchantName)
 
-  return levels
+//   return levels
+// }
+function getMerchantLevels(merchantName: string): { maxLevel: number, minLevel: number } {
+  const levels = _globalFilterService.getMerchantLevels(merchantName)
+  const minMaxLevels = { maxLevel: levels[levels.length - 1], minLevel: levels[0] }
+
+  return minMaxLevels
 }
 
 /**
@@ -37,10 +44,10 @@ function hasLevels(merchantName: string): boolean {
  *
  * Updates the filter.
  */
-function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number): void {
+function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel?: number): void {
   const newMerchantFilters: IMerchantFilter[] = [...modelMerchantFilters.value]
   newMerchantFilters[index].enabled = enabled
-  newMerchantFilters[index].merchantLevel = merchantLevel
+  newMerchantFilters[index].merchantLevel = merchantLevel ?? 1
 
   modelMerchantFilters.value = newMerchantFilters
 }
@@ -90,20 +97,17 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
         :tooltip="$t('caption.level')"
         :disabled-on-mobile="true"
       >
-        <Dropdown
+        <InputNumberField
           v-if="hasLevels(merchantFilter.merchant)"
-          :disabled="!merchantFilter.enabled"
-          :model-value="merchantFilter.merchantLevel"
-          :options="getMerchantLevels(merchantFilter.merchant)"
+          :max="getMerchantLevels(merchantFilter.merchant).maxLevel"
+          :min="getMerchantLevels(merchantFilter.merchant).minLevel"
           :placeholder="$t('caption.level')"
-          @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
-        >
-          <template #value="slotProps">
-            <div class="merchant-filter-level-value">
-              {{ slotProps.value }}
-            </div>
-          </template>
-        </Dropdown>
+          :read-only="!merchantFilter.enabled"
+          :required="false"
+          :value="merchantFilter.merchantLevel"
+          caption-mode="placeholder"
+          @update:value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
+        />
       </Tooltip>
     </div>
   </div>
@@ -123,8 +127,8 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
   align-items: center;
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: 2rem 1fr 3rem 5.25rem;
-  height: 3.5rem;
+  grid-template-columns: 2rem minmax(0, 1fr) 3rem 8.5rem;
+  min-height: 3.5rem;
 }
 
 .merchant-filter:last-child {
@@ -139,6 +143,7 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 .merchant-filter-merchant {
   cursor: pointer;
+  word-break: break-word;
 }
 
 .merchant-filter-level-value {

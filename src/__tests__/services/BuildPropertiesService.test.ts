@@ -605,10 +605,10 @@ Price 302,311₽ and 459$ (= 367,984₽)   Weight 9.236 kg`]
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -715,7 +715,7 @@ Prix **43 345₽**   Poids **1,500 kg**
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché Oui   Le Mécano 2   Prapor 4  
@@ -866,7 +866,7 @@ Ref Non   Skier 1   La Toubib 3
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
 Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣  
@@ -991,10 +991,10 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1300,7 +1300,7 @@ http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6
 Mode de jeu : JcE
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -1373,7 +1373,7 @@ http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
+Marché 99   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
@@ -1659,7 +1659,7 @@ Build 2
 Mode de jeu : JcE
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -1702,10 +1702,10 @@ const expectedMarkdownString1En = `# Build 1
 
 
 
-*Game mode :* **PvP**
+*Game mode* : **PvP**
 
 *Configured merchants*  
-Flea market ✅   Jaeger 4️⃣   Mechanic 4️⃣  
+Flea market 99   Jaeger 4️⃣   Mechanic 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   Therapist 4️⃣  
 
@@ -1743,10 +1743,10 @@ const expectedMarkdownString1Fr = `# Build 1
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1782,10 +1782,10 @@ const expectedMarkdownString2 = `# Build 2
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1803,10 +1803,10 @@ const expectedMarkdownString3 = `# Build with armor only
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1826,10 +1826,10 @@ const expectedMarkdownString4 = `# Build with backpack only and every currency
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1846,10 +1846,10 @@ const expectedMarkdownString5 = `# Build with weapon on back only
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1865,10 +1865,10 @@ const expectedMarkdownString6 = `# Build with missing price
 
 
 
-*Mode de jeu :* **JcJ**
+*Mode de jeu* : **JcJ**
 
 *Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
 
@@ -1912,7 +1912,7 @@ http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 Game mode : PvP
 
 Configured merchants
-Flea market ✅   Jaeger 4️⃣   Mechanic 4️⃣
+Flea market 99   Jaeger 4️⃣   Mechanic 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   Therapist 4️⃣
 
@@ -1954,7 +1954,7 @@ http://localhost:3000/s/XQAAAAK-BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -1994,7 +1994,7 @@ http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -2016,7 +2016,7 @@ http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhO
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -2040,7 +2040,7 @@ http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJC
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -2061,7 +2061,7 @@ http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
@@ -2081,7 +2081,7 @@ http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCt
 Mode de jeu : JcJ
 
 Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Marché 99   Jaeger 4️⃣   Le Mécano 4️⃣
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
