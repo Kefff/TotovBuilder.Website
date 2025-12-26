@@ -74,7 +74,11 @@ describe('LanguageService', () => {
   })
 
   describe('setApplicationLanguage', () => {
-    it('should change the application language and update SEO metadata', () => {
+    it.each([
+      ['en'],
+      ['fr'],
+      ['invalid']
+    ])('should change the application language and update SEO metadata', (language: string) => {
       // Arrange
       useWebsiteConfigurationServiceMock()
 
@@ -86,13 +90,14 @@ describe('LanguageService', () => {
       const service = new LanguageService()
 
       // Act
-      service.setApplicationLanguage('fr')
+      service.setApplicationLanguage(language)
 
       // Assert
+      const expectedLanguage = language == 'invalid' ? 'en' : language
       const storedApplicationLanguage = localStorage.getItem(websiteConfigurationService.configuration.languageStorageKey)
 
-      expect(vueI18n.locale.value).toBe('fr')
-      expect(storedApplicationLanguage).toBe('fr')
+      expect(vueI18n.locale.value).toBe(expectedLanguage)
+      expect(storedApplicationLanguage).toBe(expectedLanguage)
       verify(seoServiceMock.updateSeoMetadata()).once()
     })
   })
