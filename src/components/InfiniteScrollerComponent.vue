@@ -21,16 +21,6 @@ const props = withDefaults(
 
 
 const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
-const groupedElements = computed<unknown[][]>(() => {
-  const groups: unknown[][] = []
-
-  for (let i = 0; i < props.elements.length; i += props.elementsPerLine) {
-    const group = props.elements.slice(i, i + props.elementsPerLine)
-    groups.push(group)
-  }
-
-  return groups
-})
 const lineHeight = computed(() => `${props.elementHeight}px`)
 const maxHeight = computed(() => {
   if (props.maxLinesAmount == null) {
@@ -56,11 +46,24 @@ watch(() => props.elements, () => initializeDisplayedElements())
  */
 function initializeDisplayedElements(): void {
   isLoading.value = true
-  displayedElementGroups.value = Array.from({ length: groupedElements.value.length })
+
+  displayedElementGroups.value = []
+  const groups: unknown[][] = []
+
+  for (let i = 0; i < props.elements.length; i += props.elementsPerLine) {
+    const group = props.elements.slice(i, i + props.elementsPerLine)
+    groups.push(group)
+  }
 
   nextTick(() => {
-    isLoading.value = false
-    scrollToElement(props.scrollToIndex)
+    // Next tick required to make sure the virtual scroller updates its visual
+    displayedElementGroups.value = groups
+
+    nextTick(() => {
+      // Next tick required to make sure the scrolling is triggered once the virtual scroller has updated its visual
+      isLoading.value = false
+      scrollToElement(props.scrollToIndex)
+    })
   })
 }
 
@@ -97,7 +100,7 @@ function scrollToElement(elementIndex?: number): void {
   <VirtualScroller
     ref="virtualScroller"
     :item-size="elementHeight"
-    :items="groupedElements"
+    :items="displayedElementGroups"
     :show-loader="true"
     :loading="isLoading"
     class="infinite-scroller"

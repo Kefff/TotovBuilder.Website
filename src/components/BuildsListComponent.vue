@@ -372,7 +372,6 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
       />
       <InfiniteScroller
         v-if="infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
-        v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
         :element-height="_elementHeight"
         :elements-per-line="buildsPerLine"
@@ -395,7 +394,6 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
       </InfiniteScroller>
       <Paginator
         v-else-if="!infiniteScrolling && filteredAndSortedBuildSummaries.length > 0"
-        v-show="!isLoading"
         v-model:current-page="modelCurrentPage"
         :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
         :can-swipe="canSwipe"
