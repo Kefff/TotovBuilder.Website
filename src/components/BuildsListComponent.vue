@@ -353,13 +353,15 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 <template>
   <div class="builds-list-container">
     <div
-      v-if="isInitializing || isLoading"
+      v-if="isInitializing"
+      v-show="isLoading"
       class="builds-list-loading"
     >
       <Loading />
     </div>
     <div
-      v-if="!isInitializing && !isLoading"
+      v-if="!isInitializing"
+      v-show="!isLoading"
       class="builds-list"
     >
       <FilterChips

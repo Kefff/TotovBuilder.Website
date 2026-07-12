@@ -11,12 +11,14 @@ const applicationInsights = new ApplicationInsights({
 
 // Adding a telemetry analyzer to ignore ResizeObserver exceptions
 applicationInsights.addTelemetryInitializer((envelope) => {
-  const baseData = envelope.data?.baseData as Record<string, unknown>
+  if (envelope.baseType === 'ExceptionData') {
+    const exception = envelope.baseData?.exceptions[0]
 
-  if (baseData?.exceptions != null) {
-    const hasIgnoredException = ((baseData.exceptions as Record<string, unknown>[]).some(e => (e.message as string)?.includes('ResizeObserver')))
-
-    return !hasIgnoredException
+    if (exception != null
+      && exception.message != null
+      && (exception.message as string).includes('ResizeObserver')) {
+      return false
+    }
   }
 
   return true
