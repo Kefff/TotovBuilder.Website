@@ -173,7 +173,7 @@ async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<v
     const fasd = new ItemFilterAndSortingData(modelFilterAndSortingData.value.sortingFunctions, modelFilterAndSortingData.value)
     fasd.availableItemCategories = getAvailableItemCategoryIdsFromItems(_itemsWaitingToBeFilteredAndSorted)
 
-    // Updating modelFilterAndSortingData an returning here will trigger the watcher on modelFilterAndSortingData.
+    // Updating modelFilterAndSortingData and returning here will trigger the watcher on modelFilterAndSortingData.
     // This will execute this method again, but this time it will not update the items list and instead apply filter and sorting.
     // However, when initializing, we need to get items, filter and sort them immediatly
     // The watcher on modelFilterAndSortingData is disabled at this time.
@@ -327,13 +327,15 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 <template>
   <div class="items-list-container">
     <div
-      v-if="isInitializing || isLoading"
+      v-if="isInitializing"
+      v-show="isLoading"
       class="items-list-loading"
     >
       <Loading />
     </div>
     <div
-      v-if="!isInitializing && !isLoading"
+      v-if="!isInitializing"
+      v-show="!isLoading"
       class="items-list"
     >
       <FilterChips
@@ -343,7 +345,6 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       />
       <InfiniteScroller
         v-if="infiniteScrolling && filteredAnSortedItems.length > 0"
-        v-show="!isLoading"
         :auto-scroll-to-first-element="autoScrollToFirstElement"
         :element-height="elementHeight"
         :elements-per-line="elementsitemsPerLine"
@@ -366,7 +367,6 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       </InfiniteScroller>
       <Paginator
         v-else-if="!infiniteScrolling && filteredAnSortedItems.length > 0"
-        v-show="!isLoading"
         :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
         :elements-per-line="elementsitemsPerLine"
         :elements="filteredAnSortedItems"

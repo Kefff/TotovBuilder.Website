@@ -157,7 +157,7 @@ const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
-const applyQuickFilterDenounce = useDebounceFn(() => {
+const applyQuickFilterDebounce = useDebounceFn(() => {
   // Applies the filter only 500ms after the last letter is typed
   applyQuickFilter()
 }, 500)
@@ -232,7 +232,7 @@ function getGlobalFilter(): void {
  */
 function onFilterUpdate(value: string | undefined): void {
   filterInternal.value = value
-  applyQuickFilterDenounce()
+  applyQuickFilterDebounce()
 }
 
 /**

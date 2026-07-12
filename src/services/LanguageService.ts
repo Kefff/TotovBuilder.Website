@@ -59,6 +59,10 @@ export default class LanguageService {
    * @param language - Language.
    */
   public setApplicationLanguage(language: string): void {
+    if (language != 'en' && language != 'fr') {
+      language = 'en'
+    }
+
     vueI18n.locale.value = language as 'en' | 'fr'
     localStorage.setItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey, language)
     Services.get(SeoService).updateSeoMetadata()
