@@ -14,7 +14,7 @@ const props = withDefaults(
   })
 
 const gameModes = _websiteConfigurationService.configuration.gameModes
-const gameModeUnselectedCursor = computed(() => props.isEnabled ? 'pointer' : 'unset')
+const gameModeUnselectedCursor = computed(() => props.isEnabled ? 'pointer' : 'not-allowed')
 
 /**
  * Selects a game mode.
@@ -47,6 +47,7 @@ function selectGameMode(gameMode: string): void {
       :class="{
         [`game-mode-selector-${gameMode}-selected`]: gameMode === modelGameMode,
         'game-mode-selector-option-unselected': gameMode !== modelGameMode,
+        'game-mode-selector-option-disabled': !props.isEnabled && gameMode !== modelGameMode,
         'sidebar-option-disabled': gameMode !== modelGameMode
       }"
       @click="selectGameMode(gameMode)"
