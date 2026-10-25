@@ -142,6 +142,7 @@
     "frontPlate": " (front plate)",
     "gameMode_pve": "PvE",
     "gameMode_pvp": "PvP",
+    "gameMode_pvp-season": "Season",
     "gameMode": "Game mode",
     "gear": "Gear",
     "generalOptions": "General options",

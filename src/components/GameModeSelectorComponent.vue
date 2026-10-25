@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import Services from '../services/repository/Services'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const modelGameMode = defineModel<string>('gameMode')
 
@@ -9,26 +13,19 @@ const props = withDefaults(
     isEnabled: true
   })
 
-const gameModeUnselectedTextCursor = computed(() => props.isEnabled ? 'pointer' : 'unset')
-const isPvp = computed({
-  get: () => modelGameMode.value === 'pvp',
-  set: (value: boolean) => {
-    modelGameMode.value = value ? 'pvp' : 'pve'
-  }
-})
+const gameModes = _websiteConfigurationService.configuration.gameModes
+const gameModeUnselectedCursor = computed(() => props.isEnabled ? 'pointer' : 'unset')
 
 /**
- * Toggles the game mode.
- * @param gameModeSwitch - Type of switch that toggles the game mode.
+ * Selects a game mode.
+ * @param gameMode - Game mode.
  */
-function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
-  if (gameModeSwitch === 'pve' && !isPvp.value || gameModeSwitch === 'pvp' && isPvp.value) {
+function selectGameMode(gameMode: string): void {
+  if (!props.isEnabled) {
     return
   }
 
-  if (props.isEnabled) {
-    isPvp.value = !isPvp.value
-  }
+  modelGameMode.value = gameMode
 }
 </script>
 
@@ -44,27 +41,17 @@ function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
 <template>
   <div class="game-mode-selector">
     <span
-      :class="{ 'game-mode-selector-pve-selected': !isPvp, 'game-mode-selector-caption-unselected': isPvp, 'sidebar-option-disabled': isPvp }"
-      @click="toggleGameMode('pve')"
+      v-for="gameMode of gameModes"
+      :key="gameMode"
+      class="game-mode-selector-option"
+      :class="{
+        [`game-mode-selector-${gameMode}-selected`]: gameMode === modelGameMode,
+        'game-mode-selector-option-unselected': gameMode !== modelGameMode,
+        'sidebar-option-disabled': gameMode !== modelGameMode
+      }"
+      @click="selectGameMode(gameMode)"
     >
-      {{ $t('caption.gameMode_pve') }}
-    </span>
-    <div class="game-mode-selector">
-      <InputSwitch
-        v-model="isPvp"
-        :disabled="!isEnabled"
-        class="game-mode-selector-input"
-        :class="{
-          'game-mode-selector-input-pve': !isPvp,
-          'game-mode-selector-input-pvp': isPvp
-        }"
-      />
-    </div>
-    <span
-      :class="{ 'game-mode-selector-pvp-selected': isPvp, 'game-mode-selector-caption-unselected': !isPvp, 'sidebar-option-disabled': !isPvp }"
-      @click=" toggleGameMode('pvp')"
-    >
-      {{ $t('caption.gameMode_pvp') }}
+      {{ $t(`caption.gameMode_${gameMode}`) }}
     </span>
   </div>
 </template>
@@ -80,52 +67,49 @@ function toggleGameMode(gameModeSwitch: 'pve' | 'pvp'): void {
 
 <style scoped>
 .game-mode-selector {
+  border-color: var(--surface-700);
+  border-radius: 6px;
+  border-style: solid;
+  border-width: 1px;
+  display: flex;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.game-mode-selector-option {
   align-items: center;
   display: flex;
-  gap: 1rem;
-}
-
-.game-mode-selector {
   height: 1.75rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  white-space: nowrap;
 }
 
-.game-mode-selector-caption-unselected:hover {
-  cursor: v-bind(gameModeUnselectedTextCursor);
+.game-mode-selector-option + .game-mode-selector-option {
+  border-left-color: var(--surface-700);
+  border-left-style: solid;
+  border-left-width: 1px;
+}
+
+.game-mode-selector-option-unselected:hover {
+  cursor: v-bind(gameModeUnselectedCursor);
 }
 
 .game-mode-selector-pve-selected {
+  background-color: var(--success-color5);
   color: var(--success-color);
   font-weight: bolder;
 }
 
 .game-mode-selector-pvp-selected {
+  background-color: var(--primary-color7);
   color: var(--primary-color);
   font-weight: bolder;
 }
-</style>
 
-<style>
-.game-mode-selector-input .p-inputswitch-slider {
-  border-style: none;
-}
-
-.game-mode-selector-input.p-inputswitch:not(.p-disabled):hover .p-inputswitch-slider::before,
-.game-mode-selector-input.p-inputswitch .p-inputswitch-slider::before {
-  box-shadow: none;
-}
-
-.game-mode-selector-input.game-mode-selector-input-pve .p-inputswitch-slider,
-.game-mode-selector-input.game-mode-selector-input-pve .p-inputswitch-slider:hover {
-  background: linear-gradient(90deg, rgba(76, 175, 80, 0.76) 0%, rgba(76, 175, 80, 0.76) 50%, rgba(255, 255, 255, 0.3) 100%);
-}
-
-.game-mode-selector-input.game-mode-selector-input-pve .p-inputswitch-slider::before {
-  background: var(--success-color);
-}
-
-.game-mode-selector-input.game-mode-selector-input-pvp .p-inputswitch-slider,
-.game-mode-selector-input.game-mode-selector-input-pvp .p-inputswitch-slider:hover,
-.game-mode-selector-input.game-mode-selector-input-pvp.p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(33, 150, 243, 0.76) 50%, rgba(33, 150, 243, 0.76) 100%);
+.game-mode-selector-pvp-season-selected {
+  background-color: var(--warning-color5);
+  color: var(--warning-color);
+  font-weight: bolder;
 }
 </style>

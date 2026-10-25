@@ -34,6 +34,22 @@ describe('GameModeService', () => {
       // Assert
       expect(language).toBe('pvp')
     })
+
+    it('should get the default game mode when the stored game mode is not configured', () => {
+      // Arrange
+      useWebsiteConfigurationServiceMock()
+
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+      localStorage.setItem(websiteConfigurationService.configuration.gameModeStorageKey, 'invalid')
+
+      const service = new GameModeService()
+
+      // Act
+      const gameMode = service.getGameMode()
+
+      // Assert
+      expect(gameMode).toBe('pvp')
+    })
   })
 
   describe('setGameMode', () => {

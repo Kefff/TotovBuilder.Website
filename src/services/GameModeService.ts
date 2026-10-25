@@ -27,12 +27,14 @@ export default class GameModeService {
    * @returns Stored or default game mode.
    */
   public getGameMode(): string {
-    if (this._gameMode == null) {
-      this._gameMode = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.gameModeStorageKey)
-    }
+    const configuration = Services.get(WebsiteConfigurationService).configuration
 
     if (this._gameMode == null) {
-      this._gameMode = Services.get(WebsiteConfigurationService).configuration.gameModes[0]
+      this._gameMode = localStorage.getItem(configuration.gameModeStorageKey)
+    }
+
+    if (this._gameMode == null || !configuration.gameModes.includes(this._gameMode)) {
+      this._gameMode = configuration.gameModes[0]
     }
 
     return this._gameMode

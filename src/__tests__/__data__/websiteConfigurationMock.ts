@@ -28,7 +28,8 @@ const websiteConfiguration: IWebsiteConfiguration = {
   fetchWaitTimeBetweenRetries: 2,
   gameModes: [
     'pvp',
-    'pve'
+    'pve',
+    'pvp-season'
   ],
   gameModeStorageKey: 'gameMode',
   githubUrl: 'https://github.com/User/Reposiory',
