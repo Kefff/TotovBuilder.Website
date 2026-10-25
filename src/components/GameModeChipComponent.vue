@@ -71,6 +71,7 @@ function showGlobalFilterSidebar(): void {
         :class="{
           'game-mode-chip-text-pve': gameMode === 'pve',
           'game-mode-chip-text-pvp': gameMode === 'pvp',
+          'game-mode-chip-text-pvp-season': gameMode === 'pvp-season'
         }"
       >
         {{ $t(`caption.gameMode_${gameMode}`) }}
@@ -128,5 +129,9 @@ function showGlobalFilterSidebar(): void {
 
 .game-mode-chip-text-pvp {
   color: var(--primary-color);
+}
+
+.game-mode-chip-text-pvp-season {
+  color: var(--warning-color);
 }
 </style>
